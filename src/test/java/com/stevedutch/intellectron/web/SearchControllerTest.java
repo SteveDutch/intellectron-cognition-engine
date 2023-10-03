@@ -1,8 +1,6 @@
 package com.stevedutch.intellectron.web;
 
-import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
+import org.aspectj.lang.annotation.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -14,10 +12,12 @@ public class SearchControllerTest {
 
 	private SearchController searchController;
 
-	@Before
+	@Before(value = "")
 	public void setup() {
 		this.searchController = new SearchController();
 	}
+
+
 
 	@Test
 	public void shouldShowSearchPage() {

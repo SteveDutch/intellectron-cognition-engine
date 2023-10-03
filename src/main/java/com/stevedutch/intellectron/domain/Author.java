@@ -1,6 +1,6 @@
 package com.stevedutch.intellectron.domain;
 
-import jakarta.persistence.Column; //mit Spring 3.0 kommt jkj́akarta statt javax
+import jakarta.persistence.Column; // mit Spring 3.0 kommt j́akarta statt javax
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

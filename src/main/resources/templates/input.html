@@ -1,6 +1,6 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/input.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -10,12 +10,16 @@
     <!-- Falls du eine separate CSS-Datei hast -->
 </head>
 
-<form>
+<form action="/input" method="post">
+    
     <label for="article">Article/Text:</label><br>
     <input type="text" id="article" name="article"><br>
 
-    <label for="author">Author:</label><br>
-    <input type="text" id="author" name="author"><br>
+    <label for="author">Author first name</label><br>
+    <input type="text" th:field="${author.authorFirstName}" /><br>
+
+    <label for="author">Author family name</label><br>
+    <input type="text" th:field="${author.authorFamilyName}" /><br>
 
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title"><br>
