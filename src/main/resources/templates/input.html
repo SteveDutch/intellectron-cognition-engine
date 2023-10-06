@@ -12,7 +12,7 @@
 
 <form action="/input" method="post">
     
-    <label for="article">Article/Text:</label><br>
+    <label for="article">Article/Text:[no function :) ]</label><br>
     <input type="text" id="article" name="article"><br>
 
     <label for="author">Author first name</label><br>
@@ -24,8 +24,8 @@
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title"><br>
 
-    <label for="text">Text:</label><br>
-    <textarea id="text" name="text"></textarea><br>
+    <label for="tekst">Text:</label><br>
+    <textarea id="tekst" th:field="${tekst.content}" ></textarea><br>
 
     <label for="source">Source:</label><br>
     <input type="text" id="source" name="source"><br>
