@@ -10,7 +10,7 @@ class InputControllerTest {
 	void testShowInputMask() {
 		InputController sut = new InputController();
 		
-		String result = sut.showInputMask();
+		String result = sut.showInputMask(null);
 		
 		assertThat(result).isEqualTo("/input");
 	}
