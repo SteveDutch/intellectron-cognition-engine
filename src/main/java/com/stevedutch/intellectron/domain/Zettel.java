@@ -1,5 +1,7 @@
 package com.stevedutch.intellectron.domain;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,17 +18,22 @@ public class Zettel {
 	@Column(name = "zettel_id", nullable = false)
 	private Long zettelId;
 	
-	// TODO tekst_id
-	@Column(name = "title", length = 255)	
-	private String textTitle;
-	@Column(name = "source", length = 255)	
-	private String source;
-	// TODO added
-	// TODO article_date
-	@Column(name = "text_type")
-	private int textType;
-	// TODO signature, tag
+	@Column(name = "topic",length =255 )
+	private String topic;
 	
+	// TODO add title (where in ERD & here)
+//	@Column(name = "title", length = 255)	
+//	private String textTitle;
+	
+
+	@Column(name = "added")
+	private LocalDate added;
+	@Column(name = "changed")
+	private LocalDate changed;
+	
+	@Column(name = "signature")
+	private Integer signature;
+
 	// Getter & Setter
 	public Long getZettelId() {
 		return zettelId;
@@ -36,34 +43,59 @@ public class Zettel {
 		this.zettelId = zettelId;
 	}
 	
-	public String getTextTitle() {
-		return textTitle;
+	public String getTopic() {
+		return topic;
 	}
-	
-	public void setTextTitle(String textTitle) {
-		this.textTitle = textTitle;
+
+	public void setTopic(String topic) {
+		this.topic = topic;
 	}
-	
-	public String getSource() {
-		return source;
+
+	/**
+	 * @return the added
+	 */
+	public LocalDate getAdded() {
+		return added;
 	}
-	
-	public void setSource(String source) {
-		this.source = source;
+
+	/**
+	 * @param added the added to set
+	 */
+	public void setAdded(LocalDate added) {
+		this.added = added;
 	}
-	
-	public int getTextType() {
-		return textType;
+
+	/**
+	 * @return the changed
+	 */
+	public LocalDate getChanged() {
+		return changed;
 	}
-	
-	public void setTextType(int textType) {
-		this.textType = textType;
+
+	/**
+	 * @param changed the changed to set
+	 */
+	public void setChanged(LocalDate changed) {
+		this.changed = changed;
+	}
+
+	/**
+	 * @return the signature
+	 */
+	public Integer getSignature() {
+		return signature;
+	}
+
+	/**
+	 * @param signature the signature to set
+	 */
+	public void setSignature(Integer signature) {
+		this.signature = signature;
 	}
 
 	@Override
 	public String toString() {
-		return "Zettel [zettelId= " + zettelId + ", textTitle= " + textTitle + ", source=" + source + ", textType="
-				+ textType + "]";
+		return "Zettel [zettelId=" + zettelId + ", added=" + added + "]";
 	}
 	
 

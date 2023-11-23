@@ -1,13 +1,13 @@
 package com.stevedutch.intellectron.domain;
 
-import jakarta.persistence.Column; // mit Spring 3.0 kommt j́akarta statt javax
+import jakarta.persistence.Column; // XNOTE mit Spring 3.0 kommt j́akarta statt javax
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity // Class name = Author, DB Table name = author
+@Entity // NOTE Class name = Author, DB Table name = author
 @Table(name = "author")
 public class Author {
 	
