@@ -37,8 +37,8 @@ public class Tekst {
 	/**
 	 * @param textId the textId to set
 	 */
-	public void setTextId(Long contentId) {
-		this.textId = contentId;
+	public void setTextId(Long textId) {
+		this.textId = textId;
 	}
 
 	/**
