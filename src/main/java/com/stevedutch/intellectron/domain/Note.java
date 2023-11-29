@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "notes")
-public class Notes {
+public class Note {
 	
 	@Id
 	private Long zetteld;

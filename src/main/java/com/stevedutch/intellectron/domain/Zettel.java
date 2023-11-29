@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity // Class name = Zettel, DB Table name = zettel
@@ -20,6 +21,9 @@ public class Zettel {
 	
 	@Column(name = "topic",length =255 )
 	private String topic;
+	
+	@OneToOne(mappedBy = "zettel")
+	private Note note;
 	
 	// TODO add title (where in ERD & here)
 //	@Column(name = "title", length = 255)	

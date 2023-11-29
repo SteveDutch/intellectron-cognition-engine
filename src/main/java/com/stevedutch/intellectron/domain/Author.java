@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity // NOTE Class name = Author, DB Table name = author
+@Entity // NOTE Class name = Author, DB Table name = authors
 @Table(name = "author")
 public class Author {
 	
