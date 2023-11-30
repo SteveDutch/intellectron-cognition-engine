@@ -1,10 +1,14 @@
 package com.stevedutch.intellectron.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity 
@@ -18,6 +22,9 @@ public class Tag {
 	
 	@Column(name = "tag", length =45)
 	private String tagText;
+	
+	@ManyToMany(mappedBy = "tags")
+	private List<Zettel> zettel = new ArrayList<>();
 
 	/**
 	 * @return the tagId
@@ -47,9 +54,17 @@ public class Tag {
 		this.tagText = tagText;
 	}
 
+	public List<Zettel> getZettel() {
+		return zettel;
+	}
+
+	public void setZettel(List<Zettel> zettel) {
+		this.zettel = zettel;
+	}
+
 	@Override
 	public String toString() {
-		return "Tag [tagId=" + tagId + ", tagText=" + tagText + "]";
+		return "Tag [tagId=" + tagId + ", tagText=" + tagText + ", zettel=" + zettel + "]";
 	}
 	
 	

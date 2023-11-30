@@ -47,6 +47,11 @@ public class Zettel {
 	@JoinTable(name = "zettel_authors", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> authors = new ArrayList<>();
+	
+	@ManyToMany
+	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
+	inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	private List<Tag> tags = new ArrayList<>();
 
 	// Getter & Setter
 	public Long getZettelId() {
@@ -63,6 +68,14 @@ public class Zettel {
 
 	public void setTopic(String topic) {
 		this.topic = topic;
+	}
+
+	public Note getNote() {
+		return note;
+	}
+
+	public void setNote(Note note) {
+		this.note = note;
 	}
 
 	/**
@@ -121,9 +134,18 @@ public class Zettel {
 		this.authors = authors;
 	}
 
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
 	@Override
 	public String toString() {
-		return "Zettel [zettelId=" + zettelId + ", added=" + added + "]";
+		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
+				+ ", changed=" + changed + ", signature=" + signature + ", authors=" + authors + ", tags=" + tags + "]";
 	}
 	
 
