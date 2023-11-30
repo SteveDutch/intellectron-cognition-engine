@@ -1,14 +1,18 @@
 package com.stevedutch.intellectron.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column; // XNOTE mit Spring 3.0 kommt j́akarta statt javax
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity // NOTE Class name = Author, DB Table name = authors
-@Table(name = "author")
+@Table(name = "authors")
 public class Author {
 	
 	@Id
@@ -21,6 +25,10 @@ public class Author {
     @Column(name = "family_name", length = 105)
 	private String authorFamilyName;
     
+    @ManyToMany(mappedBy = "authors")
+    private List<Zettel> zettel = new ArrayList<>();
+    
+    // Getter & Setter
 	/**
 	 * @return the authorId
 	 */
@@ -56,6 +64,12 @@ public class Author {
 	 */
 	public void setAuthorFamilyName(String authorFamilyName) {
 		this.authorFamilyName = authorFamilyName;
+	}
+	public List<Zettel> getZettel() {
+		return zettel;
+	}
+	public void setZettel(List<Zettel> zettel) {
+		this.zettel = zettel;
 	}
 	@Override
 	public String toString() {
