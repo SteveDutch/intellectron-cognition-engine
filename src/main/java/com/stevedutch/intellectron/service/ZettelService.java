@@ -21,11 +21,11 @@ public class ZettelService {
         }
 		
 		public Zettel updateZettel(Zettel zettel) {
-			if (zettel.getZettelId() != null) {
-                // wg. der voranstehenen Bedingung dürfte kein NULL auftreten können, aber trotzdem wg, Optional erforderlich
+			if (zettel.getZettelId() == null) {
+                // wg, Optional erforderlich
 				Zettel existingZettel =  zettelRepo.findById(zettel.getZettelId()).orElse(new Zettel());
                 // Aktualisiere die relevanten Felder mit den neuen Werten, wenn sie nicht null sind
-                if (zettel.getTopic() != null) {
+                if (zettel.getTopic() == null) {
                     existingZettel.setTopic(zettel.getTopic());
                 }
                 if (zettel.getAdded() != null) {
