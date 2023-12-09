@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,13 +23,13 @@ public class Zettel {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "zettel_id", nullable = false)
+	@Column(name = "zettel_id"/* , nullable = false */)
 	private Long zettelId;
 	
 	@Column(name = "topic",length =255 )
 	private String topic;
 	
-	@OneToOne(mappedBy = "zettel")
+	@OneToOne(mappedBy = "zettel", cascade = CascadeType.ALL)
 	private Note note;
 	
 	// TODO add title (where in ERD & here) meinte ich damit topic?
@@ -43,7 +45,7 @@ public class Zettel {
 	@Column(name = "signature")
 	private Integer signature;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "zettel_authors", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> authors = new ArrayList<>();
@@ -51,7 +53,33 @@ public class Zettel {
 	@ManyToMany
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	private List<Tag> tags = new ArrayList<>();
+	private List<ZettelTag> zettelTags = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(name = "zettel_texts", joinColumns = @JoinColumn(name = "zettel_id"), 
+	inverseJoinColumns = @JoinColumn(name = "tekst_id"))
+	private List<Tekst> teksts = new ArrayList<>();
+
+	//constructor junit test
+	public Zettel(Long zettelId, String topic, Note note, LocalDate added, LocalDate changed, Integer signature,
+			List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+		super();
+		this.zettelId = zettelId;
+		this.topic = topic;
+		this.note = note;
+		this.added = added;
+		this.changed = changed;
+		this.signature = signature;
+		this.authors = authors;
+		this.zettelTags = zettelTags;
+		this.teksts = teksts;
+	}
+
+	
+	public Zettel() {
+		// TODO Auto-generated constructor stub
+	}
+
 
 	// Getter & Setter
 	public Long getZettelId() {
@@ -134,18 +162,27 @@ public class Zettel {
 		this.authors = authors;
 	}
 
-	public List<Tag> getTags() {
-		return tags;
+	public List<ZettelTag> getTags() {
+		return zettelTags;
 	}
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
+	public void setTags(List<ZettelTag> zettelTags) {
+		this.zettelTags = zettelTags;
+	}
+
+	public List<Tekst> getTeksts() {
+		return teksts;
+	}
+
+	public void setTeksts(List<Tekst> teksts) {
+		this.teksts = teksts;
 	}
 
 	@Override
 	public String toString() {
 		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
-				+ ", changed=" + changed + ", signature=" + signature + ", authors=" + authors + ", tags=" + tags + "]";
+				+ ", changed=" + changed + ", signature=" + signature + ", authors=" + authors + ", zettelTags="
+				+ zettelTags + ", teksts=" + teksts + "]";
 	}
 	
 

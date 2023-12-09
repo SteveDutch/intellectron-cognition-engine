@@ -1,12 +1,15 @@
 package com.stevedutch.intellectron.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity // NOTE Class name = Tekst, DB Table name = texts
@@ -26,6 +29,9 @@ public class Tekst {
 	
 	@Column(name = "source", length =700)
 	private String source;
+
+	@ManyToMany(mappedBy = "teksts")
+    private List<Zettel> zettel = new ArrayList<>();
 
 	/**
 	 * @return Long return the textId
@@ -83,10 +89,18 @@ public class Tekst {
 		this.source = source;
 	}
 
+	public List<Zettel> getZettel() {
+		return zettel;
+	}
+
+	public void setZettel(List<Zettel> zettel) {
+		this.zettel = zettel;
+	}
+
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", content=" + content + ", textDate=" + textDate + ", source=" + source
-				+ "]";
+				+ ", zettel=" + zettel + "]";
 	}
 
 }

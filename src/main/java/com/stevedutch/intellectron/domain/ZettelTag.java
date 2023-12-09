@@ -13,31 +13,31 @@ import jakarta.persistence.Table;
 
 @Entity 
 @Table(name = "tags")
-public class Tag {
+public class ZettelTag {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
-	private Long tagId;
+	private Long id;
 	
-	@Column(name = "tag", length =45)
+	@Column(name = "tag", length =100)
 	private String tagText;
 	
-	@ManyToMany(mappedBy = "tags")
+	@ManyToMany(mappedBy = "zettelTags")
 	private List<Zettel> zettel = new ArrayList<>();
 
 	/**
-	 * @return the tagId
+	 * @return the id
 	 */
-	public Long getTagId() {
-		return tagId;
+	public Long getId() {
+		return id;
 	}
 
 	/**
-	 * @param tagId the tagId to set
+	 * @param id the id to set
 	 */
-	public void setTagId(Long tagId) {
-		this.tagId = tagId;
+	public void setId(Long tagId) {
+		this.id = tagId;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag [tagId=" + tagId + ", tagText=" + tagText + ", zettel=" + zettel + "]";
+		return "ZettelTag [id=" + id + ", tagText=" + tagText + ", zettel=" + zettel + "]";
 	}
 	
 	

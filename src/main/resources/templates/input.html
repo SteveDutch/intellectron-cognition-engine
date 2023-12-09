@@ -10,33 +10,39 @@
     <!-- Falls du eine separate CSS-Datei hast -->
 </head>
 
-<form action="/input" method="post">
-    
-    <label for="article">Article/Text:[no function :) ]</label><br>
-    <input type="text" id="article" name="article"><br>
+<form action="/input" method="post" th:object="${zettel}">
 
+    <label for="title">Title/Topic: </label><br>
+    <input type="text" id="title" name="title" th:field="${zettel.topic}"><br>
+    <hr />
+    <label for="note">Notiz / note /thought:</label><br>
+    <input type="text" id="article" name="article" th:field="${zettel.note.content}"></in><br>
+    <hr />
+    <label for="tekst">Text:</label><br>
+    <input id="tekst" th:field="${tekst.content}"></input><br>
+    <hr />
+    <label for="tag">Tag: [no function]</label><br>
+    <input type="text" id="tag" name="tag"><br>
+    <hr />
     <label for="author">Author first name</label><br>
     <input type="text" th:field="${author.authorFirstName}" /><br>
-
+    <hr />
     <label for="author">Author family name</label><br>
     <input type="text" th:field="${author.authorFamilyName}" /><br>
-
-    <label for="title">Title:</label><br>
-    <input type="text" id="title" name="title"><br>
-
-    <label for="tekst">Text:</label><br>
-    <textarea id="tekst" th:field="${tekst.content}" ></textarea><br>
-
-    <label for="source">Source:</label><br>
-    <input type="text" id="source" name="source"><br>
-
-    <label for="timestamp">Timestamp:</label><br>
+    <hr />
+    <label for="timestamp">date of text:[no function]</label><br>
     <input type="datetime-local" id="timestamp" name="timestamp"><br>
 
-    <label for="tag">Tag:</label><br>
-    <input type="text" id="tag" name="tag"><br>
+    <hr />
 
-    <label for="reference">Reference:</label><br>
+    <label for="source">Source:[no function]</label><br>
+    <input type="text" id="source" name="source"><br>
+
+
+
+
+
+    <label for="reference">Reference:[no function]</label><br>
     <input type="text" id="reference" name="reference"><br>
 
     <input type="submit" value="Submit">

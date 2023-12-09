@@ -11,30 +11,48 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "notes")
 public class Note {
-	
+
+//	@Id
+//	private Long zettelId;
+
 	@Id
-	private Long zetteld;
-	
+	private Long zettelId;
+
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "zettel_id")
 	private Zettel zettel;
-	
-	@Column(length = 65000)
-	private String note;
 
-	/**
-	 * @return the zetteld
-	 */
-	public Long getZetteld() {
-		return zetteld;
+	@Column(length = 65000)
+	private String content;
+	
+	// für junit
+	public Note(String content) {
+
+		// TODO Auto-generated constructor stub
+		this.content = content;
+		this.zettel = null;
+		this.zettelId = null;
+	}
+
+	public Note() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @param zetteld the zetteld to set
+	 * content
+	 * 
+	 * @return the zettelId
 	 */
-	public void setZetteld(Long zetteld) {
-		this.zetteld = zetteld;
+	public Long getZettelId() {
+		return zettelId;
+	}
+
+	/**
+	 * @param zettelId the zettelId to set
+	 */
+	public void setZettelId(Long zettelId) {
+		this.zettelId = zettelId;
 	}
 
 	/**
@@ -52,19 +70,22 @@ public class Note {
 	}
 
 	/**
-	 * @return the note
+	 * @return the content
 	 */
-	public String getNote() {
-		return note;
+	public String getContent() {
+		return content;
 	}
 
 	/**
-	 * @param note the note to set
+	 * @param content the content to set
 	 */
-	public void setNote(String note) {
-		this.note = note;
+	public void setContent(String content) {
+		this.content = content;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Note [zettelId=" + zettelId + ", zettel=" + zettel + ", content=" + content + "]";
+	}
 
 }
