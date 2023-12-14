@@ -3,19 +3,20 @@ package com.stevedutch.intellectron.service;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.repository.ZettelRepository;
 
 
 class ZettelServiceTest {
 	
-	@Autowired
+	@Mock
 	private ZettelService zettelService;
+	@Mock
+	private ZettelRepository zettelRepo;
 	
 	/*
 	 * Tests for boolean add (int index, T item) throws IndexOutOfBoundsException;
@@ -28,11 +29,9 @@ class ZettelServiceTest {
 	@Test
 	void testSaveZettel() {
 		//Arrange
-		Zettel sut = new Zettel(null, "Test Topic oder Titel", new Note("Grandioser Gedanke, genius note"), 
-				LocalDate.now(), LocalDate.now(), null, null, null, null
-				/* LocalDanullte added, LocalDate changed, Integer signature,
-				List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts*/);
+		Zettel sut = new Zettel(null, null, null, null);
 		System.out.println(sut);
+		zettelService = new ZettelService();
 	
 		
 		//Act

@@ -1,9 +1,12 @@
 package com.stevedutch.intellectron.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.repository.NoteRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
@@ -12,13 +15,40 @@ public class ZettelService {
 	@Autowired
 	private ZettelRepository zettelRepo;
 	
+	@Autowired
+	private NoteService noteService;
+	
+    @Autowired
+    private NoteRepository noteRepo;
+	
 		public Zettel saveZettel(Zettel zettel) {
-			if (zettelRepo.findByZettelId(zettel.getZettelId()) == null) {
-				
+
+
+//			return zettelRepo.save(zettel);
+			if (zettel.getZettelId() == null) {
+				// id == null;
+				Zettel newZettel = new Zettel();
+				newZettel.setNote(zettel.getNote());
+				newZettel.setTeksts(zettel.getTeksts());
+				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
+			} else {
+				// Überprüfn, ob der Zettel bereits vorhanden ist
+				Optional<Zettel> actualZettel = zettelRepo.findById(zettel.getZettelId());
+				if (actualZettel.isPresent()) {
+					// Do something with the zettel
+					
+				} else {
+					// id vorhanden 
+					
+				}
 			}
 
-			return zettelRepo.save(zettel);
-        }
+	            return zettel;	
+	    
+	        }
+	        
+
+        
 		
 		public Zettel updateZettel(Zettel zettel) {
 			if (zettel.getZettelId() == null) {
