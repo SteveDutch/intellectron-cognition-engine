@@ -12,9 +12,6 @@ import jakarta.persistence.Table;
 @Table(name = "notes")
 public class Note {
 
-//	@Id
-//	private Long zettelId;
-
 	@Id
 	private Long zettelId;
 

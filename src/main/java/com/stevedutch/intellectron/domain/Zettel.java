@@ -32,11 +32,6 @@ public class Zettel {
 	@OneToOne(mappedBy = "zettel", cascade = CascadeType.ALL)
 	private Note note;
 	
-	// TODO add title (where in ERD & here) meinte ich damit topic?
-//	@Column(name = "title", length = 255)	
-//	private String textTitle;
-	
-
 	@Column(name = "added")
 	private LocalDate added;
 	@Column(name = "changed")
@@ -61,23 +56,32 @@ public class Zettel {
 	private List<Tekst> teksts = new ArrayList<>();
 
 	//constructor junit test
-	public Zettel(Long zettelId, String topic, Note note, LocalDate added, LocalDate changed, Integer signature,
-			List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
-		super();
-		this.zettelId = zettelId;
-		this.topic = topic;
-		this.note = note;
-		this.added = added;
-		this.changed = changed;
-		this.signature = signature;
-		this.authors = authors;
-		this.zettelTags = zettelTags;
-		this.teksts = teksts;
-	}
+//	public Zettel(Long zettelId, String topic, Note note, LocalDate added, LocalDate changed, Integer signature,
+//			List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+//		super();
+//		this.zettelId = zettelId;
+//		this.topic = topic;
+//		this.note = note;
+//		this.added = added;
+//		this.changed = changed;
+//		this.signature = signature;
+//		this.authors = authors;
+//		this.zettelTags = zettelTags;
+//		this.teksts = teksts;
+//	}
 
 	
 	public Zettel() {
 		// TODO Auto-generated constructor stub
+	}
+
+
+	public Zettel(Note note, List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+		super();
+		this.note = note;
+		this.authors = authors;
+		this.zettelTags = zettelTags;
+		this.teksts = teksts;
 	}
 
 

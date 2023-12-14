@@ -39,6 +39,7 @@ public class InputController {
 		return "/input";
 	}
 // TODO EXPERIMENT: PUT THIS TO aUTHORcONTROLLER, STILL WORKING THEN?
+// TODO hnge name of function
 	@PostMapping("/input")
 	public String addZettel(Zettel zettel, Author author, Tekst tekst, Note note) {
 		// TODO: check if names are empty
@@ -51,7 +52,7 @@ public class InputController {
 //		authorService.saveAuthor(author);
 //		textService.saveText(tekst);
 //		noteService.save(note);
-		System.out.println(note);
+//		System.out.println(note);
 		
 		return "/input";
 	}
