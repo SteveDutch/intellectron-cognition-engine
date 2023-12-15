@@ -41,11 +41,6 @@ public class Zettel {
 	@Column(name = "signature")
 	private Integer signature;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "zettel_authors", joinColumns = @JoinColumn(name = "zettel_id"), 
-	inverseJoinColumns = @JoinColumn(name = "author_id"))
-	private List<Author> authors = new ArrayList<>();
-	
 	@ManyToMany
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -75,10 +70,9 @@ public class Zettel {
 	}
 
 
-	public Zettel(Note note, List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+	public Zettel(Note note, List<ZettelTag> zettelTags, List<Tekst> teksts) {
 		super();
 		this.note = note;
-		this.authors = authors;
 		this.zettelTags = zettelTags;
 		this.teksts = teksts;
 	}
@@ -119,40 +113,20 @@ public class Zettel {
 		this.added = added;
 	}
 
-	/**
-	 * @return the changed
-	 */
 	public LocalDate getChanged() {
 		return changed;
 	}
 
-	/**
-	 * @param changed the changed to set
-	 */
 	public void setChanged(LocalDate changed) {
 		this.changed = changed;
 	}
 
-	/**
-	 * @return the signature
-	 */
 	public Integer getSignature() {
 		return signature;
 	}
 
-
 	public void setSignature(Integer signature) {
 		this.signature = signature;
-	}
-
-
-	public List<Author> getAuthors() {
-		return authors;
-	}
-
-	
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
 	}
 
 	public List<ZettelTag> getTags() {
@@ -174,7 +148,7 @@ public class Zettel {
 	@Override
 	public String toString() {
 		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
-				+ ", changed=" + changed + ", signature=" + signature + ", authors=" + authors + ", zettelTags="
+				+ ", changed=" + changed + ", signature=" + signature +  ", zettelTags="
 				+ zettelTags + ", teksts=" + teksts + "]";
 	}
 	
