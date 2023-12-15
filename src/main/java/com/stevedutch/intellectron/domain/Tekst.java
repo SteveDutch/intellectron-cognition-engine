@@ -9,7 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity // NOTE Class name = Tekst, DB Table name = texts
@@ -30,8 +31,9 @@ public class Tekst {
 	@Column(name = "source", length =700)
 	private String source;
 
-	@ManyToMany(mappedBy = "teksts")
-    private List<Zettel> zettel = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "zettel_id")
+    private Zettel zettel;
 
 	/**
 	 * @return Long return the textId
@@ -89,11 +91,11 @@ public class Tekst {
 		this.source = source;
 	}
 
-	public List<Zettel> getZettel() {
+	public Zettel getZettel() {
 		return zettel;
 	}
 
-	public void setZettel(List<Zettel> zettel) {
+	public void setZettel(Zettel zettel) {
 		this.zettel = zettel;
 	}
 

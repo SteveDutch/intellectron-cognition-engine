@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -50,9 +51,7 @@ public class Zettel {
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<ZettelTag> zettelTags = new ArrayList<>();
 
-	@ManyToMany
-	@JoinTable(name = "zettel_texts", joinColumns = @JoinColumn(name = "zettel_id"), 
-	inverseJoinColumns = @JoinColumn(name = "tekst_id"))
+	@OneToMany(mappedBy = "zettel")
 	private List<Tekst> teksts = new ArrayList<>();
 
 	//constructor junit test
@@ -110,16 +109,12 @@ public class Zettel {
 		this.note = note;
 	}
 
-	/**
-	 * @return the added
-	 */
+
 	public LocalDate getAdded() {
 		return added;
 	}
 
-	/**
-	 * @param added the added to set
-	 */
+
 	public void setAdded(LocalDate added) {
 		this.added = added;
 	}
@@ -145,23 +140,17 @@ public class Zettel {
 		return signature;
 	}
 
-	/**
-	 * @param signature the signature to set
-	 */
+
 	public void setSignature(Integer signature) {
 		this.signature = signature;
 	}
 
-	/**
-	 * @return the authors
-	 */
+
 	public List<Author> getAuthors() {
 		return authors;
 	}
 
-	/**
-	 * @param authors the authors to set
-	 */
+	
 	public void setAuthors(List<Author> authors) {
 		this.authors = authors;
 	}
