@@ -6,10 +6,13 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -34,10 +37,14 @@ public class Tekst {
 	@ManyToOne
 	@JoinColumn(name = "zettel_id")
     private Zettel zettel;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "texts_authors", joinColumns = @JoinColumn(name = "text_id"), 
+	inverseJoinColumns = @JoinColumn(name = "author_id"))
+	private List<Author> authors = new ArrayList<>();
 
-	/**
-	 * @return Long return the textId
-	 */
+	// Getter & Setter
+	
 	public Long getTextId() {
 		return textId;
 	}
@@ -63,30 +70,18 @@ public class Tekst {
 		this.content = content;
 	}
 
-	/**
-	 * @return the textDate
-	 */
 	public LocalDate getTextDate() {
 		return textDate;
 	}
 
-	/**
-	 * @param textDate the textDate to set
-	 */
 	public void setTextDate(LocalDate textDate) {
 		this.textDate = textDate;
 	}
 
-	/**
-	 * @return the source
-	 */
 	public String getSource() {
 		return source;
 	}
 
-	/**
-	 * @param source the source to set
-	 */
 	public void setSource(String source) {
 		this.source = source;
 	}
@@ -99,10 +94,18 @@ public class Tekst {
 		this.zettel = zettel;
 	}
 
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", content=" + content + ", textDate=" + textDate + ", source=" + source
-				+ ", zettel=" + zettel + "]";
+				+ ", zettel=" + zettel + ", authors=" + authors + "]";
 	}
 
 }

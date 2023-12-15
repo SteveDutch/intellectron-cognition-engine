@@ -26,55 +26,38 @@ public class Author {
 	private String authorFamilyName;
     
     @ManyToMany(mappedBy = "authors")
-    private List<Zettel> zettel = new ArrayList<>();
+    private List<Tekst> texts = new ArrayList<>();
     
     // Getter & Setter
-	/**
-	 * @return the authorId
-	 */
 	public Long getAuthorId() {
 		return authorId;
 	}
-	/**
-	 * @param authorId the authorId to set
-	 */
 	public void setAuthorId(Long authorId) {
 		this.authorId = authorId;
 	}
-	/**
-	 * @return the authorFirstName
-	 */
 	public String getAuthorFirstName() {
 		return authorFirstName;
 	}
-	/**
-	 * @param authorFirstName the authorFirstName to set
-	 */
 	public void setAuthorFirstName(String authorFirstName) {
 		this.authorFirstName = authorFirstName;
 	}
-	/**
-	 * @return the authorFamilyName
-	 */
 	public String getAuthorFamilyName() {
 		return authorFamilyName;
 	}
-	/**
-	 * @param authorFamilyName the authorFamilyName to set
-	 */
 	public void setAuthorFamilyName(String authorFamilyName) {
 		this.authorFamilyName = authorFamilyName;
 	}
-	public List<Zettel> getZettel() {
-		return zettel;
+	
+	public List<Tekst> getTexts() {
+		return texts;
 	}
-	public void setZettel(List<Zettel> zettel) {
-		this.zettel = zettel;
+	public void setTexts(List<Tekst> texts) {
+		this.texts = texts;
 	}
 	@Override
 	public String toString() {
-		return "Author [authorId= " + authorId + ", authorFirstName= " + authorFirstName + ", authorFamilyName= "
-				+ authorFamilyName + "]";
+		return "Author [authorId=" + authorId + ", authorFirstName=" + authorFirstName + ", authorFamilyName="
+				+ authorFamilyName + ", texts=" + texts + "]";
 	}
 	
 	
