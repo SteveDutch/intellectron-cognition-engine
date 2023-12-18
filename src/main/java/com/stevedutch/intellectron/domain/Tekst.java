@@ -26,7 +26,7 @@ public class Tekst {
 	private Long textId;
 
 	@Column(name = "tekst", length = 16777216)
-	private String content;
+	private String textContent;
 	
 	@Column(name = "tekstdato")
 	private LocalDate textDate;	
@@ -49,25 +49,16 @@ public class Tekst {
 		return textId;
 	}
 
-	/**
-	 * @param textId the textId to set
-	 */
 	public void setTextId(Long textId) {
 		this.textId = textId;
 	}
 
-	/**
-	 * @return String return the content
-	 */
-	public String getContent() {
-		return content;
+	public String getTextContent() {
+		return textContent;
 	}
 
-	/**
-	 * @param content the content to set
-	 */
-	public void setContent(String content) {
-		this.content = content;
+	public void setTextContent(String content) {
+		this.textContent = content;
 	}
 
 	public LocalDate getTextDate() {
@@ -104,7 +95,7 @@ public class Tekst {
 
 	@Override
 	public String toString() {
-		return "Tekst [textId=" + textId + ", content=" + content + ", textDate=" + textDate + ", source=" + source
+		return "Tekst [textId=" + textId + ", textContent=" + textContent + ", textDate=" + textDate + ", source=" + source
 				+ ", zettel=" + zettel + ", authors=" + authors + "]";
 	}
 

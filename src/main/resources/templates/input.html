@@ -9,20 +9,20 @@
     <link rel="stylesheet" href="styles.css" />
     <!-- Falls du eine separate CSS-Datei hast -->
 </head>
-
+<body>
 <form action="/input" method="post" th:object="${zettel}">
 
     <label for="title">Title/Topic: </label><br>
-    <input type="text" id="title" name="title" th:field="${zettel.topic}"><br>
+    <input type="text" id="title" name="title" th:field="${zettel.topic}" /><br>
     <hr />
     <label for="note">Notiz / note /thought:</label><br>
-    <input type="text" id="article" name="article" th:field="${zettel.note.content}"></in><br>
+    <input type="text" id="article" name="article" th:field="${note.noteText}" /><br>
     <hr />
     <label for="tekst">Text:</label><br>
-    <input id="tekst" th:field="${tekst.content}"></input><br>
+    <input id="tekst" th:field="${tekst.textContent}" /><br>
     <hr />
     <label for="tag">Tag: [no function]</label><br>
-    <input type="text" id="tag" name="tag"><br>
+    <input type="text" id="tag" name="tag" /><br>
     <hr />
     <label for="author">Author first name</label><br>
     <input type="text" th:field="${author.authorFirstName}" /><br>
@@ -31,7 +31,7 @@
     <input type="text" th:field="${author.authorFamilyName}" /><br>
     <hr />
     <label for="timestamp">date of text:[no function]</label><br>
-    <input type="datetime-local" id="timestamp" name="timestamp"><br>
+    <input type="datetime-local" id="timestamp" name="timestamp" /><br>
 
     <hr />
 
@@ -47,3 +47,5 @@
 
     <input type="submit" value="Submit">
 </form>
+</body>
+</html>

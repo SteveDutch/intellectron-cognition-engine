@@ -26,7 +26,7 @@ public class Zettel {
 	@Column(name = "zettel_id"/* , nullable = false */)
 	private Long zettelId;
 	
-	@Column(name = "topic",length =255 )
+	@Column(name = "topic",length = 255 )
 	private String topic;
 	
 	@OneToOne(mappedBy = "zettel", cascade = CascadeType.ALL)
@@ -147,8 +147,8 @@ public class Zettel {
 	@Override
 	public String toString() {
 		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
-				+ ", changed=" + changed + ", signature=" + signature +  ", zettelTags="
-				+ zettelTags + ", teksts=" + teksts + "]";
+				+ ", changed=" + changed + ", signature=" + signature + ", zettelTags=" + zettelTags + ", teksts="
+				+ teksts + "]";
 	}
 	
 

@@ -72,9 +72,6 @@ public class ZettelService {
                 }	
                 
                 // Aktualisiere die Beziehungen (z.B., Authors, Tags, Teksts)
-                if (zettel.getAuthors() != null) {
-                    existingZettel.setAuthors(zettel.getAuthors());
-                }
                 if (zettel.getTags() != null) {
                     existingZettel.setTags(zettel.getTags());
                 }

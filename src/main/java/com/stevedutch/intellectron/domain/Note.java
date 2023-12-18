@@ -21,13 +21,13 @@ public class Note {
 	private Zettel zettel;
 
 	@Column(length = 65000)
-	private String content;
+	private String noteText;
 	
 	// für junit
 	public Note(String content) {
 
 		// TODO Auto-generated constructor stub
-		this.content = content;
+		this.noteText = content;
 		this.zettel = null;
 		this.zettelId = null;
 	}
@@ -36,53 +36,33 @@ public class Note {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * content
-	 * 
-	 * @return the zettelId
-	 */
 	public Long getZettelId() {
 		return zettelId;
 	}
 
-	/**
-	 * @param zettelId the zettelId to set
-	 */
 	public void setZettelId(Long zettelId) {
 		this.zettelId = zettelId;
 	}
 
-	/**
-	 * @return the zettel
-	 */
 	public Zettel getZettel() {
 		return zettel;
 	}
 
-	/**
-	 * @param zettel the zettel to set
-	 */
 	public void setZettel(Zettel zettel) {
 		this.zettel = zettel;
 	}
 
-	/**
-	 * @return the content
-	 */
-	public String getContent() {
-		return content;
+	public String getNoteText() {
+		return noteText;
 	}
 
-	/**
-	 * @param content the content to set
-	 */
-	public void setContent(String content) {
-		this.content = content;
+	public void setNoteText(String content) {
+		this.noteText = content;
 	}
 
 	@Override
 	public String toString() {
-		return "Note [zettelId=" + zettelId + ", zettel=" + zettel + ", content=" + content + "]";
+		return "Note [zettelId=" + zettelId + ", zettel=" + zettel + ", noteText=" + noteText + "]";
 	}
 
 }

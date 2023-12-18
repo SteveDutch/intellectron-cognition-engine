@@ -29,7 +29,7 @@ class ZettelServiceTest {
 	@Test
 	void testSaveZettel() {
 		//Arrange
-		Zettel sut = new Zettel(null, null, null, null);
+		Zettel sut = new Zettel(null, null, null);
 		System.out.println(sut);
 		zettelService = new ZettelService();
 	
