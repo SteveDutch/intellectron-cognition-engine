@@ -9,47 +9,56 @@
     <link rel="stylesheet" href="styles.css" />
     <!-- Falls du eine separate CSS-Datei hast -->
 </head>
+
 <body>
-<form action="/input" method="post" th:object="${zettel}">
-    <div>
-    <label for="title">Title/Topic: </label><br>
-    <input type="text" id="title" name="title" th:field="${zettel.topic}" />
-    </div> <hr />
-    
-    <label for="note">Notiz / note /thought:</label><br>
-    <input type="text" id="article" name="article" th:field="${note.noteText}" /><br>
-    
-    <hr />
-    <div>
-    <label for="tekst">Text:</label>
-    <input id="tekst" th:field="${tekst.textContent}" />
-    </div>
-    <hr />
-    <label for="tag">Tag: [no function]</label><br>
-    <input type="text" id="tag" name="tag" /><br>
-    <hr />
-    <label for="author">Author first name</label><br>
-    <input type="text" th:field="${author.authorFirstName}" /><br>
-    <hr />
-    <label for="author">Author family name</label><br>
-    <input type="text" th:field="${author.authorFamilyName}" /><br>
-    <hr />
-    <label for="timestamp">date of text:[no function]</label><br>
-    <input type="datetime-local" id="timestamp" name="timestamp" /><br>
+    <form action="/input" method="post" th:object="${ZettelDtoRecord}">
+        <div>
+            <label for="title">Title/Topic: </label><br>
+            <input type="text" id="title" name="title" th:field="${zettel.topic}" />
+        </div>
+        <hr />
 
-    <hr />
+        <label for="note">Notiz / note /thought:</label><br>
+        <input type="text" id="article" name="article" th:field="${note.noteText}" /><br>
+        </div>
+        <hr />
+        <div>
+            <label for="tekst">Text:</label>
+            <input id="tekst" th:field="${tekst.textContent}" />
+        </div>
+        <hr />
+        <div>
+            <label for="zetteltag">Tag: </label><br>
+            <input type="text" id="tag" name="tag" th:field="${zetteltag.tagText}" /><br>
+        </div>
+        <hr />
+        <div>
+            <label for="author">Author first name</label><br>
+            <input type="text" th:field="${author.authorFirstName}" /><br>
+        </div>
+        <hr />
+        <div>
+            <label for="author">Author family name</label><br>
+            <input type="text" th:field="${author.authorFamilyName}" /><br>
+        </div>
+        <hr />
+        <label for="timestamp">date of text:[no function]</label><br>
+        <input type="datetime-local" id="timestamp" name="timestamp" /><br>
 
-    <label for="source">Source:[no function]</label><br>
-    <input type="text" id="source" name="source"><br>
+        <hr />
 
-
-
-
-
-    <label for="reference">Reference:[no function]</label><br>
-    <input type="text" id="reference" name="reference"><br>
-
-    <input type="submit" value="Submit">
-</form>
+        <div>
+            <label for="source">Source:[no function]</label><br>
+            <input type="text" id="source" name="source"><br>
+        </div>
+        <hr />
+        <div>
+            <label for="reference">Reference:[no function]</label><br>
+            <input type="text" id="reference" name="reference"><br>
+        </div>
+        <hr />
+        <input type="submit" value="Submit">
+    </form>
 </body>
+
 </html>
