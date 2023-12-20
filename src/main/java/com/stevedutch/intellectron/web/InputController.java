@@ -54,7 +54,7 @@ public class InputController {
 //		noteService.save(note);
 //		System.out.println(note);
 		
-		return "/input";
+		return "redirect:/input";
 	}
 
 

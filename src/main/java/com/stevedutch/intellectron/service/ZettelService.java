@@ -22,15 +22,18 @@ public class ZettelService {
     private NoteRepository noteRepo;
 	
 		public Zettel saveZettel(Zettel zettel) {
-
+			System.out.println("\n Start of  save()-->  note/Kommentar: \n" + zettel.getNote());
+//			System.out.println("\n Start of  saveZettel()-->   Text : \n" + tekst);
+//			System.out.println("\n Start of  asaveZettel()-->   Autor : \n" + author);
 
 //			return zettelRepo.save(zettel);
 			if (zettel.getZettelId() == null) {
 				// id == null;
-				Zettel newZettel = new Zettel();
-				newZettel.setNote(zettel.getNote());
-				newZettel.setTeksts(zettel.getTeksts());
-				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
+				
+//				Zettel newZettel = new Zettel();
+//				newZettel.setNote(zettel.getNote());
+//				newZettel.setTeksts(zettel.getTeksts());
+//				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
 			} else {
 				// Überprüfn, ob der Zettel bereits vorhanden ist
 				Optional<Zettel> actualZettel = zettelRepo.findById(zettel.getZettelId());
@@ -43,7 +46,7 @@ public class ZettelService {
 				}
 			}
 
-	            return zettel;	
+	            return zettelRepo.save(zettel);	
 	    
 	        }
 	        

@@ -11,15 +11,19 @@
 </head>
 <body>
 <form action="/input" method="post" th:object="${zettel}">
-
+    <div>
     <label for="title">Title/Topic: </label><br>
-    <input type="text" id="title" name="title" th:field="${zettel.topic}" /><br>
-    <hr />
+    <input type="text" id="title" name="title" th:field="${zettel.topic}" />
+    </div> <hr />
+    
     <label for="note">Notiz / note /thought:</label><br>
     <input type="text" id="article" name="article" th:field="${note.noteText}" /><br>
+    
     <hr />
-    <label for="tekst">Text:</label><br>
-    <input id="tekst" th:field="${tekst.textContent}" /><br>
+    <div>
+    <label for="tekst">Text:</label>
+    <input id="tekst" th:field="${tekst.textContent}" />
+    </div>
     <hr />
     <label for="tag">Tag: [no function]</label><br>
     <input type="text" id="tag" name="tag" /><br>
