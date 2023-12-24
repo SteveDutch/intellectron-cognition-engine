@@ -24,16 +24,15 @@ public class ZettelService {
     private NoteRepository noteRepo;
 	
 		public Zettel saveZettel(ZettelDtoRecord zettelDto) {
+//			XXX hier weiter! verfickte Scheiße, das Speichern kann doch nicht so schwer sein
 			System.out.println("\n Start of  saveZettel()-->  note/Kommentar: \n" + zettelDto.note());
 //			System.out.println("\n Start of  saveZettel()-->   Text : \n" + tekst);
 //			System.out.println("\n Start of  asaveZettel()-->   Autor : \n" + author);
-
-//			return zettelRepo.save(zettel);
+			Zettel newZettel = new Zettel(zettelDto.note(), zettelDto.tekst());
+			 zettelRepo.save(newZettel);
 			if (zettelDto.zettel().getZettelId() == null) {
 				// id == null;
-//				Note newNote = new Note();
-//				newNote.getZettel().set(zettelDto.zettel());
-				Zettel newZettel = new Zettel(zettelDto.note(), zettelDto.tekst());
+				
 				newZettel.setNote(zettelDto.note());
 				newZettel.setTekst(zettelDto.tekst());
 				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
@@ -49,7 +48,7 @@ public class ZettelService {
 				}
 			}
 
-	            return zettelRepo.save(zettelDto.zettel());
+	            return zettelRepo.save(newZettel);
 		}	
 	    
 	        
