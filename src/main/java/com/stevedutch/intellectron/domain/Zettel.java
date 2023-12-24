@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -13,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -43,14 +44,15 @@ public class Zettel {
 	@ManyToMany
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	private List<ZettelTag> zettelTags = new ArrayList<>();
+	private List<Tag> tags = new ArrayList<>();
 
-	@OneToMany(mappedBy = "zettel")
-	private List<Tekst> teksts = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "tekst_id")
+	private Tekst tekst;
 
 	//constructor junit test
 //	public Zettel(Long zettelId, String topic, Note note, LocalDate added, LocalDate changed, Integer signature,
-//			List<Author> authors, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+//			List<Author> authors, List<Tag> tags, List<Tekst> teksts) {
 //		super();
 //		this.zettelId = zettelId;
 //		this.topic = topic;
@@ -59,23 +61,23 @@ public class Zettel {
 //		this.changed = changed;
 //		this.signature = signature;
 //		this.authors = authors;
-//		this.zettelTags = zettelTags;
+//		this.zettelTags = tags;
 //		this.teksts = teksts;
 //	}
 
 	
+
+
 	public Zettel() {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public Zettel(Note note, List<ZettelTag> zettelTags, List<Tekst> teksts) {
+	public Zettel(Note note, List<Tag> tags, Tekst tekst) {
 		super();
 		this.note = note;
-		this.zettelTags = zettelTags;
-		this.teksts = teksts;
+		this.tags = tags;
+		this.tekst = tekst;
 	}
-
 
 	// Getter & Setter
 	public Long getZettelId() {
@@ -128,27 +130,33 @@ public class Zettel {
 		this.signature = signature;
 	}
 
-	public List<ZettelTag> getTags() {
-		return zettelTags;
+	public List<Tag> getTags() {
+		return tags;
 	}
 
-	public void setTags(List<ZettelTag> zettelTags) {
-		this.zettelTags = zettelTags;
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}
+	
+    public void addTag(Tag tag) {
+    	this.tags = new ArrayList<>(Arrays.asList(tag));
+    }
 
-	public List<Tekst> getTeksts() {
-		return teksts;
+
+	public Tekst getTekst() {
+		return tekst;
 	}
-
-	public void setTeksts(List<Tekst> teksts) {
-		this.teksts = teksts;
+	
+	
+	public void setTekst(Tekst tekst) {
+		this.tekst = tekst;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
-				+ ", changed=" + changed + ", signature=" + signature + ", zettelTags=" + zettelTags + ", teksts="
-				+ teksts + "]";
+				+ ", changed=" + changed + ", signature=" + signature + ", tags=" + tags + ", tekst="
+				+ tekst + "]";
 	}
 	
 

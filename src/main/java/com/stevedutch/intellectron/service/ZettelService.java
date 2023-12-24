@@ -1,11 +1,13 @@
 package com.stevedutch.intellectron.service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.NoteRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
@@ -21,22 +23,25 @@ public class ZettelService {
     @Autowired
     private NoteRepository noteRepo;
 	
-		public Zettel saveZettel(Zettel zettel) {
-			System.out.println("\n Start of  save()-->  note/Kommentar: \n" + zettel.getNote());
+		public Zettel saveZettel(ZettelDtoRecord zettelDto) {
+			System.out.println("\n Start of  saveZettel()-->  note/Kommentar: \n" + zettelDto.note());
 //			System.out.println("\n Start of  saveZettel()-->   Text : \n" + tekst);
 //			System.out.println("\n Start of  asaveZettel()-->   Autor : \n" + author);
+			System.out.println("\n Start of  saveZettel()-->   Tag : \n" + zettelDto.tag());
 
 //			return zettelRepo.save(zettel);
-			if (zettel.getZettelId() == null) {
+			if (zettelDto.zettel().getZettelId() == null) {
 				// id == null;
-				
-//				Zettel newZettel = new Zettel();
-//				newZettel.setNote(zettel.getNote());
-//				newZettel.setTeksts(zettel.getTeksts());
-//				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
+//				Note newNote = new Note();
+//				newNote.getZettel().set(zettelDto.zettel());
+				Zettel newZettel = new Zettel(zettelDto.note(), Arrays.asList(zettelDto.tag()), zettelDto.tekst());
+				newZettel.setNote(zettelDto.note());
+				newZettel.setTekst(zettelDto.tekst());
+				newZettel.addTag(zettelDto.tag());
+				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
 			} else {
 				// Überprüfn, ob der Zettel bereits vorhanden ist
-				Optional<Zettel> actualZettel = zettelRepo.findById(zettel.getZettelId());
+				Optional<Zettel> actualZettel = zettelRepo.findById(zettelDto.zettel().getZettelId());
 				if (actualZettel.isPresent()) {
 					// Do something with the zettel
 					
@@ -46,9 +51,9 @@ public class ZettelService {
 				}
 			}
 
-	            return zettelRepo.save(zettel);	
+	            return zettelRepo.save(zettelDto.zettel());
+		}	
 	    
-	        }
 	        
 
         
@@ -78,9 +83,9 @@ public class ZettelService {
                 if (zettel.getTags() != null) {
                     existingZettel.setTags(zettel.getTags());
                 }
-                if (zettel.getTeksts() != null) {
-                    existingZettel.setTeksts(zettel.getTeksts());
-                }
+//                if (zettel.getTeksts() != null) {
+//                    existingZettel.setTeksts(zettel.getTeksts());
+//                }
 
 			}
 			

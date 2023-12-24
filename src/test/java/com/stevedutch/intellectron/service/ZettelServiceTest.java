@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 
@@ -35,7 +36,7 @@ class ZettelServiceTest {
 	
 		
 		//Act
-		zettelService.saveZettel(sut);
+//		zettelService.saveZettel(sut);
 		System.out.println(sut.getZettelId());
 		//Assert
 		assertNotNull(sut.getZettelId());

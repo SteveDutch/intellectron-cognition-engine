@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity // NOTE Class name = Tekst, DB Table name = texts
@@ -34,9 +34,8 @@ public class Tekst {
 	@Column(name = "source", length =700)
 	private String source;
 
-	@ManyToOne
-	@JoinColumn(name = "zettel_id")
-    private Zettel zettel;
+	@OneToMany(mappedBy = "tekst")
+	private List<Zettel> zettels;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "texts_authors", joinColumns = @JoinColumn(name = "text_id"), 
@@ -77,12 +76,12 @@ public class Tekst {
 		this.source = source;
 	}
 
-	public Zettel getZettel() {
-		return zettel;
+	public List<Zettel> getZettels() {
+		return zettels;
 	}
 
-	public void setZettel(Zettel zettel) {
-		this.zettel = zettel;
+	public void setZettels(List<Zettel> zettels) {
+		this.zettels = zettels;
 	}
 
 	public List<Author> getAuthors() {
@@ -95,8 +94,8 @@ public class Tekst {
 
 	@Override
 	public String toString() {
-		return "Tekst [textId=" + textId + ", textContent=" + textContent + ", textDate=" + textDate + ", source=" + source
-				+ ", zettel=" + zettel + ", authors=" + authors + "]";
+		return "Tekst [textId=" + textId + ", textContent=" + textContent + ", textDate=" + textDate + ", source="
+				+ source + ", zettels=" + zettels + ", authors=" + authors + "]";
 	}
 
 }

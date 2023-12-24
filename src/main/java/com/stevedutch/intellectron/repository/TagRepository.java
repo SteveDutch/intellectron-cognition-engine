@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.stevedutch.intellectron.domain.ZettelTag;
+import com.stevedutch.intellectron.domain.Tag;
 
 @Repository
-public interface TagRepository extends JpaRepository<ZettelTag, Long> {
+public interface TagRepository extends JpaRepository<Tag, Long> {
 	
-	public Optional<ZettelTag> findById(Long id);
+	public Optional<Tag> findById(Long id);
 
 }
