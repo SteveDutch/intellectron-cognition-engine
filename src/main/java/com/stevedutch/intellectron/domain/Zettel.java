@@ -72,10 +72,9 @@ public class Zettel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Zettel(Note note, List<Tag> tags, Tekst tekst) {
+	public Zettel(Note note, Tekst tekst) {
 		super();
 		this.note = note;
-		this.tags = tags;
 		this.tekst = tekst;
 	}
 

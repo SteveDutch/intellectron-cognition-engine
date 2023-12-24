@@ -27,17 +27,15 @@ public class ZettelService {
 			System.out.println("\n Start of  saveZettel()-->  note/Kommentar: \n" + zettelDto.note());
 //			System.out.println("\n Start of  saveZettel()-->   Text : \n" + tekst);
 //			System.out.println("\n Start of  asaveZettel()-->   Autor : \n" + author);
-			System.out.println("\n Start of  saveZettel()-->   Tag : \n" + zettelDto.tag());
 
 //			return zettelRepo.save(zettel);
 			if (zettelDto.zettel().getZettelId() == null) {
 				// id == null;
 //				Note newNote = new Note();
 //				newNote.getZettel().set(zettelDto.zettel());
-				Zettel newZettel = new Zettel(zettelDto.note(), Arrays.asList(zettelDto.tag()), zettelDto.tekst());
+				Zettel newZettel = new Zettel(zettelDto.note(), zettelDto.tekst());
 				newZettel.setNote(zettelDto.note());
 				newZettel.setTekst(zettelDto.tekst());
-				newZettel.addTag(zettelDto.tag());
 				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
 			} else {
 				// Überprüfn, ob der Zettel bereits vorhanden ist

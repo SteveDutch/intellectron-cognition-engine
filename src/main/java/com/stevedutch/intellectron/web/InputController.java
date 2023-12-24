@@ -51,7 +51,7 @@ public class InputController {
 		System.out.println("\n Start of  addZettel()-->   Text : \n" + tekst);
 		System.out.println("\n Start of  addZettel()-->  Tag  :\n " + tag);
 		System.out.println("\n Start of  addZettel()-->   Autor : \n" + author);
-		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  tag,  author);
+		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author);
 		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDtoRecord);
 		zettelService.saveZettel(zettelDtoRecord);
 //		System.out.println("\n after addZettel()  -->  \n" +content);
