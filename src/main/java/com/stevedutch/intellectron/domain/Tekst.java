@@ -95,7 +95,7 @@ public class Tekst {
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", textContent=" + textContent + ", textDate=" + textDate + ", source="
-				+ source + ", zettels=" + zettels + ", authors=" + authors + "]";
+				+ source + ", authors=" + authors + "]";
 	}
 
 }

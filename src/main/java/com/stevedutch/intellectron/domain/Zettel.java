@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,7 +47,7 @@ public class Zettel {
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "tekst_id")
 	private Tekst tekst;
 
@@ -153,7 +154,7 @@ public class Zettel {
 	
 	@Override
 	public String toString() {
-		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + ", note=" + note + ", added=" + added
+		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + "" +" added=" + added
 				+ ", changed=" + changed + ", signature=" + signature + ", tags=" + tags + ", tekst="
 				+ tekst + "]";
 	}

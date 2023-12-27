@@ -1,14 +1,18 @@
 package com.stevedutch.intellectron.service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.NoteRepository;
+import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
@@ -18,24 +22,44 @@ public class ZettelService {
 	private ZettelRepository zettelRepo;
 	
 	@Autowired
+	private TextRepository textRepo;	
+	
+	@Autowired
 	private NoteService noteService;
 	
     @Autowired
     private NoteRepository noteRepo;
-	
-		public Zettel saveZettel(ZettelDtoRecord zettelDto) {
-//			XXX hier weiter! verfickte Scheiße, das Speichern kann doch nicht so schwer sein
-			System.out.println("\n Start of  saveZettel()-->  note/Kommentar: \n" + zettelDto.note());
+    
+ 
+		public Zettel createZettel(ZettelDtoRecord zettelDto) {
+			System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
 //			System.out.println("\n Start of  saveZettel()-->   Text : \n" + tekst);
 //			System.out.println("\n Start of  asaveZettel()-->   Autor : \n" + author);
-			Zettel newZettel = new Zettel(zettelDto.note(), zettelDto.tekst());
-			 zettelRepo.save(newZettel);
+//			Zettel newZettel = new Zettel(zettelDto.note(), zettelDto.tekst()); -- XXX HIERLAG MEIN FEHLER1111 ZUGEWIEDEN, BEVOR GESPEICHERT:( VERMIUTLICH
 			if (zettelDto.zettel().getZettelId() == null) {
-				// id == null;
-				
-				newZettel.setNote(zettelDto.note());
-				newZettel.setTekst(zettelDto.tekst());
-				System.out.println("\n ZettelService.saveZettel mit id = null, newZettel \n" + newZettel + "\n");
+//				 id == null;
+//				newZettel.setZettelId(Long.valueOf(LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")).toString()));
+//				newZettel.setNote(noteService.save(zettelDto.note()));
+//				newZettel.setTekst(zettelDto.tekst());
+				Note newNote = zettelDto.note();
+				newNote.setZettel(zettelDto.zettel());
+				noteService.save(newNote);
+				Zettel newZettel = zettelDto.zettel();
+				newZettel.setNote(newNote);
+//				
+//				
+//				
+//				Tekst newTekst = zettelDto.tekst();
+//				newTekst.setZettels(new ArrayList<>());
+//				newTekst.getZettels().add(newZettel);
+//				newTekst.setTextId(newZettel.getZettelId());
+//				
+//				newZettel.setTekst(newTekst);
+
+
+				System.out.println("\n ZettelService.createZettel , newZettel \n" + newZettel + "\n");
+				System.out.println("\n ZettelService.createZettel , newNote \n" + newNote + "\n");
+				zettelRepo.save(zettelDto.zettel());
 			} else {
 				// Überprüfn, ob der Zettel bereits vorhanden ist
 				Optional<Zettel> actualZettel = zettelRepo.findById(zettelDto.zettel().getZettelId());
@@ -48,7 +72,7 @@ public class ZettelService {
 				}
 			}
 
-	            return zettelRepo.save(newZettel);
+	            return zettelRepo.save(zettelDto.zettel());
 		}	
 	    
 	        

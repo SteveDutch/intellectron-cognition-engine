@@ -44,17 +44,18 @@ public class InputController {
 // TODO EXPERIMENT: PUT THIS TO aUTHORcONTROLLER, STILL WORKING THEN?
 // TODO hnge name of function
 	@PostMapping("/input")
-	public String addZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author) {
+	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author) {
 		// TODO: check if names are empty
-		System.out.println("\n Start of  addZettel()-->  Zettel: \n" + zettel);
-		System.out.println("\n Start of  addZettel()-->  note/Kommentar: \n" + note);
-		System.out.println("\n Start of  addZettel()-->   Text : \n" + tekst);
-		System.out.println("\n Start of  addZettel()-->  Tag  :\n " + tag);
-		System.out.println("\n Start of  addZettel()-->   Autor : \n" + author);
+		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
+		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
+		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
+		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
+		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
 		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author);
 		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDtoRecord);
-		zettelService.saveZettel(zettelDtoRecord);
-//		System.out.println("\n after addZettel()  -->  \n" +content);
+		zettelService.createZettel(zettelDtoRecord);
+		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelService.createZettel(zettelDtoRecord));
+		System.out.println("Note? "  + zettelService.createZettel(zettelDtoRecord).getNote());
 //		authorService.saveAuthor(author);
 //		textService.saveText(tekst);
 //		noteService.save(note);
