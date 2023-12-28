@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
@@ -30,8 +30,6 @@ public class InputController {
 	@Autowired
     private NoteService noteService;
 	
-
-
 	@GetMapping("/input")
 	public String showInputMask(ModelMap model) {
 		model.put("author", new Author());
@@ -41,25 +39,19 @@ public class InputController {
 		model.put("zetteltag", new Tag());
 		return "/input";
 	}
-// TODO EXPERIMENT: PUT THIS TO aUTHORcONTROLLER, STILL WORKING THEN?
-// TODO hnge name of function
+	
 	@PostMapping("/input")
 	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author) {
 		// TODO: check if names are empty
-		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
 		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author);
-		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDtoRecord);
+//		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDtoRecord);
 		zettelService.createZettel(zettelDtoRecord);
 		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelService.createZettel(zettelDtoRecord));
-		System.out.println("Note? "  + zettelService.createZettel(zettelDtoRecord).getNote());
-//		authorService.saveAuthor(author);
-//		textService.saveText(tekst);
-//		noteService.save(note);
-//		System.out.println(note);
 		
 		return "redirect:/input";
 	}

@@ -47,8 +47,8 @@ public class Zettel {
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "tekst_id")
+	@ManyToOne  (cascade = CascadeType.PERSIST) 
+	@JoinColumn(name = "text_id")
 	private Tekst tekst;
 
 	//constructor junit test
@@ -154,10 +154,9 @@ public class Zettel {
 	
 	@Override
 	public String toString() {
-		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + "" +" added=" + added
+		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + " Note : "+ Optional.of(note.getNoteText()) + " added=" + added
 				+ ", changed=" + changed + ", signature=" + signature + ", tags=" + tags + ", tekst="
 				+ tekst + "]";
 	}
-	
 
 }

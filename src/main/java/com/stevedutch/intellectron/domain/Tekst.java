@@ -3,7 +3,9 @@ package com.stevedutch.intellectron.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +28,7 @@ public class Tekst {
 	private Long textId;
 
 	@Column(name = "tekst", length = 16777216)
-	private String textContent;
+	private String text;
 	
 	@Column(name = "tekstdato")
 	private LocalDate textDate;	
@@ -34,7 +36,7 @@ public class Tekst {
 	@Column(name = "source", length =700)
 	private String source;
 
-	@OneToMany(mappedBy = "tekst")
+	@OneToMany(mappedBy = "tekst", cascade = CascadeType.ALL)
 	private List<Zettel> zettels;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -52,12 +54,12 @@ public class Tekst {
 		this.textId = textId;
 	}
 
-	public String getTextContent() {
-		return textContent;
+	public String getText() {
+		return text;
 	}
 
-	public void setTextContent(String content) {
-		this.textContent = content;
+	public void setText(String content) {
+		this.text = content;
 	}
 
 	public LocalDate getTextDate() {
@@ -77,6 +79,10 @@ public class Tekst {
 	}
 
 	public List<Zettel> getZettels() {
+		// um auch einen Zettel hinzufügen zu können, wenn nichts vorhanden, bzw. == NULL
+		if (zettels == null) {
+            zettels = new ArrayList<>();
+        }
 		return zettels;
 	}
 
@@ -94,8 +100,8 @@ public class Tekst {
 
 	@Override
 	public String toString() {
-		return "Tekst [textId=" + textId + ", textContent=" + textContent + ", textDate=" + textDate + ", source="
-				+ source + ", authors=" + authors + "]";
+		return "Tekst [textId=" + textId + ", text=" + text + ", textDate=" + textDate + ", source=" + source
+				 + ", authors=" + authors + "]";
 	}
 
 }

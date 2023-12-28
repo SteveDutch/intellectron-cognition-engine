@@ -8,6 +8,6 @@ import com.stevedutch.intellectron.domain.Tekst;
 @Repository
 public interface TextRepository extends JpaRepository<Tekst, Long>{
 	
-	public Tekst findByTextContent(String textContent);
+	public Tekst findByText(String text);
 
 }
