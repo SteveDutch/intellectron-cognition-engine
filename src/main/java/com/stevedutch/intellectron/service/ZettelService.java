@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class ZettelService {
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);
 			newZettel.setTekst(zettelDto.tekst());
+			newZettel.setAdded(LocalDateTime.now());
 //				
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");

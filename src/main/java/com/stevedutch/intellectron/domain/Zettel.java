@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,8 @@ public class Zettel {
 	private Note note;
 	
 	@Column(name = "added")
-	private LocalDate added;
+	private LocalDateTime added;
+	
 	@Column(name = "changed")
 	private LocalDate changed;
 	
@@ -105,12 +107,12 @@ public class Zettel {
 	}
 
 
-	public LocalDate getAdded() {
+	public LocalDateTime getAdded() {
 		return added;
 	}
 
 
-	public void setAdded(LocalDate added) {
+	public void setAdded(LocalDateTime added) {
 		this.added = added;
 	}
 
