@@ -41,15 +41,15 @@ public class InputController {
 	}
 	
 	@PostMapping("/input")
-	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author) {
+	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author, ZettelDtoRecord zettelDto) {
 		// TODO: check if names are empty
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
+		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDto);
 		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author);
-//		System.out.println("\n Start of  addZettel()-->   ZettelDtoRecord : \n" + zettelDtoRecord);
 		zettelService.createZettel(zettelDtoRecord);
 		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelService.createZettel(zettelDtoRecord));
 		
