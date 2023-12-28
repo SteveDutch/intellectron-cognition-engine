@@ -42,13 +42,13 @@
             <input type="text" th:field="${author.authorFamilyName}" /><br>
         </div>
         <hr />
-        <label for="timestamp">date of text:[no function]</label><br>
-        <input type="datetime-local" id="timestamp" name="timestamp" /><br>
+        <label for="timestamp">date of text:</label><br>
+        <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}"/><br>
 
         <hr />
 
         <div>
-            <label for="source">Source:[no function]</label><br>
+            <label for="source">Source:</label><br>
             <input type="text" id="source" name="source" th:field="${tekst.source}"><br>
         </div>
         <hr />

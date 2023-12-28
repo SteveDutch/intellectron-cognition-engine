@@ -39,7 +39,7 @@ public class Zettel {
 	private LocalDateTime added;
 	
 	@Column(name = "changed")
-	private LocalDate changed;
+	private LocalDateTime changed;
 	
 	@Column(name = "signature")
 	private Integer signature;
@@ -116,11 +116,11 @@ public class Zettel {
 		this.added = added;
 	}
 
-	public LocalDate getChanged() {
+	public LocalDateTime getChanged() {
 		return changed;
 	}
 
-	public void setChanged(LocalDate changed) {
+	public void setChanged(LocalDateTime changed) {
 		this.changed = changed;
 	}
 
