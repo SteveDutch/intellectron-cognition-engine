@@ -24,7 +24,7 @@ public class Tag {
 	private String tagText;
 	
 	@ManyToMany(mappedBy = "tags")
-	private List<Zettel> zettel = new ArrayList<>();
+	private List<Zettel> zettels = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -42,17 +42,17 @@ public class Tag {
 		this.tagText = tagText;
 	}
 
-	public List<Zettel> getZettel() {
-		return zettel;
+	public List<Zettel> getZettels() {
+		return zettels;
 	}
 
-	public void setZettel(List<Zettel> zettel) {
-		this.zettel = zettel;
+	public void setZettels(List<Zettel> zettel) {
+		this.zettels = zettel;
 	}
 
 	@Override
 	public String toString() {
-		return "Tag [id=" + id + ", tagText=" + tagText + ", zettel=" + zettel + "]";
+		return "Tag [id=" + id + ", tagText=" + tagText + ", zettels=" + zettels + "]";
 	}
 	
 	

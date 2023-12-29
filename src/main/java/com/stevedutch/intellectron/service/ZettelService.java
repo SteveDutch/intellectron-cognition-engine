@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
@@ -22,6 +23,9 @@ public class ZettelService {
 
 	@Autowired
 	private TextRepository textRepo;
+
+	@Autowired
+	private TagService tagService;
 
 	@Autowired
 	private NoteService noteService;
@@ -41,14 +45,21 @@ public class ZettelService {
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);
 			newZettel.setTekst(zettelDto.tekst());
+			newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
-//				
+
+			Tag newTag = zettelDto.tag();
+			newTag.getZettels().add(newZettel);
+			tagService.saveTag(newTag);
+			System.out.println("\n ZettelService.createZettel ,  just saved: newTag \n" + newTag + "\n");
+
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
 
 			Tekst newTekst = newZettel.getTekst();
 			newTekst.getZettels().add(newZettel);
 			textRepo.save(newTekst);
+			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
 
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist
