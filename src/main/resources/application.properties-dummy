@@ -1,4 +1,5 @@
 # remember to update the dummy where necessary
+# __no dummy files pushen!__
 
 # spring.datasource.driver-class-name= com.mysql.cj.jdbc.Driver--> this is deprecated!
 spring.datasource.driverClassName = com.mysql.cj.jdbc.Driver

@@ -11,40 +11,34 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
-
 class ZettelServiceTest {
-	
+
 	@Mock
 	private ZettelService zettelService;
 	@Mock
 	private ZettelRepository zettelRepo;
-	
-	/*
-	 * Tests for boolean add (int index, T item) throws IndexOutOfBoundsException;
-	 * Beispiel:should_do_this_and-that
-	 * 		// Three A's
-		// Arrange, Act, Assert
-	 */
 
-// TO fix not working unit test
-	@Test
-	void testSaveZettel() {
-		//Arrange
-		Zettel sut = new Zettel(null, null);
-		System.out.println(sut);
-		zettelService = new ZettelService();
-	
-		
-		//Act
-//		zettelService.saveZettel(sut);
-		System.out.println(sut.getZettelId());
-		//Assert
-		assertNotNull(sut.getZettelId());
-	}
+	/*
+	 * Beispiel:should_do_this_and-that // Three A's // Arrange, Act, Assert
+	 */
 
 	@Test
 	void testUpdateZettel() {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	void testCreateZettel() {
+		// Arrange
+		ZettelDtoRecord zettelDto = new ZettelDtoRecord(null, null, null, null,
+				null/* initialize with necessary values */);
+
+		// Act
+		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
+
+		// Assert
+		assertNotNull(result);
+		// Add more assertions as needed to verify the behavior of the createZettel
+		// method
+	}
 }

@@ -50,7 +50,7 @@ public class InputController {
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
 		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tag);
 		zettelService.createZettel(zettelDtoRecord);
-		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelService.createZettel(zettelDtoRecord));
+		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
 		
 		return "redirect:/input";
 	}

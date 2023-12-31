@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.Column; // XNOTE mit Spring 3.0 kommt j́akarta statt javax
 import jakarta.persistence.Entity;
@@ -56,8 +57,8 @@ public class Author {
 	}
 	@Override
 	public String toString() {
-		return "Author [authorId=" + authorId + ", authorFirstName=" + authorFirstName + ", authorFamilyName="
-				+ authorFamilyName + ", texts=" + texts + "]";
+		return "Author \n [authorId=" + authorId + ", \n authorFirstName=" + authorFirstName + ", authorFamilyName="
+				+ authorFamilyName + ", \n Anzahl der Texte =" + Optional.of(texts.stream().count()) + "]";
 	}
 	
 	

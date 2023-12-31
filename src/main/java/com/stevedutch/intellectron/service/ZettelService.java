@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
@@ -32,8 +33,11 @@ public class ZettelService {
 
 	@Autowired
 	private NoteRepository noteRepo;
+	
+	@Autowired
+	private AuthorService authorService;
 
-	public Zettel createZettel(ZettelDtoRecord zettelDto) {
+	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 		System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
 		if (zettelDto.zettel().getZettelId() == null) {
 //				 id == null;
@@ -52,7 +56,7 @@ public class ZettelService {
 			newTag.getZettels().add(newZettel);
 			tagService.saveTag(newTag);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTag \n" + newTag + "\n");
-
+			
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
 
@@ -61,6 +65,14 @@ public class ZettelService {
 			textRepo.save(newTekst);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
 
+			Author newAuthor = zettelDto.author();
+			newAuthor.getTexts().add(newTekst);
+			authorService.saveAuthor(newAuthor);
+			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
+			newTekst.getAuthors().add(newAuthor);
+			System.out.println("\n ZettelService.createZettel ,  just updated: newTekst \n" + newTekst + "\n");
+			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTag);
+			
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist
 			Optional<Zettel> actualZettel = zettelRepo.findById(zettelDto.zettel().getZettelId());
@@ -73,7 +85,7 @@ public class ZettelService {
 			}
 		}
 // XXX here eine klares TODO
-		return zettelRepo.save(zettelDto.zettel());
+		return zettelDto;
 	}
 
 //		 TODO
