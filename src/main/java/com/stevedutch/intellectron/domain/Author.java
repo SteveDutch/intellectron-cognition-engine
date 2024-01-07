@@ -29,7 +29,16 @@ public class Author {
     @ManyToMany(mappedBy = "authors")
     private List<Tekst> texts = new ArrayList<>();
     
-    // Getter & Setter
+    
+    
+    public Author(String authorFirstName, String authorFamilyName) {
+		this.authorFirstName = authorFirstName;
+		this.authorFamilyName = authorFamilyName;
+	}
+	public Author() {
+		// TODO Auto-generated constructor stub
+	}
+	// Getter & Setter
 	public Long getAuthorId() {
 		return authorId;
 	}

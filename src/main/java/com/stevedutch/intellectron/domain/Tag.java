@@ -26,9 +26,20 @@ public class Tag {
 	@ManyToMany(mappedBy = "tags")
 	private List<Zettel> zettels = new ArrayList<>();
 
+	public Tag(String tagText) {
+		this.tagText = tagText;
+	}
+
+	
+	public Tag() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long tagId) {
 		this.id = tagId;

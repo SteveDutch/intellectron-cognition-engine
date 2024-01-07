@@ -1,44 +1,66 @@
 package com.stevedutch.intellectron.service;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 
+import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Tag;
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
+import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 class ZettelServiceTest {
 
-	@Mock
-	private ZettelService zettelService;
-	@Mock
-	private ZettelRepository zettelRepo;
+    private ZettelService zettelService;
+    private NoteService noteServiceMock;
+    private AuthorService authorServiceMock;
+    private TagService tagServiceMock;
+    private TextService tekstServiceMock;
+    private TextRepository tekstRepositoryMock;
+    
+    private ZettelRepository zettelRepoMock;
 
-	/*
-	 * Beispiel:should_do_this_and-that // Three A's // Arrange, Act, Assert
-	 */
+    @BeforeEach
+    public void setUp() {
+        noteServiceMock = mock(NoteService.class);
+        authorServiceMock = mock(AuthorService.class);
+        tagServiceMock = mock(TagService.class);
+        zettelRepoMock = mock(ZettelRepository.class);
+        tekstServiceMock = mock(TextService.class);
+        tekstRepositoryMock = mock(TextRepository.class);
+        zettelService = new ZettelService(noteServiceMock, zettelRepoMock, noteServiceMock, authorServiceMock, tagServiceMock, tekstServiceMock, tekstRepositoryMock);
+    }
 
-	@Test
-	void testUpdateZettel() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testCreateZettel() {
+        // Arrange
+        Zettel testZettel = new Zettel();
+        Note note = new Note("Dies ist eine wundervolle Testnotiz");
+        Tekst testTekst = new Tekst("Dies ist ein Testtext");
+        Author author = new Author("Karl", "Marx");
+        Tag tag = new Tag("Wonderful Tag");
 
-	@Test
-	void testCreateZettel() {
-		// Arrange
-		ZettelDtoRecord zettelDto = new ZettelDtoRecord(null, null, null, null,
-				null/* initialize with necessary values */);
+        // Mock any dependencies if required
+        when(noteServiceMock.save(Mockito.any(Note.class))).thenReturn(note);
 
-		// Act
-		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
+        ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tag);
 
-		// Assert
-		assertNotNull(result);
-		// Add more assertions as needed to verify the behavior of the createZettel
-		// method
-	}
+        // Act
+        ZettelDtoRecord result = zettelService.createZettel(zettelDto);
+
+        // Assert
+        assertNotNull(result);
+        // Add more assertions as needed to verify the behavior of the createZettel
+        // method
+    }
+
+    // ... Weitere Testmethoden ...
 }

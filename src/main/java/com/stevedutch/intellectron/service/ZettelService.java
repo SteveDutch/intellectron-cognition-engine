@@ -35,8 +35,24 @@ public class ZettelService {
 	private NoteRepository noteRepo;
 	
 	@Autowired
+    private TextService textService;
+	
+	@Autowired
 	private AuthorService authorService;
+//for testing
+	ZettelService(NoteService noteServiceMock, ZettelRepository zettelRepoMock, NoteService noteServiceMock2, AuthorService authorServiceMock, TagService tagServiceMock, TextService tekstServiceMock, TextRepository tekstRepositoryMock) {
+		// TODO Auto-generated constructor stub
+		this.noteService = noteServiceMock;
+        this.zettelRepo = zettelRepoMock;
+        this.noteService = noteServiceMock2;
+        this.authorService = authorServiceMock;
+        this.tagService = tagServiceMock;
+        this.textService = tekstServiceMock;
+        this.textRepo = tekstRepositoryMock;
+        
+	}
 
+	//	vXXX ielleicht ein bisschen groß, diese Funktion
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 		System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
 		if (zettelDto.zettel().getZettelId() == null) {
@@ -44,6 +60,8 @@ public class ZettelService {
 
 			Note newNote = zettelDto.note();
 			newNote.setZettel(zettelDto.zettel());
+			System.out.println("imtest noteService = " + Optional.ofNullable(noteService).isPresent());
+
 			noteService.save(newNote);
 
 			Zettel newZettel = zettelDto.zettel();

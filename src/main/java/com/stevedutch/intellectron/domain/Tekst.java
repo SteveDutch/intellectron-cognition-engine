@@ -46,6 +46,14 @@ public class Tekst {
 
 	// Getter & Setter
 	
+	public Tekst(String text) {
+		this.text = text;
+	}
+
+	public Tekst() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getTextId() {
 		return textId;
 	}

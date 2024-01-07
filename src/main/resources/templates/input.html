@@ -13,13 +13,13 @@
 <body>
     <form action="/input" method="post" th:object="${ZettelDtoRecord}">
         <div>
-            <label for="title">Title/Topic: </label><br>
+            <label for="title">Title/Topic: </label><br />
             <input type="text" id="title" name="title" th:field="${zettel.topic}" />
         </div>
         <hr />
-
-        <label for="note">Notiz / note /thought:</label><br>
-        <input type="text" id="article" name="article" th:field="${note.noteText}" /><br>
+        <div>
+            <label for="note">Notiz / note /thought:</label><br />
+            <input type="text" id="article" name="article" th:field="${note.noteText}" /><br />
         </div>
         <hr />
         <div>
@@ -28,36 +28,36 @@
         </div>
         <hr />
         <div>
-            <label for="zetteltag">Tag: </label><br>
-            <input type="text" id="tag" name="tag" th:field="${zetteltag.tagText}" /><br>
+            <label for="zetteltag">Tag: </label><br />
+            <input type="text" id="tag" name="tag" th:field="${zetteltag.tagText}" /><br />
         </div>
         <hr />
         <div>
-            <label for="author">Author first name</label><br>
-            <input type="text" th:field="${author.authorFirstName}" /><br>
+            <label for="author">Author first name</label><br />
+            <input type="text" th:field="${author.authorFirstName}" /><br />
         </div>
         <hr />
         <div>
-            <label for="author">Author family name</label><br>
-            <input type="text" th:field="${author.authorFamilyName}" /><br>
+            <label for="author">Author family name</label><br />
+            <input type="text" th:field="${author.authorFamilyName}" /><br />
         </div>
         <hr />
-        <label for="timestamp">date of text:</label><br>
-        <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}"/><br>
+        <label for="timestamp">date of text:</label><br />
+        <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
 
         <hr />
 
         <div>
-            <label for="source">Source:</label><br>
-            <input type="text" id="source" name="source" th:field="${tekst.source}"><br>
+            <label for="source">Source:</label><br />
+            <input type="text" id="source" name="source" th:field="${tekst.source}" /><br />
         </div>
         <hr />
         <div>
-            <label for="reference">Reference / Signatur:[no function]</label><br>
-            <input type="text" id="reference" name="reference"><br>
+            <label for="reference">Reference / Signatur:[no function]</label><br />
+            <input type="text" id="reference" name="reference" /><br />
         </div>
         <hr />
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" />
     </form>
 </body>
 
