@@ -49,7 +49,8 @@ class ZettelServiceTest {
         Tag tag = new Tag("Wonderful Tag");
 
         // Mock any dependencies if required
-        when(noteServiceMock.save(Mockito.any(Note.class))).thenReturn(note);
+        when(noteServiceMock.saveNotewithZettel(Mockito.any(Note.class), Mockito.any(Zettel.class))).thenReturn(note);
+        when(noteServiceMock.saveNote(Mockito.any(Note.class))).thenReturn(note);
 
         ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tag);
 

@@ -39,9 +39,9 @@ public class ZettelService {
 	
 	@Autowired
 	private AuthorService authorService;
-//for testing
+	
+	//for junit testing
 	ZettelService(NoteService noteServiceMock, ZettelRepository zettelRepoMock, NoteService noteServiceMock2, AuthorService authorServiceMock, TagService tagServiceMock, TextService tekstServiceMock, TextRepository tekstRepositoryMock) {
-		// TODO Auto-generated constructor stub
 		this.noteService = noteServiceMock;
         this.zettelRepo = zettelRepoMock;
         this.noteService = noteServiceMock2;
@@ -58,11 +58,8 @@ public class ZettelService {
 		if (zettelDto.zettel().getZettelId() == null) {
 //				 id == null;
 
-			Note newNote = zettelDto.note();
-			newNote.setZettel(zettelDto.zettel());
+			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
 			System.out.println("imtest noteService = " + Optional.ofNullable(noteService).isPresent());
-
-			noteService.save(newNote);
 
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);

@@ -53,22 +53,25 @@ public class Zettel {
 	@JoinColumn(name = "text_id")
 	private Tekst tekst;
 
-	//constructor junit test
-//	public Zettel(Long zettelId, String topic, Note note, LocalDate added, LocalDate changed, Integer signature,
-//			List<Author> authors, List<Tag> tags, List<Tekst> teksts) {
-//		super();
-//		this.zettelId = zettelId;
-//		this.topic = topic;
-//		this.note = note;
-//		this.added = added;
-//		this.changed = changed;
-//		this.signature = signature;
-//		this.authors = authors;
-//		this.zettelTags = tags;
-//		this.teksts = teksts;
-//	}
-
 	
+	
+	
+	//constructor junit test
+	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Integer signature,
+			List<Tag> tags, Tekst tekst) {
+		super();
+		this.zettelId = zettelId;
+		this.topic = topic;
+		this.note = note;
+		this.added = added;
+		this.changed = changed;
+		this.signature = signature;
+		this.tags = tags;
+		this.tekst = tekst;
+	}
+
+
+
 
 
 	public Zettel() {
