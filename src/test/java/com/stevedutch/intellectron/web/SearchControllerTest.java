@@ -1,30 +1,38 @@
 package com.stevedutch.intellectron.web;
 
-import org.aspectj.lang.annotation.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.ui.ModelMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
 
-	private SearchController searchController;
+	@Mock
+	private ModelMap model;
 
-	@Before(value = "")
-	public void setup() {
-		this.searchController = new SearchController();
-	}
+	@BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
 
 
 	@Test
 	public void shouldShowSearchPage() {
-		String actualValue = searchController.showSearchPage();
+		SearchController sut = new SearchController();
+		model.addAttribute("test");
+		String result = sut.showSearchPage();
+		
+		assertThat(result).isEqualTo("/search");
 
-		// TODO: assert scenario
-
-		MatcherAssert.assertThat(actualValue, Matchers.is("/entry"));
+		
 	}
 }
