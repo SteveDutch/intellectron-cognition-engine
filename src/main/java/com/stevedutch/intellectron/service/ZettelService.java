@@ -68,7 +68,7 @@ public class ZettelService {
 			newZettel.setAdded(LocalDateTime.now());
 
 			Tag newTag = zettelDto.tag();
-			newTag.getZettels().add(newZettel);
+//			newTag.getZettels().add(newZettel);
 			tagService.saveTag(newTag);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTag \n" + newTag + "\n");
 			

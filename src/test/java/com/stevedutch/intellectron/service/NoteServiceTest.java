@@ -45,12 +45,12 @@ class NoteServiceTest {
 		// Act 
 		NoteService sutService = new NoteService(noteRepoMock);
 		
-        sutService.saveNotewithZettel(sut, testZettel);
+        Note result = sutService.saveNotewithZettel(sut, testZettel);
 		
 		//Assert
-		assertNotNull(sut.getZettelId());
-		assertNotNull(sut.getZettel());
-		assertNotNull(sut.getNoteText());
+		assertNotNull(result.getZettelId());
+		assertNotNull(result.getZettel());
+		assertNotNull(result.getNoteText());
 		
 	}
 
