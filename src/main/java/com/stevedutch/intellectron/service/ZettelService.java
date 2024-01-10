@@ -67,17 +67,16 @@ public class ZettelService {
 			newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
 
-			Tag newTag = zettelDto.tag();
-//			newTag.getZettels().add(newZettel);
-			tagService.saveTag(newTag);
-			System.out.println("\n ZettelService.createZettel ,  just saved: newTag \n" + newTag + "\n");
+			Tag newTag = tagService.saveTagwithZettel(zettelDto.tag(), newZettel);
+			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTag \n" + newTag + "\n");
 			
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
 
-			Tekst newTekst = newZettel.getTekst();
-			newTekst.getZettels().add(newZettel);
-			textRepo.save(newTekst);
+//			Tekst newTekst = newZettel.getTekst();
+//			newTekst.getZettels().add(newZettel);
+//			textRepo.save(newTekst);
+			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
 
 			Author newAuthor = zettelDto.author();
