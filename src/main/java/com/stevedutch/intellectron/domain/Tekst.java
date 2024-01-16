@@ -33,7 +33,7 @@ public class Tekst {
 	@Column(name = "tekstdato")
 	private LocalDate textDate;	
 	
-	@Column(name = "source", length =700)
+	@Column(name = "source", length = 700)
 	private String source;
 
 	@OneToMany(mappedBy = "tekst", cascade = CascadeType.ALL)
@@ -42,7 +42,7 @@ public class Tekst {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "texts_authors", joinColumns = @JoinColumn(name = "text_id"), 
 	inverseJoinColumns = @JoinColumn(name = "author_id"))
-	private List<Author> authors = new ArrayList<>();
+	private List<Author> associatedAuthors = new ArrayList<>();
 
 	// Getter & Setter
 	
@@ -98,18 +98,20 @@ public class Tekst {
 		this.zettels = zettels;
 	}
 
-	public List<Author> getAuthors() {
-		return authors;
+	public List<Author> getAssociatedAuthors() {
+		return associatedAuthors;
 	}
 
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
+	public void setAssociatedAuthors(List<Author> authors) {
+		this.associatedAuthors = authors;
 	}
 
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", text=" + text + ", textDate=" + textDate + ", source=" + source
-				 + ", authors=" + authors + "]";
+				 + ", associatedAuthors=" + associatedAuthors + "ZETTELS, wieviele: " + Optional.ofNullable(zettels).map(list -> list
+						.size())
+						.orElse(0) + "]";
 	}
 
 }

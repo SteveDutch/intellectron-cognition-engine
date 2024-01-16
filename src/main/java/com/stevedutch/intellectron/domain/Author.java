@@ -26,7 +26,7 @@ public class Author {
     @Column(name = "family_name", length = 105)
 	private String authorFamilyName;
     
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "associatedAuthors")
     private List<Tekst> texts = new ArrayList<>();
     
     
