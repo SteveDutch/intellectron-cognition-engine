@@ -73,15 +73,9 @@ public class ZettelService {
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
 
-//			Tekst newTekst = newZettel.getTekst();
-//			newTekst.getZettels().add(newZettel);
-//			textRepo.save(newTekst);
 			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
 
-//			Author newAuthor = zettelDto.author();
-//			newAuthor.getTexts().add(newTekst);
-//			authorService.saveAuthor(newAuthor);
 			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
 			
 			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
