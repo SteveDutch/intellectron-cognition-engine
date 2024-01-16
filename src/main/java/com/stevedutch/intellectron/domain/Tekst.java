@@ -39,7 +39,10 @@ public class Tekst {
 	@OneToMany(mappedBy = "tekst", cascade = CascadeType.ALL)
 	private List<Zettel> zettels;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, 
+			cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE})
 	@JoinTable(name = "texts_authors", joinColumns = @JoinColumn(name = "text_id"), 
 	inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> associatedAuthors = new ArrayList<>();
