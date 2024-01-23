@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,9 @@ public class ZettelService {
 			newZettel.setTekst(zettelDto.tekst());
 			newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 
 			Tag newTag = tagService.saveTagwithZettel(zettelDto.tag(), newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTag \n" + newTag + "\n");

@@ -1,6 +1,5 @@
 package com.stevedutch.intellectron.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class Zettel {
 	private LocalDateTime changed;
 	
 	@Column(name = "signature")
-	private Integer signature;
+	private Long signature;
 	
 	@ManyToMany
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
@@ -53,11 +52,8 @@ public class Zettel {
 	@JoinColumn(name = "text_id")
 	private Tekst tekst;
 
-	
-	
-	
 	//constructor junit test
-	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Integer signature,
+	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Long signature,
 			List<Tag> tags, Tekst tekst) {
 		super();
 		this.zettelId = zettelId;
@@ -127,11 +123,11 @@ public class Zettel {
 		this.changed = changed;
 	}
 
-	public Integer getSignature() {
+	public Long getSignature() {
 		return signature;
 	}
 
-	public void setSignature(Integer signature) {
+	public void setSignature(Long signature) {
 		this.signature = signature;
 	}
 
