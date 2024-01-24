@@ -47,7 +47,7 @@ class TagServiceTest {
 		System.out.println(sut.getTagText() + Optional.of(sut).isPresent());
 		System.out.println("tags ="  + Optional.of(tags).isPresent());
 		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", null, LocalDateTime.now(), 
-				LocalDateTime.now(), 1,tags , null);
+				LocalDateTime.now(), 1L, tags , null);
 		
 		// Mock any dependencies if required
         when(tagRepoMock.save(Mockito.any(Tag.class))).thenReturn(sut);

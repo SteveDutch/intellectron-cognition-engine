@@ -3,12 +3,15 @@ package com.stevedutch.intellectron.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,6 +45,14 @@ public class Zettel {
 	
 	@Column(name = "signature")
 	private Long signature;
+	
+	@ManyToMany(fetch = FetchType.LAZY, 
+			cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE})
+	@JoinTable(name = "zettel_references", joinColumns = @JoinColumn(name = "zettel_id"), 
+	inverseJoinColumns = @JoinColumn(name = "reference_id"))
+	private Set<Reference> references = new HashSet<>();
 	
 	@ManyToMany
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
@@ -151,6 +162,24 @@ public class Zettel {
 	
 	public void setTekst(Tekst tekst) {
 		this.tekst = tekst;
+	}
+	
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+        if (!(obj instanceof Zettel))
+            return false;
+
+		Zettel other = (Zettel) obj;
+        return zettelId != null &&
+        		zettelId.equals(other.getZettelId());
 	}
 	
 	@Override

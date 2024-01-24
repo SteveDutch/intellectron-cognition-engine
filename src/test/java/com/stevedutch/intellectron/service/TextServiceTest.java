@@ -30,7 +30,7 @@ class TextServiceTest {
 		Tekst sut = new Tekst();
 		// Arrange
 		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", null, LocalDateTime.now(), 
-				LocalDateTime.now(), 1, null , null);
+				LocalDateTime.now(), 1L, null , null);
 //		testZettel = null;
 		// Mock any dependencies if required
 		when(textRepoMock.save(Mockito.eq(sut))).thenReturn(sut);

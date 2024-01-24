@@ -37,7 +37,7 @@ class NoteServiceTest {
 		Note sut = new Note();
 		sut.setNoteText("supertoller Testtext");
 		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", sut, LocalDateTime.now(), 
-				LocalDateTime.now(), 1,null, null);
+				LocalDateTime.now(), 1L ,null, null);
 		
 
 		// Mock any dependencies if required

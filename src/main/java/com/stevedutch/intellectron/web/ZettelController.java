@@ -11,11 +11,6 @@ public class ZettelController {
 	@Autowired
 	private ZettelService zettelService;
 	
-//	@PostMapping("/input")
-//	public String getZettel(@RequestParam Zettel zettel) {
-//		zettelService.saveZettel(zettel);
-//		return "/input";
-		
+	
 
-//}
 }
