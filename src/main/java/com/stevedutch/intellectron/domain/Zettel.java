@@ -184,7 +184,7 @@ public class Zettel {
 	
 	@Override
 	public String toString() {
-		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + " Note : "+ Optional.of(note.getNoteText()) + " added=" + added
+		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available") + " added=" + added
 				+ ", changed=" + changed + ", signature=" + signature + ",  Anzahl der tags=" + Optional.of(tags.stream().count()) 
 				 +", tekst="
 				+ tekst + "]";

@@ -1,5 +1,7 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,12 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
-import com.stevedutch.intellectron.service.NoteService;
+import com.stevedutch.intellectron.service.ReferenceService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
@@ -28,7 +31,9 @@ public class InputController {
 	@Autowired
 	private ZettelService zettelService;
 	@Autowired
-    private NoteService noteService;
+    private ReferenceService refService;
+	
+	
 	
 	@GetMapping("/input")
 	public String showInputMask(ModelMap model) {
@@ -37,6 +42,13 @@ public class InputController {
 		model.put("zettel", new Zettel());
 		model.put("note", new Note());
 		model.put("zetteltag", new Tag());
+		model.put("reference", new Reference());
+		// falls ich mal die Verweise anzeigen will ... :)
+//		List<Reference> references = refService.findAll();
+//		model.put("references", references);
+		List<Zettel> zettels = zettelService.findAll();
+		model.put("zettels" , zettels);
+		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= "+  zettels );
 		return "/input";
 	}
 	
