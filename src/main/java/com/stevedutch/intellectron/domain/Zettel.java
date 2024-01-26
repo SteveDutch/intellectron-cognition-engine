@@ -142,6 +142,18 @@ public class Zettel {
 		this.signature = signature;
 	}
 
+	public Set<Reference> getReferences() {
+		return references;
+	}
+
+	public void setReferences(Set<Reference> references) {
+		this.references = references;
+	}
+	
+	public void addReference(Reference reference) {
+        this.references = new HashSet<>(Arrays.asList(reference));
+    }
+
 	public List<Tag> getTags() {
 		return tags;
 	}

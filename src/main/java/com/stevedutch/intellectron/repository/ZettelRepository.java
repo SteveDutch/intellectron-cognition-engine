@@ -1,8 +1,10 @@
 package com.stevedutch.intellectron.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.stevedutch.intellectron.domain.Zettel;
@@ -11,5 +13,9 @@ import com.stevedutch.intellectron.domain.Zettel;
 public interface ZettelRepository extends JpaRepository<Zettel, Long>{
 	
 	public Optional<Zettel> findById(Long Id);
+
+	@Query("select zettel from Zettel zettel"
+			+ " left join fetch zettel.note")
+	public List<Zettel> findAllZettelWithTopic();
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Reference;
+import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.ReferenceRepository;
 
 @Service
@@ -16,6 +17,11 @@ public class ReferenceService {
 
 	public List<Reference> findAll() {
 		return referenceRepo.findAll();
+	}
+
+	public Reference saveReferenceWithZettel(Reference reference, Zettel zettel) {
+		reference.getZettels().add(zettel);
+		return referenceRepo.save(reference);
 	}
 
 }

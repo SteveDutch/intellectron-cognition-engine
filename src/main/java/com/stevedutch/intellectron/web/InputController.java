@@ -41,7 +41,7 @@ public class InputController {
 		model.put("tekst", new Tekst());
 		model.put("zettel", new Zettel());
 		model.put("note", new Note());
-		model.put("zetteltag", new Tag());
+		model.put("tag", new Tag());
 		model.put("reference", new Reference());
 		// falls ich mal die Verweise anzeigen will ... :)
 //		List<Reference> references = refService.findAll();
@@ -53,14 +53,15 @@ public class InputController {
 	}
 	
 	@PostMapping("/input")
-	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author) {
+	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, Tag tag, Author author, 
+			Reference reference) {
 		// TODO: check if names are empty
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
 		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
 		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
-		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tag);
+		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tag, reference);
 		zettelService.createZettel(zettelDtoRecord);
 		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
 		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: NOTE (text & id) \n" 

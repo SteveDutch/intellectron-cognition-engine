@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
@@ -42,6 +43,9 @@ public class ZettelService {
 	@Autowired
 	private AuthorService authorService;
 	
+	@Autowired
+	private ReferenceService refService;
+	
 	//for junit testing
 	ZettelService(NoteService noteServiceMock, ZettelRepository zettelRepoMock, NoteService noteServiceMock2, AuthorService authorServiceMock, TagService tagServiceMock, TextService tekstServiceMock, TextRepository tekstRepositoryMock) {
 		this.noteService = noteServiceMock;
@@ -54,7 +58,7 @@ public class ZettelService {
         
 	}
 
-	//	vXXX ielleicht ein bisschen groß, diese Funktion
+	//	vXXX vielleicht ein bisschen groß, diese Funktion
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 		System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
 		if (zettelDto.zettel().getZettelId() == null) {
@@ -68,6 +72,7 @@ public class ZettelService {
 			newZettel.setTekst(zettelDto.tekst());
 			newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
+			newZettel.getReferences().add(zettelDto.reference());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
@@ -86,7 +91,11 @@ public class ZettelService {
 			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
 			textService.saveTextWithAuthor(newTekst, newAuthor);
 			System.out.println("\n ZettelService.createZettel ,  just updated: newTekst \n" + newTekst + "\n");
-			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTag);
+			
+			Reference newReference = refService.saveReferenceWithZettel(zettelDto.reference(), newZettel);
+			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newRef \n" + newReference + "\n");
+			
+			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTag, newReference);
 			
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist
@@ -140,7 +149,7 @@ public class ZettelService {
 	}
 
 	public List<Zettel> findAll() {
-		return zettelRepo.findAll();
+		return zettelRepo.findAllZettelWithTopic();
 	}
 
 }
