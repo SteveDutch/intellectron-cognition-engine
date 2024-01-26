@@ -18,7 +18,9 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long>{
 			+ " left join fetch zettel.note")
 	public List<Zettel> findAllZettelWithTopic();
 	
-	@Query("select zettel from Zettel zettel group by zettel.zettelId order by zettel.added desc limit 10")
+//	@Query("select zettel from Zettel zettel group by zettel.zettelId order by zettel.added desc limit 10")
+	@Query("SELECT zettel FROM Zettel zettel ORDER BY added DESC LIMIT 10")
 	public List<Zettel> findLast10Zettel();
+	
 	
 }
