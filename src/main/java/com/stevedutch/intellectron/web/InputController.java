@@ -46,7 +46,7 @@ public class InputController {
 		// falls ich mal die Verweise anzeigen will ... :)
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
-		List<Zettel> zettels = zettelService.findAll();
+		List<Zettel> zettels = zettelService.findLast10Zettel();
 		model.put("zettels" , zettels);
 		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= "+  zettels );
 		return "/input";

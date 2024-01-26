@@ -152,4 +152,8 @@ public class ZettelService {
 		return zettelRepo.findAllZettelWithTopic();
 	}
 
+	public List<Zettel> findLast10Zettel() {
+		return zettelRepo.findLast10Zettel();
+	}
+
 }
