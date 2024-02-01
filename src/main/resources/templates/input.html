@@ -1,6 +1,8 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/input.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"></html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+</html>
 
 <head>
     <meta charset="UTF-8" />
@@ -8,6 +10,7 @@
     <title>feed your intellectron</title>
     <link rel="stylesheet" href="styles.css" />
     <!-- Falls du eine separate CSS-Datei hast -->
+    <script type="text/javascript" src="../js/input.js" defer></script>
 </head>
 
 <body>
@@ -27,16 +30,16 @@
             <input id="tekst" th:field="${tekst.text}" />
         </div>
         <hr />
-       
-         <!--    <div>   <label for="tags">Tag: </label><br /> -->
-         
-   <!--       MEINE FUNKTIONIERENDE LÖSUNG FÜR EIN TAG -->
-<!--          <label for="tag">Tag: </label><br />
+
+        <!--    <div>   <label for="tags">Tag: </label><br /> -->
+
+        <!--       MEINE FUNKTIONIERENDE LÖSUNG FÜR EIN TAG -->
+        <!--          <label for="tag">Tag: </label><br />
             <input type="text" id="tag" name="tag"  th:field="${tag.tagText}" /><br />
         </div> -->
 
 
-        
+
         <!-- 
           <div>  <label for="tags">Tagso: </label><br />
             <label th:each="tag : ${tags}"></label>
@@ -44,47 +47,74 @@
             <input type="text" id="tags2" name="tags" th:value="${tag.tagText}" />
          -->
 
-<!-- AT LEAST WORKING SOMEHOW - SENDET DIE TAGS KOMMAGETRENNT ALS EIN tAG.tAGtEXT, (kOMMA HINTER JEDEM fELD) NICHT ALS ARRAYLIST -->
-<div>
-    <label for="tags">TagsIII: </label><br />
+<!-- GIVE YOU.COM A CHNACE funkt. nicht-->
+<!-- <div>
+    <label for="tags">Tags: </label><br />
     <div id="tags">
-        <input type="text" class="tagInput" name="tag" th:field="${tag.tagText}"/>
-
+        <input type="text" class="tagInput" name="tagcscss[]" th:field="${tag.tagText}" />
     </div>
 
-
     <button onclick="addTagInput()" type="button">Add Tag</button>
-</div> 
+</div>
 
 
 <script>
-  
-    function addTagInput() {
-        var container = document.getElementById('tags');
-        var input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'tagText' //+ tagCounter; // Append the counter to the name, Name attribute to bind the input to an ArrayList
-        input.id = 'tagText' // + tagCounter; // Append the counter to the id
-        input.className = 'tagInput';
-        container.appendChild(input);
-        tagCounter++; // Increment the counter
-    }
+function addTagInput() {
+var container = document.getElementById('tags');
+var input = document.createElement('input');
+input.type = 'text';
+input.name = 'tags[]'; // Use an array notation in the name attribute
+input.id = 'tag' + tagCounter; // Use a unique ID for each input field
+input.className = 'tagInput';
+container.appendChild(input);
+tagCounter++; // Increment the counter
+}
 
- /*    function addTagInput( ) {
-         
-        var container = document.getElementById('tags');
-        var input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'tags3';
-        input.id = 'tag';
-        input.className = 'tagInput';
-        container.appendChild(input);
-    } */
-</script>
+</script> -->
+
+        <!-- AT LEAST WORKING SOMEHOW - SENDET DIE TAGS KOMMAGETRENNT ALS EIN tAG.tAGtEXT, (kOMMA HINTER JEDEM fELD) NICHT ALS ARRAYLIST -->
+        <div>
+            <label for="tags">TagsIII: </label><br />
+            <div id="tags">
+                <input type="text" class="tagInput" name="tag" th:field="${tag.tagText}" />
+
+            </div>
 
 
-<!-- NOT WORKING, BUT NICE. ERST NAH KLICK ERSCHENT DAS EIGABEFELD FÜR TAG -->
-<!-- <div>
+            <button onclick="addTagInput()" type="button">Add Tag</button>
+        </div>
+
+
+        <script>
+
+            let tagCounter = 0;
+
+            function addTagInput() {
+                var container = document.getElementById('tags');
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'tagText' //+ tagCounter; // Append the counter to the name, Name attribute to bind the input to an ArrayList
+                input.id = 'tagText' // + tagCounter; // Append the counter to the id
+                input.className = 'tagInput';
+                container.appendChild(input);
+                tagCounter++; // Increment the counter
+            }
+
+            /*    function addTagInput( ) {
+                    
+                   var container = document.getElementById('tags');
+                   var input = document.createElement('input');
+                   input.type = 'text';
+                   input.name = 'tags3';
+                   input.id = 'tag';
+                   input.className = 'tagInput';
+                   container.appendChild(input);
+               } */
+        </script>
+
+
+        <!-- XXX NOT WORKING, BUT NICE. ERST NAH KLICK ERSCHENT DAS EIGABEFELD FÜR TAG -->
+        <!-- <div>
     <label for="tags">Tags: </label><br />
     <div id="tagsContainer">
         // Tags will be added here
@@ -132,22 +162,23 @@
         </div>
         <hr />
         <div>
-            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden soll: <br /></label>test/
-            <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}"/><br />
+            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden soll:
+                <br /></label>test/
+            <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br />
         </div>
         <hr />
-        <input type="submit" value="Submit" />
+        <input type="submit" id="submit" value="Submit" />
     </form>
     <div> <!-- show last 10 zettels -->
         <table>
-                <thead>
-                    <tr>
-                        <th>Signature</th>
-                        <th>Topic</th>
-                        <th>Tags</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <thead>
+                <tr>
+                    <th>Signature</th>
+                    <th>Topic</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr th:if="${zettels.empty}">
                     <td colspan="2"> No Zettel Available </td>
                 </tr>
@@ -156,7 +187,7 @@
                     <td><span th:text="${zettel.topic}"> topic </span></td>
                     <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText}"> topic </span></td>
                 </tr>
-                </tbody>
+            </tbody>
         </table>
     </div>
 </body>
