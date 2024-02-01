@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,15 +71,23 @@ public class ZettelService {
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);
 			newZettel.setTekst(zettelDto.tekst());
-			newZettel.getTags().add(zettelDto.tag());
+			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto);
+			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto.tags());
+			ArrayList<Tag> newTags = new ArrayList<Tag>(zettelDto.tags());
+			System.out.println("\n HIERHIERHIER   !!!   "  + newTags);
+			newZettel.getTags().addAll(newTags);
+			//newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
 			newZettel.getReferences().add(zettelDto.reference());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 
-			Tag newTag = tagService.saveTagwithZettel(zettelDto.tag(), newZettel);
-			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTag \n" + newTag + "\n");
+			// Tag newTag = tagService.saveTagwithZettel(zettelDto.tags(), newZettel);
+			 
+			newTags.forEach(tag -> System.out.println("\n HIERHIERHIER   !!!   "  + tag));
+			newTags.forEach(tag -> tagService.saveTagwithZettel(tag, newZettel));
+			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTags \n" + newTags + "\n");
 			
 			zettelRepo.save(newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
@@ -95,7 +104,7 @@ public class ZettelService {
 			Reference newReference = refService.saveReferenceWithZettel(zettelDto.reference(), newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newRef \n" + newReference + "\n");
 			
-			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTag, newReference);
+			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newReference);
 			
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist

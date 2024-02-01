@@ -4,12 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
@@ -19,23 +25,28 @@ import com.stevedutch.intellectron.repository.ZettelRepository;
 
 class ZettelServiceTest {
 
+	@InjectMocks
     private ZettelService zettelService;
     private NoteService noteServiceMock;
     private AuthorService authorServiceMock;
     private TagService tagServiceMock;
     private TextService tekstServiceMock;
     private TextRepository tekstRepositoryMock;
+    @Mock
+    private ReferenceService referenceServiceMock;
     
     private ZettelRepository zettelRepoMock;
 
     @BeforeEach
     public void setUp() {
+    	MockitoAnnotations.openMocks(this);
         noteServiceMock = mock(NoteService.class);
         authorServiceMock = mock(AuthorService.class);
         tagServiceMock = mock(TagService.class);
         zettelRepoMock = mock(ZettelRepository.class);
         tekstServiceMock = mock(TextService.class);
         tekstRepositoryMock = mock(TextRepository.class);
+        referenceServiceMock = mock(ReferenceService.class);
         zettelService = new ZettelService(noteServiceMock, zettelRepoMock, noteServiceMock, authorServiceMock, tagServiceMock, tekstServiceMock, tekstRepositoryMock);
     }
 
@@ -47,12 +58,16 @@ class ZettelServiceTest {
         Tekst testTekst = new Tekst("Dies ist ein Testtext");
         Author author = new Author("Karl", "Marx");
         Tag tag = new Tag("Wonderful Tag");
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        tags.add(tag);
+        Reference testReference = new Reference();
 
         // Mock any dependencies if required
         when(noteServiceMock.saveNotewithZettel(Mockito.any(Note.class), Mockito.any(Zettel.class))).thenReturn(note);
         when(noteServiceMock.saveNote(Mockito.any(Note.class))).thenReturn(note);
+        when(referenceServiceMock.saveReferenceWithZettel(Mockito.any(Reference.class), Mockito.any(Zettel.class))).thenReturn(testReference);
 
-        ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tag, null);
+        ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tags, testReference);
 
         // Act
         ZettelDtoRecord result = zettelService.createZettel(zettelDto);

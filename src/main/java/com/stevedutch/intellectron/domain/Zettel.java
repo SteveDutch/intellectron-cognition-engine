@@ -197,7 +197,10 @@ public class Zettel {
 	@Override
 	public String toString() {
 		return "Zettel [zettelId=" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available") + " added=" + added
-				+ ", changed=" + changed + ", signature=" + signature + ",  Anzahl der tags=" + Optional.of(tags.stream().count()) 
+				+ ", changed=" + changed + ", signature=" + signature
+				+ ",  Anzahl der tags=" 
+										  + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
+										 
 				 +", tekst="
 				+ tekst + "]";
 	}

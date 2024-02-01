@@ -1,7 +1,6 @@
 package com.stevedutch.intellectron.domain;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -87,7 +86,7 @@ public class Reference {
 	@Override
 	public String toString() {
 		return "Reference [referenceId=" + referenceId + ", originZettel=" + originZettel + ", targetZettel="
-				+ targetZettel + ",  Anzahl der Zettel =\" + Optional.of(zettels.stream().count()) \n"
+				+ targetZettel + " ,  Anzahl der Zettel =\n " + Optional.of(zettels.stream().count()) + " \n"
 						+  "]";
 	}
 	
