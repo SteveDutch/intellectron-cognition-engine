@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "notes")
 public class Note {
 
+
 	@Id
 	private Long zettelId;
 
@@ -23,7 +24,7 @@ public class Note {
 	@Column(length = 65000)
 	private String noteText;
 	
-	// für junit
+	// für junit  
 	public Note(String content) {
 
 		// TODO Auto-generated constructor stub
@@ -32,6 +33,8 @@ public class Note {
 		this.zettelId = null;
 	}
 
+ 
+	
 	public Note() {
 		// TODO Auto-generated constructor stub
 	}

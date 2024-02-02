@@ -77,12 +77,12 @@ public class Zettel {
 		this.tekst = tekst;
 	}
 
-
-
-
-
 	public Zettel() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Zettel(String topic) {
+		this.topic = topic;
 	}
 
 	public Zettel(Note note, Tekst tekst) {

@@ -8,7 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
@@ -56,27 +60,39 @@ public class InputController {
 	}
 	
 	@PostMapping("/input")
-	public String postNewZettel(Zettel zettel, Tekst tekst, Note note, ArrayList<Tag> tags, List<Tag> tagso, Tag tag, Author author, 
-			Reference reference) {
+	public String postNewZettel(
+			@RequestBody String json) throws JsonMappingException, JsonProcessingException /*
+										 * Zettel zettel, Tekst tekst, Note note, ArrayList<Tag> tags, List<Tag> tagso,
+										 * Tag tag, Author author, Reference reference)
+										 */ {
+		System.out.println("JSON = \n " + json);
+		ObjectMapper objectMapper = new ObjectMapper();
+		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
+//		Zettel zettel= objectMapper.readValue(json, Zettel.class);
+//		Tekst tekst = objectMapper.readValue(json, Tekst.class);
+		
+		
 		// TODO: check if names are empty
-		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
-		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
-		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
-		System.out.println("\n Start of  InputController.postNewZettel()-->  Tags  :\n " + tags.toString());
-		System.out.println("\n Start of  InputController.postNewZettel()-->  Tagso  :\n " + tagso.toString());
-		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
-		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
-		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tags  :\n " + tags.toString());
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tagso  :\n " + tagso.toString());
+//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
+//		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
+		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
+		System.out.println(" finally Tag-Collection: \n" + zettelDto.tags());
+//		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 //		deactivated for Vanilla JS testing
 //		zettelService.createZettel(zettelDtoRecord);
-		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
-//		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: NOTE (text & id) \n" 
-//				+ zettelDtoRecord.note().getNoteText() + zettelDtoRecord.note().getZettelId());
-//		System.out.println("\n InputController.postNewZettel after createZettel() \n --> nur für mich: NOTE \n" +note);
-		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TAGs \n;" + tags);
-//		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TEKST \n" + tekst);
-		System.out.println("\n InputController.postNewZettel after createZettel() \n  --> nur für mich: ZETTEL \n" + zettel);
-//		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: AUTHOR \n" + author);
+//		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
+////		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: NOTE (text & id) \n" 
+////				+ zettelDtoRecord.note().getNoteText() + zettelDtoRecord.note().getZettelId());
+////		System.out.println("\n InputController.postNewZettel after createZettel() \n --> nur für mich: NOTE \n" +note);
+//		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TAGs \n;" + tags);
+////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TEKST \n" + tekst);
+//		System.out.println("\n InputController.postNewZettel after createZettel() \n  --> nur für mich: ZETTEL \n" + zettel);
+////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: AUTHOR \n" + author);
 		return "redirect:/input";
 	}
 

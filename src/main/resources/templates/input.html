@@ -73,10 +73,10 @@ tagCounter++; // Increment the counter
 </script> -->
 
         <!-- AT LEAST WORKING SOMEHOW - SENDET DIE TAGS KOMMAGETRENNT ALS EIN tAG.tAGtEXT, (kOMMA HINTER JEDEM fELD) NICHT ALS ARRAYLIST -->
-        <div>
+<!--         <div>
             <label for="tags">TagsIII: </label><br />
             <div id="tags">
-                <input type="text" class="tagInput" name="tag" th:field="${tag.tagText}" />
+                <input type="text" class="tagInput" name="tagText0" th:field="${tag.tagText}" />
 
             </div>
 
@@ -87,18 +87,18 @@ tagCounter++; // Increment the counter
 
         <script>
 
-            let tagCounter = 0;
+            let tagCounter = 1;
 
             function addTagInput() {
                 var container = document.getElementById('tags');
                 var input = document.createElement('input');
                 input.type = 'text';
-                input.name = 'tagText' //+ tagCounter; // Append the counter to the name, Name attribute to bind the input to an ArrayList
-                input.id = 'tagText' // + tagCounter; // Append the counter to the id
+                input.name = 'tagText' + tagCounter; // Append the counter to the name, Name attribute to bind the input to an ArrayList
+                input.id = 'tagText'  + tagCounter; // Append the counter to the id
                 input.className = 'tagInput';
                 container.appendChild(input);
                 tagCounter++; // Increment the counter
-            }
+            } 
 
             /*    function addTagInput( ) {
                     
@@ -110,11 +110,11 @@ tagCounter++; // Increment the counter
                    input.className = 'tagInput';
                    container.appendChild(input);
                } */
-        </script>
+        </script>-->
 
 
         <!-- XXX NOT WORKING, BUT NICE. ERST NAH KLICK ERSCHENT DAS EIGABEFELD FÜR TAG -->
-        <!-- <div>
+        <div>
     <label for="tags">Tags: </label><br />
     <div id="tagsContainer">
         // Tags will be added here
@@ -135,7 +135,7 @@ tagCounter++; // Increment the counter
         newInput.name = 'tagInput'; // Name attribute to bind the input to an ArrayList
         tagsContainer.appendChild(newInput);
     });
-</script> -->
+</script>
 
 
 
