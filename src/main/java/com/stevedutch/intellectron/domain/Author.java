@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.persistence.Column; // XNOTE mit Spring 3.0 kommt j́akarta statt javax
+import jakarta.persistence.Column; // NOTE mit Spring 3.0 kommt j́akarta statt javax
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,15 +29,15 @@ public class Author {
     @ManyToMany(mappedBy = "associatedAuthors")
     private List<Tekst> texts = new ArrayList<>();
     
-    
-    
-    public Author(String authorFirstName, String authorFamilyName) {
+    public Author( String authorFirstName, String authorFamilyName) {
 		this.authorFirstName = authorFirstName;
 		this.authorFamilyName = authorFamilyName;
 	}
+    
 	public Author() {
 		// TODO Auto-generated constructor stub
 	}
+	
 	// Getter & Setter
 	public Long getAuthorId() {
 		return authorId;

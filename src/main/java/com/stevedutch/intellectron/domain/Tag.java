@@ -11,18 +11,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-@Entity 
+@Entity
 @Table(name = "tags")
 public class Tag {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
 	private Long id;
-	
-	@Column(name = "tag", length =100)
+
+	@Column(name = "tag", length = 100)
 	private String tagText;
-	
+
 	@ManyToMany(mappedBy = "tags")
 	private List<Zettel> zettels = new ArrayList<>();
 
@@ -30,16 +30,13 @@ public class Tag {
 		this.tagText = tagText;
 	}
 
-	
 	public Tag() {
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long tagId) {
 		this.id = tagId;
@@ -65,8 +62,5 @@ public class Tag {
 	public String toString() {
 		return "Tag [id=" + id + ", tagText=" + tagText + ", zettels=" + zettels + "]";
 	}
-	
-	
-	
 
 }

@@ -31,124 +31,35 @@
         </div>
         <hr />
 
-        <!--    <div>   <label for="tags">Tag: </label><br /> -->
-
         <!--       MEINE FUNKTIONIERENDE LÖSUNG FÜR EIN TAG -->
         <!--          <label for="tag">Tag: </label><br />
             <input type="text" id="tag" name="tag"  th:field="${tag.tagText}" /><br />
         </div> -->
 
-
-
-        <!-- 
-          <div>  <label for="tags">Tagso: </label><br />
-            <label th:each="tag : ${tags}"></label>
-            <input type="text" id="tags" name="tags" th:value="${tag.tagText}" />
-            <input type="text" id="tags2" name="tags" th:value="${tag.tagText}" />
-         -->
-
-<!-- GIVE YOU.COM A CHNACE funkt. nicht-->
-<!-- <div>
-    <label for="tags">Tags: </label><br />
-    <div id="tags">
-        <input type="text" class="tagInput" name="tagcscss[]" th:field="${tag.tagText}" />
-    </div>
-
-    <button onclick="addTagInput()" type="button">Add Tag</button>
-</div>
-
-
-<script>
-function addTagInput() {
-var container = document.getElementById('tags');
-var input = document.createElement('input');
-input.type = 'text';
-input.name = 'tags[]'; // Use an array notation in the name attribute
-input.id = 'tag' + tagCounter; // Use a unique ID for each input field
-input.className = 'tagInput';
-container.appendChild(input);
-tagCounter++; // Increment the counter
-}
-
-</script> -->
-
-        <!-- AT LEAST WORKING SOMEHOW - SENDET DIE TAGS KOMMAGETRENNT ALS EIN tAG.tAGtEXT, (kOMMA HINTER JEDEM fELD) NICHT ALS ARRAYLIST -->
-<!--         <div>
-            <label for="tags">TagsIII: </label><br />
-            <div id="tags">
-                <input type="text" class="tagInput" name="tagText0" th:field="${tag.tagText}" />
+        <div>
+            <label for="tags">Tags: </label><br />
+            <div id="tagsContainer">
+                // Tags will be added here
+                <div th:each="tag, status : ${tags}">
+                    <input type="text" th:id="'tag' + ${status.index}" th:name="'tags[' + ${status.index} + ']'"
+                        th:value="${tag.tagText}" />
+                </div>
 
             </div>
-
-
-            <button onclick="addTagInput()" type="button">Add Tag</button>
+            <button id="addTagButton" type="button">Add Tag</button>
         </div>
-
-
-        <script>
-
-            let tagCounter = 1;
-
-            function addTagInput() {
-                var container = document.getElementById('tags');
-                var input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'tagText' + tagCounter; // Append the counter to the name, Name attribute to bind the input to an ArrayList
-                input.id = 'tagText'  + tagCounter; // Append the counter to the id
-                input.className = 'tagInput';
-                container.appendChild(input);
-                tagCounter++; // Increment the counter
-            } 
-
-            /*    function addTagInput( ) {
-                    
-                   var container = document.getElementById('tags');
-                   var input = document.createElement('input');
-                   input.type = 'text';
-                   input.name = 'tags3';
-                   input.id = 'tag';
-                   input.className = 'tagInput';
-                   container.appendChild(input);
-               } */
-        </script>-->
-
-
-        <!-- XXX NOT WORKING, BUT NICE. ERST NAH KLICK ERSCHENT DAS EIGABEFELD FÜR TAG -->
-        <div>
-    <label for="tags">Tags: </label><br />
-    <div id="tagsContainer">
-        // Tags will be added here
-<div th:each="tag, status : ${tags}">
-    <input type="text" th:id="'tag' + ${status.index}" th:name="'tags[' + ${status.index} + ']'"
-        th:value="${tag.tagText}" />
-</div>
-
-    </div>
-    <button id="addTagButton" type="button">Add Tag</button>
-</div>
-
-<script>
-    document.getElementById('addTagButton').addEventListener('click', function () {
-        var tagsContainer = document.getElementById('tagsContainer');
-        var newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.name = 'tagInput'; // Name attribute to bind the input to an ArrayList
-        tagsContainer.appendChild(newInput);
-    });
-</script>
-
 
 
         </div>
         <hr />
         <div>
             <label for="author">Author first name</label><br />
-            <input type="text" th:field="${author.authorFirstName}" /><br />
+            <input type="text" id="authorFirstName" th:field="${author.authorFirstName}" /><br />
         </div>
         <hr />
         <div>
             <label for="author">Author family name</label><br />
-            <input type="text" th:field="${author.authorFamilyName}" /><br />
+            <input type="text" id="authorFamilyName" th:field="${author.authorFamilyName}" /><br />
         </div>
         <hr />
         <label for="timestamp">date of text:</label><br />

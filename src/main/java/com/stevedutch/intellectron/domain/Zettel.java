@@ -86,7 +86,6 @@ public class Zettel {
 	}
 
 	public Zettel(Note note, Tekst tekst) {
-		super();
 		this.note = note;
 		this.tekst = tekst;
 	}

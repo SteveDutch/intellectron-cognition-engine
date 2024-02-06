@@ -27,19 +27,17 @@ import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class InputController {
-	
+
 	@Autowired
 	private AuthorService authorService;
-	
+
 	@Autowired
 	private TextService textService;
 	@Autowired
 	private ZettelService zettelService;
 	@Autowired
-    private ReferenceService refService;
-	
-	
-	
+	private ReferenceService refService;
+
 	@GetMapping("/input")
 	public String showInputMask(ModelMap model) {
 		model.put("author", new Author());
@@ -48,30 +46,23 @@ public class InputController {
 		model.put("note", new Note());
 		model.put("tag", new Tag());
 		model.put("tags", new ArrayList<Tag>());
-		
+
 		model.put("reference", new Reference());
 		// falls ich mal die Verweise anzeigen will ... :)
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
 		List<Zettel> zettels = zettelService.findLast10Zettel();
-		model.put("zettels" , zettels);
-		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= "+  zettels );
+		model.put("zettels", zettels);
+		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= " + zettels);
 		return "/input";
 	}
-	
+
 	@PostMapping("/input")
-	public String postNewZettel(
-			@RequestBody String json) throws JsonMappingException, JsonProcessingException /*
-										 * Zettel zettel, Tekst tekst, Note note, ArrayList<Tag> tags, List<Tag> tagso,
-										 * Tag tag, Author author, Reference reference)
-										 */ {
+	public String postNewZettel(@RequestBody String json) throws JsonMappingException, JsonProcessingException {
 		System.out.println("JSON = \n " + json);
 		ObjectMapper objectMapper = new ObjectMapper();
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
-//		Zettel zettel= objectMapper.readValue(json, Zettel.class);
-//		Tekst tekst = objectMapper.readValue(json, Tekst.class);
-		
-		
+
 		// TODO: check if names are empty
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
@@ -82,6 +73,7 @@ public class InputController {
 //		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
 		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
 		System.out.println(" finally Tag-Collection: \n" + zettelDto.tags());
+		System.out.println(" \n and here comes the author: \n" + zettelDto.author());
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 //		deactivated for Vanilla JS testing
 //		zettelService.createZettel(zettelDtoRecord);
@@ -95,6 +87,5 @@ public class InputController {
 ////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: AUTHOR \n" + author);
 		return "redirect:/input";
 	}
-
 
 }

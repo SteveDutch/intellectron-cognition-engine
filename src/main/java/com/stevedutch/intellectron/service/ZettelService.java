@@ -94,11 +94,14 @@ public class ZettelService {
 
 			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
-
-			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
 			
-			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
-			textService.saveTextWithAuthor(newTekst, newAuthor);
+			
+			ArrayList<Author> newAuthor = new ArrayList<Author>(zettelDto.author());
+
+//			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
+//			
+//			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
+//			textService.saveTextWithAuthor(newTekst, newAuthor);
 			System.out.println("\n ZettelService.createZettel ,  just updated: newTekst \n" + newTekst + "\n");
 			
 			Reference newReference = refService.saveReferenceWithZettel(zettelDto.reference(), newZettel);

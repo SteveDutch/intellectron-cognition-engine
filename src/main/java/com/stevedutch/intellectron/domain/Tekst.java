@@ -47,7 +47,6 @@ public class Tekst {
 	inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> associatedAuthors = new ArrayList<>();
 
-	// Getter & Setter
 	
 	public Tekst(String text) {
 		this.text = text;
@@ -57,6 +56,7 @@ public class Tekst {
 		// TODO Auto-generated constructor stub
 	}
 
+	// Getter & Setter
 	public Long getTextId() {
 		return textId;
 	}
