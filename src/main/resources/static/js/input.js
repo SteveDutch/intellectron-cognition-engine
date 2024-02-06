@@ -23,7 +23,7 @@ submitBtn.addEventListener("click", function (event) {
 function prepareZettel() {
   console.log("juhu, funct. prepareZettel wurde aufgerufen");
   zettel.zettel = document.getElementById("title").value;
-  zettel.note = document.getElementById("tekst").value;
+  zettel.note = document.getElementById("notiz").value;
   zettel.tekst = document.getElementById("tekst").value;
   // an array for tags:
   let inputs = document.getElementsByName("tagInput");
@@ -33,6 +33,14 @@ function prepareZettel() {
   zettel.author = author;
   author.authorFirstName = document.getElementById("authorFirstName").value;
   author.authorFamilyName = document.getElementById("authorFamilyName").value;
+
+
+	let tekst = { text: "", textDate: "", source:"" };
+	zettel.tekst = tekst;
+	tekst.text = document.getElementById("tekst").value;
+	tekst.textDate = document.getElementById("timestamp").value;
+	tekst.source = document.getElementById("source").value;
+
 
   console.log("als JSON:  " + JSON.stringify(zettel));
 

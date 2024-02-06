@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
@@ -61,6 +62,7 @@ public class InputController {
 	public String postNewZettel(@RequestBody String json) throws JsonMappingException, JsonProcessingException {
 		System.out.println("JSON = \n " + json);
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
 
 		// TODO: check if names are empty
@@ -74,6 +76,7 @@ public class InputController {
 		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
 		System.out.println(" finally Tag-Collection: \n" + zettelDto.tags());
 		System.out.println(" \n and here comes the author: \n" + zettelDto.author());
+		System.out.println(" \n and here comes the Text: \n" + zettelDto.tekst());
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 //		deactivated for Vanilla JS testing
 //		zettelService.createZettel(zettelDtoRecord);
