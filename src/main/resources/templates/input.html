@@ -73,9 +73,15 @@
         </div>
         <hr />
         <div>
-            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden soll:
-                <br /></label>test/
-            <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br />
+            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden soll:</label><br />
+            <div id="signatureContainer">
+                // Signature will be added here
+                <div th:each="reference, status : ${references}">
+                    <input type="text" th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
+                        th:value="${reference.targetZettel}" />
+                </div>
+<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
+            <button id="addReferenceButton" type="button">Add Reference</button>
         </div>
         <hr />
         <input type="submit" id="submit" value="Submit" />

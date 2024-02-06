@@ -29,6 +29,14 @@ public class Reference {
 	
 	@ManyToMany(mappedBy = "references")
 	private Set<Zettel> zettels = new HashSet<>();
+	
+	public Reference() {
+		
+	}
+	
+	public Reference(String signature) {
+		this.originZettel = Long.parseLong(signature);
+	}
 
 	// Getter & Setter
 	

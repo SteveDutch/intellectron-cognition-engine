@@ -80,7 +80,7 @@ public class ZettelService {
 			newZettel.setAdded(LocalDateTime.now());
 			newZettel.getReferences().add(zettelDto.reference());
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
 			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 
 			// Tag newTag = tagService.saveTagwithZettel(zettelDto.tags(), newZettel);

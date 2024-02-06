@@ -13,53 +13,64 @@ document.getElementById('addTagButton').addEventListener('click', function () {
 	tagsContainer.appendChild(newInput);
 });
 
+document.getElementById('addReferenceButton').addEventListener('click', function () { 
+	var signatureContainer = document.getElementById('signatureContainer');
+	var newReferenceInput = document.createElement('input');
+	newReferenceInput.type = 'text';
+	newReferenceInput.name = 'referenceInput'; // Name attribute to bind the input to an ArrayList
+	signatureContainer.appendChild(newReferenceInput);
+});
+
 submitBtn.addEventListener("click", function (event) {
-  // suppress HTML sending form
-  event.preventDefault();
-  console.log("hooray! submit was clicked");
-  prepareZettel();
+	// suppress HTML sending form
+	event.preventDefault();
+	console.log("hooray! submit was clicked");
+	prepareZettel();
 });
 
 function prepareZettel() {
-  console.log("juhu, funct. prepareZettel wurde aufgerufen");
-  zettel.zettel = document.getElementById("title").value;
-  zettel.note = document.getElementById("notiz").value;
-  zettel.tekst = document.getElementById("tekst").value;
-  // an array for tags:
-  let inputs = document.getElementsByName("tagInput");
-  let values = Array.from(inputs).map((input) => input.value);
-  zettel.tags = values;
-  let author = { authorFirstName: "", authorFamilyName: "" };
-  zettel.author = author;
-  author.authorFirstName = document.getElementById("authorFirstName").value;
-  author.authorFamilyName = document.getElementById("authorFamilyName").value;
+	console.log("juhu, funct. prepareZettel wurde aufgerufen");
+	zettel.zettel = document.getElementById("title").value;
+	zettel.note = document.getElementById("notiz").value;
+	zettel.tekst = document.getElementById("tekst").value;
+	// an array for tags:
+	let inputs = document.getElementsByName("tagInput");
+	let values = Array.from(inputs).map((input) => input.value);
+	zettel.tags = values;
+	let author = { authorFirstName: "", authorFamilyName: "" };
+	zettel.author = author;
+	author.authorFirstName = document.getElementById("authorFirstName").value;
+	author.authorFamilyName = document.getElementById("authorFamilyName").value;
 
-
-	let tekst = { text: "", textDate: "", source:"" };
+	let tekst = { text: "", textDate: "", source: "" };
 	zettel.tekst = tekst;
 	tekst.text = document.getElementById("tekst").value;
 	tekst.textDate = document.getElementById("timestamp").value;
 	tekst.source = document.getElementById("source").value;
 
+	// an array for references:
+	let referenceInputs = document.getElementsByName("referenceInput");
+	let referenceValues = Array.from(referenceInputs).map((input) => input.value);
+	zettel.references = referenceValues;
 
-  console.log("als JSON:  " + JSON.stringify(zettel));
+	console.log("als JSON:  " + JSON.stringify(zettel));
 
-  zettelToJava();
+	zettelToJava();
 }
 
 function zettelToJava() {
-  fetch(`http://127.0.0.1:8080/input`, {
-    method: "POST",
-    headers: {
-      "Access-Control-Allow-Origin": "http://127.0.0.1:8080",
-      /*	 nicht nötig, da fetch & a-c-a-o jetzt übereinstimmen,
-			die abweichung localhost zu 127.0.0.1 war schon zuviel ;)
-			but seems to cause trouble if missing at other computers or 
-			maybe esp. at macs */
-      mode: "no-cors",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(zettel, author, 4),
-  });
-  console.log("als JSON gesendet:  " + JSON.stringify(zettel, author, 4));
+	fetch(`http://127.0.0.1:8080/input`, {
+		method: "POST",
+		headers: {
+			"Access-Control-Allow-Origin": "http://127.0.0.1:8080",
+			/*	 nicht nötig, da fetch & a-c-a-o jetzt übereinstimmen,
+				  die abweichung localhost zu 127.0.0.1 war schon zuviel ;)
+				  but seems to cause trouble if missing at other computers or 
+				  maybe esp. at macs */
+			mode: "no-cors",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(zettel, author, 4),
+	});
+	console.log("als JSON gesendet:  " + JSON.stringify(zettel, author, 4));
 }

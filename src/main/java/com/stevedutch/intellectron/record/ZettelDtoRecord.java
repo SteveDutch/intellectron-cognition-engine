@@ -11,7 +11,7 @@ import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 
 public record ZettelDtoRecord(Zettel zettel, Tekst tekst, Note note, Author author, 
-		ArrayList<Tag> tags, Reference reference) {
+		ArrayList<Tag> tags, ArrayList<Reference> references) {
 	// You hierzu:Please note that the commented-out constructor in the code
     // snippet is not necessary since the record constructor handles the field initialization automatically.
 //	public ZettelDtoRecord(Zettel zettel, Tekst tekst, Note note, Tag tagText, Author author) {
