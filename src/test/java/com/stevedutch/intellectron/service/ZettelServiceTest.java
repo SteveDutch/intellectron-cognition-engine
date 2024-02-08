@@ -60,14 +60,17 @@ class ZettelServiceTest {
         Tag tag = new Tag("Wonderful Tag");
         ArrayList<Tag> tags = new ArrayList<Tag>();
         tags.add(tag);
-        Reference testReference = new Reference();
+        Reference testRef = new Reference();
+        testRef.setOriginZettel(123456789012L);
+        ArrayList<Reference> testRefs = new ArrayList<Reference>();
+        testRefs.add(testRef);
 
         // Mock any dependencies if required
         when(noteServiceMock.saveNotewithZettel(Mockito.any(Note.class), Mockito.any(Zettel.class))).thenReturn(note);
         when(noteServiceMock.saveNote(Mockito.any(Note.class))).thenReturn(note);
-        when(referenceServiceMock.saveReferenceWithZettel(Mockito.any(Reference.class), Mockito.any(Zettel.class))).thenReturn(testReference);
+        when(referenceServiceMock.saveReferenceWithZettel(Mockito.any(Reference.class), Mockito.any(Zettel.class))).thenReturn(testRef);
 
-        ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tags, testReference);
+        ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tags, testRefs);
 
         // Act
         ZettelDtoRecord result = zettelService.createZettel(zettelDto);

@@ -34,8 +34,8 @@ public class Reference {
 		
 	}
 	
-	public Reference(String signature) {
-		this.originZettel = Long.parseLong(signature);
+	public Reference(String targetSignature) {
+		this.targetZettel = Long.parseLong(targetSignature);
 	}
 
 	// Getter & Setter

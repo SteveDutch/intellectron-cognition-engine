@@ -79,8 +79,7 @@ public class InputController {
 		System.out.println(" \n and here comes the author: \n" + zettelDto.author());
 		System.out.println(" \n and here comes the Text: \n" + zettelDto.tekst());
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
-//		deactivated for Vanilla JS testing
-//		zettelService.createZettel(zettelDtoRecord);
+		zettelService.createZettel(zettelDto);
 //		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
 ////		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: NOTE (text & id) \n" 
 ////				+ zettelDtoRecord.note().getNoteText() + zettelDtoRecord.note().getZettelId());

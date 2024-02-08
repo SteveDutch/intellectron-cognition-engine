@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +22,13 @@ import com.stevedutch.intellectron.repository.NoteRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
+
 @Service
 public class ZettelService {
 
 	@Autowired
 	private ZettelRepository zettelRepo;
-
+private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
 	@Autowired
 	private TextRepository textRepo;
 
@@ -64,21 +67,21 @@ public class ZettelService {
 		System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
 		if (zettelDto.zettel().getZettelId() == null) {
 //				 id == null;
-
+			// save Note
 			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
 			System.out.println("imtest noteService = " + Optional.ofNullable(noteService).isPresent());
-
+			// Zettel
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);
 			newZettel.setTekst(zettelDto.tekst());
 			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto);
 			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto.tags());
+			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
 			ArrayList<Tag> newTags = new ArrayList<Tag>(zettelDto.tags());
 			System.out.println("\n HIERHIERHIER   !!!   "  + newTags);
-			newZettel.getTags().addAll(newTags);
 			//newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
-			newZettel.getReferences().add(zettelDto.reference());
+			newZettel.getReferences().addAll(zettelDto.references());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
 			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
@@ -86,6 +89,11 @@ public class ZettelService {
 			// Tag newTag = tagService.saveTagwithZettel(zettelDto.tags(), newZettel);
 			 
 			newTags.forEach(tag -> System.out.println("\n HIERHIERHIER   !!!   "  + tag));
+			newTags.forEach(tag -> tagService.saveTag(tag));
+			
+			newZettel.getTags().addAll(newTags);
+			
+			
 			newTags.forEach(tag -> tagService.saveTagwithZettel(tag, newZettel));
 			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTags \n" + newTags + "\n");
 			
@@ -96,18 +104,20 @@ public class ZettelService {
 			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
 			
 			
-			ArrayList<Author> newAuthor = new ArrayList<Author>(zettelDto.author());
+//			ArrayList<Author> newAuthor = new ArrayList<Author>();
 
-//			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
+			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
 //			
 //			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
 //			textService.saveTextWithAuthor(newTekst, newAuthor);
 			System.out.println("\n ZettelService.createZettel ,  just updated: newTekst \n" + newTekst + "\n");
 			
-			Reference newReference = refService.saveReferenceWithZettel(zettelDto.reference(), newZettel);
-			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newRef \n" + newReference + "\n");
+			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
+			newRefs.forEach(reference ->reference.setOriginZettel(newZettel.getSignature()));
+			newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
+			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newRef \n" + newRefs + "\n");
 			
-			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newReference);
+			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 			
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist

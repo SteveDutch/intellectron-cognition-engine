@@ -16,7 +16,11 @@ document.getElementById('addTagButton').addEventListener('click', function () {
 document.getElementById('addReferenceButton').addEventListener('click', function () { 
 	var signatureContainer = document.getElementById('signatureContainer');
 	var newReferenceInput = document.createElement('input');
-	newReferenceInput.type = 'text';
+	newReferenceInput.type = 'number';
+	newReferenceInput.min = '100000000000';
+	newReferenceInput.max = '999999999999';
+	newReferenceInput.pattern = '[0-9]{12}';
+	newReferenceInput.setAttribute('required', 'required');
 	newReferenceInput.name = 'referenceInput'; // Name attribute to bind the input to an ArrayList
 	signatureContainer.appendChild(newReferenceInput);
 });
