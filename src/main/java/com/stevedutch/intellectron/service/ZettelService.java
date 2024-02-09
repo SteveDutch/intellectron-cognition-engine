@@ -28,7 +28,7 @@ public class ZettelService {
 
 	@Autowired
 	private ZettelRepository zettelRepo;
-private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
 	@Autowired
 	private TextRepository textRepo;
 
@@ -64,58 +64,48 @@ private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
 
 	//	vXXX vielleicht ein bisschen groß, diese Funktion
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
-		System.out.println("\n Start of  createZettel()-->  note/Kommentar: \n" + zettelDto.note());
+		
 		if (zettelDto.zettel().getZettelId() == null) {
 //				 id == null;
 			// save Note
 			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
-			System.out.println("imtest noteService = " + Optional.ofNullable(noteService).isPresent());
+			LOG.info("\n imtest noteService = " + Optional.ofNullable(noteService).isPresent());
 			// Zettel
 			Zettel newZettel = zettelDto.zettel();
 			newZettel.setNote(newNote);
 			newZettel.setTekst(zettelDto.tekst());
-			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto);
-			System.out.println("\n HIERHIERHIER   !!!   "  + zettelDto.tags());
-			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
-			ArrayList<Tag> newTags = new ArrayList<Tag>(zettelDto.tags());
-			System.out.println("\n HIERHIERHIER   !!!   "  + newTags);
-			//newZettel.getTags().add(zettelDto.tag());
 			newZettel.setAdded(LocalDateTime.now());
 			newZettel.getReferences().addAll(zettelDto.references());
-
+			// TODO BUG 00:01 wird zu 1
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
 			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 
-			// Tag newTag = tagService.saveTagwithZettel(zettelDto.tags(), newZettel);
-			 
-			newTags.forEach(tag -> System.out.println("\n HIERHIERHIER   !!!   "  + tag));
-			newTags.forEach(tag -> tagService.saveTag(tag));
-			
-			newZettel.getTags().addAll(newTags);
-			
-			
-			newTags.forEach(tag -> tagService.saveTagwithZettel(tag, newZettel));
-			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newTags \n" + newTags + "\n");
-			
-			zettelRepo.save(newZettel);
-			System.out.println("\n ZettelService.createZettel ,  just saved: newZettel \n" + newZettel + "\n");
-
-			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
-			System.out.println("\n ZettelService.createZettel ,  just saved: newTekst \n" + newTekst + "\n");
-			
-			
-//			ArrayList<Author> newAuthor = new ArrayList<Author>();
-
-			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
+			// tags 
+//			ArrayList<Tag> newTags = new ArrayList<Tag>(zettelDto.tags());
+//			newTags.forEach(tag -> System.out.println("\n HIERHIERHIER   !!!   "  + tag));
+//			newTags.forEach(tag -> tagService.saveTag(tag));
 //			
-//			System.out.println("\n ZettelService.createZettel ,  just saved: newAuthor \n" + newAuthor + "\n");
-//			textService.saveTextWithAuthor(newTekst, newAuthor);
-			System.out.println("\n ZettelService.createZettel ,  just updated: newTekst \n" + newTekst + "\n");
+//			
+//			newTags.forEach(tag -> tagService.saveTagwithZettel(tag, newZettel));
+//			
+//			newZettel.getTags().addAll(newTags);
 			
+			ArrayList<Tag> newTags = tagService.saveTagsWithZettel(zettelDto.tags(), newZettel);
+			zettelRepo.save(newZettel);
+			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
+			
+			//Tekst
+			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
+			//Author
+			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
+			LOG.info("\n Author nach Speichern in CreateZettel :  " + newAuthor);
+			textService.saveTextWithAuthor(newTekst, newAuthor);
+			LOG.info(" \n Tekst nachm Speichern in CreateZettel:   "+ newTekst);
+		
+  			// reference
 			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
 			newRefs.forEach(reference ->reference.setOriginZettel(newZettel.getSignature()));
 			newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
-			System.out.println("\n ZettelService.createZettel ,  just savedwithZettel: newRef \n" + newRefs + "\n");
 			
 			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 			

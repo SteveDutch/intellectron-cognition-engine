@@ -27,13 +27,18 @@ class ZettelServiceTest {
 
 	@InjectMocks
     private ZettelService zettelService;
-    private NoteService noteServiceMock;
-    private AuthorService authorServiceMock;
-    private TagService tagServiceMock;
-    private TextService tekstServiceMock;
-    private TextRepository tekstRepositoryMock;
     @Mock
-    private ReferenceService referenceServiceMock;
+	private NoteService noteServiceMock;
+    @Mock
+    private AuthorService authorServiceMock;
+    @Mock
+    private TagService tagServiceMock;
+    @Mock
+    private TextService tekstServiceMock;
+    @Mock
+    private TextRepository tekstRepositoryMock;
+    @InjectMocks
+    private ReferenceService refService;
     
     private ZettelRepository zettelRepoMock;
 
@@ -46,7 +51,7 @@ class ZettelServiceTest {
         zettelRepoMock = mock(ZettelRepository.class);
         tekstServiceMock = mock(TextService.class);
         tekstRepositoryMock = mock(TextRepository.class);
-        referenceServiceMock = mock(ReferenceService.class);
+        refService = mock(ReferenceService.class);
         zettelService = new ZettelService(noteServiceMock, zettelRepoMock, noteServiceMock, authorServiceMock, tagServiceMock, tekstServiceMock, tekstRepositoryMock);
     }
 
@@ -68,11 +73,12 @@ class ZettelServiceTest {
         // Mock any dependencies if required
         when(noteServiceMock.saveNotewithZettel(Mockito.any(Note.class), Mockito.any(Zettel.class))).thenReturn(note);
         when(noteServiceMock.saveNote(Mockito.any(Note.class))).thenReturn(note);
-        when(referenceServiceMock.saveReferenceWithZettel(Mockito.any(Reference.class), Mockito.any(Zettel.class))).thenReturn(testRef);
+        when(refService.saveReferenceWithZettel(Mockito.any(Reference.class), Mockito.any(Zettel.class))).thenReturn(testRef);
 
         ZettelDtoRecord zettelDto = new ZettelDtoRecord(testZettel, testTekst, note, author, tags, testRefs);
 
         // Act
+        System.out.println("\n  im junit test \n" + zettelDto + refService);
         ZettelDtoRecord result = zettelService.createZettel(zettelDto);
 
         // Assert
