@@ -201,7 +201,7 @@ public class Zettel {
 										  + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
 										 
 				 +", tekst="
-				+ tekst + "]";
+				+ tekst + " , \n  References: " + Optional.ofNullable(references).map(list -> list.toString()).orElse("keine Verweise") + "]";
 	}
 
 }

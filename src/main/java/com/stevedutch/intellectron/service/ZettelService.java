@@ -71,25 +71,8 @@ public class ZettelService {
 			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
 			LOG.info("\n imtest noteService = " + Optional.ofNullable(noteService).isPresent());
 			// Zettel
-			Zettel newZettel = zettelDto.zettel();
-			newZettel.setNote(newNote);
-			newZettel.setTekst(zettelDto.tekst());
-			newZettel.setAdded(LocalDateTime.now());
-			newZettel.getReferences().addAll(zettelDto.references());
-			// TODO BUG 00:01 wird zu 1
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
-			newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
+			Zettel newZettel = setupZettel(zettelDto, newNote);
 
-			// tags 
-//			ArrayList<Tag> newTags = new ArrayList<Tag>(zettelDto.tags());
-//			newTags.forEach(tag -> System.out.println("\n HIERHIERHIER   !!!   "  + tag));
-//			newTags.forEach(tag -> tagService.saveTag(tag));
-//			
-//			
-//			newTags.forEach(tag -> tagService.saveTagwithZettel(tag, newZettel));
-//			
-//			newZettel.getTags().addAll(newTags);
-			
 			ArrayList<Tag> newTags = tagService.saveTagsWithZettel(zettelDto.tags(), newZettel);
 			zettelRepo.save(newZettel);
 			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
@@ -104,8 +87,10 @@ public class ZettelService {
 		
   			// reference
 			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-			newRefs.forEach(reference ->reference.setOriginZettel(newZettel.getSignature()));
-			newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
+			setRelationsAndSaveRefsAndZettel(newZettel, newRefs);
+			
+			LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" 
+			+ newRefs);
 			
 			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 			
@@ -122,6 +107,23 @@ public class ZettelService {
 		}
 // XXX here eine klares TODO
 		return zettelDto;
+	}
+
+	public Zettel setupZettel(ZettelDtoRecord zettelDto, Note newNote) {
+		Zettel newZettel = zettelDto.zettel();
+		newZettel.setNote(newNote);
+		newZettel.setTekst(zettelDto.tekst());
+		newZettel.setAdded(LocalDateTime.now());
+		newZettel.getReferences().addAll(zettelDto.references());
+		// TODO BUG  00:01 wird zu 1
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
+		newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
+		return newZettel;
+	}
+
+	public void setRelationsAndSaveRefsAndZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
+		newRefs.forEach(reference ->reference.setOriginZettel(newZettel.getSignature()));
+		newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
 	}
 
 //		 TODO
