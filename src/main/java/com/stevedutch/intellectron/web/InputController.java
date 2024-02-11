@@ -38,6 +38,8 @@ public class InputController {
 	private ZettelService zettelService;
 	@Autowired
 	private ReferenceService refService;
+	String unknownFamily = "Unbekannt";
+	String unknownName = "Ignotus";
 
 	@GetMapping("/input")
 	public String showInputMask(ModelMap model) {
@@ -65,7 +67,15 @@ public class InputController {
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
 
-		// TODO: check if names are empty
+		//  check if names are empty TODO:right place?
+		if (zettelDto.author().getAuthorFamilyName() == null || zettelDto.author().getAuthorFamilyName() == "" 
+				|| zettelDto.author().getAuthorFamilyName().trim().isBlank())  {
+			zettelDto.author().setAuthorFamilyName(unknownFamily);
+		}
+		if (zettelDto.author().getAuthorFirstName() == null || zettelDto.author().getAuthorFirstName() == ""
+				|| zettelDto.author().getAuthorFirstName().trim().isBlank())  {
+			zettelDto.author().setAuthorFirstName(unknownName);
+		}
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
 //		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
 //		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
@@ -81,9 +91,9 @@ public class InputController {
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 		zettelService.createZettel(zettelDto);
 //		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
-////		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: NOTE (text & id) \n" 
+////		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: Note (text & id) \n" 
 ////				+ zettelDtoRecord.note().getNoteText() + zettelDtoRecord.note().getZettelId());
-////		System.out.println("\n InputController.postNewZettel after createZettel() \n --> nur für mich: NOTE \n" +note);
+////		System.out.println("\n InputController.postNewZettel after createZettel() \n --> nur für mich: Note\n" +note);
 //		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TAGs \n;" + tags);
 ////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TEKST \n" + tekst);
 //		System.out.println("\n InputController.postNewZettel after createZettel() \n  --> nur für mich: ZETTEL \n" + zettel);

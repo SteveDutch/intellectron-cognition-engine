@@ -105,7 +105,6 @@ public class ZettelService {
 
 			}
 		}
-// XXX here eine klares TODO
 		return zettelDto;
 	}
 
