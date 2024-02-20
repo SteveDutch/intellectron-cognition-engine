@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>feed your intellectron</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/input.css" />
     <!-- Falls du eine separate CSS-Datei hast -->
     <script type="text/javascript" src="../js/input.js" defer></script>
 </head>
@@ -16,18 +16,21 @@
 <body>
     <form action="/input" method="post" th:object="${ZettelDtoRecord}">
         <div>
-            <label for="title">Title/Topic: </label><br />
-            <input type="text" id="title" name="title" th:field="${zettel.topic}" />
+            <label for="title">Title/Topic: </label>
+            <textarea id="title" name="title" th:field="${zettel.topic}" rows="3" cols="23" autocomplete="on"></textarea><br />
+            <!-- <input type="text" /> -->
         </div>
         <hr />
         <div>
-            <label for="note">Notiz / note /thought:</label><br />
-            <input type="text" id="notiz" name="article" th:field="${note.noteText}" /><br />
+            <label for="note">Notiz / note /thought:</label>
+            <textarea id="notiz" name="article" th:field="${note.noteText}" rows="5" cols="33" autocomplete="on"></textarea><br />
+            <!-- <input type="text"  /><br /> -->
         </div>
         <hr />
         <div>
             <label for="tekst">Text:</label>
-            <input id="tekst" th:field="${tekst.text}" />
+            <textarea id="tekst" name="tekst" th:field="${tekst.text}" rows="5" cols="33" autocomplete="on"></textarea><br />
+            <!-- <input id="tekst" th:field="${tekst.text}" /> -->
         </div>
         <hr />
 
@@ -73,18 +76,20 @@
         </div>
         <hr />
         <div>
-            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden soll:</label><br />
+            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden
+                soll:</label><br />
             <div id="signatureContainer">
                 // Signature will be added here
                 <div th:each="reference, status : ${references}">
-                    <input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
+                    <input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
+                        th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
                         th:value="${reference.targetZettel}" />
                 </div>
-<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-            <button id="addReferenceButton" type="button">Add Reference</button>
-        </div>
-        <hr />
-        <input type="submit" id="submit" value="Submit" />
+                <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
+                <button id="addReferenceButton" type="button">Add Reference</button>
+            </div>
+            <hr />
+            <input type="submit" id="submit" value="Submit" />
     </form>
     <div> <!-- show last 10 zettels -->
         <table>
@@ -101,10 +106,11 @@
                     <td colspan="2"> No Zettel Available </td>
                 </tr>
                 <tr th:each="zettel : ${zettels}">
-                    <td><span th:text="${zettel.signature}"> signature </span></td>
-                    <td><span th:text="${zettel.topic}"> topic </span></td>
+                    <td><span class="showLast" th:text="${zettel.signature}"> signature </span></td>
+                    <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
                     <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
-                    <td><span th:each="reference : ${zettel.references}" th:text= "${reference.targetZettel} + ' // ' "></span></td>
+                    <td><span th:each="reference : ${zettel.references}"
+                            th:text="${reference.targetZettel} + ' // ' "></span></td>
                 </tr>
             </tbody>
         </table>

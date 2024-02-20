@@ -25,10 +25,11 @@ import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
 public class ZettelService {
-
+	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
+	
 	@Autowired
 	private ZettelRepository zettelRepo;
-	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
+
 	@Autowired
 	private TextRepository textRepo;
 
@@ -114,7 +115,8 @@ public class ZettelService {
 		newZettel.setTekst(zettelDto.tekst());
 		newZettel.setAdded(LocalDateTime.now());
 		newZettel.getReferences().addAll(zettelDto.references());
-		// TODO BUG  00:01 wird zu 1
+		// TODO BUG  00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
+		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
 		newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 		return newZettel;

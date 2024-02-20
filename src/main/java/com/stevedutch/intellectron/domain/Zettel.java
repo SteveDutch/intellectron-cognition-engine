@@ -66,7 +66,7 @@ public class Zettel {
 	//constructor junit test
 	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Long signature,
 			List<Tag> tags, Tekst tekst) {
-		super();
+
 		this.zettelId = zettelId;
 		this.topic = topic;
 		this.note = note;

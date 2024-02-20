@@ -1,7 +1,8 @@
 package com.stevedutch.intellectron.record;
 
 import java.util.ArrayList;
-import java.time.LocalDate; 
+
+import org.springframework.stereotype.Component;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
@@ -10,6 +11,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 
+@Component
 public record ZettelDtoRecord(Zettel zettel, Tekst tekst, Note note, Author author, 
 		ArrayList<Tag> tags, ArrayList<Reference> references) {
 	// You hierzu:Please note that the commented-out constructor in the code
