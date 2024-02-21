@@ -171,4 +171,8 @@ public class ZettelService {
 		return zettelRepo.findLast10Zettel();
 	}
 
+	public Zettel findZettelById(Long zettelid) {
+		return zettelRepo.findById(zettelid).orElse(new Zettel());
+	}
+
 }

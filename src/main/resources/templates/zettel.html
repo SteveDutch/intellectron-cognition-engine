@@ -10,7 +10,20 @@
 </head>
 <body>
     <div>
-        <span th:>Topic: </span>
+        <span th:field="${zettel.topic}">Topic: </span>
+        <div>
+        <span th:text="|ID: ${zettel.zettelId}|"></span><br />
+        </div>
+        <span th:text="|Topic: ${zettel.topic}|"></span><br />
+        <span th:text="|Note: ${zettel.note.noteText}|"></span><br />
+        <span th:text="|Signatur: ${zettel.signature}|"></span><br />
+        <span th:text="|Text: ${zettel.tekst.text}|"></span><br />
+        <div th:each="tag:${zettel.tags}">
+            <span th:text="|tagged: ${tag.tagText}"></span><br />
+        </div>
+            <div th:each="reference:${zettel.references}">
+                <span th:text="|referres: ${reference.targetZettel}"></span><br />
+            </div>
     </div>
 
 </body>
