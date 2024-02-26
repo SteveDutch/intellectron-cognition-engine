@@ -51,18 +51,6 @@ public class ZettelService {
 	@Autowired
 	private ReferenceService refService;
 	
-	//for junit testing
-	ZettelService(NoteService noteServiceMock, ZettelRepository zettelRepoMock, NoteService noteServiceMock2, AuthorService authorServiceMock, TagService tagServiceMock, TextService tekstServiceMock, TextRepository tekstRepositoryMock) {
-		this.noteService = noteServiceMock;
-        this.zettelRepo = zettelRepoMock;
-        this.noteService = noteServiceMock2;
-        this.authorService = authorServiceMock;
-        this.tagService = tagServiceMock;
-        this.textService = tekstServiceMock;
-        this.textRepo = tekstRepositoryMock;
-        
-	}
-
 	//	vXXX vielleicht ein bisschen groß, diese Funktion
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 		
@@ -97,14 +85,14 @@ public class ZettelService {
 			
 		} else {
 			// TODO Überprüfen, ob der Zettel bereits vorhanden ist
-			Optional<Zettel> actualZettel = zettelRepo.findById(zettelDto.zettel().getZettelId());
-			if (actualZettel.isPresent()) {
-				// Do something with the zettel
-
-			} else {
-				// id vorhanden
-
-			}
+//			Optional<Zettel> actualZettel = zettelRepo.findById(zettelDto.zettel().getZettelId());
+//			if (actualZettel.isPresent()) {
+//				// Do something with the zettel
+//
+//			} else {
+//				// id vorhanden
+//
+//			}
 		}
 		return zettelDto;
 	}
@@ -173,6 +161,10 @@ public class ZettelService {
 
 	public Zettel findZettelById(Long zettelid) {
 		return zettelRepo.findById(zettelid).orElse(new Zettel());
+	}
+	
+	public void deleteOneZettelbyId (Long zettelId ) {
+		zettelRepo.deleteById(zettelId);
 	}
 
 }

@@ -7,26 +7,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 public class ZettelServiceCodiumTest {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
+	
 	@InjectMocks
 	private ZettelService zettelService;
 	@Mock
 	 private ZettelRepository zettelRepo;
+	
+    @BeforeEach
+    public void setUp() {
+    	zettelService = mock(ZettelService.class);
+    }
 
     // updates a Zettel with new values when all fields are provide
     @Test
@@ -71,9 +82,11 @@ public class ZettelServiceCodiumTest {
         Zettel zettel = new Zettel();
         zettel.setZettelId(1L);
         zettel.setTopic("New Topic");
+        zettelService = mock(ZettelService.class);
     
         // Act
         Zettel updatedZettel = zettelService.updateZettel(zettel);
+        LOG.info(updatedZettel.toString());
     
         // Assert
         assertNotNull(updatedZettel);
@@ -126,6 +139,8 @@ public class ZettelServiceCodiumTest {
         Zettel zettel = new Zettel();
         zettel.setZettelId(1L);
         zettel.setTopic("Topic");
+        zettelRepo = mock(ZettelRepository.class);
+        zettelService = mock(ZettelService.class);
     
         when(zettelRepo.findById(anyLong())).thenReturn(Optional.empty());
     

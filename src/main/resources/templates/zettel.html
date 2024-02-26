@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,25 +9,31 @@
     <!-- Falls du eine separate CSS-Datei hast -->
     <script type="text/javascript" src="../js/zettel.js" defer></script>
 </head>
+
 <body>
     <div>
-        <span th:field="${zettel.topic}">Topic: </span>
+
         <div>
-        <span th:text="|ID: ${zettel.zettelId}|"></span><br />
+            <p th:text="|ID: ${zettel.zettelId}|"></p>
         </div>
-        <span th:text="|Topic: ${zettel.topic}|"></span><br />
-        <span th:text="|Note: ${zettel.note.noteText}|"></span><br />
-        <span th:text="|Signatur: ${zettel.signature}|"></span><br />
-        <span th:text="|Text: ${zettel.tekst.text}|"></span><br />
+        <p th:text="|Topic: ${zettel.topic}|"></p>
+        <p th:text="|Note: ${zettel.note.noteText}|"></p>
+
+        <p th:text="|Text: ${zettel.tekst.text}|"></p>
         <div th:each="tag:${zettel.tags}">
-            <span th:text="|tagged: ${tag.tagText}"></span><br />
+            <p th:text="|tagged: ${tag.tagText}"></p>
         </div>
-            <div th:each="reference:${zettel.references}">
-                <span th:text="|referres: ${reference.targetZettel}"></span><br />
-            </div>
+        <p th:text="|Signatur: ${zettel.signature}|"></p>
+        <div th:each="reference:${zettel.references}">
+            <p th:text="|referres: ${reference.targetZettel}|"></p>
+        </div>
     </div>
-
+    <form th:action="@{/zettel/{zettelId}/delete(zettelId=${zettel.zettelId})}" method="post" >
+        <!-- <input type="hidden" th:value="${zettel.zettelId}" /> -->
+        <button id="delete" type="submit">Delete Zettel</button>
+    </form>
+              
+    <div><button id="change" type="button">Change Zettel</button></div>
 </body>
+
 </html>
-
-

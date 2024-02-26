@@ -33,7 +33,7 @@ class InputControllerTest {
 		String result = sut.showInputMask(model);
 		
 		assertThat(result).isEqualTo("/input");
-		Mockito.verify(zettelServiceMock).findAll();
+		Mockito.verify(zettelServiceMock).findLast10Zettel();
 	}
 
 }

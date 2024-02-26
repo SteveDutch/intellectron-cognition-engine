@@ -21,23 +21,13 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
-import com.stevedutch.intellectron.service.AuthorService;
-import com.stevedutch.intellectron.service.ReferenceService;
-import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class InputController {
 
 	@Autowired
-	private AuthorService authorService;
-
-	@Autowired
-	private TextService textService;
-	@Autowired
 	private ZettelService zettelService;
-	@Autowired
-	private ReferenceService refService;
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
 
