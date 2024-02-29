@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>your intellectron shows</title>
-    <link rel="stylesheet" href="css/input.css" />
+    <link rel="stylesheet" href="../css/zettel.css" />
     <!-- Falls du eine separate CSS-Datei hast -->
     <script type="text/javascript" src="../js/zettel.js" defer></script>
 </head>
 
 <body>
-    <div>
+    <div id="zettel">
 
         <div>
             <p th:text="|ID: ${zettel.zettelId}|"></p>
@@ -19,7 +19,7 @@
         <p th:text="|Topic: ${zettel.topic}|"></p>
         <p th:text="|Note: ${zettel.note.noteText}|"></p>
 
-        <p th:text="|Text: ${zettel.tekst.text}|"></p>
+        <p th:utext="|Text: ${zettel.tekst.text}|"></p>
         <div th:each="tag:${zettel.tags}">
             <p th:text="|tagged: ${tag.tagText}"></p>
         </div>
@@ -27,6 +27,7 @@
         <div th:each="reference:${zettel.references}">
             <p th:text="|referres: ${reference.targetZettel}|"></p>
         </div>
+        <p th:text="|Source: ${zettel.tekst.source}|"></p>
     </div>
     <form th:action="@{/zettel/{zettelId}/delete(zettelId=${zettel.zettelId})}" method="post" >
         <!-- <input type="hidden" th:value="${zettel.zettelId}" /> -->

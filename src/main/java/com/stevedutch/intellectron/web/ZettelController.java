@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.ZettelService;
 
@@ -37,6 +38,8 @@ public class ZettelController {
 //		model.put("references", new ArrayList<Reference>());
 		
 		Zettel zettel = zettelService.findZettelById(zettelId);
+		String formattedText = zettel.getTekst().getText();
+		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
         model.put("zettel", zettel);
         model.put("tags", zettel.getTags());
         model.put("references", zettel.getReferences());

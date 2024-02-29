@@ -14,6 +14,9 @@
 
 <body>
     <form action="/input" method="post" th:object="${ZettelDtoRecord}">
+            <div>
+            <p th:text="|ID: ${zettel.zettelId}|"></p>
+        </div>
         <div>
             <label for="title">Title/Topic: </label>
             <textarea id="title" name="title" th:field="${zettel.topic}" rows="3" cols="23" autocomplete="on"></textarea><br />

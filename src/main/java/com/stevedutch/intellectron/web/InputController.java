@@ -45,6 +45,7 @@ public class InputController {
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
 		List<Zettel> zettels = zettelService.findLast10Zettel();
+		zettels.forEach(zettel -> {zettel.getTekst().getText().replace("\n", "<br>");});
 		model.put("zettels", zettels);
 		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= " + zettels);
 		return "/input";
@@ -66,13 +67,6 @@ public class InputController {
 				|| zettelDto.author().getAuthorFirstName().trim().isBlank())  {
 			zettelDto.author().setAuthorFirstName(unknownName);
 		}
-//		System.out.println("\n Start of  InputController.postNewZettel()-->  Zettel: \n" + zettel);
-//		System.out.println("\n Start of  InputController.postNewZettel()-->  note/Kommentar: \n" + note);
-//		System.out.println("\n Start of  InputController.postNewZettel()-->   Text : \n" + tekst);
-//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tags  :\n " + tags.toString());
-//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tagso  :\n " + tagso.toString());
-//		System.out.println("\n Start of  InputController.postNewZettel()-->  Tag  :\n " + tag);
-//		System.out.println("\n Start of  InputController.postNewZettel()-->   Autor : \n" + author);
 		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
 		System.out.println(" finally Tag-Collection: \n" + zettelDto.tags());
 		System.out.println(" finally Reference-Collection: \n" + zettelDto.references());
