@@ -2,8 +2,6 @@ package com.stevedutch.intellectron.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;

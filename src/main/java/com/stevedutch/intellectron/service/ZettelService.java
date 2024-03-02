@@ -18,8 +18,6 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
-import com.stevedutch.intellectron.repository.NoteRepository;
-import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 
@@ -31,17 +29,11 @@ public class ZettelService {
 	private ZettelRepository zettelRepo;
 
 	@Autowired
-	private TextRepository textRepo;
-
-	@Autowired
 	private TagService tagService;
 
 	@Autowired
 	private NoteService noteService;
 
-	@Autowired
-	private NoteRepository noteRepo;
-	
 	@Autowired
     private TextService textService;
 	
