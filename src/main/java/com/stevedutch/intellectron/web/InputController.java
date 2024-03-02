@@ -45,7 +45,7 @@ public class InputController {
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
 		List<Zettel> zettels = zettelService.findLast10Zettel();
-		zettels.forEach(zettel -> {zettel.getTekst().getText().replace("\n", "<br>");});
+
 		model.put("zettels", zettels);
 		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= " + zettels);
 		return "/input";
