@@ -110,7 +110,7 @@ public class ZettelService {
 //		 TODO
 	public Zettel updateZettel(Zettel zettel) {
 		if (zettel.getZettelId() == null) {
-			// wg, Optional erforderlich
+			// wg, Optional erforderlich 
 			Zettel existingZettel = zettelRepo.findById(zettel.getZettelId()).orElse(new Zettel());
 			// TODO Aktualisiere die relevanten Felder mit den neuen Werten, wenn sie nicht
 			// null sind

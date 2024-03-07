@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,11 @@ public class ZettelServiceCodiumTest {
 	private ZettelService zettelService;
 	@Mock
 	 private ZettelRepository zettelRepo;
+	
+	// (Mocks initialisieren U Injektion durchführen)
+    public ZettelServiceCodiumTest() {
+        MockitoAnnotations.openMocks(this);
+    }
 	
     @BeforeEach
     public void setUp() {
@@ -83,10 +89,12 @@ public class ZettelServiceCodiumTest {
         zettel.setZettelId(1L);
         zettel.setTopic("New Topic");
         zettelService = mock(ZettelService.class);
+        LOG.info("Zettel =" + zettel.toString());
+        
     
         // Act
         Zettel updatedZettel = zettelService.updateZettel(zettel);
-        LOG.info(updatedZettel.toString());
+        LOG.info("updatedZettel= " + updatedZettel.toString());
     
         // Assert
         assertNotNull(updatedZettel);
