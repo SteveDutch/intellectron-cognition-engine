@@ -15,25 +15,37 @@ class ZettelControllerTest {
 	@Mock
 	private ZettelService zettelService;
 	@InjectMocks
-    private ZettelController sut = new ZettelController();	
-	// (Mocks initialisieren U Injektion durchführen)
-    public ZettelControllerTest() {
-        MockitoAnnotations.openMocks(this);
-    }
-	
-    // ZettelController successfully deletes a Zettel by ID
-    @Test
-    public void test_delete_zettel() {
-        // arrange
-        Long zettelId = 1L;
-    
-        // act
-        String result = sut.deleteOneZettel(zettelId);
-    
-        // assert
-        assertEquals("redirect:/welcome", result);
-        verify(zettelService, times(1)).deleteOneZettelbyId(zettelId);
-    }
+	private ZettelController sut = new ZettelController();
 
+	// (Mocks initialisieren U Injektion durchführen)
+	public ZettelControllerTest() {
+		MockitoAnnotations.openMocks(this);
+	}
+
+	@Test
+	public void testUpdateOneZettel() {
+		// arrange
+		Long zettelId = 1L;
+
+		// act
+		String exspectedResult = sut.updateOneZettel(zettelId);
+		// assert
+		assertEquals(exspectedResult, "redirect:/zettel/1");
+
+	}
+
+	// ZettelController successfully deletes a Zettel by ID
+	@Test
+	public void test_delete_zettel() {
+		// arrange
+		Long zettelId = 1L;
+
+		// act
+		String result = sut.deleteOneZettel(zettelId);
+
+		// assert
+		assertEquals("redirect:/welcome", result);
+		verify(zettelService, times(1)).deleteOneZettelbyId(zettelId);
+	}
 
 }
