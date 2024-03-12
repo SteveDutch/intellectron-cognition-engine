@@ -59,10 +59,12 @@
     <hr />
 
     <div>
-        <label for="authorF">Author first name</label><br />
-        <div th:each="zettel.tekst.associatedAuthors, status : ${zettel.tekst.associatedAuthors}"></div>
-        <input type="text" th:id="'authorFirstName' " th:name="'zettel.tekst.associatedAuthors.authorFirstName[' +  ']'" 
-         th:value="${zettel.tekst.associatedAuthors}" /><br />
+        <label for="authorFirstName">Author first name</label><br />
+        <div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+        <input type="text" th:id="${'authorFirstName' + status.index}"
+            th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
+            th:value="${author.authorFirstName}" /><br />
+            </div>
     </div>
 
     <hr />
