@@ -97,7 +97,7 @@ public class ZettelService {
 		newZettel.getReferences().addAll(zettelDto.references());
 		// TODO BUG  00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
 		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(/* "yyyyMMddHHmm" */"HHmmddMMyyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmddMMyyyy");
 		newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
 		return newZettel;
 	}

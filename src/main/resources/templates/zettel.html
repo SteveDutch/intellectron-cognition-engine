@@ -15,7 +15,8 @@
 
 <form action="/input" method="post" th:object="${ZettelDtoRecord}">
     <div>
-        <p th:text="|ID: ${zettel.zettelId}|"></p>
+        <p  th:text="|ID: ${zettel.zettelId}|"></p><br />
+        <p >häh  <span id="zettelId" th:text="|${zettel.zettelId}|"></span></p>
     </div>
     <div>
         <label for="title">Title/Topic: </label>
@@ -49,7 +50,7 @@
         <div id="tagsContainer">
             // Tags will be added here
             <div th:each="tag, status : ${tags}">
-                <input type="text" th:id="'tag' + ${status.index}" th:name="'tags[' + ${status.index} + ']'"
+                <input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
                     th:value="${tag.tagText}" />
             </div>
 
@@ -58,7 +59,7 @@
     </div>
     <hr />
 
-    <div>
+    <div id="authorFirstName">
         <label for="authorFirstName">Author first name</label><br />
         <div th:each="author, status : ${zettel.tekst.associatedAuthors}">
         <input type="text" th:id="${'authorFirstName' + status.index}"
@@ -75,7 +76,7 @@
             th:value="${zettel.tekst.associatedAuthors}" /><br />
     </div> -->
 
-<div>
+<div id ="authorFamilyName">
     <label for="author">Author family name</label><br />
     <div th:each="author, status : ${zettel.tekst.associatedAuthors}">
         <input type="text" th:id="${'authorFamilyName' + status.index}"
@@ -84,12 +85,11 @@
     </div>
 </div>
 
-
-
     <hr />
     <label for="timestamp">date of text:</label><br />
+    <span th:text="|${tekst.textDate}|"></span><br />
+    <span>change date:</span><br />
     <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
-
     <hr />
 
     <div>
@@ -111,10 +111,11 @@
             <button id="addReferenceButton" type="button">Add Reference</button>
         </div>
         <hr />
+    <!--  Submit / Change Zettel -->   
         <input type="submit" id="submit" value="Submit" />
 </form>
     </div>
-    
+  <!--   Delete Zettel -->
     <div><button id="openDeleteModal" type="button">delete</button></div>
 
     <div id="deleteModal" class="modal">

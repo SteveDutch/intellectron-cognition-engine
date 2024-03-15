@@ -42,14 +42,14 @@ public class ZettelController {
         model.put("note", zettel.getNote());
         model.put("tekst", zettel.getTekst());
         model.put("author", zettel.getTekst().getAssociatedAuthors());
-        LOG.info("\n im ZettelController.showZettel, Authors= " + zettel.getTekst().getAssociatedAuthors());
+        LOG.info("\n im showZettel, Authors= " + zettel.getTekst().getAssociatedAuthors());
         
         model.put("tags", zettel.getTags());
         model.put("references", zettel.getReferences());
         return "/zettel";
     }
 	
-	@PostMapping("/zettel/{zettelId}"			)
+	@PostMapping("/zettel/{zettelId}")
     public String updateOneZettel(@PathVariable Long zettelId) {
 		LOG.info("\n im updateOneZettel = " + zettelId);
 		return "redirect:/zettel/" + zettelId;
