@@ -39,7 +39,6 @@ public class InputController {
 		model.put("note", new Note());
 		model.put("tag", new Tag());
 		model.put("tags", new ArrayList<Tag>());
-
 		model.put("reference", new Reference());
 		// falls ich mal die Verweise anzeigen will ... :)
 //		List<Reference> references = refService.findAll();

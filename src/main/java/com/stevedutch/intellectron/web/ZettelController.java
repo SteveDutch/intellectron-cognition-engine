@@ -8,9 +8,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -50,9 +50,10 @@ public class ZettelController {
     }
 	
 	@PostMapping("/zettel/{zettelId}")
-    public String updateOneZettel(@PathVariable Long zettelId) {
-		LOG.info("\n im updateOneZettel = " + zettelId);
-		return "redirect:/zettel/" + zettelId;
+    public String updateOneZettel(@RequestBody String json) {
+		LOG.info("\n im Controller updateOneZettel, JSON = " + json);
+		
+		return "redirect:/zettel/";
 	}
 	
 	@PostMapping("/zettel/{zettelId}/delete")

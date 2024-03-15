@@ -9,7 +9,7 @@ document.getElementById('addTagButton').addEventListener('click', function () {
     var tagsContainer = document.getElementById('tagsContainer');
     var newInput = document.createElement('input');
     newInput.type = 'text';
-    newInput.name = 'tagInput'; // Name attribute to bind the input to an ArrayList
+    newInput.name = 'tags'; // Name attribute to bind the input to an ArrayList
     tagsContainer.appendChild(newInput);
 });
 
@@ -34,20 +34,22 @@ submitBtn.addEventListener("click", function (event) {
 
 function prepareZettel() {
     console.log("juhu, funct. prepareZettel wurde aufgerufen");
-    zettel.zettel = document.getElementById("title").value;
+    zettel.topic = document.getElementById("title").value;
     zettel.note = document.getElementById("notiz").value;
     zettel.tekst = document.getElementById("tekst").value;
     // an array for tags:
     let inputs = document.getElementsByName("tags");
     let values = Array.from(inputs).map((input) => input.value);
-
+    zettel.tags = values;
 console.log("values: " + values);
 
-    zettel.tags = values;
+    
     let author = { authorFirstName: "", authorFamilyName: "" };
     zettel.author = author;
-    author.authorFirstName = document.getElementById("authorFirstName").value;
-    author.authorFamilyName = document.getElementById("authorFamilyName").value;
+    // XXX 0 is hardcoded, should be dynamic ... but since there is only one author, it's ok & necessary
+    // I'm using 1:1 instead of coded many:many for simplicity reasons
+    author.authorFirstName = document.getElementById("authorFirstName0").value;
+    author.authorFamilyName = document.getElementById("authorFamilyName0").value;
 
     let tekst = { text: "", textDate: "", source: "" };
     zettel.tekst = tekst;
