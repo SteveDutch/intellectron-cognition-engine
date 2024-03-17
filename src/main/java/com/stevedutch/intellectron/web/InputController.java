@@ -3,6 +3,8 @@ package com.stevedutch.intellectron.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +27,8 @@ import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class InputController {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
 	@Autowired
 	private ZettelService zettelService;
@@ -44,8 +48,11 @@ public class InputController {
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
 		List<Zettel> zettels = zettelService.findLast10Zettel();
+		List<Zettel> randomZettels = zettelService.find10RandomZettel();
+		LOG.info("\n Wieviel zufällige Zettel? --> " + randomZettels.size() + "\n " + "\n randomZettels = \n " + randomZettels);
 
 		model.put("zettels", zettels);
+		model.put("randomZettels", randomZettels);
 		System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= " + zettels);
 		return "/input";
 	}

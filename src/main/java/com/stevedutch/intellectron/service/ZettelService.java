@@ -141,7 +141,7 @@ public class ZettelService {
 		}
 
 		return zettelRepo.save(zettel);
-	}
+		}
 
 	public List<Zettel> findAll() {
 		return zettelRepo.findAllZettelWithTopic();
@@ -157,6 +157,19 @@ public class ZettelService {
 	
 	public void deleteOneZettelbyId (Long zettelId ) {
 		zettelRepo.deleteById(zettelId);
+	}
+
+	public List<Zettel> find10RandomZettel() {
+		List<Zettel> tenRandom = new ArrayList<>();
+		while (tenRandom.size() < 10) {
+			Zettel randomZettel = zettelRepo.findOneRandomZettel();
+			if (randomZettel!= null) {
+			tenRandom.add(randomZettel);
+			System.out.println("\n in der while-Schleife ZettelService.find10RandomEteel: -->\n "+ "Größe der Liste, --> "+ tenRandom.size() + 
+					"\n gefundener Zettel -->  " + randomZettel + "\n Liste der zufälligenZettel --> " + tenRandom + "\n ");
+			}
+		}
+		return tenRandom;
 	}
 
 }

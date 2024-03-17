@@ -22,5 +22,8 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long>{
 	@Query("SELECT zettel FROM Zettel zettel ORDER BY added DESC LIMIT 10")
 	public List<Zettel> findLast10Zettel();
 	
+	@Query("SELECT zettel FROM Zettel zettel WHERE zettel.id = (SELECT FLOOR(MAX(zettel.id) * RAND()) FROM Zettel zettel) ORDER BY zettel.id LIMIT 1")
+	public Zettel findOneRandomZettel();
+	
 	
 }
