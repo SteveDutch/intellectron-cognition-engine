@@ -34,16 +34,14 @@ submitBtn.addEventListener("click", function (event) {
 
 function prepareZettel() {
     console.log("juhu, funct. prepareZettel wurde aufgerufen");
-    zettel.topic = document.getElementById("title").value;
+    zettel.zettel = document.getElementById("title").value;
     zettel.note = document.getElementById("notiz").value;
     zettel.tekst = document.getElementById("tekst").value;
     // an array for tags:
     let inputs = document.getElementsByName("tags");
     let values = Array.from(inputs).map((input) => input.value);
     zettel.tags = values;
-console.log("values: " + values);
 
-    
     let author = { authorFirstName: "", authorFamilyName: "" };
     zettel.author = author;
     // XXX 0 is hardcoded, should be dynamic ... but since there is only one author, it's ok & necessary
@@ -63,9 +61,9 @@ console.log("values: " + values);
     zettel.references = referenceValues;
 
     // get ID of the zettel to be updated
-    let zettelId = parseInt(document.getElementById("zettelId").textContent);
+    // zettel.zettelId = parseInt(document.getElementById("zettelId").textContent);
 
-console.log("zettelId: " + zettelId);
+    console.log("zettelId: " + zettelId);
 
     console.log("als JSON:  " + JSON.stringify(zettel));
 

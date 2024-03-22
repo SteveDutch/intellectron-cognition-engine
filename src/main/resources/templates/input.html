@@ -108,7 +108,7 @@
                     <td colspan="2"> No Zettel Available </td>
                 </tr>
                 <tr th:each="zettel : ${zettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"><span class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
+                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
                     <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
                     <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
                     <td><span th:each="reference : ${zettel.references}"
@@ -133,7 +133,7 @@
                     <td colspan="2"> No Zettel Available </td>
                 </tr>
                 <tr th:each="zettel : ${randomZettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}">
+                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank">
                         <span class="showRandom" th:text="${zettel.signature}"> signature </span></a></td>
                     <td><span class="showRandom" th:text="${zettel.topic}"> topic </span></td>
                     <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.stevedutch.intellectron.record.ZettelDtoRecord;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,7 +65,7 @@ public class Zettel {
 	@JoinColumn(name = "text_id")
 	private Tekst tekst;
 
-	//constructor junit test
+	//constructor junit test TODO 
 	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Long signature,
 			List<Tag> tags, Tekst tekst) {
 
@@ -88,6 +90,18 @@ public class Zettel {
 	public Zettel(Note note, Tekst tekst) {
 		this.note = note;
 		this.tekst = tekst;
+	}
+
+	public Zettel(ZettelDtoRecord zettelDto) {
+		this.zettelId = zettelDto.zettel().getZettelId();
+		this.topic = zettelDto.zettel().getTopic();
+		this.note = zettelDto.zettel().getNote();
+		this.added = zettelDto.zettel().getAdded();
+		this.changed = zettelDto.zettel().getChanged();
+		this.signature = zettelDto.zettel().getSignature();
+		this.references = zettelDto.zettel().getReferences();
+		this.tags = zettelDto.zettel().getTags();
+		this.tekst = zettelDto.zettel().getTekst();
 	}
 
 	// Getter & Setter

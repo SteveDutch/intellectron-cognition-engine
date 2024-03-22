@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stevedutch.intellectron.service.ZettelService;
 
 class ZettelControllerTest {
@@ -23,14 +27,18 @@ class ZettelControllerTest {
 	}
 
 	@Test
-	public void testUpdateOneZettel() {
+	public void testUpdateOneZettel() throws JsonMappingException, JsonProcessingException {
 		// arrange
-		Long zettelId = 1L;
+		String jsonTestString = "{\"zettel\":\"Test; werden die Autorebnamensfelder noch bei Zettel.html angezeigt?\",\"note\":\"Test testomat\",\"tekst\":{\"text\":\"Supertext\",\"textDate\":\"\",\"source\":\"Superbrain is ma name\"},\"tags\":[\"just a tag\"],\"author\":{\"authorFirstName\":\"Karl Marx\",\"authorFamilyName\":\"Forever\"},\"references\":[]}";
+		// Create an instance of the ObjectMapper class from the Jackson library
+		ObjectMapper objectMapper = new ObjectMapper();
+		// parse the JSON String and convert it to a JsonNode object
+		JsonNode jsonTestObject = objectMapper.readTree(jsonTestString);
 
 		// act
-		String exspectedResult = sut.updateOneZettel(zettelId);
+		String exspectedResult = sut.updateOneZettel(1L, jsonTestString);
 		// assert
-		assertEquals(exspectedResult, "redirect:/zettel/1");
+		assertEquals(exspectedResult, "redirect:/zettel/");
 
 	}
 

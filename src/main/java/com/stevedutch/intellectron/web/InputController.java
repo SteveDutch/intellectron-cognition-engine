@@ -80,14 +80,6 @@ public class InputController {
 		System.out.println(" \n and here comes the Text: \n" + zettelDto.tekst());
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 		zettelService.createZettel(zettelDto);
-//		System.out.println("\n InputController.postNewZettel after createZettel()  -->  \n" + zettelDtoRecord);
-////		System.out.println("\n InputController.postNewZettel after createZettel()  --> nur für mich: Note (text & id) \n" 
-////				+ zettelDtoRecord.note().getNoteText() + zettelDtoRecord.note().getZettelId());
-////		System.out.println("\n InputController.postNewZettel after createZettel() \n --> nur für mich: Note\n" +note);
-//		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TAGs \n;" + tags);
-////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: TEKST \n" + tekst);
-//		System.out.println("\n InputController.postNewZettel after createZettel() \n  --> nur für mich: ZETTEL \n" + zettel);
-////		System.out.println("\n InputController.postNewZettel after createZettel()  \n --> nur für mich: AUTHOR \n" + author);
 		return "redirect:/input";
 	}
 

@@ -3,6 +3,7 @@ package com.stevedutch.intellectron.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.persistence.CascadeType;
@@ -111,6 +112,11 @@ public class Tekst {
 		this.associatedAuthors = authors;
 	}
 
+	public void addAssociatedAuthors(Author author) {
+		this.associatedAuthors.add(author);
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", text=" + text + ", textDate=" + textDate + ", source=" + source
@@ -118,5 +124,25 @@ public class Tekst {
 						.size())
 						.orElse(0) + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(associatedAuthors, source, text, textDate, textId, zettels);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tekst other = (Tekst) obj;
+		return Objects.equals(associatedAuthors, other.associatedAuthors) && Objects.equals(source, other.source)
+				&& Objects.equals(text, other.text) && Objects.equals(textDate, other.textDate)
+				&& Objects.equals(textId, other.textId) && Objects.equals(zettels, other.zettels);
+	}
+
 
 }

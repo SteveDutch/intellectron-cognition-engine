@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.persistence.Column; // NOTE mit Spring 3.0 kommt j́akarta statt javax
@@ -68,6 +69,25 @@ public class Author {
 	public String toString() {
 		return "Author \n [authorId=" + authorId + ", \n authorFirstName=" + authorFirstName + ", authorFamilyName="
 				+ authorFamilyName + ", \n Anzahl der Texte =" + Optional.of(texts.stream().count()) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(authorFamilyName, authorFirstName, authorId, texts);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Author other = (Author) obj;
+		return Objects.equals(authorFamilyName, other.authorFamilyName)
+				&& Objects.equals(authorFirstName, other.authorFirstName) && Objects.equals(authorId, other.authorId)
+				&& Objects.equals(texts, other.texts);
 	}
 	
 	

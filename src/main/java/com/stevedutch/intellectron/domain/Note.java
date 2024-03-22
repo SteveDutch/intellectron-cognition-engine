@@ -1,5 +1,7 @@
 package com.stevedutch.intellectron.domain;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -66,6 +68,27 @@ public class Note {
 	@Override
 	public String toString() {
 		return "Note [zettelId=" + zettelId + ", zettel=" + zettel + ", noteText=" + noteText + "]";
+	}
+
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(noteText, zettel, zettelId);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Note other = (Note) obj;
+		return Objects.equals(noteText, other.noteText) && Objects.equals(zettel, other.zettel)
+				&& Objects.equals(zettelId, other.zettelId);
 	}
 
 }

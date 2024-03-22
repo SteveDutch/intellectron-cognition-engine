@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,6 +62,24 @@ public class Tag {
 	@Override
 	public String toString() {
 		return "Tag [id=" + id + ", tagText=" + tagText + ", zettels=" + zettels + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, tagText, zettels);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tag other = (Tag) obj;
+		return Objects.equals(id, other.id) && Objects.equals(tagText, other.tagText)
+				&& Objects.equals(zettels, other.zettels);
 	}
 
 }

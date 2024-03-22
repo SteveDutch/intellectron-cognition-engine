@@ -121,4 +121,18 @@ void testCreateZettel() {
     assertNotNull(result);
     // Add more assertions as needed to verify the behavior of the createZettel method
 }
-}
+
+@Test
+void testUpdateOneZettelbyId() {
+    // Arrange
+    Long zettelId = 42L;
+    ZettelDtoRecord changes = new ZettelDtoRecord(null /* initialize with necessary objects */, null, null, null, null, null);
+
+    // Mock the dependencies if required
+
+    // Act
+    zettelService.updateOneZettelbyId(zettelId, changes);
+
+    // Assert
+    // Add assertions to verify the behavior of the updateOneZettelbyId method
+}}
