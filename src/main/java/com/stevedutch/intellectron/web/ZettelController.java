@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
+import com.stevedutch.intellectron.service.NoteService;
+import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -24,6 +26,10 @@ public class ZettelController {
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelController.class);
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private NoteService noteService;
+	@Autowired
+	private TextService textService;
 
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
@@ -66,6 +72,8 @@ public class ZettelController {
 //		zettelService.updateOneZettelbyId(zettelId, changes);
 		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n " + changes);
 		zettelService.updateOnlyZettel(zettelId, changes);
+		noteService.updateNote(zettelId, changes.note());
+		textService.updateTekst(zettelId, changes.tekst());
 
 //		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
 		return "redirect:/zettel/";

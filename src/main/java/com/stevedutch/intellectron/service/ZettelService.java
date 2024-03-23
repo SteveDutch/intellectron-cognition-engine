@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Author;
@@ -33,6 +34,10 @@ public class ZettelService {
 	@Autowired
 	private NoteService noteService;
 
+	// ohne Lazy gibt 's einen  circular reference error, 
+	// diesen mit Lazy zu beseitigen, feels like cheating
+	// (führt dazu, dass betreffendes Feld nicht beim Start, sondern erst beim Auduf initialisiert wird)
+	@Lazy
 	@Autowired
 	private TextService textService;
 
@@ -192,7 +197,9 @@ public class ZettelService {
 		updatedZettel.setTopic(changes.zettel().getTopic());
 //		updatedZettel.setSignature(changes.zettel().getSignature());
 		updatedZettel.setChanged(LocalDateTime.now());
+		updatedZettel = zettelRepo.save(updatedZettel);
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" +   "--->" + updatedZettel +"\n");
+		
 	}
 
 }
