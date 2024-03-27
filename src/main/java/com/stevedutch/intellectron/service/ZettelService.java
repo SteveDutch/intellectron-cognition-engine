@@ -23,20 +23,23 @@ import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
 public class ZettelService {
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
 
 	@Autowired
 	private ZettelRepository zettelRepo;
 
+	@Lazy
 	@Autowired
 	private TagService tagService;
 
 	@Autowired
 	private NoteService noteService;
 
-	// ohne Lazy gibt 's einen  circular reference error, 
+	// ohne Lazy gibt 's einen circular reference error,
 	// diesen mit Lazy zu beseitigen, feels like cheating
-	// (führt dazu, dass betreffendes Feld nicht beim Start, sondern erst beim Auduf initialisiert wird)
+	// (führt dazu, dass betreffendes Feld nicht beim Start, sondern erst beim Auduf
+	// initialisiert wird)
 	@Lazy
 	@Autowired
 	private TextService textService;
@@ -56,7 +59,7 @@ public class ZettelService {
 			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
 			// Zettel
 			Zettel newZettel = setupZettel(zettelDto, newNote);
-
+			
 			ArrayList<Tag> newTags = tagService.saveTagsWithZettel(zettelDto.tags(), newZettel);
 			zettelRepo.save(newZettel);
 			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
@@ -104,9 +107,11 @@ public class ZettelService {
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
-		
-		Zettel updatedZettel = zettelRepo.findById(zettelId).orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
-		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" +   "--->" + updatedZettel +"\n" +  "--->" + zettelDto);
+
+		Zettel updatedZettel = zettelRepo.findById(zettelId)
+				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
+		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" + "--->" + updatedZettel + "\n"
+				+ "--->" + zettelDto);
 //		
 		// save Note
 		Note newNote = noteService.saveNotewithZettel(zettelDto.note(), updatedZettel);
@@ -114,7 +119,7 @@ public class ZettelService {
 //		updatedZettel = setupZettel(zettelDto, newNote);
 
 		ArrayList<Tag> newTags = zettelDto.tags();
-		
+
 		newTags.forEach(tag -> tagService.saveTag(tag));
 		newTags.forEach(tag -> tag.getZettels().add(updatedZettel));
 		zettelRepo.save(updatedZettel);
@@ -178,9 +183,6 @@ public class ZettelService {
 			Zettel randomZettel = zettelRepo.findOneRandomZettel();
 			if (randomZettel != null) {
 				tenRandom.add(randomZettel);
-				System.out.println("\n in der while-Schleife ZettelService.find10RandomEteel: -->\n "
-						+ "Größe der Liste, --> " + tenRandom.size() + "\n gefundener Zettel -->  " + randomZettel
-						+ "\n Liste der zufälligenZettel --> " + tenRandom + "\n ");
 			}
 		}
 		return tenRandom;
@@ -192,14 +194,15 @@ public class ZettelService {
 
 	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
 
-		Zettel updatedZettel = zettelRepo.findById(zettelId).orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" +   "--->" + updatedZettel +"\n");
+		Zettel updatedZettel = zettelRepo.findById(zettelId)
+				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
+		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 		updatedZettel.setTopic(changes.zettel().getTopic());
 //		updatedZettel.setSignature(changes.zettel().getSignature());
 		updatedZettel.setChanged(LocalDateTime.now());
 		updatedZettel = zettelRepo.save(updatedZettel);
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" +   "--->" + updatedZettel +"\n");
-		
+		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
+
 	}
 
 }

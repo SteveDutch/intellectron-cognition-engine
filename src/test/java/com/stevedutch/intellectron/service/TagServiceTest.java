@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -23,15 +24,17 @@ import com.stevedutch.intellectron.repository.TagRepository;
 class TagServiceTest {
 	
     @InjectMocks
-    private TagService tagServiceMock;
+    private TagService tagService;
     @Mock
     private TagRepository tagRepoMock;
+    @Mock
+    private ZettelService zettelServiceMock;
     
     @BeforeEach
     public void setUp() {
     	MockitoAnnotations.openMocks(this);
     	tagRepoMock = mock(TagRepository.class);
-		tagServiceMock = new TagService(tagRepoMock);
+    	zettelServiceMock = mock(ZettelService.class);
         
     }
 
@@ -53,13 +56,31 @@ class TagServiceTest {
         when(tagRepoMock.save(Mockito.any(Tag.class))).thenReturn(sut);
 
 		// Act
-		Tag result = tagServiceMock.saveTagwithZettel(sut, testZettel);
+//		Tag result = tagService.saveOneTagwithZettel(sut, testZettel);
 		System.out.println("sut.TagText im Test = " + sut.getTagText());
 		System.out.println("Optional of sut im TeßagServiceTest = " + Optional.of(sut).isPresent());
-		System.out.println("Optional of result im TeßagServiceTest = " + Optional.of(result.getTagText()).isEmpty());
+//		System.out.println("Optional of result im TeßagServiceTest = " + Optional.of(result.getTagText()).isEmpty());
 		// Assert
 		assertNotNull(sut);
 		assertNotNull(result);
 	}
+	
+	@Test
+	void testUpdateTags() {
+		// Arrange
+		Long zettelId = 42L;
+		ArrayList<Tag> tags= new ArrayList<Tag>();
+		tags.add(new Tag("testomat"));
+		tags.add(new Tag("finally?"));
+		ArrayList <Tag> newTags= new ArrayList<Tag>();
+		newTags.add(new Tag("changed"));
+		newTags.add(new Tag("changed II."));
+		
+		// Act
+		tagService.updateTags(zettelId, newTags);
+		// Assert
+		assertNotEquals(tags, newTags);
+	}
+	
 
 }

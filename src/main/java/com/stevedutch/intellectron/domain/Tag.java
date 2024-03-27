@@ -61,7 +61,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag [id=" + id + ", tagText=" + tagText + ", zettels=" + zettels + "]";
+		return " \n Tag [id=" + id + ", tagText=" + tagText + ", \n zettels=" + zettels + "]";
 	}
 
 	@Override

@@ -11,5 +11,7 @@ import com.stevedutch.intellectron.domain.Tag;
 public interface TagRepository extends JpaRepository<Tag, Long> {
 	
 	public Optional<Tag> findById(Long id);
+	
+	public Optional<Tag> findByTagText(String name);
 
 }

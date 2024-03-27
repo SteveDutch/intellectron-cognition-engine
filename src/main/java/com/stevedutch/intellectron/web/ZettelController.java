@@ -17,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.NoteService;
+import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
@@ -30,6 +31,8 @@ public class ZettelController {
 	private NoteService noteService;
 	@Autowired
 	private TextService textService;
+	@Autowired
+    private TagService tagService;
 
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
@@ -53,7 +56,7 @@ public class ZettelController {
         model.put("note", zettel.getNote());
         model.put("tekst", zettel.getTekst());
         model.put("author", zettel.getTekst().getAssociatedAuthors());
-        LOG.info("\n im showZettel, Authors= " + zettel.getTekst().getAssociatedAuthors());
+//        LOG.info("\n im showZettel(), Authors= " + zettel.getTekst().getAssociatedAuthors());
         
         model.put("tags", zettel.getTags());
         model.put("references", zettel.getReferences());
@@ -74,6 +77,7 @@ public class ZettelController {
 		zettelService.updateOnlyZettel(zettelId, changes);
 		noteService.updateNote(zettelId, changes.note());
 		textService.updateTekst(zettelId, changes.tekst());
+		tagService.updateTags(zettelId, changes.tags());
 
 //		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
 		return "redirect:/zettel/";
