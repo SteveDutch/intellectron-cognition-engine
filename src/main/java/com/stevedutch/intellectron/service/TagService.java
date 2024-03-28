@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -38,12 +39,12 @@ public class TagService {
 					.orElse(new Tag(tag.getTagText())))
 					.collect(Collectors.toCollection(ArrayList::new));
 			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "  + tag));
-//			newTags.forEach(tag -> tagRepo.save(tag));
 			newTags.forEach(tag -> tag.getZettels().add(zettel));
 			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag));
 			newTags.forEach(tag -> tagRepo.save(tag));
 			newTags.forEach(tag -> System.out.println("\n HIER alle gespeichert   !!!   nämlich:  "  + tag));
 //			zettel.getTags().addAll(newTags);
+			zettel.setChanged(LocalDateTime.now());
 			zettelRepo.save(zettel);
 			return newTags;
 	}
@@ -54,6 +55,7 @@ public class TagService {
 		// TODO check if tag already is connected to zettel, nur dann speichern (nächste Zeile), dann müßte ein doppeltes Zuweisen nicht mehr möglich sein
 		zettel.getTags().add(tag);
 		tagRepo.save(tag);
+		zettel.setChanged(LocalDateTime.now());
 		zettelRepo.save(zettel);
 		return tag;
 		

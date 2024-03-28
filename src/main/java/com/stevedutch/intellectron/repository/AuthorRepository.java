@@ -12,6 +12,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
 	public Author findByAuthorFamilyName(String name);
 	
+	public Author findByAuthorFirstNameAndAuthorFamilyName(String name1, String name2);
 	
 	
 	

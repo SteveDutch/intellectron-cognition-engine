@@ -33,7 +33,10 @@ public class TextService {
 	}
 
 	public  Tekst saveTextWithAuthor(Tekst tekst, Author author) {
-		tekst.getAssociatedAuthors().add(author);
+		// XXX wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
+		// for now I'm mocking that just one Author is valid
+		// tekst.getAssociatedAuthors().add(author); Daher aber;
+		tekst.setOneAssociatedAuthors(author);
 		tekst = textRepo.save(tekst);
 		return textRepo.save(tekst);
 	}
@@ -50,8 +53,16 @@ public class TextService {
 		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" +   "--->" + updatedTekst +"\n" + updatedTekst.getZettels());
 		
 	}
+
+	public Tekst findById(Long textId) {
+		return textRepo.findById(textId).orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
+		
+	}
 	
-	
+	public Tekst findByText(String text) {
+		/// TODO null check 
+		return textRepo.findByText(text);
+	}
 	
 	
 

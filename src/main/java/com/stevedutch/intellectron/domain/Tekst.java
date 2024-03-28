@@ -117,6 +117,12 @@ public class Tekst {
 		
 	}
 	
+	public void setOneAssociatedAuthors(Author author) {
+		this.associatedAuthors.removeAll(associatedAuthors);
+		this.associatedAuthors.add(author);
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Tekst [textId=" + textId + ", text=" + text + ", textDate=" + textDate + ", source=" + source

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
+import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
@@ -33,6 +34,8 @@ public class ZettelController {
 	private TextService textService;
 	@Autowired
     private TagService tagService;
+	@Autowired
+    private AuthorService	authorService;
 
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
@@ -70,14 +73,13 @@ public class ZettelController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
-//		Zettel updatedZettel = zettelService.findZettelById(zettelId);
 		
-//		zettelService.updateOneZettelbyId(zettelId, changes);
 		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n " + changes);
 		zettelService.updateOnlyZettel(zettelId, changes);
 		noteService.updateNote(zettelId, changes.note());
 		textService.updateTekst(zettelId, changes.tekst());
 		tagService.updateTags(zettelId, changes.tags());
+		authorService.saveAuthorWithText(changes.author(), changes.tekst());
 
 //		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
 		return "redirect:/zettel/";

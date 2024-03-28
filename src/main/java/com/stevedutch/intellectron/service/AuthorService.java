@@ -1,5 +1,9 @@
 package com.stevedutch.intellectron.service;
 
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,36 +13,52 @@ import com.stevedutch.intellectron.repository.AuthorRepository;
 
 @Service
 public class AuthorService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(AuthorService.class);
 
     @Autowired
     private AuthorRepository authorRepo;
+    @Autowired
+    private TextService textService;
 
     /**
      * saves the author to the database
-     * after checking if firstname is not yet saved.
-     * If saved, the author will just be returned
+     * after checking if Author with that names is in the database.
+     * If in db existing, the author will just be returned
      * @param author
-     * @return saved author if firstname wasn't saved,
-     * otherwise, the given author will be returned
+     * @return saved author if not found in db,
+     * otherwise the given author will just be returned
      */
-    public Author saveAuthor(Author author) {
+    public Author saveAuthorIfUnknown(Author author) {
     	
-        if (authorRepo.findByAuthorFirstName(author.getAuthorFirstName()) == null) {
+        if (authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), author.getAuthorFamilyName()) == null) {
                 author.setAuthorFirstName(author.getAuthorFirstName());
+                author.setAuthorFamilyName(author.getAuthorFamilyName());
                 return authorRepo.save(author);
             } 
-            // else if (authorRepo.findByAuthorFamilyName(author.getAuthorFamilyName()) == null) {
-            //     author.setAuthorFamilyName(author.getAuthorFamilyName());
-            //     return authorRepo.save(author);
-            // } 
+
         return author;
 
     }
     // TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
     public Author saveAuthorWithText(Author author, Tekst tekst) {
-    	author.getTexts().add(tekst);
-        author = authorRepo.save(author);
-        return authorRepo.save(author);
+    	LOG.info(author.toString());
+    	tekst = textService.findByText(tekst.getText());
+    	Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), author.getAuthorFamilyName());
+    	if (givenAuthor == null) {
+    		Optional.ofNullable(author)
+    	    .ifPresentOrElse(this::saveAuthorIfUnknown, () -> new Author("Ignotus", "Unbekannt"));
+    		author.getTexts().add(tekst);
+    		textService.saveTextWithAuthor(tekst, author);
+    		return authorRepo.save(author);
+    		}
+    	givenAuthor.getTexts().add(tekst);
+    	textService.saveTextWithAuthor(tekst, givenAuthor);
+        return authorRepo.save(givenAuthor);
     }
+	public void updateAuthor(Long zettelId, Author author) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

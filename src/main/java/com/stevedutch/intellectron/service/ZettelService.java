@@ -44,9 +44,11 @@ public class ZettelService {
 	@Autowired
 	private TextService textService;
 
+	@Lazy
 	@Autowired
 	private AuthorService authorService;
 
+	@Lazy
 	@Autowired
 	private ReferenceService refService;
 
@@ -93,6 +95,7 @@ public class ZettelService {
 		newZettel.setNote(newNote);
 		newZettel.setTekst(zettelDto.tekst());
 		newZettel.setAdded(LocalDateTime.now());
+		newZettel.setChanged(LocalDateTime.now());
 		newZettel.getReferences().addAll(zettelDto.references());
 		// TODO BUG 00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
 		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
