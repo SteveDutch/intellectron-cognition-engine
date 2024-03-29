@@ -65,20 +65,6 @@ public class Zettel {
 	@JoinColumn(name = "text_id")
 	private Tekst tekst;
 
-	//constructor junit test TODO 
-	public Zettel(Long zettelId, String topic, Note note, LocalDateTime added, LocalDateTime changed, Long signature,
-			List<Tag> tags, Tekst tekst) {
-
-		this.zettelId = zettelId;
-		this.topic = topic;
-		this.note = note;
-		this.added = added;
-		this.changed = changed;
-		this.signature = signature;
-		this.tags = tags;
-		this.tekst = tekst;
-	}
-
 	public Zettel() {
 		// TODO Auto-generated constructor stub
 	}

@@ -18,6 +18,7 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
+import com.stevedutch.intellectron.service.ReferenceService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -36,7 +37,9 @@ public class ZettelController {
     private TagService tagService;
 	@Autowired
     private AuthorService	authorService;
-
+	@Autowired
+	private ReferenceService refService;
+	
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
 //		model.put("zettelDto", new ZettelDtoRecord(zettelDto.zettel(),zettelDto.tekst(), zettelDto.note(), zettelDto.author(), 
@@ -80,6 +83,7 @@ public class ZettelController {
 		textService.updateTekst(zettelId, changes.tekst());
 		tagService.updateTags(zettelId, changes.tags());
 		authorService.saveAuthorWithText(changes.author(), changes.tekst());
+		refService.updateReferences(zettelId, changes.references());
 
 //		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
 		return "redirect:/zettel/";

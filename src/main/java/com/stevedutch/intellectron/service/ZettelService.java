@@ -74,7 +74,7 @@ public class ZettelService {
 
 			// reference
 			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-			setRelationsAndSaveRefsAndZettel(newZettel, newRefs);
+			setRelationsAndSaveRefsWithZettel(newZettel, newRefs);
 
 			LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 
@@ -104,7 +104,7 @@ public class ZettelService {
 		return newZettel;
 	}
 
-	public void setRelationsAndSaveRefsAndZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
+	public void setRelationsAndSaveRefsWithZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
 		newRefs.forEach(reference -> reference.setOriginZettel(newZettel.getSignature()));
 		newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
 	}
@@ -136,7 +136,7 @@ public class ZettelService {
 
 		// reference
 		ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-		setRelationsAndSaveRefsAndZettel(updatedZettel, newRefs);
+		setRelationsAndSaveRefsWithZettel(updatedZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 		LOG.info("\n \n ZettelService.updateOneZettelbyId, am Ende .... LOGLOGLOG1st {}", updatedZettel);
@@ -206,6 +206,10 @@ public class ZettelService {
 		updatedZettel = zettelRepo.save(updatedZettel);
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 
+	}
+	
+	public Zettel saveZettel(Zettel zettel) {
+		return zettelRepo.save(zettel);
 	}
 
 }
