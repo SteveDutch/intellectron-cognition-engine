@@ -21,7 +21,7 @@ document.getElementById('addReferenceButton').addEventListener('click', function
     newReferenceInput.max = '999999999999';
     newReferenceInput.pattern = '[0-9]{12}';
     newReferenceInput.setAttribute('required', 'required');
-    newReferenceInput.name = 'referenceInput'; // Name attribute to bind the input to an ArrayList
+    newReferenceInput.name = 'references'; // Name attribute to bind the input to an ArrayList
     signatureContainer.appendChild(newReferenceInput);
 });
 
@@ -56,7 +56,7 @@ function prepareZettel() {
     tekst.source = document.getElementById("source").value;
 
     // an array for references:
-    let referenceInputs = document.getElementsByName("referenceInput");
+    let referenceInputs = document.getElementsByName("references");
     let referenceValues = Array.from(referenceInputs).map((input) => input.value);
     zettel.references = referenceValues;
 

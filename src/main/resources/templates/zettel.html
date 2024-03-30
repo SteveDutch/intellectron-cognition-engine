@@ -104,7 +104,7 @@
             // Signature will be added here
             <div th:each="reference, status : ${references}">
                 <input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-                    th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
+                    th:id="'signature' + ${status.index}" th:name="'references'"
                     th:value="${reference.targetZettel}" />
             </div>
             <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
