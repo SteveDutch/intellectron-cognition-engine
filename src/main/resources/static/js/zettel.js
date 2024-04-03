@@ -11,8 +11,6 @@ document.getElementById('addTagButton').addEventListener('click', function () {
     var newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.name = 'tags'; // Name attribute to bind the input to an ArrayList
-
-
     var newRemoveButton = document.createElement('button');
     newRemoveButton.type = 'button';
     newRemoveButton.textContent = 'rydde ut Tag';
@@ -26,6 +24,7 @@ document.getElementById('addTagButton').addEventListener('click', function () {
 
 document.getElementById('addReferenceButton').addEventListener('click', function () { 
     var signatureContainer = document.getElementById('signatureContainer');
+    var newDiv = document.createElement('div');
     var newReferenceInput = document.createElement('input');
     newReferenceInput.type = 'number';
     newReferenceInput.min = '100000000000';
@@ -33,7 +32,15 @@ document.getElementById('addReferenceButton').addEventListener('click', function
     newReferenceInput.pattern = '[0-9]{12}';
     newReferenceInput.setAttribute('required', 'required');
     newReferenceInput.name = 'references'; // Name attribute to bind the input to an ArrayList
-    signatureContainer.appendChild(newReferenceInput);
+    var newRemoveRefButton = document.createElement('button');
+    newRemoveRefButton.type = 'button';
+    newRemoveRefButton.textContent = 'rydde ut referanse';
+    newRemoveRefButton.onclick = function () {
+        this.parentNode.remove();
+    }
+    signatureContainer.appendChild(newDiv);
+    newDiv.appendChild(newReferenceInput);
+    newDiv.appendChild(newRemoveRefButton);
 });
 
 submitBtn.addEventListener("click", function (event) {
