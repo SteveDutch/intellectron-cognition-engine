@@ -97,6 +97,12 @@ public class Reference {
 				+ targetZettel + " ,  Anzahl der Zettel =\n " + Optional.of(zettels.stream().count()) + " \n"
 						+  "]";
 	}
+
+	public Long getReferenceId(Reference reference) {
+		this.referenceId = reference.getReferenceId();
+		// TODO Auto-generated method stub
+		return referenceId;
+	}
 	
 	
 

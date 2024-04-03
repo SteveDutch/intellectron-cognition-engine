@@ -12,4 +12,6 @@ public interface ReferenceRepository extends JpaRepository<Reference, Long> {
 	
 	public List<Reference> findAll();
 	
+	public Reference findByOriginZettelAndTargetZettel(Long originZettel, Long targetZettel);
+	
 }
