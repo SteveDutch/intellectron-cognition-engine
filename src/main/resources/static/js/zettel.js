@@ -7,10 +7,21 @@ let zettelId = parseInt(document.getElementById("zettelId").textContent);
 
 document.getElementById('addTagButton').addEventListener('click', function () {
     var tagsContainer = document.getElementById('tagsContainer');
+    var newDiv = document.createElement('div');
     var newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.name = 'tags'; // Name attribute to bind the input to an ArrayList
-    tagsContainer.appendChild(newInput);
+
+
+    var newRemoveButton = document.createElement('button');
+    newRemoveButton.type = 'button';
+    newRemoveButton.textContent = 'rydde ut Tag';
+    newRemoveButton.onclick = function () {
+        this.parentNode.remove();
+    }
+    tagsContainer.appendChild(newDiv);
+    newDiv.appendChild(newInput);
+    newDiv.appendChild(newRemoveButton);
 });
 
 document.getElementById('addReferenceButton').addEventListener('click', function () { 
@@ -70,7 +81,6 @@ function prepareZettel() {
     zettelToJava();
 }
 
-
 function zettelToJava() {
     fetch(`http://127.0.0.1:8080/zettel/${zettelId}`, {
         method: "POST",
@@ -108,3 +118,7 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
+
+document.getElementById('delete').addEventListener('click', function () {
+    deleteZettel();
+});

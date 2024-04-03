@@ -50,8 +50,8 @@
         <div id="tagsContainer">
             // Tags will be added here
             <div th:each="tag, status : ${tags}">
-                <input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
-                    th:value="${tag.tagText}" />
+                <input type="text" th:id="'tag' + ${status.index}" th:name="'tags'" th:value="${tag.tagText}" />
+                <button type="button" onclick="this.parentNode.remove()">rydde ut Tag</button>
             </div>
 
         </div>
