@@ -53,11 +53,13 @@ public class ReferenceService {
 				LOG.info("else/nicht in DB nachm save --> " + reference);
 				
 			}
-			
+			// fürs deleten muss ich wohl erst den Zettel finden
+			Zettel zettel = zettelService.findZettelById(zettelId);
+			zettel.setReferences(references.stream().collect(Collectors.toSet()));
+			LOG.info("updateReferences ; am ende, hat zettel refs ---> " + zettel.getReferences());
+			zettelService.saveZettel(zettel);
 			
 		}
-//		Zettel zettel = zettelService.findZettelById(zettelId);
-//		zettel.setReferences(references.stream().collect(Collectors.toSet()));
 //		references.forEach(reference -> reference.setOriginZettel(zettel.getZettelId()));
 //		LOG.info("updateReferences ; after setZettel  forEach ---> " + references);
 		

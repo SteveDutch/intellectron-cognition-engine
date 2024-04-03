@@ -38,12 +38,13 @@ public class TagService {
 			ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
 					.orElse(new Tag(tag.getTagText())))
 					.collect(Collectors.toCollection(ArrayList::new));
-			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "  + tag));
+			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "  + tag.getId()));
 			newTags.forEach(tag -> tag.getZettels().add(zettel));
-			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag));
+			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag.getZettels()));
 			newTags.forEach(tag -> tagRepo.save(tag));
 			newTags.forEach(tag -> System.out.println("\n HIER alle gespeichert   !!!   nämlich:  "  + tag));
 //			zettel.getTags().addAll(newTags);
+			
 			zettel.setChanged(LocalDateTime.now());
 			zettelRepo.save(zettel);
 			return newTags;
@@ -55,6 +56,7 @@ public class TagService {
 		// TODO check if tag already is connected to zettel, nur dann speichern (nächste Zeile), dann müßte ein doppeltes Zuweisen nicht mehr möglich sein
 		zettel.getTags().add(tag);
 		tagRepo.save(tag);
+		LOG.info("gesavtes Tag: " + tag);
 		zettel.setChanged(LocalDateTime.now());
 		zettelRepo.save(zettel);
 		return tag;
@@ -63,21 +65,25 @@ public class TagService {
 
 	public void updateTags(Long zettelId, ArrayList<Tag> tags) {
 
-		// neue Tags printen
-		tags.forEach(tag -> LOG.info(" \n --> updated Tags  wie vom frontend erhalten= \n ID = " + tag.getId()+ "\n text = " + tag.getTagText()));
+		// neue Tags printen for debugging
+		tags.forEach(tag -> LOG.info(" \n --> updated Tags  wie vom frontend erhalten= \n ID = " 
+				+ tag.getId()+ "\n text = " + tag.getTagText()));
 		Zettel zettel = zettelService.findZettelById(zettelId);
 		// XXX tags vom front end kommen nur mit tagText, daher anhand dessen den Tag finden, oder -falls nicht existent -
 		// oder als neues Tag mit dem gegebenen Text einrichten  --> Vermeiden von Doubletten in der Datenbank & Objekt
 		ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
 				.orElseGet(() -> new Tag(saveOneTagwithZettel(tag, zettel).getTagText())))
 				.collect(Collectors.toCollection(ArrayList::new));
-		newTags.forEach(tag -> LOG.info(" \n --> newTags, , gefeunden oder eingerichtet, als ArrayList  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
+		// vorhandene, aber neu hinzugefügten Tags mit Zettel verknüpfen
+		for (Tag tag :newTags) {
+			if (zettel.getTags().contains(tag)) {
+				} else {zettel.getTags().add(tag);}
+		}
 		// save Tags with Zettel
-		LOG.info(" \n -->  Tags, vorm saven,  Objekte = " + newTags );
+		LOG.info(" \n -->  Tags, nach find/save-Schleife, aber vorm saven,  Objekte = " + newTags );
 		saveTagsWithZettel(newTags, zettelService.findZettelById(zettelId));
 		LOG.info("\n --> Tags gespeichert:");
 		newTags.forEach(tag -> LOG.info(" \n --> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
-		LOG.info(" \n --> updated Tags,  Objekte = " + newTags );
 		
 	}
 
