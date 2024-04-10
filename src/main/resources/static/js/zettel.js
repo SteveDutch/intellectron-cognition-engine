@@ -65,6 +65,10 @@ function prepareZettel() {
     // XXX 0 is hardcoded, should be dynamic ... but since there is only one author, it's ok & necessary
     // I'm using 1:1 instead of coded many:many for simplicity reasons
     author.authorFirstName = document.getElementById("authorFirstName0").value;
+    if (author.authorFirstName === "") {
+        alert("Bitte geben Sie den Vornamen des Autors ein!");
+        return;
+    }
     author.authorFamilyName = document.getElementById("authorFamilyName0").value;
 
     let tekst = { text: "", textDate: "", source: "" };

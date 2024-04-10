@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -28,41 +29,42 @@ public class TagService {
 	
 	
 	public Tag saveTag(Tag tag) {
-		System.out.println("\n saveTag");
-		return tagRepo.save(tag);
+
+		if (tag.getId() == null) {
+			Optional<Tag> existingTag = tagRepo.findByTagText(tag.getTagText());
+			if (existingTag.isPresent()) {
+				return (existingTag.get());
+						//orElseGet(tagRepo.save(new Tag(tag.getTagText()))); // Verwenden Sie das existierende Tag / return just existingTag
+														// laut phind
+			} 
+			//return tagRepo.save(tag); // Speichern Sie das neue Tag  //  als New Tag
+
+		}
+		return tagRepo.save(tag); // Speichern Sie das neue Tag
+
 	}
+
 	
 	public ArrayList<Tag> saveTagsWithZettel(ArrayList<Tag> tags, Zettel zettel) {
 		
-			tags.forEach(tag -> System.out.println("\n HIER erhaltene tags die sollen ihre ID kriegen oder neu kriegen  !!!   nämlich:  "  + tag));
+			tags.forEach(tag -> System.out.println("\n HIER erhaltene tags die sollen ihre ID kriegen oder neu kriegen  !!!   nämlich:  " + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
 			ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
-					.orElse(new Tag(tag.getTagText())))
+					.orElse(saveTag(new Tag(tag.getTagText()))))
 					.collect(Collectors.toCollection(ArrayList::new));
-			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "  + tag.getId()));
-			newTags.forEach(tag -> tag.getZettels().add(zettel));
-			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag.getZettels()));
-			newTags.forEach(tag -> tagRepo.save(tag));
-			newTags.forEach(tag -> System.out.println("\n HIER alle gespeichert   !!!   nämlich:  "  + tag));
+			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "    + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
+//			newTags.forEach(tag -> tag.getZettels().add(zettel));
+//			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
+			newTags.forEach(tag -> saveTag(tag));
+			newTags.forEach(tag -> System.out.println("\n HIER alle gespeichert   !!!   nämlich:  "  + tag.getId()+" Anzahl Zettel: "  + tag.getZettels().size()));
 //			zettel.getTags().addAll(newTags);
 			
 			zettel.setChanged(LocalDateTime.now());
 			zettelRepo.save(zettel);
-			return newTags;
+			newTags.forEach(tag -> System.out.println("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
+			    + "\n zettels: " + tag.getZettels().size()));	
+			return newTags; 
 	}
 	
-	public Tag saveOneTagwithZettel(Tag tag, Zettel zettel) {
-		
-		tag.getZettels().add(zettel);
-		// TODO check if tag already is connected to zettel, nur dann speichern (nächste Zeile), dann müßte ein doppeltes Zuweisen nicht mehr möglich sein
-		zettel.getTags().add(tag);
-		tagRepo.save(tag);
-		LOG.info("gesavtes Tag: " + tag);
-		zettel.setChanged(LocalDateTime.now());
-		zettelRepo.save(zettel);
-		return tag;
-		
-	}
-
 	public void updateTags(Long zettelId, ArrayList<Tag> tags) {
 
 		// neue Tags printen for debugging
@@ -70,21 +72,28 @@ public class TagService {
 				+ tag.getId()+ "\n text = " + tag.getTagText()));
 		Zettel zettel = zettelService.findZettelById(zettelId);
 		// XXX tags vom front end kommen nur mit tagText, daher anhand dessen den Tag finden, oder -falls nicht existent -
-		// oder als neues Tag mit dem gegebenen Text einrichten  --> Vermeiden von Doubletten in der Datenbank & Objekt
+		//  als neues Tag mit dem gegebenen Text einrichten  --> Vermeiden von Doubletten in der Datenbank & Objekt
 		ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
-				.orElseGet(() -> new Tag(saveOneTagwithZettel(tag, zettel).getTagText())))
+				.orElseGet(() -> saveTag(new Tag(tag.getTagText()))))
 				.collect(Collectors.toCollection(ArrayList::new));
-		// vorhandene, aber neu hinzugefügten Tags mit Zettel verknüpfen
+		newTags.forEach(tag -> System.out.println("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
+		// in DB vorhandene, aber zum Zettel neu hinzugefügte Tags mit Zettel verknüpfen
 		for (Tag tag :newTags) {
 			if (zettel.getTags().contains(tag)) {
 				} else {zettel.getTags().add(tag);}
 		}
-		// save Tags with Zettel
-		LOG.info(" \n -->  Tags, nach find/save-Schleife, aber vorm saven,  Objekte = " + newTags );
-		saveTagsWithZettel(newTags, zettelService.findZettelById(zettelId));
-		LOG.info("\n --> Tags gespeichert:");
-		newTags.forEach(tag -> LOG.info(" \n --> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
-		
+		// löschen der Tags, die in der DB & Zettel, aber nicht mehr in der neuen Tagliste vorhanden sind (existed in old tag list, but not in new tag list)
+		ArrayList<Tag> OriginalTagsCopy = new ArrayList<>(zettel.getTags());
+		for (Tag tag :OriginalTagsCopy) {
+			if (!newTags.contains(tag)) {
+                zettel.getTags().remove(tag);
+//                zettelService.saveZettel(zettel); XXX ist unnötig, wenn mir auch nicht klar ist, warum.
+                
+            }
+		}
+
+		LOG.info("\n --- Tags gespeichert mit am Ende von updateTags : ");
+        newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}
 
 }

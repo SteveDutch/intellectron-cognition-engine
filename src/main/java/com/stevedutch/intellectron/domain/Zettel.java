@@ -56,7 +56,7 @@ public class Zettel {
 	inverseJoinColumns = @JoinColumn(name = "reference_id"))
 	private Set<Reference> references = new HashSet<>();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "tagged", joinColumns = @JoinColumn(name = "zettel_id"), 
 	inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();

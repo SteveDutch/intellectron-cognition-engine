@@ -1,5 +1,7 @@
 package com.stevedutch.intellectron.web;
 
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +64,6 @@ public class ZettelController {
         model.put("note", zettel.getNote());
         model.put("tekst", zettel.getTekst());
         model.put("author", zettel.getTekst().getAssociatedAuthors());
-//        LOG.info("\n im showZettel(), Authors= " + zettel.getTekst().getAssociatedAuthors());
-        
         model.put("tags", zettel.getTags());
         model.put("references", zettel.getReferences());
         return "/zettel";
@@ -78,7 +78,8 @@ public class ZettelController {
 		ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
 		
 		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n " + changes);
-		zettelService.updateOnlyZettel(zettelId, changes);
+//		zettelService.updateOnlyZettel(zettelId, changes); XXX all die Mühe umsonst ... 
+		changes.zettel().setChanged(LocalDateTime.now());
 		noteService.updateNote(zettelId, changes.note());
 		textService.updateTekst(zettelId, changes.tekst());
 		tagService.updateTags(zettelId, changes.tags());

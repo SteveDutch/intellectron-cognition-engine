@@ -41,16 +41,26 @@ public class TextService {
 		return textRepo.save(tekst);
 	}
 
-	public void updateTekst(Long zettelId, Tekst tekst) {
+	public Tekst updateTekst(Long zettelId, Tekst tekst) {
 		
-		Tekst actualTekst = zettelService.findZettelById(zettelId).getTekst();
-		Tekst updatedTekst = textRepo.findById(actualTekst.getTextId()).orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
-		LOG.info("\n -->TekstService.updateTekst, Tekst vorm Bearbeiten \n" +   "--->" + updatedTekst +"\n" + updatedTekst.getZettels());
-		updatedTekst.setText(tekst.getText());
-		updatedTekst.setTextDate(tekst.getTextDate());
-		updatedTekst.setSource(tekst.getSource());
+		Zettel zettel = zettelService.findZettelById(zettelId);
+//		Tekst oldTekst = zettelService.findZettelById(zettelId).getTekst();
+		// XXX Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst finden, oder -falls nicht existent -
+		// oder als neues Text mit dem gegebenen Text einricfhten  --> Vermeiden von Doubletten in der Datenbank & Objekt
+		Tekst updatedTekst = findByText(tekst.getText());
+		LOG.info("\n -->TekstService.updateTekst, Tekst " + updatedTekst);
+		if (updatedTekst == null) {
+			updatedTekst = new Tekst();
+            updatedTekst.setText(tekst.getText());
+            updatedTekst.setTextDate(tekst.getTextDate());
+            updatedTekst.setSource(tekst.getSource());
+            textRepo.save(updatedTekst);
+		}
 		textRepo.save(updatedTekst);
+		saveTextwithZettel(updatedTekst, zettelService.findZettelById(zettelId));
+		zettel.setTekst(updatedTekst);
 		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" +   "--->" + updatedTekst +"\n" + updatedTekst.getZettels());
+		return updatedTekst;
 		
 	}
 

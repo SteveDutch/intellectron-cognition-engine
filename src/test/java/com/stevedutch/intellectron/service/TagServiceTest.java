@@ -35,6 +35,7 @@ class TagServiceTest {
     	MockitoAnnotations.openMocks(this);
     	tagRepoMock = mock(TagRepository.class);
     	zettelServiceMock = mock(ZettelService.class);
+
         
     }
 
@@ -49,14 +50,22 @@ class TagServiceTest {
 		Tag tag = new Tag("finally?");
 		System.out.println(sut.getTagText() + Optional.of(sut).isPresent());
 		System.out.println("tags ="  + Optional.of(tags).isPresent());
+		// XXX hier TODO Konstktor gelöscht, manuell die Werte setzen
 		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", null, LocalDateTime.now(), 
 				LocalDateTime.now(), 1L, tags , null);
-		
+		Zettel testZettel = new Zettel();
+		testZettel.setZettelId(1234L);
+		testZettel.setTopic("Testzettel");
+		testZettel.setChanged(LocalDateTime.now());
+		testZettel.setAdded(LocalDateTime.now());
+		testZettel.setNote(sut);
+
+
 		// Mock any dependencies if required
         when(tagRepoMock.save(Mockito.any(Tag.class))).thenReturn(sut);
 
 		// Act
-//		Tag result = tagService.saveOneTagwithZettel(sut, testZettel);
+		Tag result = tagService.saveOneTagwithZettel(sut, testZettel);
 		System.out.println("sut.TagText im Test = " + sut.getTagText());
 		System.out.println("Optional of sut im TeßagServiceTest = " + Optional.of(sut).isPresent());
 //		System.out.println("Optional of result im TeßagServiceTest = " + Optional.of(result.getTagText()).isEmpty());

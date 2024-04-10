@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Tag {
 	@Column(name = "tag", length = 100)
 	private String tagText;
 
-	@ManyToMany(mappedBy = "tags")
+	@ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
 	private List<Zettel> zettels = new ArrayList<>();
 
 	public Tag(String tagText) {

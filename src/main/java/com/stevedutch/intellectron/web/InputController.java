@@ -74,10 +74,6 @@ public class InputController {
 			zettelDto.author().setAuthorFirstName(unknownName);
 		}
 		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
-		System.out.println(" finally Tag-Collection: \n" + zettelDto.tags());
-		System.out.println(" finally Reference-Collection: \n" + zettelDto.references());
-		System.out.println(" \n and here comes the author: \n" + zettelDto.author());
-		System.out.println(" \n and here comes the Text: \n" + zettelDto.tekst());
 //		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
 		zettelService.createZettel(zettelDto);
 		return "redirect:/input";

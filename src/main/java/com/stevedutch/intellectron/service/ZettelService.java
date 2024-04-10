@@ -129,7 +129,9 @@ public class ZettelService {
 		LOG.info("\n \n ZettelService.updateOneZettelbyId,  just savedwithZettel LOGLOGLOG1st {}", updatedZettel);
 
 		// Tekst
-		Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), updatedZettel);
+		
+		Tekst newTekst = textService.updateTekst(zettelId, zettelDto.tekst());
+		textService.saveTextwithZettel(zettelDto.tekst(), updatedZettel);
 		// Author
 		Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
 		textService.saveTextWithAuthor(newTekst, newAuthor);
@@ -141,29 +143,6 @@ public class ZettelService {
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 		LOG.info("\n \n ZettelService.updateOneZettelbyId, am Ende .... LOGLOGLOG1st {}", updatedZettel);
 		zettelDto = new ZettelDtoRecord(updatedZettel, newTekst, newNote, newAuthor, newTags, newRefs);
-//		Zettel updatedZettel = zettelRepo.findById(zettelId).orElse(new Zettel());
-//		Note updatedNote = noteService.saveNotewithZettel(changes.note(), updatedZettel);
-//		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" +   "--->" + updatedZettel +"\n" +  "--->" + changes);
-//		
-//		updatedZettel.setChanged(LocalDateTime.now());
-//		updatedZettel.setTopic(changes.zettel().getTopic());
-//		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n after setTopic \n --->" + updatedZettel +"\n --->" + changes);
-//		updatedZettel.setNote(changes.note());
-//		Tekst updatedTekst = changes.tekst();
-//		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" +   "--->" + updatedZettel +"\n --->" + changes);
-//		updatedTekst.addAssociatedAuthors(changes.author());	
-//		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" +   "- -->" + updatedZettel +"\n --->" + changes);
-//		updatedTekst.setTextDate(changes.tekst().getTextDate());
-//		updatedTekst.setSource(changes.tekst().getSource());
-////		textService.saveTextwithZettel(changes.tekst(), updatedZettel);
-//		Author updatedAuthor = authorService.saveAuthorWithText(changes.author(), updatedTekst);
-//		updatedZettel.setTekst(changes.tekst());
-//		updatedZettel.setTags(changes.tags());
-//		ArrayList<Reference> newRefs = new ArrayList<Reference>(changes.references());
-//		setRelationsAndSaveRefsAndZettel(updatedZettel, newRefs);
-//		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO nachm Bearbeiten \n" + updatedZettel + "\n" + changes);
-//		return (zettelRepo.save(updatedZettel));
-//		
 		return updatedZettel;
 
 	}

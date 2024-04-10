@@ -36,9 +36,12 @@ class NoteServiceTest {
 		// Arrange
 		Note sut = new Note();
 		sut.setNoteText("supertoller Testtext");
-		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", sut, LocalDateTime.now(), 
-				LocalDateTime.now(), 1L ,null, null);
-		
+		Zettel testZettel = new Zettel();
+		testZettel.setZettelId(1234L);
+		testZettel.setTopic("Testzettel");
+		testZettel.setChanged(LocalDateTime.now());
+		testZettel.setAdded(LocalDateTime.now());
+		testZettel.setNote(sut);
 
 		// Mock any dependencies if required
         when(noteRepoMock.save(Mockito.any(Note.class))).thenReturn(sut);
