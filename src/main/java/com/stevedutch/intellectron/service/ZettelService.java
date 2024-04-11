@@ -63,7 +63,7 @@ public class ZettelService {
 			Zettel newZettel = setupZettel(zettelDto, newNote);
 			
 			ArrayList<Tag> newTags = tagService.saveTagsWithZettel(zettelDto.tags(), newZettel);
-			zettelRepo.save(newZettel);
+			saveZettel(newZettel);
 			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
 
 			// Tekst
@@ -125,7 +125,7 @@ public class ZettelService {
 
 		newTags.forEach(tag -> tagService.saveTag(tag));
 		newTags.forEach(tag -> tag.getZettels().add(updatedZettel));
-		zettelRepo.save(updatedZettel);
+		saveZettel(updatedZettel);
 		LOG.info("\n \n ZettelService.updateOneZettelbyId,  just savedwithZettel LOGLOGLOG1st {}", updatedZettel);
 
 		// Tekst
@@ -181,13 +181,17 @@ public class ZettelService {
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 		updatedZettel.setTopic(changes.zettel().getTopic());
 //		updatedZettel.setSignature(changes.zettel().getSignature());
-		updatedZettel.setChanged(LocalDateTime.now());
-		updatedZettel = zettelRepo.save(updatedZettel);
+		updatedZettel = saveZettel(updatedZettel);
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 
 	}
-	
+	/**
+	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
+	 * @param zettel
+	 * @return zettel with set change date
+	 */
 	public Zettel saveZettel(Zettel zettel) {
+		zettel.setChanged(LocalDateTime.now());
 		return zettelRepo.save(zettel);
 	}
 

@@ -24,9 +24,7 @@ public class TagService {
 	private TagRepository tagRepo;
 	@Autowired
 	private ZettelService zettelService;
-	@Autowired
-	private ZettelRepository zettelRepo;
-	
+
 	
 	public Tag saveTag(Tag tag) {
 
@@ -59,7 +57,7 @@ public class TagService {
 //			zettel.getTags().addAll(newTags);
 			
 			zettel.setChanged(LocalDateTime.now());
-			zettelRepo.save(zettel);
+			zettelService.saveZettel(zettel);
 			newTags.forEach(tag -> System.out.println("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
 			    + "\n zettels: " + tag.getZettels().size()));	
 			return newTags; 
