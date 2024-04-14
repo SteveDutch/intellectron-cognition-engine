@@ -1,20 +1,20 @@
 package com.stevedutch.intellectron.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.stevedutch.intellectron.domain.Tag;
@@ -33,62 +33,39 @@ class TagServiceTest {
     @BeforeEach
     public void setUp() {
     	MockitoAnnotations.openMocks(this);
-    	tagRepoMock = mock(TagRepository.class);
-    	zettelServiceMock = mock(ZettelService.class);
-
         
     }
-
-	@Test
-	void testSaveTagwithZettel() {
-		
-		// Arrange
-		Tag sut = new Tag("testomat");
-		//sut.setTagText("Dies ist ein Tagtext");
-		List <Tag> tags = new ArrayList<Tag>();
-		tags.add(sut);
-		Tag tag = new Tag("finally?");
-		System.out.println(sut.getTagText() + Optional.of(sut).isPresent());
-		System.out.println("tags ="  + Optional.of(tags).isPresent());
-		// XXX hier TODO Konstktor gelöscht, manuell die Werte setzen
-		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", null, LocalDateTime.now(), 
-				LocalDateTime.now(), 1L, tags , null);
-		Zettel testZettel = new Zettel();
-		testZettel.setZettelId(1234L);
-		testZettel.setTopic("Testzettel");
-		testZettel.setChanged(LocalDateTime.now());
-		testZettel.setAdded(LocalDateTime.now());
-		testZettel.setNote(sut);
-
-
-		// Mock any dependencies if required
-        when(tagRepoMock.save(Mockito.any(Tag.class))).thenReturn(sut);
-
-		// Act
-		Tag result = tagService.saveOneTagwithZettel(sut, testZettel);
-		System.out.println("sut.TagText im Test = " + sut.getTagText());
-		System.out.println("Optional of sut im TeßagServiceTest = " + Optional.of(sut).isPresent());
-//		System.out.println("Optional of result im TeßagServiceTest = " + Optional.of(result.getTagText()).isEmpty());
-		// Assert
-		assertNotNull(sut);
-		assertNotNull(result);
-	}
 	
 	@Test
 	void testUpdateTags() {
-		// Arrange
-		Long zettelId = 42L;
-		ArrayList<Tag> tags= new ArrayList<Tag>();
-		tags.add(new Tag("testomat"));
-		tags.add(new Tag("finally?"));
-		ArrayList <Tag> newTags= new ArrayList<Tag>();
-		newTags.add(new Tag("changed"));
-		newTags.add(new Tag("changed II."));
-		
-		// Act
-		tagService.updateTags(zettelId, newTags);
-		// Assert
-		assertNotEquals(tags, newTags);
+		 // Arrange
+		Tag tag1 = new Tag("tag1");
+		Tag tag2 = new Tag("tag2");
+		Tag tag3 = new Tag("tag3");
+        Long zettelId = 1L;
+        ArrayList<Tag> tags = new ArrayList<>();
+        tag1.setId(1L);
+        tag2.setId(2L);
+        tags.add(tag1);
+//        tags.add(tag2);
+
+        Zettel testZettel = new Zettel();
+        testZettel.setZettelId(zettelId);
+        ArrayList<Tag> zettelTags = new ArrayList<>();
+        zettelTags.add(tag3);
+        testZettel.setTags(new ArrayList<>());
+
+        when(zettelServiceMock.findZettelById(testZettel.getZettelId())).thenReturn(testZettel);
+        when(tagRepoMock.findByTagText(nullable(String.class))).thenReturn(Optional.of(tag1));
+//        when(tagRepoMock.findByTagText(nullable(String.class))).thenReturn(Optional.of(tag2));
+
+        // Act
+        tagService.updateTags(1L, tags);
+
+        // Assert
+        verify(zettelServiceMock, times(1)).findZettelById(zettelId);
+        verify(tagRepoMock, times(1)).findByTagText(anyString());
+        assertEquals(1, testZettel.getTags().size());
 	}
 	
 

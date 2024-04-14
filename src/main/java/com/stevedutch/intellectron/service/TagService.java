@@ -65,7 +65,6 @@ public class TagService {
 	
 	public void updateTags(Long zettelId, ArrayList<Tag> tags) {
 
-		// neue Tags printen for debugging
 		tags.forEach(tag -> LOG.info(" \n --> updated Tags  wie vom frontend erhalten= \n ID = " 
 				+ tag.getId()+ "\n text = " + tag.getTagText()));
 		Zettel zettel = zettelService.findZettelById(zettelId);
@@ -74,7 +73,7 @@ public class TagService {
 		ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
 				.orElseGet(() -> saveTag(new Tag(tag.getTagText()))))
 				.collect(Collectors.toCollection(ArrayList::new));
-		newTags.forEach(tag -> System.out.println("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
+//		newTags.forEach(tag -> System.out.println("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
 		// in DB vorhandene, aber zum Zettel neu hinzugefügte Tags mit Zettel verknüpfen
 		for (Tag tag :newTags) {
 			if (zettel.getTags().contains(tag)) {

@@ -29,9 +29,16 @@ class TextServiceTest {
 	void testsaveTextwithZettel() {
 		Tekst sut = new Tekst();
 		// Arrange
-		Zettel testZettel = new Zettel(1234L, "Das ist eine supertolle Testüberschrift", null, LocalDateTime.now(), 
-				LocalDateTime.now(), 1L, null , null);
-//		testZettel = null;
+		Zettel testZettel = new Zettel();
+		testZettel.setZettelId(42L);
+		testZettel.setAdded(LocalDateTime.now());
+		testZettel.setChanged(LocalDateTime.now());
+		testZettel.setSignature(null);
+		testZettel.setReferences(null);
+		testZettel.setTags(null);
+		testZettel.setNote(null);
+		testZettel.setTekst(sut);
+		
 		// Mock any dependencies if required
 		when(textRepoMock.save(Mockito.eq(sut))).thenReturn(sut);
 		

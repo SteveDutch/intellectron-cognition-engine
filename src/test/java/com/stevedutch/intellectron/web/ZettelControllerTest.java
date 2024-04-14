@@ -13,11 +13,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stevedutch.intellectron.service.AuthorService;
+import com.stevedutch.intellectron.service.NoteService;
+import com.stevedutch.intellectron.service.ReferenceService;
+import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 class ZettelControllerTest {
 	@Mock
 	private ZettelService zettelService;
+	@Mock
+	private NoteService noteService;
+	@Mock
+	private TextService textService;
+	@Mock
+    private TagService tagService;
+	@Mock
+	private AuthorService authorService;
+	@Mock
+	private ReferenceService refService;
 	@InjectMocks
 	private ZettelController sut = new ZettelController();
 
