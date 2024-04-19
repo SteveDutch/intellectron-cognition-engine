@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.TagRepository;
-import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
 public class TagService {
@@ -93,4 +92,15 @@ public class TagService {
         newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}
 
+
+    public void findTagByText(String tagText) {
+        Optional<Tag> finding = tagRepo.findByTagText(tagText);
+		finding.ifPresent(x -> LOG.info("\n  found tag = " + x.getTagText()));
+		if (finding.isEmpty()) {
+		
+			LOG.info("\n  found nothing");
+		}
+    }
+
 }
+ 

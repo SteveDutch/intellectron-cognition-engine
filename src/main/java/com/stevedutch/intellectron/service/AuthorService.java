@@ -56,6 +56,7 @@ public class AuthorService {
     	textService.saveTextWithAuthor(tekst, givenAuthor);
         return authorRepo.save(givenAuthor);
     }
+    
 	public void updateAuthor(Long zettelId, Author author) {
 		// TODO Auto-generated method stub
 		
