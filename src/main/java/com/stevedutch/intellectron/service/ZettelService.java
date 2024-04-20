@@ -195,4 +195,8 @@ public class ZettelService {
 		return zettelRepo.save(zettel);
 	}
 
+	public List<Zettel> findZettelByTag(String tagText) {
+			Tag searchTag = tagService.findTagByText(tagText);
+			return zettelRepo.findZettelByTags(searchTag);
+	}
 }

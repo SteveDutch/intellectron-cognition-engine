@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Zettel;
 
 @Repository
@@ -24,6 +25,8 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long>{
 	
 	@Query("SELECT zettel FROM Zettel zettel WHERE zettel.id = (SELECT FLOOR(MAX(zettel.id) * RAND()) FROM Zettel zettel) ORDER BY zettel.id LIMIT 1")
 	public Zettel findOneRandomZettel();
+
+    public List<Zettel> findZettelByTags(Tag searchTag);
 	
 	
 }

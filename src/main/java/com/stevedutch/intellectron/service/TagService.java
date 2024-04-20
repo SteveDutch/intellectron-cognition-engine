@@ -93,14 +93,15 @@ public class TagService {
 	}
 
 
-    public void findTagByText(String tagText) {
+    public Tag findTagByText(String tagText) {
         Optional<Tag> finding = tagRepo.findByTagText(tagText);
 		finding.ifPresent(x -> LOG.info("\n  found tag = " + x.getTagText()));
 		if (finding.isEmpty()) {
 		
 			LOG.info("\n  found nothing");
 		}
-    }
+		return finding.get();
+	}
 
 }
  
