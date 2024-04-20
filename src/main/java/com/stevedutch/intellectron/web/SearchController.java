@@ -39,4 +39,17 @@ public class SearchController {
 		LOG.info("\n  got zettels = " + zettels);
 		return "/search";
 	}
+	
+	@GetMapping("/search/topic/{topicFragment}")
+	public String searchBytopicFragment(@PathVariable String topicFragment) {
+		LOG.info("\n got topicFrgament = " + topicFragment);
+		List<Zettel> zettels = zettelService.findZettelByTopicFragment(topicFragment);
+		if (zettels == null) {
+			LOG.info("\n NO ZETTEL FOUND");
+		} else {
+			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
+		}
+		return "/search";
+	}
+	
 }

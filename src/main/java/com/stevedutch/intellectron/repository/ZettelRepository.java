@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.stevedutch.intellectron.domain.Tag;
@@ -27,6 +28,9 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long>{
 	public Zettel findOneRandomZettel();
 
     public List<Zettel> findZettelByTags(Tag searchTag);
+
+    @Query("SELECT zettel FROM Zettel zettel WHERE zettel.topic LIKE %:searchTerm%")
+    public List<Zettel> findZettelByTopicFragment(@Param("searchTerm") String topicFragment);
 	
 	
 }

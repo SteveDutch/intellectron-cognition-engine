@@ -199,4 +199,13 @@ public class ZettelService {
 			Tag searchTag = tagService.findTagByText(tagText);
 			return zettelRepo.findZettelByTags(searchTag);
 	}
+	/**
+	 * searches for Zettel by the given fragment of the topic
+	 * @param topicFragment the fragment of the topic
+	 * @return List of Zettel could include null!
+	 */
+	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
+		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
+		return result;
+	}
 }
