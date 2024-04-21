@@ -1,20 +1,18 @@
 package com.stevedutch.intellectron.web;
 
-import com.stevedutch.intellectron.service.ZettelService;
-
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.ZettelSearch;
+import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class SearchController {
@@ -25,6 +23,8 @@ public class SearchController {
 	private TagService tagService;
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private ZettelSearch zettelSearch;
 
 	@GetMapping("/search")
 	public String showSearchPage() {
@@ -44,6 +44,18 @@ public class SearchController {
 	public String searchBytopicFragment(@PathVariable String topicFragment) {
 		LOG.info("\n got topicFrgament = " + topicFragment);
 		List<Zettel> zettels = zettelService.findZettelByTopicFragment(topicFragment);
+		if (zettels == null) {
+			LOG.info("\n NO ZETTEL FOUND");
+		} else {
+			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
+		}
+		return "/search";
+	}
+	
+	@GetMapping("/search/note/{noteFragment}")
+	public String searchByNoteFragment(@PathVariable String noteFragment) {
+		LOG.info("\n got noteFragment = " + noteFragment);
+		List<Zettel> zettels = zettelSearch.findZettelByNoteFragment(noteFragment);		
 		if (zettels == null) {
 			LOG.info("\n NO ZETTEL FOUND");
 		} else {
