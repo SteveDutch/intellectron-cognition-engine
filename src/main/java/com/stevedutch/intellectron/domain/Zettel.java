@@ -195,13 +195,11 @@ public class Zettel {
 	
 	@Override
 	public String toString() {
-		return "Zettel \n [zettelId=" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available") + " added=" + added
+		return "\n Zettel \n [zettelId =" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available") + " added=" + added
 				+ ", changed=" + changed + ", signature=" + signature
-				+ ",  Anzahl der tags=" 
-										  + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
-										 
-				 +", \n tekst="
-				+ tekst + " , \n  References: " + Optional.ofNullable(references).map(list -> list.toString()).orElse("keine Verweise") + "]";
+				+ ",  Anzahl der tags=" + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
+				+ ", \n tekst=" + tekst 
+				+ " , \n  References: " + Optional.ofNullable(references).map(list -> list.toString()).orElse("keine Verweise") + "]\n \n ";
 	}
 
 }

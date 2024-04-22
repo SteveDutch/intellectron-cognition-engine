@@ -64,4 +64,16 @@ public class SearchController {
 		return "/search";
 	}
 	
+	@GetMapping("/search/text/{textFragment}")
+	public String searchByTextFragment(@PathVariable String textFragment) {
+		LOG.info("\n got textFragment = " + textFragment);
+		List<Zettel> zettels = zettelSearch.findZettelByTextFragment(textFragment);
+		if (zettels == null) {
+			LOG.info("\n NO ZETTEL FOUND");
+		} else {
+			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
+		}
+		return "/search";
+	}
+	
 }

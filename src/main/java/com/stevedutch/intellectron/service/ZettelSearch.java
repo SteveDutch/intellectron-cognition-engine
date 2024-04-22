@@ -19,6 +19,11 @@ public class ZettelSearch {
 		return result;
 	}
 
+	public List<Zettel> findZettelByTextFragment(String textFragment) {
+		List<Zettel> result = zettelRepo.findZettelByTextFragment(textFragment);
+		return result;
+	}
+
  
 
 }
