@@ -36,7 +36,7 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long>{
     public List<Zettel> findZettelByNoteFragment(@Param("searchTerm") String noteFragment);
     
     @Query("SELECT zettel FROM Zettel zettel JOIN zettel.tekst text WHERE text.text LIKE  %:searchTerm%")
-//    @Query(value = "SELECT * FROM zettel z JOIN texts t ON z.text_id = t.text_id WHERE t.tekst LIKE %:searchTerm%", nativeQuery = true)
+//  @Query(value = "SELECT * FROM zettel z JOIN texts t ON z.text_id = t.text_id WHERE t.tekst LIKE %:searchTerm%", nativeQuery = true)
 	public List<Zettel> findZettelByTextFragment(@Param("searchTerm") String textFragment);
 
 	

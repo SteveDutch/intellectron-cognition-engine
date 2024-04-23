@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.ZettelSearch;
@@ -64,8 +65,8 @@ public class SearchController {
 		return "/search";
 	}
 	
-	@GetMapping("/search/text/{textFragment}")
-	public String searchByTextFragment(@PathVariable String textFragment) {
+	@GetMapping("/search/text/zettel/{textFragment}")
+	public String searchZettelByTextFragment(@PathVariable String textFragment) {
 		LOG.info("\n got textFragment = " + textFragment);
 		List<Zettel> zettels = zettelSearch.findZettelByTextFragment(textFragment);
 		if (zettels == null) {
@@ -75,5 +76,17 @@ public class SearchController {
 		}
 		return "/search";
 	}
+	
+	@GetMapping("/search/text/{textFragment}")
+	public String searchTextByTextFragment(@PathVariable String textFragment) {
+		LOG.info("\n got textFragment = " + textFragment);
+		List<Tekst> texts = zettelSearch.findTekstByTextFragment(textFragment);
+		if (texts == null) {
+			LOG.info("\n NO TEKST FOUND");
+		} else {
+			LOG.info("\n  found " + texts.size()+ " Texts: \n" + texts);
+		}
+		return "/search";
+		}
 	
 }

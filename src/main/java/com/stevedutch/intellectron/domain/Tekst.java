@@ -125,8 +125,8 @@ public class Tekst {
 	
 	@Override
 	public String toString() {
-		return "Tekst [textId=" + textId + ", text=" + text + ", textDate=" + textDate + ", source=" + source
-				 + ", associatedAuthors=" + associatedAuthors + "ZETTELS, wieviele: " + Optional.ofNullable(zettels).map(list -> list
+		return "\n Tekst \n [textId=" + textId + ", text = " + text + ", \n textDate=  " + textDate + ", source=" + source
+				 + ", \n associatedAuthors = " + associatedAuthors + " ZETTELS, wieviele: " + Optional.ofNullable(zettels).map(list -> list
 						.size())
 						.orElse(0) + "]";
 	}
