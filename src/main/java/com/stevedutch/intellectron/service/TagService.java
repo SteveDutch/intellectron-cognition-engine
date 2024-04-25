@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.repository.TagRepository;
 
 @Service
@@ -93,15 +94,10 @@ public class TagService {
 	}
 
 
-    public Tag findTagByText(String tagText) {
-        Optional<Tag> finding = tagRepo.findByTagText(tagText);
-		finding.ifPresent(x -> LOG.info("\n  found tag = " + x.getTagText()));
-		if (finding.isEmpty()) {
-		
-			LOG.info("\n  found nothing");
-		}
-		return finding.get();
-	}
+	public Tag findTagByText(String tagText) {
+        return tagRepo.findByTagText(tagText)
+                     .orElseThrow(() -> new TagNotFoundException("No Tag found with text: " + tagText));
+    }
 
 }
  

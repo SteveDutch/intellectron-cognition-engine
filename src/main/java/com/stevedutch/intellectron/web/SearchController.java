@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.SearchService;
+import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -36,9 +37,13 @@ public class SearchController {
 	@GetMapping("/search/tag/{tagText}")
 	public String searchByTag(@PathVariable String tagText) {
 		LOG.info("\n  got tagText = " + tagText);
-		tagService.findTagByText(tagText);
-		List<Zettel> zettels = zettelService.findZettelByTag(tagText);
-		LOG.info("\n  got zettels = " + zettels);
+		Tag wantedTag = tagService.findTagByText(tagText);
+		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText());
+		if (zettels == null) {
+			LOG.info("\n NO ZETTEL FOUND");
+		} else {
+			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
+		}
 		return "/search";
 	}
 	
