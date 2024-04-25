@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -60,6 +61,16 @@ public class AuthorService {
 	public void updateAuthor(Long zettelId, Author author) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * searches for authors with last name similar to the given name
+	 * @param lastName
+	 * @return List<Author>
+	 */
+	public List<Author> findAuthorByLastName(String lastName) {
+		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
+		return result;
 	}
 
 }

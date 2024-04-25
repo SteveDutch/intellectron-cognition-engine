@@ -9,10 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.TagService;
-import com.stevedutch.intellectron.service.ZettelSearch;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -25,7 +26,7 @@ public class SearchController {
 	@Autowired
 	private ZettelService zettelService;
 	@Autowired
-	private ZettelSearch zettelSearch;
+	private SearchService searchService;
 
 	@GetMapping("/search")
 	public String showSearchPage() {
@@ -56,7 +57,7 @@ public class SearchController {
 	@GetMapping("/search/note/{noteFragment}")
 	public String searchByNoteFragment(@PathVariable String noteFragment) {
 		LOG.info("\n got noteFragment = " + noteFragment);
-		List<Zettel> zettels = zettelSearch.findZettelByNoteFragment(noteFragment);		
+		List<Zettel> zettels = searchService.findZettelByNoteFragment(noteFragment);		
 		if (zettels == null) {
 			LOG.info("\n NO ZETTEL FOUND");
 		} else {
@@ -68,7 +69,7 @@ public class SearchController {
 	@GetMapping("/search/text/zettel/{textFragment}")
 	public String searchZettelByTextFragment(@PathVariable String textFragment) {
 		LOG.info("\n got textFragment = " + textFragment);
-		List<Zettel> zettels = zettelSearch.findZettelByTextFragment(textFragment);
+		List<Zettel> zettels = searchService.findZettelByTextFragment(textFragment);
 		if (zettels == null) {
 			LOG.info("\n NO ZETTEL FOUND");
 		} else {
@@ -79,8 +80,8 @@ public class SearchController {
 	
 	@GetMapping("/search/text/{textFragment}")
 	public String searchTextByTextFragment(@PathVariable String textFragment) {
-		LOG.info("\n got textFragment = " + textFragment);
-		List<Tekst> texts = zettelSearch.findTekstByTextFragment(textFragment);
+		
+		List<Tekst> texts = searchService.findTekstByTextFragment(textFragment);
 		if (texts == null) {
 			LOG.info("\n NO TEKST FOUND");
 		} else {
@@ -88,5 +89,19 @@ public class SearchController {
 		}
 		return "/search";
 		}
+	
+	@GetMapping("/search/author/{name}")
+	public String searchAuthor(@PathVariable String name) {
+		LOG.info("\n got author name = " + name);
+		List<Author> authors = searchService.findAuthorByName(name);
+		if (authors == null) {
+			LOG.info("\n NO TEKST FOUND");
+		} else {
+			LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
+		}
+		return "/search";
+		
+		
+	}
 	
 }
