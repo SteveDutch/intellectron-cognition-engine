@@ -2,7 +2,7 @@
  * 
  */
 
-fetch('/api/tags/findByText?tagText=example')
+/* fetch('/api/tags/findByText?tagText=example')
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => {
@@ -18,3 +18,4 @@ fetch('/api/tags/findByText?tagText=example')
         console.error('Fehler beim Abrufen des Tags:', error.message);
         // Zeigen Sie eine Fehlermeldung im Frontend an
     });
+ */

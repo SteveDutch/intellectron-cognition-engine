@@ -1,23 +1,56 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/search.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Let your intellectron find</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="css/search.css" />
-        <script type="text/javascript" src="../js/search.js" defer></script>
+        <link rel="stylesheet" th:href="@{/css/search.css}">
+        <script type="text/javascript" src="/js/search.js" defer></script>
+<!--         <script type="text/javascript" th:src="@{/js/search.js}" defer></script> -->
+       
 </head>
 
 <body>
     <h1>The Fabulous Search Page</h1>
     <div>
-        <form action="/search" method="get">
+        <form action="/search/tag/" method="get">
             <label for="tag">Tag:</label>
             <input type="text" id="search" name="q" />
             <button type="submit">Search</button><br />
         </form>
+
+        
+    <form th:action="@{/search/tag}" method="get">
+        <label for="tagText">Enter tag:</label>
+        <input type="text" id="tagText" name="tagText" required>
+        <button type="submit">Search</button>
+    </form>
+
+
+        <form th:action="@{/search/tag/{tagText}(tagText=${tagText})}" method="get">
+            <input type="text" name="tagText" placeholder="Tag eingeben"  >
+            <button type="submit">Suchen mit thymeleaf</button>
+        </form>
+
+                <form th:action="@{/search/tag/}" method="get">
+                    <input type="text" name="tagText" placeholder="Tag eingeben">
+                    <button type="submit">Suchen mit thymeleaf accordng to you.com</button>
+                </form>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
     <hr />
     <div>
@@ -51,6 +84,24 @@
             <button type="submit">Search</button><br />
         </form>
     </div>
-</body>
+                <div th:if="${tag}">
+                    <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
+                
+                    <div th:if="${#lists.isEmpty(zettels)}">
+                        <p>No zettels found for this tag.</p>
+                    </div>
+                
+                    <div th:unless="${#lists.isEmpty(zettels)}">
+                        <h3>Zettels:</h3>
+                        <ul>
+                            <li th:each="zettel : ${zettels}">
+                                <!-- Display zettel details here -->
+                                <span th:text="${zettel.topic}"></span>
+                                <!-- Add more zettel fields as needed -->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </body>
 
 </html>

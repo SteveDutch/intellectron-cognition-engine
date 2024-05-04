@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
@@ -34,17 +36,19 @@ public class SearchController {
 		return "/search";
 	}
 	
-	@GetMapping("/search/tag/{tagText}")
-	public String searchByTag(@PathVariable String tagText) {
+	@GetMapping("/search/tag/")
+	public String searchByTag(@RequestParam("tagText") String tagText, ModelMap model) {
 		LOG.info("\n  got tagText = " + tagText);
 		Tag wantedTag = tagService.findTagByText(tagText);
 		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText());
 		if (zettels == null) {
-			LOG.info("\n NO ZETTEL FOUND");
+			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über TagNotFoundException
 		} else {
 			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 		}
-		return "/search";
+		model.addAttribute("tag",wantedTag);
+		model.addAttribute("zettels", zettels);
+		return "/results";
 	}
 	
 	@GetMapping("/search/topic/{topicFragment}")
