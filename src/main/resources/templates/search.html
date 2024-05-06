@@ -16,20 +16,7 @@
 <body>
     <h1>The Fabulous Search Page</h1>
     <div>
-        <form action="/search/tag/" method="get">
-            <label for="tag">Tag:</label>
-            <input type="text" id="search" name="q" />
-            <button type="submit">Search</button><br />
-        </form>
-
-        
-    <form th:action="@{/search/tag}" method="get">
-        <label for="tagText">Enter tag:</label>
-        <input type="text" id="tagText" name="tagText" required>
-        <button type="submit">Search</button>
-    </form>
-
-
+<!--         Tagsuche -->
         <form th:action="@{/search/tag/{tagText}(tagText=${tagText})}" method="get">
             <input type="text" name="tagText" placeholder="Tag eingeben"  >
             <button type="submit">Suchen mit thymeleaf</button>
@@ -39,6 +26,13 @@
                     <input type="text" name="tagText" placeholder="Tag eingeben">
                     <button type="submit">Suchen mit thymeleaf accordng to you.com</button>
                 </form>
+
+        <!--         TopicSuche -->
+        <form th:action="@{/search/topic/}" method="get">
+            <input type="text" name="topicFragment" placeholder="Topic eingeben"  >
+            <button type="submit">Suchen mit thymeleaf</button>
+        </form>
+
 
 
 

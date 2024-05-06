@@ -51,8 +51,8 @@ public class SearchController {
 		return "/results";
 	}
 	
-	@GetMapping("/search/topic/{topicFragment}")
-	public String searchBytopicFragment(@PathVariable String topicFragment) {
+	@GetMapping("/search/topic/")
+	public String searchBytopicFragment(@RequestParam("topicFragment") String topicFragment, ModelMap model) {
 		LOG.info("\n got topicFrgament = " + topicFragment);
 		List<Zettel> zettels = zettelService.findZettelByTopicFragment(topicFragment);
 		if (zettels == null) {
@@ -60,7 +60,9 @@ public class SearchController {
 		} else {
 			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 		}
-		return "/search";
+		model.addAttribute("zettels", zettels);
+		model.addAttribute("topicFragment",topicFragment);
+		return "/results";
 	}
 	
 	@GetMapping("/search/note/{noteFragment}")
