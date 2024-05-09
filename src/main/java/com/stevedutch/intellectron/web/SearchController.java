@@ -60,13 +60,13 @@ public class SearchController {
 		} else {
 			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 		}
-		model.addAttribute("zettels", zettels);
 		model.addAttribute("topicFragment",topicFragment);
+		model.addAttribute("zettels", zettels);
 		return "/results";
 	}
 	
-	@GetMapping("/search/note/{noteFragment}")
-	public String searchByNoteFragment(@PathVariable String noteFragment) {
+	@GetMapping("/search/note/")
+	public String searchByNoteFragment(@RequestParam String noteFragment, ModelMap model) {
 		LOG.info("\n got noteFragment = " + noteFragment);
 		List<Zettel> zettels = searchService.findZettelByNoteFragment(noteFragment);		
 		if (zettels == null) {
@@ -74,11 +74,13 @@ public class SearchController {
 		} else {
 			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 		}
-		return "/search";
+		model.addAttribute("noteFragment",noteFragment);
+        model.addAttribute("zettels", zettels);
+		return "/results";
 	}
 	
-	@GetMapping("/search/text/zettel/{textFragment}")
-	public String searchZettelByTextFragment(@PathVariable String textFragment) {
+	@GetMapping("/search/text/")
+	public String searchZettelByTextFragment(@RequestParam String textFragment, ModelMap model) {
 		LOG.info("\n got textFragment = " + textFragment);
 		List<Zettel> zettels = searchService.findZettelByTextFragment(textFragment);
 		if (zettels == null) {
@@ -86,9 +88,11 @@ public class SearchController {
 		} else {
 			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 		}
-		return "/search";
+		model.addAttribute("textFragment",textFragment);
+		model.addAttribute("zettels", zettels);
+		return "/results";
 	}
-	
+	// TODO 
 	@GetMapping("/search/text/{textFragment}")
 	public String searchTextByTextFragment(@PathVariable String textFragment) {
 		
@@ -101,16 +105,16 @@ public class SearchController {
 		return "/search";
 		}
 	
-	@GetMapping("/search/author/{name}")
-	public String searchAuthor(@PathVariable String name) {
-		LOG.info("\n got author name = " + name);
-		List<Author> authors = searchService.findAuthorByName(name);
+	@GetMapping("/search/author")
+	public String searchAuthor(@RequestParam String lastName) {
+		LOG.info("\n got author name = " + lastName);
+		List<Author> authors = searchService.findAuthorByName(lastName);
 		if (authors == null) {
-			LOG.info("\n NO TEKST FOUND");
+			LOG.info("\n NO Author FOUND");
 		} else {
 			LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
 		}
-		return "/search";
+		return "/results";
 		
 		
 	}

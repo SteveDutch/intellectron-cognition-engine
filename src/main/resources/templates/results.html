@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/search.css}">
     <script type="text/javascript" src="/js/search.js" defer></script>
     <script type="text/javascript" th:src="@{/js/search.js}" defer></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -79,6 +80,7 @@
                     <th>Topic</th>
                     <th>Tags</th>
                     <th>References</th>
+                    <th>Note</th>
                     <th>Text</th>
                 </tr>
             </thead>
@@ -90,8 +92,9 @@
                     <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span class="showLast"
                                 th:text="${zettel.signature}"> signature </span></a></td>
                     <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
-                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
+                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> Tag </span></td>
                     <td><span th:each="reference : ${zettel.references}" th:text="${reference.targetZettel} + ' // ' "></span></td>
+                    <td><span th:text="${zettel.note.noteText}">//</span></td>
                     <td><span  th:text="${zettel.tekst.text}"></span></td>
                 </tr>
             </tbody>

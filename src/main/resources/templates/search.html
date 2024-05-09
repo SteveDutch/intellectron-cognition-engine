@@ -10,7 +10,7 @@
         <link rel="stylesheet" th:href="@{/css/search.css}">
         <script type="text/javascript" src="/js/search.js" defer></script>
 <!--         <script type="text/javascript" th:src="@{/js/search.js}" defer></script> -->
-       
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -32,9 +32,16 @@
             <input type="text" name="topicFragment" placeholder="Topic eingeben"  >
             <button type="submit">Suchen mit thymeleaf</button>
         </form>
-
-
-
+<!-- NoteSuche -->
+        <form th:action="@{/search/note/}" method="get">
+            <input type="text" name="noteFragment" placeholder="enter note (fragment)">
+            <button type="submit">Suchen mit thymeleaf</button>
+        </form>
+<!-- TextSuche -->
+        <form th:action="@{/search/text/}" method="get">
+            <input type="text" name="textFragment" placeholder="enter text (fragment)">
+            <button type="submit">Suchen mit thymeleaf</button>
+        </form>
 
 
 
