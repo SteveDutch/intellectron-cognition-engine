@@ -33,6 +33,9 @@ public class Tekst {
 	@Column(name = "tekst", length = 16777216)
 	private String text;
 	
+	@Column(name = "title", length = 700)
+    private String title;
+	
 	@Column(name = "tekstdato")
 	private LocalDate textDate;	
 	
@@ -74,6 +77,14 @@ public class Tekst {
 
 	public void setText(String content) {
 		this.text = content;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public LocalDate getTextDate() {
@@ -125,15 +136,15 @@ public class Tekst {
 	
 	@Override
 	public String toString() {
-		return "\n Tekst \n [textId=" + textId + ", text = " + text + ", \n textDate=  " + textDate + ", source=" + source
+
+		return "\n Tekst \n [textId=" + textId + ", text = " + text + "\n , title = " + title + ", \n textDate=  " + textDate + ", source=" + source
 				 + ", \n associatedAuthors = " + associatedAuthors + " ZETTELS, wieviele: " + Optional.ofNullable(zettels).map(list -> list
-						.size())
-						.orElse(0) + "]";
+						.size());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(associatedAuthors, source, text, textDate, textId, zettels);
+		return Objects.hash(associatedAuthors, source, text, textDate, textId, title, zettels);
 	}
 
 	@Override
@@ -147,7 +158,8 @@ public class Tekst {
 		Tekst other = (Tekst) obj;
 		return Objects.equals(associatedAuthors, other.associatedAuthors) && Objects.equals(source, other.source)
 				&& Objects.equals(text, other.text) && Objects.equals(textDate, other.textDate)
-				&& Objects.equals(textId, other.textId) && Objects.equals(zettels, other.zettels);
+				&& Objects.equals(textId, other.textId) && Objects.equals(title, other.title)
+				&& Objects.equals(zettels, other.zettels);
 	}
 
 

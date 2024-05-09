@@ -71,8 +71,9 @@ function prepareZettel() {
     }
     author.authorFamilyName = document.getElementById("authorFamilyName0").value;
 
-    let tekst = { text: "", textDate: "", source: "" };
+    let tekst = {title:"", text: "", textDate: "", source: "" };
     zettel.tekst = tekst;
+    tekst.title = document.getElementById("texttitle").value;
     tekst.text = document.getElementById("tekst").value;
     tekst.textDate = document.getElementById("timestamp").value;
     tekst.source = document.getElementById("source").value;

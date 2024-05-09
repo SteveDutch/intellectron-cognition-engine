@@ -34,6 +34,10 @@
     </div>
     <hr />
     <div>
+        <label for="title">Title of text: </label>
+        <input type="text" id="texttitle" name="title" th:field="${tekst.title}"  /><br />
+    </div>
+    <div>
         <label for="tekst">Text:</label>
         <textarea id="tekst" name="tekst" th:field="${tekst.text}" rows="5" cols="33"
             autocomplete="on"></textarea><br />

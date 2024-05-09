@@ -1,12 +1,8 @@
 package com.stevedutch.intellectron.web;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.stevedutch.intellectron.domain.Zettel;
 
 @Controller
 public class ResultsController {

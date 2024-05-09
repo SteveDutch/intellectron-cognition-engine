@@ -52,10 +52,12 @@ public class TextService {
 		if (updatedTekst == null) {
 			updatedTekst = new Tekst();
             updatedTekst.setText(tekst.getText());
+            updatedTekst.setTitle(tekst.getTitle());
             updatedTekst.setTextDate(tekst.getTextDate());
             updatedTekst.setSource(tekst.getSource());
             textRepo.save(updatedTekst);
 		}
+		updatedTekst.setTitle(tekst.getTitle());
 		textRepo.save(updatedTekst);
 		saveTextwithZettel(updatedTekst, zettelService.findZettelById(zettelId));
 		zettel.setTekst(updatedTekst);
