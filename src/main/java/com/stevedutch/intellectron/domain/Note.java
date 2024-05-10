@@ -26,14 +26,7 @@ public class Note {
 	@Column(length = 65000)
 	private String noteText;
 	
-	// für junit  
-	public Note(String content) {
 
-		// TODO Auto-generated constructor stub
-		this.noteText = content;
-		this.zettel = null;
-		this.zettelId = null;
-	}
 
  
 	
