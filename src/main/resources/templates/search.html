@@ -15,6 +15,7 @@
 
 <body>
     <h1>The Fabulous Search Page</h1>
+    <h2>Search a Zettel</h2>
     <div>
 <!--         Tagsuche -->
         <form th:action="@{/search/tag/{tagText}(tagText=${tagText})}" method="get">
@@ -70,7 +71,12 @@
         </form>
     </div>
     <hr />
+    <h2>Search a Text</h2>
     <div>
+        <form th:action="@{/search/text4tekst/}" method="get">
+            <input type="text" name="textFragment" placeholder="enter text (fragment)">
+            <button type="submit">Suchen mit thymeleaf</button>
+        </form>
         <form action="/search" method="get">
             <label for="text">Text:</label>
             <input type="text" id="search" name="q" />

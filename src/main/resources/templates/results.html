@@ -16,43 +16,8 @@
 
 <body>
     <h1>Search Results</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Article/Text</th>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Source</th>
-                <th>Timestamp</th>
-                <th>Tag</th>
-                <th>Reference</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Article 1</td>
-                <td>Author 1</td>
-                <td>Title 1</td>
-                <td>Text 1</td>
-                <td>Source 1</td>
-                <td>Timestamp 1</td>
-                <td>Tag 1</td>
-                <td>Reference 1</td>
-            </tr>
-            <tr>
-                <td>Article 2</td>
-                <td>Author 2</td>
-                <td>Title 2</td>
-                <td>Text 2</td>
-                <td>Source 2</td>
-                <td>Timestamp 2</td>
-                <td>Tag 2</td>
-                <td>Reference 2</td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- Add more rows for additional search results -->
+
+
 
     <div th:if="${tag}">
         <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
@@ -67,7 +32,7 @@
             <li th:each="zettel : ${zettels}">
                 <!-- Display zettel details here -->
                 <span th:text="${zettel.topic}"></span>
-               
+
                 <!-- Add more zettel fields as needed -->
             </li>
         </ul>
@@ -85,21 +50,54 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:if="${zettels.empty}">
+                <tr th:if="${#lists.isEmpty(zettels) || #strings.isEmpty(zettels)}">
                     <td colspan="2"> No Zettel Available </td>
                 </tr>
                 <tr th:each="zettel : ${zettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span class="showLast"
-                                th:text="${zettel.signature}"> signature </span></a></td>
+                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span
+                                class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
                     <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
                     <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> Tag </span></td>
-                    <td><span th:each="reference : ${zettel.references}" th:text="${reference.targetZettel} + ' // ' "></span></td>
+                    <td><span th:each="reference : ${zettel.references}"
+                            th:text="${reference.targetZettel} + ' // ' "></span></td>
                     <td><span th:text="${zettel.note.noteText}">//</span></td>
-                    <td><span  th:text="${zettel.tekst.text}"></span></td>
+                    <td><span th:text="${zettel.tekst.text}"></span></td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <!-- Textsucheergebnis -->
+     <table>
+        <h2>Search Results, found texts for given textfragment: </h2>
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Text</th>
+        </tr>
+    </thead>
+   
+        <tbody>
+            <tr th:if="${#lists.isEmpty(texts) || #strings.isEmpty(texts)}">
+                <td colspan="2"> No Zettel Available </td>
+            </tr>
+            <tr th:each="text : ${texts}">
+                <td><span th:text="${text.title}"></span></td>
+                <td><span th:text="${text.text}"></span></td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
+    <div th:if="${tekst}">
+
+    </div>
+    <div th:if="${#lists.isEmpty(texts)}">
+        <p>No zettels found for this tag.</p>
+    </div>
+
+
 
 
 

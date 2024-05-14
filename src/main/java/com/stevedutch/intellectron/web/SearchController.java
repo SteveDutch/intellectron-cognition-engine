@@ -93,16 +93,18 @@ public class SearchController {
 		return "/results";
 	}
 	// TODO 
-	@GetMapping("/search/text/{textFragment}")
-	public String searchTextByTextFragment(@PathVariable String textFragment) {
-		
+	@GetMapping("/search/text4tekst/")
+	public String searchTextByTextFragment(@RequestParam String textFragment, ModelMap model) {
+		LOG.info("\n got textFragment = " + textFragment);
 		List<Tekst> texts = searchService.findTekstByTextFragment(textFragment);
 		if (texts == null) {
 			LOG.info("\n NO TEKST FOUND");
 		} else {
 			LOG.info("\n  found " + texts.size()+ " Texts: \n" + texts);
-		}
-		return "/search";
+		}	
+		model.addAttribute("textFragment",textFragment);
+		model.addAttribute("texts", texts);
+		return "/results";
 		}
 	
 	@GetMapping("/search/author")
