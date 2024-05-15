@@ -2,39 +2,67 @@ package com.stevedutch.intellectron.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ModelMap;
 
-@RunWith(MockitoJUnitRunner.class)
+import com.stevedutch.intellectron.domain.Tekst;
+import com.stevedutch.intellectron.service.SearchService;
+
+@ExtendWith(MockitoExtension.class)
 public class SearchControllerTest {
 
-	@Mock
-	private ModelMap model;
+    @InjectMocks
+    private SearchController searchController;
 
-	@BeforeEach
+    @Mock
+    private SearchService searchService;
+
+    @Mock
+    private ModelMap model;
+
+    @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // Initialisierung, falls benötigt
+    	 MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    public void shouldShowSearchPage() {
+        String result = searchController.showSearchPage();
 
+        assertThat(result).isEqualTo("/search");
+        
+    }
 
-	@Test
-	public void shouldShowSearchPage() {
-		SearchController sut = new SearchController();
-		model.addAttribute("test");
-		String result = sut.showSearchPage();
-		
-		assertThat(result).isEqualTo("/search");
+    @Test
+    public void testSearchTextByTextFragment() {
+        String textFragment = "test";
+        List<Tekst> expectedTexts = new ArrayList<>();
+        Tekst tekst = new Tekst(); // Erstellen Sie hier eine Instanz Ihrer Tekst-Klasse
+        expectedTexts.add(tekst);
 
-        // Verify interactions with the mock ModelMap
-        verify(model, times(1)).addAttribute(anyString());
-	}
+        when(searchService.findTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+
+        String viewName = searchController.searchTextByTextFragment(textFragment, model);
+
+        assertThat(viewName).isEqualTo("/results");
+        verify(searchService).findTekstByTextFragment(textFragment);
+        verify(model, times(1)).addAttribute(eq("textFragment"), eq(textFragment));
+        verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
+        verify(model, times(2)).addAttribute(anyString());
+    }
 }
