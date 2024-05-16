@@ -106,8 +106,8 @@ public class SearchController {
 		return "/results";
 		}
 	
-	@GetMapping("/search/author")
-	public String searchAuthor(@RequestParam String lastName) {
+	@GetMapping("/search/author/")
+	public String searchAuthor(@RequestParam String lastName, ModelMap model) {
 		LOG.info("\n got author name = " + lastName);
 		List<Author> authors = searchService.findAuthorByName(lastName);
 		if (authors == null) {
@@ -115,7 +115,8 @@ public class SearchController {
 		} else {
 			LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
 		}
-		return "/results";
+		model.addAttribute("authors", authors);
+		return "/authors";
 		
 		
 	}

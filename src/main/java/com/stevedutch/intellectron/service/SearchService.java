@@ -43,15 +43,15 @@ public class SearchService {
 	
 		/**
 		 *Takes a String, and then uses the last element of the string as authors family name 
-		 *to find  authors with similar names.
+		 *to find authors with similar names.
 		 * @param name String
-		 * @return List<Author<
+		 * @return List<Author>
 		 */
    public List<Author> findAuthorByName(String name) {
 	   String[] nameParts = name.split("\\s+");
 	   String lastName = nameParts[nameParts.length-1];
 	   LOG.info("\n Now searching for author family name: " + lastName);
-	   List<Author> result = authorService.findAuthorByLastName(lastName);
+	   List<Author> result = authorService.findAuthorByLastNameLike(lastName);
 	   return result;
 	}
 

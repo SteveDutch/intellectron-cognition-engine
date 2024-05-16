@@ -13,7 +13,7 @@ public interface TextRepository extends JpaRepository<Tekst, Long>{
 	
 	public Tekst findByText(String text);
 	
-	 @Query("SELECT tekst FROM Tekst tekst WHERE tekst.text LIKE %:searchTerm%")
+	@Query("SELECT tekst FROM Tekst tekst WHERE tekst.text LIKE %:searchTerm%")
 	public List<Tekst> findTekstByTextFragment(String searchTerm);
 
 }

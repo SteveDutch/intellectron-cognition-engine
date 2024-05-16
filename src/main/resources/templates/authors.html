@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Your Authors List, found by intellectron</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <h1>Author List</h1>
+
+    <div th:if="${#lists.isEmpty(authors)}">
+        <p>No authors found.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(authors)}">
+        <h3>Authors:</h3>
+        <ul>
+            <li th:each="author : ${authors}">
+                <h4 th:text="${author.authorFamilyName}"></h4>
+                <p th:text="${author.authorFirstName}"></p>
+                <!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="author : ${authors}">
+                    <td><span th:text="${author.authorFamilyName}"></span></td>
+                    <td><span th:text="${author.authorFirstName}"></span></td>
+                    <!-- <td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
