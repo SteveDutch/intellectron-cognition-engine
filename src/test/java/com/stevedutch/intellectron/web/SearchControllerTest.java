@@ -65,4 +65,23 @@ public class SearchControllerTest {
         verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
         verify(model, times(2)).addAttribute(anyString());
     }
+    
+    @Test
+	public void testSearchTextByAuthor() {
+		String author = "test";
+		List<Tekst> expectedTexts = new ArrayList<>();
+		Tekst tekst = new Tekst(); // Erstellen Sie hier eine Instanz Ihrer Tekst-Klasse
+		expectedTexts.add(tekst);
+
+		when(searchService.findTekstByAuthor(anyString())).thenReturn(expectedTexts);
+
+		String viewName = searchController.searchTextByAuthor(author, model);
+
+		assertThat(viewName).isEqualTo("/results");
+		verify(searchService).findTekstByAuthor(author);
+		verify(model, times(1)).addAttribute(eq("author"), eq(author));
+		verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
+		verify(model, times(2)).addAttribute(anyString());
+	}
 }
+

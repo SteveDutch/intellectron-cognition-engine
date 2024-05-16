@@ -3,3 +3,10 @@
 body {
     background-color: lightgrey;
 }
+
+.tablehead {
+    color: darkblue; /* Setzt die Textfarbe auf Blau */
+    font-size: 20px; /* Setzt die Schriftgröße auf 24 Pixel */
+    font-weight: bold; /* Setzt die Schriftart auf Bold */
+}
+

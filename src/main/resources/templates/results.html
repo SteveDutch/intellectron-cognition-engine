@@ -7,25 +7,25 @@
     <title>Your intellectron found</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/search.css" />
-    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <link rel="stylesheet" href="/css/search.css" />
+    <!-- <link rel="stylesheet" th:href="@{/css/search.css}"> -->
     <script type="text/javascript" src="/js/search.js" defer></script>
-    <script type="text/javascript" th:src="@{/js/search.js}" defer></script>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- <script type="text/javascript" th:src="@{/js/search.js}" defer></script> -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body>
     <h1>Search Results</h1>
 
 
-
+<!-- Tag results -->
     <div th:if="${tag}">
         <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
     </div>
     <div th:if="${#lists.isEmpty(zettels)}">
         <p>No zettels found for this tag.</p>
     </div>
-
+<!-- Zettel results -->
     <div th:unless="${#lists.isEmpty(zettels)}">
         <h3>Zettels:</h3>
         <ul>
@@ -68,15 +68,15 @@
     </div>
 
     <!-- Textsucheergebnis -->
-     <table>
-        <h2>Search Results, found texts for given textfragment: </h2>
-    <thead>
-        <tr>
-            <th>Titel</th>
-            <th>Text</th>
-        </tr>
-    </thead>
-   
+    <table>
+        <p class="tablehead">Search Results, found texts for given textfragment: </p>
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+
         <tbody>
             <tr th:if="${#lists.isEmpty(texts) || #strings.isEmpty(texts)}">
                 <td colspan="2"> No Zettel Available </td>
