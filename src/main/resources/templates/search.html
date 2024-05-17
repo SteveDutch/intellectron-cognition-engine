@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="css/search.css" />
         <link rel="stylesheet" th:href="@{/css/search.css}">
         <script type="text/javascript" src="/js/search.js" defer></script>
-<!--         <script type="text/javascript" th:src="@{/js/search.js}" defer></script> -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
@@ -43,25 +42,8 @@
             <input type="text" name="textFragment" placeholder="enter text (fragment)">
             <button type="submit">Suchen mit thymeleaf</button>
         </form>
-
-
-
-
-
-
-
-
-
-
     </div>
-    <hr />
-    <div>
-        <form action="/search" method="get">
-            <label for="note">Note:</label>
-            <input type="text" id="search" name="q" />
-            <button type="submit">Search</button><br />
-        </form>
-    </div>
+
     <hr />
     <h2>Search an Author</h2>
     <div>
@@ -78,20 +60,10 @@
             <input type="text" name="textFragment" placeholder="enter text (fragment)">
             <button type="submit">Suchen mit thymeleaf</button>
         </form>
-        <form action="/search" method="get">
-            <label for="text">Text:</label>
-            <input type="text" id="search" name="q" />
-            <button type="submit">Search</button><br />
-        </form>
+
     </div>
     <hr />
-    <div>
-        <form action="/search" method="get">
-            <label for="zettel">Topic:</label>
-            <input type="text" id="search" name="q" />
-            <button type="submit">Search</button><br />
-        </form>
-    </div>
+
                 <div th:if="${tag}">
                     <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
                 

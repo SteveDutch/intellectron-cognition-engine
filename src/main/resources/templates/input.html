@@ -41,11 +41,6 @@
         </div>
         <hr />
 
-        <!--       MEINE FUNKTIONIERENDE LÖSUNG FÜR EIN TAG -->
-        <!--          <label for="tag">Tag: </label><br />
-            <input type="text" id="tag" name="tag"  th:field="${tag.tagText}" /><br />
-        </div> -->
-
         <div>
             <label for="tags">Tags: </label><br />
             <div id="tagsContainer">
@@ -92,7 +87,6 @@
                         th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
                         th:value="${reference.targetZettel}" />
                 </div>
-                <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
                 <button id="addReferenceButton" type="button">Add Reference</button>
             </div>
             <hr />
