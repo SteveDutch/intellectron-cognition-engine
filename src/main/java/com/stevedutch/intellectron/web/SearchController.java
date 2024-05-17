@@ -1,6 +1,8 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +117,23 @@ public class SearchController {
 		} else {
 			LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
 		}
+		// Dürftw nicht notwendig sein... u.a. weil es ja schon hne klappte
+//		List<Tekst> texts = new ArrayList<>();
+//		for (Author author : authors) {
+//		    texts.addAll(author.getTexts());
+//		}
+//		LOG.info("\n  found " + texts.size()+ " Texts: \n" + texts);
+//		
+//		model.addAttribute("texts", texts);
+		
+		List<Zettel> zettels = new ArrayList<>();
+		for (Author author : authors) {
+            zettels.addAll(author.getTexts().stream().flatMap(x -> x.getZettels().stream()).collect(Collectors.toList()));
+
+		}
+		LOG.info("\n  found " + zettels.size()+ " Zettels: \n" + zettels);
 		model.addAttribute("authors", authors);
+		model.addAttribute("zettels", zettels);
 		return "/authors";
 		
 		
