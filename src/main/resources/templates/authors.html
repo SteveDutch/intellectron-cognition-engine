@@ -12,7 +12,6 @@
 
 <body>
     <h1>Author List</h1>
-
     <div th:if="${#lists.isEmpty(authors)}">
         <p>No authors found.</p>
     </div>
@@ -44,7 +43,7 @@
                 <tr th:each="author : ${authors}">
                     <td><span th:text="${author.authorFamilyName}"></span></td>
                     <td><span th:text="${author.authorFirstName}"></span></td>
-                    <!-- <td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
+                    <!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
                     <td th:each="tekst : ${author.texts}">
                         <span th:text="${tekst.title}">Titel</span>
                     </td>
@@ -54,17 +53,6 @@
                     <td th:each="tekst : ${author.texts}">
                         <span th:each="zettel : ${tekst.zettels}" th:text="${zettel.topic} + '///' ">Zettel-Thema</span>
                     </td>
-
-                    <!-- howitworked <td><span th:each="tekst : ${author.texts}" th:text="${tekst.title} + '/// ' + ${tekst.text} + ' // ' ">TEKST :</span></td> -->
-                    <!-- <span th:text="${tekst.title}">Titel</span>     -->
-                    <!-- <td><span th:text="${tekst.zettels .topic} + ' // ' ">ZETTEL :</span></td> -->
-                    <!-- <ul>
-                        <li th:each="zettel : ${tekst.zettels}">
-                          <span th:text="${zettel.topic}">Zettel-Thema</span>
-                        </li>
-                      </ul> -->
-           
-                
                 </tr>
             </tbody>
         </table>

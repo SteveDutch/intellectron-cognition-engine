@@ -33,6 +33,10 @@ public class Note {
 	public Note() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Note(String noteText) {
+		this.noteText = noteText;
+	}
 
 	public Long getZettelId() {
 		return zettelId;

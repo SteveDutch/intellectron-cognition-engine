@@ -1,6 +1,8 @@
 package com.stevedutch.intellectron.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -19,8 +21,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ModelMap;
 
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.service.SearchService;
+import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.ZettelService;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchControllerTest {
@@ -30,6 +35,12 @@ public class SearchControllerTest {
 
     @Mock
     private SearchService searchService;
+    
+    @Mock
+    private TagService tagService;
+    
+    @Mock
+    private ZettelService zettelService;
 
     @Mock
     private ModelMap model;
@@ -41,13 +52,35 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void shouldShowSearchPage() {
+    public void testShowSearchPage() {
         String result = searchController.showSearchPage();
 
         assertThat(result).isEqualTo("/search");
         
     }
 
+    // The 'searchByTag' method logs the tagText parameter and retrieves a list of zettels associated with the tagText parameter. The method then adds the wantedTag and zettels to the model and returns the string "/results".
+    @Test
+    public void test_search_by_tag() {
+        // Arrange
+//        SearchController searchController = new SearchController();
+        String tagText = "exampleTag";
+        ModelMap model = new ModelMap();
+        
+        // Mock behavior
+        Tag tag = new Tag();
+        tag.setTagText(tagText);
+        when(tagService.findTagByText(tagText)).thenReturn(tag);
+    
+        // Act
+        String result = searchController.searchByTag(tagText, model);
+    
+        // Assert
+        assertEquals("/results", result);
+        assertEquals(tag, model.get("tag"));
+        assertNotNull(model.get("zettels"));
+    }
+    
     @Test
     public void testSearchTextByTextFragment() {
         String textFragment = "test";

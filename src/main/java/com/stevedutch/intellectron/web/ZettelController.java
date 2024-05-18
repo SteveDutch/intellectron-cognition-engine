@@ -44,19 +44,7 @@ public class ZettelController {
 	
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
-//		model.put("zettelDto", new ZettelDtoRecord(zettelDto.zettel(),zettelDto.tekst(), zettelDto.note(), zettelDto.author(), 
-//				zettelDto.tags(), zettelDto.references()));
-		
-//		model.put("author", new Author());
-//		model.put("tekst", new Tekst());
-//		model.put("zettel", new Zettel());
-//		model.put("note", new Note());
-//		model.put("tag", new Tag());
-//		model.put("tags", new ArrayList<Tag>());
-//
-//		model.put("reference", new Reference());
-//		model.put("references", new ArrayList<Reference>());
-		
+
 		Zettel zettel = zettelService.findZettelById(zettelId);
 		String formattedText = zettel.getTekst().getText();
 		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));

@@ -1,18 +1,35 @@
 package com.stevedutch.intellectron.web;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Note;
+import com.stevedutch.intellectron.domain.Reference;
+import com.stevedutch.intellectron.domain.Tag;
+import com.stevedutch.intellectron.domain.Tekst;
+import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
 import com.stevedutch.intellectron.service.ReferenceService;
@@ -20,55 +37,81 @@ import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
+@ExtendWith(MockitoExtension.class)
 class ZettelControllerTest {
-	@Mock
-	private ZettelService zettelService;
-	@Mock
-	private NoteService noteService;
-	@Mock
-	private TextService textService;
-	@Mock
+
+    @InjectMocks
+    private ZettelController zettelController;
+
+    @Mock
+    private ZettelService zettelService;
+    @Mock
+    private NoteService noteService;
+    @Mock
+    private TextService textService;
+    @Mock
     private TagService tagService;
-	@Mock
-	private AuthorService authorService;
-	@Mock
-	private ReferenceService refService;
-	@InjectMocks
-	private ZettelController sut = new ZettelController();
+    @Mock
+    private AuthorService authorService;
+    @Mock
+    private ReferenceService refService;
 
-	// (Mocks initialisieren U Injektion durchführen)
-	public ZettelControllerTest() {
-		MockitoAnnotations.openMocks(this);
-	}
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
-	@Test
-	public void testUpdateOneZettel() throws JsonMappingException, JsonProcessingException {
-		// arrange
-		String jsonTestString = "{\"zettel\":\"Test; werden die Autorebnamensfelder noch bei Zettel.html angezeigt?\",\"note\":\"Test testomat\",\"tekst\":{\"text\":\"Supertext\",\"textDate\":\"\",\"source\":\"Superbrain is ma name\"},\"tags\":[\"just a tag\"],\"author\":{\"authorFirstName\":\"Karl Marx\",\"authorFamilyName\":\"Forever\"},\"references\":[]}";
-		// Create an instance of the ObjectMapper class from the Jackson library
-		ObjectMapper objectMapper = new ObjectMapper();
-		// parse the JSON String and convert it to a JsonNode object
-		JsonNode jsonTestObject = objectMapper.readTree(jsonTestString);
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(zettelController).build();
+        objectMapper = new ObjectMapper();
 
-		// act
-		String exspectedResult = sut.updateOneZettel(1L, jsonTestString);
-		// assert
-		assertEquals(exspectedResult, "redirect:/zettel/");
+    }
 
-	}
+    @Test
+    void testShowZettel() throws Exception {
+        // Setup
+    	ArrayList<Tag> tags = new ArrayList<Tag>();
+    	tags.add(new Tag("test"));
+    	ArrayList<Reference> references = new ArrayList<Reference>();
+    	references.add(new Reference("1234567890"));
+    	Zettel zettel = new Zettel("test"); 
+    	Tekst tekst = new Tekst("test");
+    	zettel.setTekst(tekst);
+    	tekst.setText("test text");
+        given(zettelService.findZettelById(anyLong())).willReturn(zettel);
 
-	// ZettelController successfully deletes a Zettel by ID
-	@Test
-	public void test_delete_zettel() {
-		// arrange
-		Long zettelId = 1L;
+        // Execute
+        mockMvc.perform(get("/zettel/1"))
+              .andExpect(status().isOk())
+              .andExpect(view().name("/zettel"))
+              .andExpect(model().attributeExists("zettel"));
+    }
 
-		// act
-		String result = sut.deleteOneZettel(zettelId);
+    @Test
+    void testUpdateOneZettel() throws Exception {
+        // Setup"test"
+    	ArrayList<Tag> tags = new ArrayList<Tag>();
+    	tags.add(new Tag("test"));
+    	ArrayList<Reference> references = new ArrayList<Reference>();
+    	references.add(new Reference("1234567890"));
+    	Zettel zettel = new Zettel("test"); 
+    	Tekst tekst = new Tekst("test");
+    	Note note = new Note("test");
+    	Author author = new Author("test", "family");
 
-		// assert
-		assertEquals("redirect:/welcome", result);
-		verify(zettelService, times(1)).deleteOneZettelbyId(zettelId);
-	}
+        ZettelDtoRecord changes = new ZettelDtoRecord(zettel, tekst, note, author,tags, references); // Initialize with necessary properties"
+        String json = objectMapper.writeValueAsString(changes);
 
+        // Execute
+        mockMvc.perform(post("/zettel/1").content(json).contentType(MediaType.APPLICATION_JSON))
+              .andExpect(status().is3xxRedirection())
+              .andExpect(redirectedUrl("/zettel/"));
+    }
+
+    @Test
+    void testDeleteOneZettel() throws Exception {
+        // Execute
+        mockMvc.perform(post("/zettel/1/delete"))
+              .andExpect(status().is3xxRedirection())
+              .andExpect(redirectedUrl("/welcome"));
+    }
 }

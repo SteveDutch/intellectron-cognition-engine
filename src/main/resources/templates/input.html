@@ -41,6 +41,7 @@
         </div>
         <hr />
 
+
         <div>
             <label for="tags">Tags: </label><br />
             <div id="tagsContainer">
@@ -87,6 +88,7 @@
                         th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
                         th:value="${reference.targetZettel}" />
                 </div>
+                <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
                 <button id="addReferenceButton" type="button">Add Reference</button>
             </div>
             <hr />
