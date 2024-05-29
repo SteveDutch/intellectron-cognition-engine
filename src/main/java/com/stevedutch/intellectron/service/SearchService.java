@@ -41,6 +41,11 @@ public class SearchService {
 		return result;
 	}
 	
+	public Zettel findOneZettelByNote(String noteText) {
+		Zettel result = zettelRepo.findOneZettelByNote(noteText);
+        return result;
+	}
+	
 		/**
 		 *Takes a String, and then uses the last element of the string as authors family name 
 		 *to find authors with similar names.

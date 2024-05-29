@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.ModelMap;
 
+import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.service.ZettelService;
 
 class InputControllerTest {
@@ -45,7 +47,9 @@ class InputControllerTest {
         Mockito.when(zettelServiceMock.find10RandomZettel()).thenReturn(null);
         String result = sut.showInputMask(model);
         assertThat(result).isEqualTo("/input");
-        Mockito.verify(model).put("zettels", new ArrayList<>());
+        Mockito.verify(model).put("author", new Author());
+        Mockito.verify(model).put("tekst", new Tekst());
+//        Mockito.verify(model).put("zettels", new ArrayList<>());
         Mockito.verify(model).put("randomZettels", new ArrayList<>());
     }
     

@@ -41,7 +41,7 @@ public class AuthorService {
         return author;
 
     }
-    // TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
+    
     public Author saveAuthorWithText(Author author, Tekst tekst) {
     	LOG.info(author.toString());
     	tekst = textService.findByText(tekst.getText());
@@ -58,9 +58,35 @@ public class AuthorService {
         return authorRepo.save(givenAuthor);
     }
     
+    
+    // TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
+    /**
+     * connects given author with given tekst. If
+     * @param author
+     * @param tekst
+     * @return author - connected to tekst
+     */
+    public Author connectAuthorWithText(Author author, Tekst tekst) {
+    	LOG.info(author.toString());
+//    	tekst = textService.findByText(tekst.getText());
+    	Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), 
+    			author.getAuthorFamilyName());
+    	if (givenAuthor == null) {
+    		givenAuthor = author;
+
+    		}
+    	givenAuthor.getTexts().add(tekst);
+    	tekst.setOneAssociatedAuthors(givenAuthor);
+        return givenAuthor;
+    }
+    
 	public void updateAuthor(Long zettelId, Author author) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Author saveAuthor(Author author) {
+		return authorRepo.save(author);
 	}
 	
 	/**

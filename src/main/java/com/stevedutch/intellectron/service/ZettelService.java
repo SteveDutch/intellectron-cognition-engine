@@ -50,63 +50,92 @@ public class ZettelService {
 
 	@Lazy
 	@Autowired
-	private ReferenceService refService;
+	private ReferenceService refService; 
+	
+	@Lazy
+    @Autowired
+    private SearchService searchService;
 
 	// vXXX vielleicht ein bisschen groß, diese Funktion
+	/**
+	 * takes a DTOrecord. First it checks (via zettel.topic & Note) 
+	 * if an Zettel is already existing, if not it creates a new zettel. Afterwards it connects everything 
+	 * and saves the zettel in the db afterwards.
+	 *  
+	 * @param zettelDto
+	 * @return zettel Dto
+	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 
-		if (zettelDto.zettel().getZettelId() == null) {
-//				 id == null, create new Zettel;
-			// save Note
-			Note newNote = noteService.saveNotewithZettel(zettelDto.note(), zettelDto.zettel());
-			// Zettel
-			Zettel newZettel = setupZettel(zettelDto, newNote);
+		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
+		if (newZettel == null) {
+			newZettel = new Zettel();
 			
-			ArrayList<Tag> newTags = tagService.saveTagsWithZettel(zettelDto.tags(), newZettel);
-			saveZettel(newZettel);
-			LOG.info("\n ZettelService.createZettel,  just savedwithZettel LOGLOGLOG1st {}", newZettel);
+		}
+			// connect to Note
+			Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
+		
+			// check, if tekst is already existing 
+			Tekst newTekst = textService.checkForExistingTekst(zettelDto.tekst());
+			
+			// Zettel
+			newZettel = setupZettel(newZettel, zettelDto, newNote, newTekst);
+				LOG.info("\n hat Tekst hier schon eine ID? (nach setUpZettel) \n" + newZettel);
+				
+			ArrayList<Tag> newTags = tagService.connectTagsWithZettel(zettelDto.tags(), newZettel);
+			LOG.info("\n ZettelService.createZettel,  just savedTagswithZettel LOGLOGLOG1st {}", newZettel);
 
 			// Tekst
-			Tekst newTekst = textService.saveTextwithZettel(zettelDto.tekst(), newZettel);
+			newTekst = textService.connectTextwithZettel(newTekst, newZettel);
 			// Author
-			Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
-			textService.saveTextWithAuthor(newTekst, newAuthor);
+			Author newAuthor = authorService.connectAuthorWithText(zettelDto.author(), newTekst);
+			
+			textService.connectTextWithAuthor(newTekst, newAuthor);
 
 			// reference
 			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-			setRelationsAndSaveRefsWithZettel(newZettel, newRefs);
+			setRelationsRefsWithZettel(newZettel, newRefs);
 
 			LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
+			
+					 
+			zettelRepo.save(newZettel);
+			authorService.saveAuthor(newAuthor);
+				
+			
 
-			zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
+			return zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 
-		} else {
-			// because id !0 null: save/update Zettel;
-			// Zettel updatedZettel = zettelRepo.findById(zettelId).orElse(new Zettel());
-			zettelDto.zettel().setChanged(LocalDateTime.now());
-			// Zettel updatedZettel = new Zettel(zettelDto);
-			// zettelRepo.save(updatedZettel);
-		}
-		return zettelDto;
-	}
+		} 	 
+	
 
-	public Zettel setupZettel(ZettelDtoRecord zettelDto, Note newNote) {
-		Zettel newZettel = zettelDto.zettel();
-		newZettel.setNote(newNote);
-		newZettel.setTekst(zettelDto.tekst());
-		newZettel.setAdded(LocalDateTime.now());
-		newZettel.setChanged(LocalDateTime.now());
-		newZettel.getReferences().addAll(zettelDto.references());
+	/**
+	 * Takes a zettel object, a recordDTO & a note object.
+	 * then it sets up the zettel object with the DTO-elements.
+	 * @param zettelDto
+	 * @param newNote
+	 * @param newTekst 
+	 * @return zettel object
+	 */
+	public Zettel setupZettel(Zettel zettel, ZettelDtoRecord zettelDto, Note newNote, Tekst newTekst) {
+		
+		zettel.setTopic(zettelDto.zettel().getTopic());
+		zettel.setTags(zettelDto.tags());
+		zettel.setNote(newNote);
+		zettel.setTekst(newTekst);
+		zettel.setAdded(LocalDateTime.now());
+		zettel.setChanged(LocalDateTime.now());
+		zettel.getReferences().addAll(zettelDto.references());
 		// TODO BUG 00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
 		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmddMMyyyy");
-		newZettel.setSignature(Long.parseLong(newZettel.getAdded().format(formatter)));
-		return newZettel;
+		zettel.setSignature(Long.parseLong(zettel.getAdded().format(formatter)));
+		return zettel;
 	}
 
-	public void setRelationsAndSaveRefsWithZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
+	public void setRelationsRefsWithZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
 		newRefs.forEach(reference -> reference.setOriginZettel(newZettel.getSignature()));
-		newRefs.forEach(reference -> refService.saveReferenceWithZettel(reference, newZettel));
+		newRefs.forEach(reference -> reference.getZettels().add(newZettel));
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
@@ -131,14 +160,14 @@ public class ZettelService {
 		// Tekst
 		
 		Tekst newTekst = textService.updateTekst(zettelId, zettelDto.tekst());
-		textService.saveTextwithZettel(zettelDto.tekst(), updatedZettel);
+		textService.connectTextwithZettel(zettelDto.tekst(), updatedZettel);
 		// Author
-		Author newAuthor = authorService.saveAuthorWithText(zettelDto.author(), newTekst);
-		textService.saveTextWithAuthor(newTekst, newAuthor);
+		Author newAuthor = authorService.connectAuthorWithText(zettelDto.author(), newTekst);
+		textService.connectTextWithAuthor(newTekst, newAuthor);
 
 		// reference
 		ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-		setRelationsAndSaveRefsWithZettel(updatedZettel, newRefs);
+		setRelationsRefsWithZettel(updatedZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 		LOG.info("\n \n ZettelService.updateOneZettelbyId, am Ende .... LOGLOGLOG1st {}", updatedZettel);

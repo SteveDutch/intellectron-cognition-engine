@@ -42,24 +42,28 @@ public class TagService {
 
 	}
 
-	
-	public ArrayList<Tag> saveTagsWithZettel(ArrayList<Tag> tags, Zettel zettel) {
+	/**
+	 * connects an ArrayList of tags with a zettel 
+	 * @param tags - ArrayList of tags
+	 * @param zettel - zettel object
+	 * @return ArrayList of Tags 
+	 */
+	public ArrayList<Tag> connectTagsWithZettel(ArrayList<Tag> tags, Zettel zettel) {
 		
-			tags.forEach(tag -> System.out.println("\n HIER erhaltene tags die sollen ihre ID kriegen oder neu kriegen  !!!   nämlich:  " + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
-			ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
-					.orElse(saveTag(new Tag(tag.getTagText()))))
-					.collect(Collectors.toCollection(ArrayList::new));
-			newTags.forEach(tag -> System.out.println("\n HIER alle mit ID   !!!   nämlich:  "    + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
-//			newTags.forEach(tag -> tag.getZettels().add(zettel));
-//			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
-			newTags.forEach(tag -> saveTag(tag));
-			newTags.forEach(tag -> System.out.println("\n HIER alle gespeichert   !!!   nämlich:  "  + tag.getId()+" Anzahl Zettel: "  + tag.getZettels().size()));
-//			zettel.getTags().addAll(newTags);
+			tags.forEach(tag -> LOG.info("\n HIER erhaltene tags die sollen ihre ID kriegen oder neu kriegen  !!!   nämlich:  " + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
 			
+			ArrayList<Tag> newTags = tags.stream().map(tag -> tagRepo.findByTagText(tag.getTagText())
+					.orElse(new Tag(tag.getTagText())))
+					.collect(Collectors.toCollection(ArrayList::new));
+			newTags.forEach(tag -> LOG.info("\n HIER alle tags mit ID   !!!   nämlich:  "    + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
+			newTags.forEach(tag -> tag.getZettels().add(zettel));
+			newTags.forEach(tag -> System.out.println("\n HIER sollten alle verheiratet sein   !!!   nämlich:  "  + tag.getId() +" Anzahl Zettel: " + tag.getZettels().size()));
+			newTags.forEach(tag -> LOG.info("\n HIER alle tags gespeichert   !!!   nämlich:  "  + tag.getId()+" Anzahl Zettel: "  + tag.getZettels().size()));
+//			zettel.getTags().addAll(newTags);
+			zettel.setTags(newTags);
 			zettel.setChanged(LocalDateTime.now());
-			zettelService.saveZettel(zettel);
-			newTags.forEach(tag -> System.out.println("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
-			    + "\n zettels: " + tag.getZettels().size()));	
+//			newTags.forEach(tag -> LOG.info("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
+//			    + "\n zettels: " + tag.getZettels().size()));	
 			return newTags; 
 	}
 	

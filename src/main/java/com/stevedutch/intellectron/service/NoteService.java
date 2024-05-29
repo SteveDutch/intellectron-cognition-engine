@@ -15,7 +15,7 @@ import com.stevedutch.intellectron.repository.NoteRepository;
 public class NoteService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(NoteService.class);
-	// for junit testing
+	// for junit testing TODO delete, no code for testing 
 	public NoteService(NoteRepository noteRepository) {
 		this.noteRepository = noteRepository;
 	}
@@ -37,6 +37,25 @@ public class NoteService {
 
 	}
 
+	/**
+	 * Checks if note is already in DB. if not, a new note is created.
+	 * Thit connects note & zettel.
+	 * 
+	 * @param note
+	 * @param zettel
+	 * @return note
+	 */
+	public Note connectNotewithZettel(Note note, Zettel zettel) {
+		Note newNote = noteRepository.findOneNoteByNoteText(note.getNoteText());
+		if (newNote == null) {
+			newNote =new Note(note.getNoteText());
+			note = newNote;
+		};
+		note.setZettel(zettel);
+		note.setZettelId(zettel.getZettelId());
+		return note;
+	}
+
 	public void updateNote(Long zettelId, Note note) {
 		Note updatedNote = noteRepository.findByZettelId(zettelId);
 		LOG.info("\n --> NoteService.updateNote, Note vorm Bearbeiten \n" +   "--->" + updatedNote +"\n" + updatedNote.getZettel());
@@ -44,5 +63,6 @@ public class NoteService {
 		noteRepository.save(updatedNote);
 		LOG.info("\n --> NoteService.updateNote, Note nachm Bearbeiten \n" +   "--->" + updatedNote +"\n" + updatedNote.getZettel());
 	}
+
 
 }

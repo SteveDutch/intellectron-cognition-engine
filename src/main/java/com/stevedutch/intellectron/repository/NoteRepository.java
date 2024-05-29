@@ -10,4 +10,6 @@ public interface NoteRepository extends JpaRepository<Note, Long>  {
 	
 	public Note findByZettelId(Long zettelId);
 
+	public Note findOneNoteByNoteText(String noteText);
+
 }
