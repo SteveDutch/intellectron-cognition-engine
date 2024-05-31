@@ -75,7 +75,12 @@ function prepareZettel() {
     zettel.tekst = tekst;
     tekst.title = document.getElementById("texttitle").value;
     tekst.text = document.getElementById("tekst").value;
-    tekst.textDate = document.getElementById("timestamp").value;
+
+    if (document.getElementById("textDate").value !== "") {
+    tekst.textDate = document.getElementById("textDate").value;
+    } else {
+        tekst.textDate = document.getElementById("timestamp").textContent;
+    }
     tekst.source = document.getElementById("source").value;
 
     // an array for references:

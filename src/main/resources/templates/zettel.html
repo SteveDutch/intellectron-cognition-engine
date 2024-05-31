@@ -92,9 +92,9 @@
 
     <hr />
     <label for="timestamp">date of text:</label><br />
-    <span th:text="|${tekst.textDate}|"></span><br />
+    <span id="timestamp" name="timestamp" th:text="|${tekst.textDate}|"></span><br />
     <span>change date:</span><br />
-    <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
+    <input id="textDate" type="date"  name="textDate" th:field="${tekst.textDate}" /><br />
     <hr />
 
     <div>
