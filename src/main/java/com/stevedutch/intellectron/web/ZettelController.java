@@ -66,8 +66,7 @@ public class ZettelController {
 		ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
 		
 		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n " + changes);
-//		zettelService.updateOnlyZettel(zettelId, changes); XXX all die Mühe umsonst ... 
-		changes.zettel().setChanged(LocalDateTime.now());
+		zettelService.updateOnlyZettel(zettelId, changes);// XXX all die Mühe umsonst ... war doch notwendig , fürnTitel/Topic
 		noteService.updateNote(zettelId, changes.note());
 		textService.updateTekst(zettelId, changes.tekst());
 		tagService.updateTags(zettelId, changes.tags());
@@ -75,7 +74,7 @@ public class ZettelController {
 		refService.updateReferences(zettelId, changes.references());
 
 //		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
-		return "redirect:/zettel/";
+		return "redirect:/zettel/{zettelId}";
 	}
 	
 	@PostMapping("/zettel/{zettelId}/delete")

@@ -98,11 +98,8 @@ public class ZettelService {
 
 			LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 			
-					 
-			zettelRepo.save(newZettel);
+			saveZettel(newZettel);
 			authorService.saveAuthor(newAuthor);
-				
-			
 
 			return zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 
@@ -176,6 +173,24 @@ public class ZettelService {
 
 	}
 
+	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
+	
+			Zettel updatedZettel = zettelRepo.findById(zettelId)
+					.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
+			LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
+			updatedZettel.setTopic(changes.zettel().getTopic());
+	//		updatedZettel.setSignature(changes.zettel().getSignature());
+			updatedZettel = saveZettel(updatedZettel);
+			LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
+	
+		}
+
+
+	public void deleteOneZettelbyId(Long zettelId) {
+		zettelRepo.deleteById(zettelId);
+	}
+
+
 	public List<Zettel> findAll() {
 		return zettelRepo.findAllZettelWithTopic();
 	}
@@ -199,21 +214,6 @@ public class ZettelService {
 		return tenRandom;
 	}
 
-	public void deleteOneZettelbyId(Long zettelId) {
-		zettelRepo.deleteById(zettelId);
-	}
-
-	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
-
-		Zettel updatedZettel = zettelRepo.findById(zettelId)
-				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
-		updatedZettel.setTopic(changes.zettel().getTopic());
-//		updatedZettel.setSignature(changes.zettel().getSignature());
-		updatedZettel = saveZettel(updatedZettel);
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
-
-	}
 	/**
 	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
 	 * @param zettel
