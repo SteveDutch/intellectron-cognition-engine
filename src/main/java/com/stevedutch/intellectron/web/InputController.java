@@ -62,6 +62,10 @@ public class InputController {
 		} else {
 //			LOG.info("\n Wieviel zufällige Zettel? --> " + randomZettels.size() + "\n " + "\n randomZettels = \n " + randomZettels);
 		}
+		
+		zettelService.reduceStringListElements(zettels, 220);
+		zettelService.reduceStringListElements(randomZettels, 220);
+		
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);
 		return "/input";
