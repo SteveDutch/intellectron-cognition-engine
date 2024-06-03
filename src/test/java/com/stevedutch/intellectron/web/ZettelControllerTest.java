@@ -104,7 +104,7 @@ class ZettelControllerTest {
         // Execute
         mockMvc.perform(post("/zettel/1").content(json).contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().is3xxRedirection())
-              .andExpect(redirectedUrl("/zettel/"));
+              .andExpect(redirectedUrl("/zettel/1"));
     }
 
     @Test
