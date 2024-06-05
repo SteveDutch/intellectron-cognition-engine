@@ -31,7 +31,7 @@ public class TagService {
 		if (tag.getId() == null) {
 			Optional<Tag> existingTag = tagRepo.findByTagText(tag.getTagText());
 			if (existingTag.isPresent()) {
-				return (existingTag.get());
+				return existingTag.get();
 						//orElseGet(tagRepo.save(new Tag(tag.getTagText()))); // Verwenden Sie das existierende Tag / return just existingTag
 														// laut phind
 			} 

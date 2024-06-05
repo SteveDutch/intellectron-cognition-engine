@@ -10,6 +10,10 @@ public interface NoteRepository extends JpaRepository<Note, Long>  {
 	
 	public Note findByZettelId(Long zettelId);
 
+	// XXX gibt eine Note zurück, wenn mehrere gefunden werden
 	public Note findOneNoteByNoteText(String noteText);
+	
+	// XXX gibt eine exception zurück, wenn mehrere gefunden werden
+	public Note findByNoteText(String noteText);
 
 }

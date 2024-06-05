@@ -59,7 +59,11 @@ public class AuthorService {
     }
     
     
-    // TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
+    public Author saveAuthor(Author author) {
+		return authorRepo.save(author);
+	}
+
+	// TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
     /**
      * connects given author with given tekst. If
      * @param author
@@ -83,10 +87,6 @@ public class AuthorService {
 	public void updateAuthor(Long zettelId, Author author) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public Author saveAuthor(Author author) {
-		return authorRepo.save(author);
 	}
 	
 	/**

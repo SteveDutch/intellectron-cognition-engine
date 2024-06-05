@@ -189,6 +189,17 @@ public class ZettelService {
 		zettelRepo.deleteById(zettelId);
 	}
 
+	/**
+	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
+	 * 
+	 * @param zettel
+	 * @return zettel with set change date
+	 */
+	public Zettel saveZettel(Zettel zettel) {
+		zettel.setChanged(LocalDateTime.now());
+		return zettelRepo.save(zettel);
+	}
+
 	public List<Zettel> findAll() {
 		return zettelRepo.findAllZettelWithTopic();
 	}
@@ -210,17 +221,6 @@ public class ZettelService {
 			}
 		}
 		return tenRandom;
-	}
-
-	/**
-	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
-	 * 
-	 * @param zettel
-	 * @return zettel with set change date
-	 */
-	public Zettel saveZettel(Zettel zettel) {
-		zettel.setChanged(LocalDateTime.now());
-		return zettelRepo.save(zettel);
 	}
 
 	public List<Zettel> findZettelByTag(String tagText) {

@@ -14,7 +14,7 @@ import com.stevedutch.intellectron.repository.TextRepository;
 
 @Service
 public class TextService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(TextService.class);
 	@Autowired
 	private TextRepository textRepo;
@@ -22,10 +22,14 @@ public class TextService {
 	private ZettelService zettelService;
 
 	public Tekst saveText(Tekst tekst) {
+		Tekst existingText = textRepo.findByText(tekst.getText());
+		if (existingText != null) {
+			tekst.setTextId(existingText.getTextId());
+		}
 		return textRepo.save(tekst);
 	}
-	
-	public  Tekst saveTextWithAuthor(Tekst tekst, Author author) {
+
+	public Tekst saveTextWithAuthor(Tekst tekst, Author author) {
 		// XXX wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
@@ -33,7 +37,18 @@ public class TextService {
 		tekst = textRepo.save(tekst);
 		return textRepo.save(tekst);
 	}
-	
+
+	public Tekst saveTextwithZettel(Tekst tekst, Zettel zettel) {
+		Tekst actualTekst = textRepo.findByText(tekst.getText());
+		if (actualTekst == null) {
+			actualTekst = new Tekst(tekst.getText());
+		}
+		tekst.getZettels().add(zettel);
+
+		return textRepo.save(tekst);
+
+	}
+
 	/**
 	 * checks if the text is already in the database, if not, it creates a new one.
 	 * Afterwards, it adds the zettel to the text.
@@ -53,7 +68,7 @@ public class TextService {
 
 	}
 
-	public  Tekst connectTextWithAuthor(Tekst tekst, Author author) {
+	public Tekst connectTextWithAuthor(Tekst tekst, Author author) {
 		// XXX wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
@@ -63,11 +78,13 @@ public class TextService {
 	}
 
 	public Tekst updateTekst(Long zettelId, Tekst tekst) {
-		
+
 		Zettel zettel = zettelService.findZettelById(zettelId);
 //		Tekst oldTekst = zettelService.findZettelById(zettelId).getTekst();
-		// XXX Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst finden, oder -falls nicht existent -
-		// oder als neues Text mit dem gegebenen Text einricfhten  --> Vermeiden von Doubletten in der Datenbank & Objekt
+		// XXX Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst
+		// finden, oder -falls nicht existent -
+		// oder als neues Text mit dem gegebenen Text einricfhten --> Vermeiden von
+		// Doubletten in der Datenbank & Objekt
 		Tekst updatedTekst = findByText(tekst.getText());
 		LOG.info("\n -->TekstService.updateTekst, Tekst " + updatedTekst);
 		if (updatedTekst == null) {
@@ -79,52 +96,43 @@ public class TextService {
 //            textRepo.save(updatedTekst);
 		}
 		updatedTekst.setTitle(tekst.getTitle());
-        updatedTekst.setTextDate(tekst.getTextDate());
-        updatedTekst.setSource(tekst.getSource());
+		updatedTekst.setTextDate(tekst.getTextDate());
+		updatedTekst.setSource(tekst.getSource());
 
 		textRepo.save(updatedTekst);
 		saveTextwithZettel(updatedTekst, zettelService.findZettelById(zettelId));
 		zettel.setTekst(updatedTekst);
-		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" +   "--->" + updatedTekst +"\n" + updatedTekst.getZettels());
+		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" + "--->" + updatedTekst + "\n"
+				+ updatedTekst.getZettels());
 		return updatedTekst;
-		
-	}
-	
-	public Tekst saveTextwithZettel(Tekst tekst, Zettel zettel) {
-		Tekst actualTekst = textRepo.findByText(tekst.getText());
-		if (actualTekst == null) {
-			actualTekst = new Tekst(tekst.getText());
-		}
-		tekst.getZettels().add(zettel);
-
-		return textRepo.save(tekst);
 
 	}
 
 	public Tekst findById(Long textId) {
-		return textRepo.findById(textId).orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
-		
+		return textRepo.findById(textId)
+				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
+
 	}
-	
+
 	public Tekst findByText(String text) {
-		/// TODO null check 
+		/// TODO null check
 		return textRepo.findByText(text);
 	}
-	
+
 	/**
-	 * checks if the text is already in the database, if yes, it returns it, if not, it returns the given one
+	 * checks if the text is already in the database, if yes, it returns it, if not,
+	 * it returns the given one
+	 * 
 	 * @param tekst
 	 * @return tekst (the given one or from db)
 	 */
 	public Tekst checkForExistingTekst(Tekst tekst) {
 		Tekst existingText = textRepo.findByText(tekst.getText());
-		if (existingText!= null) {
-            return existingText;
-        }
+		if (existingText != null) {
+			return existingText;
+		}
 		return tekst;
-		
+
 	}
-	
-	
 
 }

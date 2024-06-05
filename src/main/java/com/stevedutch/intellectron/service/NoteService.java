@@ -24,7 +24,13 @@ public class NoteService {
 	private NoteRepository noteRepository;
 	
 	public Note saveNote(Note note) {
-        return noteRepository.save(note);
+		// XXX findOne... wirft keinen Fehler, wennn mehrere vorhanden sinf findBy ... schon
+		Note existingNote = noteRepository.findOneNoteByNoteText(note.getNoteText());
+		if (existingNote != null) {
+			note.setZettelId(existingNote.getZettelId());
+			
+		}
+		return noteRepository.save(note);
     }
 	
 	public Note saveNotewithZettel(Note note, Zettel zettel) {
