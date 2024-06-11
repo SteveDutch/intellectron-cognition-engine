@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <h1>Feed your intellectron</h1>
     <form action="/input" method="post" th:object="${ZettelDtoRecord}">
             <div>
             <p th:text="|ID: ${zettel.zettelId}|"></p>
@@ -95,6 +96,7 @@
             <hr />
             <input type="submit" id="submit" value="Submit" />
     </form>
+    <h1>last 10 zettels</h1>
     <div> <!-- show last 10 zettels -->
         <table>
             <thead>
@@ -123,7 +125,7 @@
             </tbody>
         </table>
     </div>
-
+    <h1>  10 random zettels</h1>
     <div> <!-- show 10 random zettels -->
         <table>
             <thead>

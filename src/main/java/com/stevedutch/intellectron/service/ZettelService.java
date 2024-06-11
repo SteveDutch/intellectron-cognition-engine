@@ -18,6 +18,7 @@ import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
@@ -66,6 +67,10 @@ public class ZettelService {
 	 * @return zettel Dto
 	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
+		
+		if (zettelDto.note().getNoteText().isEmpty() || zettelDto.note().getNoteText().isBlank()) {
+			throw new EmptyZettelException("this zettel's note is empty");
+		}
 
 		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
 		if (newZettel == null) {
