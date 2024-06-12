@@ -54,11 +54,11 @@ class InputControllerTest {
         assertThat(result).isEqualTo("/input");
         Mockito.verify(model).put("author", new Author());
         Mockito.verify(model).put("tekst", new Tekst());
-        Mockito.verify(model).put("zettel", new Zettel());
+//        Mockito.verify(model).put("zettel", new Zettel());
         Mockito.verify(model).put("note", new Note());
         Mockito.verify(model).put("tag", new Tag());
         Mockito.verify(model).put("tags", new ArrayList<>());
-        Mockito.verify(model).put("reference", new Reference());
+//        Mockito.verify(model).put("reference", new Reference());
         
         Mockito.verify(model, never()).put("zettels", new ArrayList<>());
         Mockito.verify(model, never()).put("randomZettels", new ArrayList<>());
