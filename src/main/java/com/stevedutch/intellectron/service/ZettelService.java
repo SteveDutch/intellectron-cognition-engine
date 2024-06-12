@@ -71,6 +71,10 @@ public class ZettelService {
 		if (zettelDto.note().getNoteText().isEmpty() || zettelDto.note().getNoteText().isBlank()) {
 			throw new EmptyZettelException("this zettel's note is empty");
 		}
+		
+		if (zettelDto.zettel().getTopic().isEmpty() || zettelDto.zettel().getTopic().isBlank()) {
+			throw new EmptyZettelException("this zettel's topic is empty");
+		}
 
 		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
 		if (newZettel == null) {
