@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.repository.NoteRepository;
 
 @Service
@@ -69,6 +70,15 @@ public class NoteService {
 		noteRepository.save(updatedNote);
 		LOG.info("\n --> NoteService.updateNote, Note nachm Bearbeiten \n" +   "--->" + updatedNote +"\n" + updatedNote.getZettel());
 	}
-
+	
+	/**
+	 * checks if note is empty or blank. if true, an exception is thrown.
+	 * @param note
+	 */
+	public void noteEmptyOrBlankCheck(Note note) {
+		if (note.getNoteText().isEmpty() || note.getNoteText().isBlank()) {
+			throw new EmptyZettelException("this zettel's note is empty");
+		}
+	}
 
 }

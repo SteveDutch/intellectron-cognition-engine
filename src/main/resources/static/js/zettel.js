@@ -111,7 +111,23 @@ function zettelToJava() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(zettel, author, 4),
-    });
+
+    }).then(response => {
+		if (!response.ok) {
+		  throw response;
+		}
+		return response.json();
+	  })
+	  .then(data => {
+		// Handle the successful response
+		console.log(data);
+	  })
+	  .catch(error => {
+		// Pass the error response to the handleError function
+		handleError(error);
+	  });;
+
+    
     console.log("als JSON gesendet:  " + JSON.stringify(zettel, author, 4));
 }
 
@@ -139,3 +155,17 @@ window.onclick = function (event) {
 document.getElementById('delete').addEventListener('click', function () {
     deleteZettel();
 });
+
+function handleError(error) {
+    error.json().then(data => {
+        // Assuming the server sends a JSON response with a 'message' field
+        const message = data.message;
+        console.error('Error:', message);
+        // Display the message on the page
+        // For example, you could set the text content of an element with id 'errorMessage' to the message
+       // document.alarm('errorMessage').textContent = message;
+	   alert(message);
+    }).catch(err => {
+        console.error('Error parsing error response:', err);
+    });
+}

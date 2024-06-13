@@ -68,13 +68,9 @@ public class ZettelService {
 	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 		
-		if (zettelDto.note().getNoteText().isEmpty() || zettelDto.note().getNoteText().isBlank()) {
-			throw new EmptyZettelException("this zettel's note is empty");
-		}
+		noteService.noteEmptyOrBlankCheck(zettelDto.note());
 		
-		if (zettelDto.zettel().getTopic().isEmpty() || zettelDto.zettel().getTopic().isBlank()) {
-			throw new EmptyZettelException("this zettel's topic is empty");
-		}
+		topicEmptyOrBlankCheck(zettelDto.zettel());
 
 		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
 		if (newZettel == null) {
@@ -115,6 +111,17 @@ public class ZettelService {
 	}
 
 	/**
+	 * checks if topic is empty or blank. If true, it throws an exception
+	 * 
+	 * @param zettelDto
+	 */
+	public void topicEmptyOrBlankCheck(Zettel zettel) {
+		if (zettel.getTopic().isEmpty() || zettel.getTopic().isBlank()) {
+			throw new EmptyZettelException("this zettel's topic is empty");
+		}
+	}
+
+	/**
 	 * Takes a zettel object, a recordDTO & a note object. then it sets up the
 	 * zettel object with the DTO-elements.
 	 * 
@@ -145,7 +152,8 @@ public class ZettelService {
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
-
+		
+		topicEmptyOrBlankCheck(zettelDto.zettel());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" + "--->" + updatedZettel + "\n"
@@ -183,7 +191,7 @@ public class ZettelService {
 	}
 
 	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
-
+		topicEmptyOrBlankCheck(changes.zettel());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
