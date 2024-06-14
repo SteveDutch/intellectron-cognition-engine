@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.exception.TagNotFoundException;
+import com.stevedutch.intellectron.exception.TopicTooLongException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(EmptyZettelException.class)
     public ResponseEntity<Map<String, String>> handleEmptyZettelException(EmptyZettelException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+    
+    @ExceptionHandler(TopicTooLongException.class)
+    public ResponseEntity<Map<String, String>> handleTopicTooLongException(TopicTooLongException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

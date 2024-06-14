@@ -19,6 +19,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.EmptyZettelException;
+import com.stevedutch.intellectron.exception.TopicTooLongException;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
@@ -56,6 +57,8 @@ public class ZettelService {
 	@Lazy
 	@Autowired
 	private SearchService searchService;
+	
+	private static final int MAX_LENGTH = 255;
 
 	// vXXX vielleicht ein bisschen groß, diese Funktion
 	/**
@@ -71,12 +74,13 @@ public class ZettelService {
 		noteService.noteEmptyOrBlankCheck(zettelDto.note());
 		
 		topicEmptyOrBlankCheck(zettelDto.zettel());
+		
 
 		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
 		if (newZettel == null) {
 			newZettel = new Zettel();
-
 		}
+		
 		// connect to Note
 		Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
 
@@ -122,6 +126,16 @@ public class ZettelService {
 	}
 
 	/**
+	 * Checks if topic is longer than 255 characters. If true, it throws an exception
+	 * @param topic
+	 */
+	public void checkTopicLength(String topic) {
+		if (topic.length() > MAX_LENGTH) {
+			throw new TopicTooLongException("this zettel's topic is too long");
+		}
+	}
+
+	/**
 	 * Takes a zettel object, a recordDTO & a note object. then it sets up the
 	 * zettel object with the DTO-elements.
 	 * 
@@ -131,7 +145,8 @@ public class ZettelService {
 	 * @return zettel object
 	 */
 	public Zettel setupZettel(Zettel zettel, ZettelDtoRecord zettelDto, Note newNote, Tekst newTekst) {
-
+		
+		checkTopicLength(zettelDto.zettel().getTopic());
 		zettel.setTopic(zettelDto.zettel().getTopic());
 		zettel.setTags(zettelDto.tags());
 		zettel.setNote(newNote);
@@ -154,6 +169,8 @@ public class ZettelService {
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
 		
 		topicEmptyOrBlankCheck(zettelDto.zettel());
+		
+		checkTopicLength(zettelDto.zettel().getTopic());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" + "--->" + updatedZettel + "\n"
@@ -192,6 +209,7 @@ public class ZettelService {
 
 	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
 		topicEmptyOrBlankCheck(changes.zettel());
+		checkTopicLength(changes.zettel().getTopic());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
