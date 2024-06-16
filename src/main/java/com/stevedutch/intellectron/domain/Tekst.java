@@ -37,7 +37,7 @@ public class Tekst {
     private String title;
 	
 	@Column(name = "tekstdato")
-	private LocalDate textDate;	
+	private LocalDate textDate = LocalDate.EPOCH;	
 	
 	@Column(name = "source", length = 700)
 	private String source;
@@ -59,6 +59,7 @@ public class Tekst {
 	}
 
 	public Tekst() {
+		this.textDate = LocalDate.EPOCH;
 		// TODO Auto-generated constructor stub
 	}
 

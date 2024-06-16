@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class TextService {
 		if (existingText != null) {
 			tekst.setTextId(existingText.getTextId());
 		}
+		checkTextDate(tekst);
 		return textRepo.save(tekst);
 	}
 
@@ -34,8 +36,9 @@ public class TextService {
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
+		checkTextDate(tekst);
 		tekst = textRepo.save(tekst);
-		return textRepo.save(tekst);
+		return tekst;
 	}
 
 	public Tekst saveTextwithZettel(Tekst tekst, Zettel zettel) {
@@ -44,9 +47,20 @@ public class TextService {
 			actualTekst = new Tekst(tekst.getText());
 		}
 		tekst.getZettels().add(zettel);
+		checkTextDate(tekst);
 
 		return textRepo.save(tekst);
 
+	}
+	/**
+	 * Checks if textDate exists, if not, it sets EPOCH
+	 * 
+	 * @param tekst
+	 */
+	public void checkTextDate(Tekst tekst) {
+		if (tekst.getTextDate() == null) {
+			tekst.setTextDate(LocalDate.EPOCH);
+		} 
 	}
 
 	/**
@@ -97,6 +111,7 @@ public class TextService {
 		}
 		updatedTekst.setTitle(tekst.getTitle());
 		updatedTekst.setTextDate(tekst.getTextDate());
+		checkTextDate(updatedTekst);
 		updatedTekst.setSource(tekst.getSource());
 
 		textRepo.save(updatedTekst);

@@ -106,7 +106,7 @@ public class ZettelService {
 		setRelationsRefsWithZettel(newZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
-
+		textService.checkTextDate(newTekst);
 		saveZettel(newZettel);
 		authorService.saveAuthor(newAuthor);
 
