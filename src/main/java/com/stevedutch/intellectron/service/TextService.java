@@ -53,7 +53,7 @@ public class TextService {
 
 	}
 	/**
-	 * Checks if textDate exists, if not, it sets EPOCH
+	 * Checks if textDate exists, if not, it sets LocalDate.EPOCH
 	 * 
 	 * @param tekst
 	 */
