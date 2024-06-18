@@ -46,6 +46,7 @@ public class ZettelController {
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
 
 		Zettel zettel = zettelService.findZettelById(zettelId);
+		
 		String formattedText = zettel.getTekst().getText();
 		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
         model.put("zettel", zettel);

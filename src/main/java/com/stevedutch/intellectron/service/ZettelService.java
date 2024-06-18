@@ -23,6 +23,8 @@ import com.stevedutch.intellectron.exception.TopicTooLongException;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ZettelService {
 
@@ -106,7 +108,7 @@ public class ZettelService {
 		setRelationsRefsWithZettel(newZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
-		textService.checkTextDate(newTekst);
+	 
 		saveZettel(newZettel);
 		authorService.saveAuthor(newAuthor);
 
@@ -243,8 +245,8 @@ public class ZettelService {
 		return zettelRepo.findLast10Zettel();
 	}
 
-	public Zettel findZettelById(Long zettelid) {
-		return zettelRepo.findById(zettelid).orElse(new Zettel());
+	public Zettel findZettelById(Long zettelId) {
+		return zettelRepo.findById(zettelId).orElseThrow(() -> new EntityNotFoundException("Zettel not found with id " + zettelId));
 	}
 
 	public List<Zettel> find10RandomZettel() {

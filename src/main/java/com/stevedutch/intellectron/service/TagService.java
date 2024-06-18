@@ -35,7 +35,6 @@ public class TagService {
 						//orElseGet(tagRepo.save(new Tag(tag.getTagText()))); // Verwenden Sie das existierende Tag / return just existingTag
 														// laut phind
 			} 
-			//return tagRepo.save(tag); // Speichern Sie das neue Tag  //  als New Tag
 
 		}
 		return tagRepo.save(tag); // Speichern Sie das neue Tag
@@ -80,8 +79,8 @@ public class TagService {
 //		newTags.forEach(tag -> System.out.println("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
 		// in DB vorhandene, aber zum Zettel neu hinzugefügte Tags mit Zettel verknüpfen
 		for (Tag tag :newTags) {
-			if (zettel.getTags().contains(tag)) {
-				} else {zettel.getTags().add(tag);}
+			if (!zettel.getTags().contains(tag)) {
+				zettel.getTags().add(tag);}
 		}
 		// löschen der Tags, die in der DB & Zettel, aber nicht mehr in der neuen Tagliste vorhanden sind (existed in old tag list, but not in new tag list)
 		ArrayList<Tag> OriginalTagsCopy = new ArrayList<>(zettel.getTags());
