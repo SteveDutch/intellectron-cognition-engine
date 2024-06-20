@@ -292,4 +292,20 @@ public class ZettelService {
 		})
 		;
 	}
+	/**
+	 * reduces the size of each zettel.topic element of a list of Zettel to chosen 
+	 * numbrt of characters
+	 * 
+	 * @param zettels - List of zettel objects
+	 * @param int     - number of reduced characters
+	 * 
+	 */
+	public void reduceNoteStringListElements(List<Zettel> zettels, int reducedLength) {
+		zettels.forEach(x -> {
+			if (x.getNote().getNoteText().length() > reducedLength) {
+				x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
+			}
+		})
+		;
+	}
 }

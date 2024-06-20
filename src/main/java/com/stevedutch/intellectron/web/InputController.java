@@ -68,6 +68,9 @@ public class InputController {
 		zettelService.reduceStringListElements(zettels, 220);
 		zettelService.reduceStringListElements(randomZettels, 220);
 		
+		zettelService.reduceNoteStringListElements(zettels, 220);
+		zettelService.reduceNoteStringListElements(randomZettels, 220);
+		
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);
 		return "/input";
