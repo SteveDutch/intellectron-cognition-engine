@@ -84,10 +84,10 @@ public class AuthorService {
         return givenAuthor;
     }
     
-	public void updateAuthor(Long zettelId, Author author) {
-		// TODO Auto-generated method stub
-		
-	}
+//	public void updateAuthor(Long zettelId, Author author) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	
 	/**
 	 * searches for authors with last name similar to the given name

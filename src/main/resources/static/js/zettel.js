@@ -70,6 +70,10 @@ function prepareZettel() {
         return;
     }
     author.authorFamilyName = document.getElementById("authorFamilyName0").value;
+    if (author.authorFamilyName === "") {
+        alert("Bitte geben Sie den Nachnamen des Autors ein!");
+        return;
+    }
 
     let tekst = {title:"", text: "", textDate: "", source: "" };
     zettel.tekst = tekst;
