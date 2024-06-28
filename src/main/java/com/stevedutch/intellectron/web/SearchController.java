@@ -36,7 +36,7 @@ public class SearchController {
 	}
 	
 	@GetMapping("/search/tag/")
-	public String searchByTag(@RequestParam("tagText") String tagText, ModelMap model) {
+	public String searchZettelByTag(@RequestParam("tagText") String tagText, ModelMap model) {
 		LOG.info("\n  got tagText = " + tagText);
 		Tag wantedTag = tagService.findTagByText(tagText);
 		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText());

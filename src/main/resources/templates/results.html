@@ -17,7 +17,7 @@
 
 <!-- Tag results -->
     <div th:if="${tag}">
-        <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
+        <h2>Search Results: Zettel found for Tag: <span th:text="${tag.tagText}"></span></h2>
     </div>
     <div th:if="${#lists.isEmpty(zettels)}">
         <p>No zettels found for this tag.</p>
