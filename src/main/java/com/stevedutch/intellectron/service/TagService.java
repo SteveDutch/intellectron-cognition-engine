@@ -2,6 +2,7 @@ package com.stevedutch.intellectron.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -95,8 +96,20 @@ public class TagService {
 		LOG.info("\n --- Tags gespeichert mit am Ende von updateTags : ");
         newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}
+	/**
+	 * 
+	 * @param tagFragment - a String for the search term
+	 * @return - List<Tag> of all tags that contain the search term
+	 */
+	public List<Tag> findTagByTagFragment(String tagFragment) {
+		
+		if (tagRepo.findByTagFragment(tagFragment).isEmpty()) {
+			throw new TagNotFoundException("No Tag found with text: " + tagFragment);
+		}
+        return tagRepo.findByTagFragment(tagFragment);
+    }
 
-
+	// XXX brauche ich irgendwann eine genaue Tagsuche?
 	public Tag findTagByText(String tagText) {
         return tagRepo.findByTagText(tagText)
                      .orElseThrow(() -> new TagNotFoundException("No Tag found with text: " + tagText));

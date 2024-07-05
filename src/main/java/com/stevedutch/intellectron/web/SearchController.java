@@ -14,6 +14,7 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -36,18 +37,23 @@ public class SearchController {
 	}
 	
 	@GetMapping("/search/tag/")
-	public String searchZettelByTag(@RequestParam("tagText") String tagText, ModelMap model) {
-		LOG.info("\n  got tagText = " + tagText);
-		Tag wantedTag = tagService.findTagByText(tagText);
-		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText());
-		if (zettels == null) {
-			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über TagNotFoundException
-		} else {
-			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
-		}
-		model.addAttribute("tag",wantedTag);
-		model.addAttribute("zettels", zettels);
-		return "/results";
+	public String searchZettelByTagFragment(@RequestParam("tagFragment") String tagFragment, ModelMap model) {
+		if (tagFragment == null || tagFragment.isEmpty()) {
+            LOG.info("\n NO TAG FOUND");
+            throw new TagNotFoundException("no search term provided / the tag fragment is empty");
+        }
+		LOG.info("\n  got tagText = " + tagFragment);
+		List<Tag> wantedTags = tagService.findTagByTagFragment(tagFragment);
+		
+//		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText()); // bei Ähnlichkeitssuche anhand eines Suchterms kann eine Liste zurückgebeen werden
+//		if (zettels == null) {
+//			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über TagNotFoundException
+//		} else {
+//			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
+//		}
+		LOG.info("\n  got " + wantedTags.size()+ " Tags: \n" + wantedTags.iterator().next().getTagText());
+		model.addAttribute("wantedTags",wantedTags);
+		return "/tags";
 	}
 	
 	@GetMapping("/search/topic/")

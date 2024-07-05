@@ -17,12 +17,12 @@
     <div>
 <!--         Tagsuche -->
         <form th:action="@{/search/tag/{tagText}(tagText=${tagText})}" method="get">
-            <input type="text" name="tagText" placeholder="Tag eingeben"  >
+            <input type="text" name="tagFragment" placeholder="Tag eingeben"  >
             <button type="submit">Suchen mit thymeleaf</button>
         </form>
 
                 <form th:action="@{/search/tag/}" method="get">
-                    <input type="text" name="tagText" placeholder="Tag eingeben">
+                    <input type="text" name="tagFragment" placeholder="Tag eingeben">
                     <button type="submit">Suchen mit thymeleaf accordng to you.com</button>
                 </form>
 

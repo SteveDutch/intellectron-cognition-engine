@@ -78,7 +78,7 @@ public class SearchControllerTest {
         when(tagService.findTagByText(tagText)).thenReturn(tag);
     
         // Act
-        String result = searchController.searchZettelByTag(tagText, model);
+        String result = searchController.searchZettelByTagFragment(tagText, model);
     
         // Assert
         assertEquals("/results", result);
