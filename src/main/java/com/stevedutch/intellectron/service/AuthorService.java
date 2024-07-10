@@ -63,7 +63,6 @@ public class AuthorService {
 		return authorRepo.save(author);
 	}
 
-	// TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
     /**
      * connects given author with given tekst. If
      * @param author
@@ -84,11 +83,6 @@ public class AuthorService {
         return givenAuthor;
     }
     
-//	public void updateAuthor(Long zettelId, Author author) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-	
 	/**
 	 * searches for authors with last name similar to the given name
 	 * @param lastName

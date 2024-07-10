@@ -16,10 +16,6 @@ import com.stevedutch.intellectron.repository.NoteRepository;
 public class NoteService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(NoteService.class);
-	// for junit testing TODO delete, no code for testing 
-	public NoteService(NoteRepository noteRepository) {
-		this.noteRepository = noteRepository;
-	}
 
 	@Autowired
 	private NoteRepository noteRepository;

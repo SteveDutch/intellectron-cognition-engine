@@ -59,7 +59,7 @@ public class ZettelService {
 	@Lazy
 	@Autowired
 	private SearchService searchService;
-	
+
 	private static final int MAX_LENGTH = 255;
 
 	// vXXX vielleicht ein bisschen groß, diese Funktion
@@ -72,17 +72,16 @@ public class ZettelService {
 	 * @return zettel Dto
 	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
-		
+
 		noteService.noteEmptyOrBlankCheck(zettelDto.note());
-		
+
 		topicEmptyOrBlankCheck(zettelDto.zettel());
-		
 
 		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
 		if (newZettel == null) {
 			newZettel = new Zettel();
 		}
-		
+
 		// connect to Note
 		Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
 
@@ -108,7 +107,7 @@ public class ZettelService {
 		setRelationsRefsWithZettel(newZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
-	 
+
 		saveZettel(newZettel);
 		authorService.saveAuthor(newAuthor);
 
@@ -128,7 +127,9 @@ public class ZettelService {
 	}
 
 	/**
-	 * Checks if topic is longer than 255 characters. If true, it throws an exception
+	 * Checks if topic is longer than 255 characters. If true, it throws an
+	 * exception
+	 * 
 	 * @param topic
 	 */
 	public void checkTopicLength(String topic) {
@@ -147,7 +148,7 @@ public class ZettelService {
 	 * @return zettel object
 	 */
 	public Zettel setupZettel(Zettel zettel, ZettelDtoRecord zettelDto, Note newNote, Tekst newTekst) {
-		
+
 		checkTopicLength(zettelDto.zettel().getTopic());
 		zettel.setTopic(zettelDto.zettel().getTopic());
 		zettel.setTags(zettelDto.tags());
@@ -169,9 +170,9 @@ public class ZettelService {
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
-		
+
 		topicEmptyOrBlankCheck(zettelDto.zettel());
-		
+
 		checkTopicLength(zettelDto.zettel().getTopic());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
@@ -246,7 +247,8 @@ public class ZettelService {
 	}
 
 	public Zettel findZettelById(Long zettelId) {
-		return zettelRepo.findById(zettelId).orElseThrow(() -> new EntityNotFoundException("Zettel not found with id " + zettelId));
+		return zettelRepo.findById(zettelId)
+				.orElseThrow(() -> new EntityNotFoundException("Zettel not found with id " + zettelId));
 	}
 
 	public List<Zettel> find10RandomZettel() {
@@ -272,7 +274,7 @@ public class ZettelService {
 	 * @return List of Zettel could include null!
 	 */
 	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
-		
+
 		searchService.validateSearchString(topicFragment);
 		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
 		return result;
@@ -291,12 +293,12 @@ public class ZettelService {
 			if (x.getTekst().getText().length() > reducedLength) {
 				x.getTekst().setText(x.getTekst().getText().substring(0, reducedLength));
 			}
-		})
-		;
+		});
 	}
+
 	/**
-	 * reduces the size of each zettel.topic element of a list of Zettel to chosen 
-	 * numbrt of characters
+	 * reduces the size of each zettel.topic element of a list of Zettel to chosen
+	 * number of characters
 	 * 
 	 * @param zettels - List of zettel objects
 	 * @param int     - number of reduced characters
@@ -307,7 +309,6 @@ public class ZettelService {
 			if (x.getNote().getNoteText().length() > reducedLength) {
 				x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
 			}
-		})
-		;
+		});
 	}
 }

@@ -60,16 +60,7 @@ public class ReferenceService {
 			zettelService.saveZettel(zettel);
 			
 		}
-//		references.forEach(reference -> reference.setOriginZettel(zettel.getZettelId()));
-//		LOG.info("updateReferences ; after setZettel  forEach ---> " + references);
-		
-//		for (Reference reference : references) {
-//		}
-		
-//		zettelService.setRelationsAndSaveRefsWithZettel(zettel, references);
-//		System.out.println(zettel.getReferences());
-//		zettelService.saveZettel(zettel);
-		
+
 	}
 
 }
