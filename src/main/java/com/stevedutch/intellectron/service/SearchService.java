@@ -11,6 +11,7 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.repository.AuthorRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 import com.stevedutch.intellectron.web.ZettelController;
@@ -26,6 +27,8 @@ public class SearchService {
 	private TextRepository textRepo;
 	@Autowired
     private AuthorService authorService;
+    @Autowired
+    private AuthorRepository authorRepo;
 
 	public List<Zettel> findZettelByNoteFragment(String noteFragment) {
 
@@ -65,7 +68,7 @@ public class SearchService {
 	   String[] nameParts = name.split("\\s+");
 	   String lastName = nameParts[nameParts.length-1];
 	   LOG.info("\n Now searching for author family name: " + lastName);
-	   List<Author> result = authorService.findAuthorByLastNameLike(lastName);
+	   List<Author> result = findAuthorByLastNameLike(lastName);
 	   return result;
 	}
    	/**
@@ -79,6 +82,14 @@ public class SearchService {
 		}
 	}
 
- 
+ 	/**
+	 * searches for authors with last name similar to the given name
+	 * @param lastName
+	 * @return List<Author>
+	 */
+	public List<Author> findAuthorByLastNameLike(String lastName) {
+		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
+		return result;
+	}
 
 }

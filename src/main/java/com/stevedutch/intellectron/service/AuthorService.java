@@ -83,14 +83,6 @@ public class AuthorService {
         return givenAuthor;
     }
     
-	/**
-	 * searches for authors with last name similar to the given name
-	 * @param lastName
-	 * @return List<Author>
-	 */
-	public List<Author> findAuthorByLastNameLike(String lastName) {
-		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
-		return result;
-	}
+
 
 }
