@@ -1,7 +1,6 @@
 package com.stevedutch.intellectron.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -15,18 +14,14 @@ import com.stevedutch.intellectron.repository.ReferenceRepository;
 
 @Service
 public class ReferenceService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
-	
+
 	@Autowired
 	private ReferenceRepository refRepo;
-	
-    @Autowired
-    private ZettelService zettelService;
 
-	public List<Reference> findAll() {
-		return refRepo.findAll();
-	}
+	@Autowired
+	private ZettelService zettelService;
 
 	public Reference saveReferenceWithZettel(Reference reference, Zettel zettel) {
 		reference.getZettels().add(zettel);
@@ -34,31 +29,35 @@ public class ReferenceService {
 	}
 
 	public void updateReferences(Long zettelId, ArrayList<Reference> references) {
-		
+
 		LOG.info("Start of updateReferences ; ---> " + references);
-		for (Reference reference :  references) {
+		for (Reference reference : references) {
 			reference.setOriginZettel(zettelService.findZettelById(zettelId).getSignature());
 			// for debugging
 			refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel());
-			LOG.info("FOUND " + refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel()));
-			//klappt das jetzt schon?
-			if (refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel()) != null) {
-			LOG.info("Loop-Start --> " + reference);
-				reference.setReferenceId(refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel()).getReferenceId());
+			LOG.info("FOUND " + refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(),
+					reference.getTargetZettel()));
+			// klappt das jetzt schon?
+			if (refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(),
+					reference.getTargetZettel()) != null) {
+				LOG.info("Loop-Start --> " + reference);
+				reference.setReferenceId(refRepo
+						.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel())
+						.getReferenceId());
 				LOG.info(" --> im Loop, neues ID?" + reference);
-			} else { 
+			} else {
 //				reference.setTargetZettel(zettelId);
 				LOG.info("else/nicht in DB vorm save --> " + reference);
 				refRepo.save(reference);
 				LOG.info("else/nicht in DB nachm save --> " + reference);
-				
+
 			}
 			// fürs deleten muss ich wohl erst den Zettel finden
 			Zettel zettel = zettelService.findZettelById(zettelId);
 			zettel.setReferences(references.stream().collect(Collectors.toSet()));
 			LOG.info("updateReferences ; am ende, hat zettel refs ---> " + zettel.getReferences());
 			zettelService.saveZettel(zettel);
-			
+
 		}
 
 	}

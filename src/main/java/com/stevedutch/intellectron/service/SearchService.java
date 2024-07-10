@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
+import com.stevedutch.intellectron.repository.ReferenceRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 import com.stevedutch.intellectron.web.ZettelController;
@@ -29,6 +31,8 @@ public class SearchService {
     private AuthorService authorService;
     @Autowired
     private AuthorRepository authorRepo;
+	@Autowired
+	private ReferenceRepository refRepo;
 
 	public List<Zettel> findZettelByNoteFragment(String noteFragment) {
 
@@ -83,13 +87,17 @@ public class SearchService {
 	}
 
  	/**
-	 * searches for authors with last name similar to the given name
+	 * searches for authors with last name containing the search term.
 	 * @param lastName
 	 * @return List<Author>
 	 */
 	public List<Author> findAuthorByLastNameLike(String lastName) {
 		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
 		return result;
+	}
+	// XXX is this method ever used?
+		public List<Reference> findAll() {
+		return refRepo.findAll();
 	}
 
 }
