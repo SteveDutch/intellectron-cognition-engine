@@ -1,7 +1,6 @@
 package com.stevedutch.intellectron.service;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,8 @@ public class TextService {
 	private TextRepository textRepo;
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private SearchService searchService;
 
 	public Tekst saveText(Tekst tekst) {
 		Tekst existingText = textRepo.findByText(tekst.getText());
@@ -52,6 +53,7 @@ public class TextService {
 		return textRepo.save(tekst);
 
 	}
+
 	/**
 	 * Checks if textDate exists, if not, it sets LocalDate.EPOCH
 	 * 
@@ -60,7 +62,7 @@ public class TextService {
 	public void checkTextDate(Tekst tekst) {
 		if (tekst.getTextDate() == null) {
 			tekst.setTextDate(LocalDate.EPOCH);
-		} 
+		}
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class TextService {
 		// finden, oder -falls nicht existent -
 		// oder als neues Text mit dem gegebenen Text einricfhten --> Vermeiden von
 		// Doubletten in der Datenbank & Objekt
-		Tekst updatedTekst = findByText(tekst.getText());
+		Tekst updatedTekst = searchService.findByText(tekst.getText());
 		LOG.info("\n -->TekstService.updateTekst, Tekst " + updatedTekst);
 		if (updatedTekst == null) {
 			updatedTekst = new Tekst(tekst.getText());
@@ -121,17 +123,6 @@ public class TextService {
 				+ updatedTekst.getZettels());
 		return updatedTekst;
 
-	}
-
-	public Tekst findById(Long textId) {
-		return textRepo.findById(textId)
-				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
-
-	}
-
-	public Tekst findByText(String text) {
-		/// TODO null check
-		return textRepo.findByText(text);
 	}
 
 	/**

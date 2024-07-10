@@ -21,6 +21,8 @@ public class AuthorService {
     private AuthorRepository authorRepo;
     @Autowired
     private TextService textService;
+    @Autowired
+    private SearchService searchService;
 
     /**
      * saves the author to the database
@@ -44,7 +46,7 @@ public class AuthorService {
     
     public Author saveAuthorWithText(Author author, Tekst tekst) {
     	LOG.info(author.toString());
-    	tekst = textService.findByText(tekst.getText());
+    	tekst = searchService.findByText(tekst.getText());
     	Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), author.getAuthorFamilyName());
     	if (givenAuthor == null) {
     		Optional.ofNullable(author)

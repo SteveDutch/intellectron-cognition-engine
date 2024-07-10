@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,17 @@ public class SearchService {
 			throw new SearchTermNotFoundException("No Tag found with text: " + tagFragment);
 		}
 		return tagRepo.findByTagFragment(tagFragment);
+	}
+
+	public Tekst findById(Long textId) {
+		return textRepo.findById(textId)
+				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
+
+	}
+
+	public Tekst findByText(String text) {
+		/// TODO null check
+		return textRepo.findByText(text);
 	}
 
 	// XXX is this method ever used?
