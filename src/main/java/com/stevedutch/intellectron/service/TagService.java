@@ -79,7 +79,7 @@ public class TagService {
 
 		tags.forEach(tag -> LOG.info(" \n --> updated Tags  wie vom frontend erhalten= \n ID = " + tag.getId()
 				+ "\n text = " + tag.getTagText()));
-		Zettel zettel = zettelService.findZettelById(zettelId);
+		Zettel zettel = searchService.findZettelById(zettelId);
 		// XXX tags vom front end kommen nur mit tagText, daher anhand dessen den Tag
 		// finden, oder -falls nicht existent -
 		// als neues Tag mit dem gegebenen Text einrichten --> Vermeiden von Doubletten

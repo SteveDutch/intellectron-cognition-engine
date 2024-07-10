@@ -19,6 +19,7 @@ import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
 import com.stevedutch.intellectron.service.ReferenceService;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -39,11 +40,13 @@ public class ZettelController {
     private AuthorService	authorService;
 	@Autowired
 	private ReferenceService refService;
+	@Autowired
+	private SearchService searchService;
 	
 	@GetMapping("/zettel/{zettelId}")
 	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
 
-		Zettel zettel = zettelService.findZettelById(zettelId);
+		Zettel zettel = searchService.findZettelById(zettelId);
 		
 		String formattedText = zettel.getTekst().getText();
 		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));

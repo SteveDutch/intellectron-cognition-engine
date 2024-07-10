@@ -23,6 +23,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -32,6 +33,8 @@ public class InputController {
 
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private SearchService searchService;
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
 
@@ -47,8 +50,8 @@ public class InputController {
 		// falls ich mal die Verweise anzeigen will ... :)
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
-		List<Zettel> zettels = zettelService.findLast10Zettel();
-		List<Zettel> randomZettels = zettelService.find10RandomZettel();
+		List<Zettel> zettels = searchService.findLast10Zettel();
+		List<Zettel> randomZettels = searchService.find10RandomZettel();
 		// TODO rename
 		zettelService.reduceStringListElements(zettels, 220);
 		zettelService.reduceStringListElements(randomZettels, 220);

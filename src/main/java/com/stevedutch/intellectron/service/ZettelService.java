@@ -238,48 +238,6 @@ public class ZettelService {
 		return zettelRepo.save(zettel);
 	}
 
-	public List<Zettel> findAll() {
-		return zettelRepo.findAllZettelWithTopic();
-	}
-
-	public List<Zettel> findLast10Zettel() {
-		return zettelRepo.findLast10Zettel();
-	}
-
-	public Zettel findZettelById(Long zettelId) {
-		return zettelRepo.findById(zettelId)
-				.orElseThrow(() -> new EntityNotFoundException("Zettel not found with id " + zettelId));
-	}
-
-	public List<Zettel> find10RandomZettel() {
-		List<Zettel> tenRandom = new ArrayList<>();
-		while (tenRandom.size() < 10) {
-			Zettel randomZettel = zettelRepo.findOneRandomZettel();
-			if (randomZettel != null) {
-				tenRandom.add(randomZettel);
-			}
-		}
-		return tenRandom;
-	}
-
-	public List<Zettel> findZettelByTag(String tagText) {
-		Tag searchTag = searchService.findTagByText(tagText);
-		return zettelRepo.findZettelByTags(searchTag);
-	}
-
-	/**
-	 * searches for Zettel by the given fragment of the topic
-	 * 
-	 * @param topicFragment the fragment of the topic
-	 * @return List of Zettel could include null!
-	 */
-	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
-
-		searchService.validateSearchString(topicFragment);
-		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
-		return result;
-	}
-
 	/**
 	 * reduces the size of each Tekst.text element of a list of Zettel to chosen
 	 * characters

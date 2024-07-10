@@ -22,6 +22,8 @@ public class ReferenceService {
 
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private SearchService searchService;
 
 	public Reference saveReferenceWithZettel(Reference reference, Zettel zettel) {
 		reference.getZettels().add(zettel);
@@ -32,7 +34,7 @@ public class ReferenceService {
 
 		LOG.info("Start of updateReferences ; ---> " + references);
 		for (Reference reference : references) {
-			reference.setOriginZettel(zettelService.findZettelById(zettelId).getSignature());
+			reference.setOriginZettel(searchService.findZettelById(zettelId).getSignature());
 			// for debugging
 			refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel());
 			LOG.info("FOUND " + refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(),
@@ -53,7 +55,7 @@ public class ReferenceService {
 
 			}
 			// fürs deleten muss ich wohl erst den Zettel finden
-			Zettel zettel = zettelService.findZettelById(zettelId);
+			Zettel zettel = searchService.findZettelById(zettelId);
 			zettel.setReferences(references.stream().collect(Collectors.toSet()));
 			LOG.info("updateReferences ; am ende, hat zettel refs ---> " + zettel.getReferences());
 			zettelService.saveZettel(zettel);

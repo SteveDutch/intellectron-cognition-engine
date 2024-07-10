@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -20,6 +21,8 @@ import com.stevedutch.intellectron.repository.TagRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 import com.stevedutch.intellectron.web.ZettelController;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class SearchService {
@@ -50,18 +53,39 @@ public class SearchService {
 		List<Zettel> result = zettelRepo.findZettelByTextFragment(textFragment);
 		return result;
 	}
-
-	public List<Tekst> findTekstByTextFragment(String textFragment) {
-
-		validateSearchString(textFragment);
-		List<Tekst> result = textRepo.findTekstByTextFragment(textFragment);
-		return result;
-	}
-
+	
 	public Zettel findOneZettelByNote(String noteText) {
 		validateSearchString(noteText);
 		Zettel result = zettelRepo.findOneZettelByNote(noteText);
 		return result;
+	}
+
+	// XXX is this method ever used?
+	public List<Zettel> findAllZettelWithTopic() {
+		return zettelRepo.findAllZettelWithTopic();
+	}
+
+	public Zettel findZettelById(Long zettelId) {
+		return zettelRepo.findById(zettelId)
+				.orElseThrow(() -> new EntityNotFoundException("Zettel not found with id " + zettelId));
+	}
+
+	/**
+	 * searches for Zettel by the given fragment of the topic
+	 * 
+	 * @param topicFragment the fragment of the topic
+	 * @return List of Zettel could include null!
+	 */
+	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
+	
+		validateSearchString(topicFragment);
+		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
+		return result;
+	}
+
+	public List<Zettel> findZettelByTag(String tagText) {
+		Tag searchTag = findTagByText(tagText);
+		return zettelRepo.findZettelByTags(searchTag);
 	}
 
 	/**
@@ -81,19 +105,6 @@ public class SearchService {
 	}
 
 	/**
-	 * Validates a search term, if it is null or empty it throws a
-	 * SearchTermNotFoundException.
-	 * 
-	 * @param SearchTerm
-	 */
-	public void validateSearchString(String SearchTerm) {
-		if (SearchTerm == null || SearchTerm.isEmpty()) {
-			LOG.info("\n NO SearchTerm  ");
-			throw new SearchTermNotFoundException("no search term provided");
-		}
-	}
-
-	/**
 	 * searches for authors with last name containing the search term.
 	 * 
 	 * @param lastName
@@ -101,6 +112,24 @@ public class SearchService {
 	 */
 	public List<Author> findAuthorByLastNameLike(String lastName) {
 		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
+		return result;
+	}
+
+	public Tekst findById(Long textId) {
+		return textRepo.findById(textId)
+				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
+	
+	}
+
+	public Tekst findByText(String text) {
+		/// TODO null check
+		return textRepo.findByText(text);
+	}
+
+	public List<Tekst> findTekstByTextFragment(String textFragment) {
+	
+		validateSearchString(textFragment);
+		List<Tekst> result = textRepo.findTekstByTextFragment(textFragment);
 		return result;
 	}
 
@@ -125,15 +154,32 @@ public class SearchService {
 		return tagRepo.findByTagFragment(tagFragment);
 	}
 
-	public Tekst findById(Long textId) {
-		return textRepo.findById(textId)
-				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
-
+	public List<Zettel> findLast10Zettel() {
+		return zettelRepo.findLast10Zettel();
 	}
 
-	public Tekst findByText(String text) {
-		/// TODO null check
-		return textRepo.findByText(text);
+	public List<Zettel> find10RandomZettel() {
+		List<Zettel> tenRandom = new ArrayList<>();
+		while (tenRandom.size() < 10) {
+			Zettel randomZettel = zettelRepo.findOneRandomZettel();
+			if (randomZettel != null) {
+				tenRandom.add(randomZettel);
+			}
+		}
+		return tenRandom;
+	}
+
+	/**
+	 * Validates a search term, if it is null or empty it throws a
+	 * SearchTermNotFoundException.
+	 * 
+	 * @param SearchTerm
+	 */
+	public void validateSearchString(String SearchTerm) {
+		if (SearchTerm == null || SearchTerm.isEmpty()) {
+			LOG.info("\n NO SearchTerm  ");
+			throw new SearchTermNotFoundException("no search term provided");
+		}
 	}
 
 	// XXX is this method ever used?

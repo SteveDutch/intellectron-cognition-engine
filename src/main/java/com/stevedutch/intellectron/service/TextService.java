@@ -95,7 +95,7 @@ public class TextService {
 
 	public Tekst updateTekst(Long zettelId, Tekst tekst) {
 
-		Zettel zettel = zettelService.findZettelById(zettelId);
+		Zettel zettel = searchService.findZettelById(zettelId);
 //		Tekst oldTekst = zettelService.findZettelById(zettelId).getTekst();
 		// XXX Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst
 		// finden, oder -falls nicht existent -
@@ -117,7 +117,7 @@ public class TextService {
 		updatedTekst.setSource(tekst.getSource());
 
 		textRepo.save(updatedTekst);
-		saveTextwithZettel(updatedTekst, zettelService.findZettelById(zettelId));
+		saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
 		zettel.setTekst(updatedTekst);
 		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" + "--->" + updatedTekst + "\n"
 				+ updatedTekst.getZettels());
