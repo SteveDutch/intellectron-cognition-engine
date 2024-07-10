@@ -40,7 +40,7 @@ public class SearchController {
 
 		LOG.info("\n  got tagText = " + tagFragment);
 
-		List<Tag> wantedTags = tagService.findTagByTagFragment(tagFragment);
+		List<Tag> wantedTags = searchService.findTagByTagFragment(tagFragment);
 		
 //		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText()); // bei Ähnlichkeitssuche anhand eines Suchterms kann eine Liste zurückgebeen werden
 //		if (zettels == null) {

@@ -263,7 +263,7 @@ public class ZettelService {
 	}
 
 	public List<Zettel> findZettelByTag(String tagText) {
-		Tag searchTag = tagService.findTagByText(tagText);
+		Tag searchTag = searchService.findTagByText(tagText);
 		return zettelRepo.findZettelByTags(searchTag);
 	}
 
