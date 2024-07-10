@@ -74,3 +74,4 @@ mvnw.cmd
 .mvn
 *.bak
 systemctl
+qodana.yaml

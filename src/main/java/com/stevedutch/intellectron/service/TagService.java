@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.exception.TagNotFoundException;
+import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.repository.TagRepository;
 
 @Service
@@ -25,6 +25,8 @@ public class TagService {
 	private TagRepository tagRepo;
 	@Autowired
 	private ZettelService zettelService;
+	@Autowired
+	private SearchService searchService;
 
 	
 	public Tag saveTag(Tag tag) {
@@ -103,8 +105,10 @@ public class TagService {
 	 */
 	public List<Tag> findTagByTagFragment(String tagFragment) {
 		
+		searchService.validateSearchString(tagFragment);
+		
 		if (tagRepo.findByTagFragment(tagFragment).isEmpty()) {
-			throw new TagNotFoundException("No Tag found with text: " + tagFragment);
+			throw new SearchTermNotFoundException("No Tag found with text: " + tagFragment);
 		}
         return tagRepo.findByTagFragment(tagFragment);
     }
@@ -112,7 +116,7 @@ public class TagService {
 	// XXX brauche ich irgendwann eine genaue Tagsuche?
 	public Tag findTagByText(String tagText) {
         return tagRepo.findByTagText(tagText)
-                     .orElseThrow(() -> new TagNotFoundException("No Tag found with text: " + tagText));
+                     .orElseThrow(() -> new SearchTermNotFoundException("No Tag found with text: " + tagText));
     }
 
 }

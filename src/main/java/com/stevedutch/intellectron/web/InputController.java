@@ -49,23 +49,10 @@ public class InputController {
 //		model.put("references", references);
 		List<Zettel> zettels = zettelService.findLast10Zettel();
 		List<Zettel> randomZettels = zettelService.find10RandomZettel();
-		
-		if (zettels == null) {
-			LOG.info("upsi, no zettels found");
-		} else {
-//			LOG.info("zettels = \n " + zettels);
-//			System.out.println("Anzahl der Zettel = " + zettels.stream().count() + " \n zettels= " + zettels);
-//			LOG.info("\n Wieviel Zettel? --> " + zettels.size() + "\n " + "\n zettels = \n " + zettels);
-		}
-		if (randomZettels == null) {
-			LOG.info("upsi, no random zettels found");
-		} else {
-//			LOG.info("\n Wieviel zufällige Zettel? --> " + randomZettels.size() + "\n " + "\n randomZettels = \n " + randomZettels);
-		}
-		
+		// TODO rename
 		zettelService.reduceStringListElements(zettels, 220);
 		zettelService.reduceStringListElements(randomZettels, 220);
-		
+		// TODO rename
 		zettelService.reduceNoteStringListElements(zettels, 220);
 		zettelService.reduceNoteStringListElements(randomZettels, 220);
 		

@@ -272,6 +272,8 @@ public class ZettelService {
 	 * @return List of Zettel could include null!
 	 */
 	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
+		
+		searchService.validateSearchString(topicFragment);
 		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
 		return result;
 	}

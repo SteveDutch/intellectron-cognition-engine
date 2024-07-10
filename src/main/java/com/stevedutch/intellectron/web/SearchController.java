@@ -14,7 +14,6 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -38,16 +37,14 @@ public class SearchController {
 	
 	@GetMapping("/search/tag/")
 	public String searchZettelByTagFragment(@RequestParam("tagFragment") String tagFragment, ModelMap model) {
-		if (tagFragment == null || tagFragment.isEmpty()) {
-            LOG.info("\n NO TAG FOUND");
-            throw new TagNotFoundException("no search term provided / the tag fragment is empty");
-        }
+
 		LOG.info("\n  got tagText = " + tagFragment);
+
 		List<Tag> wantedTags = tagService.findTagByTagFragment(tagFragment);
 		
 //		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText()); // bei Ähnlichkeitssuche anhand eines Suchterms kann eine Liste zurückgebeen werden
 //		if (zettels == null) {
-//			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über TagNotFoundException
+//			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über SearchTermNotFoundException
 //		} else {
 //			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
 //		}

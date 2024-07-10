@@ -1,10 +1,10 @@
 package com.stevedutch.intellectron.exception;
 
-public class TagNotFoundException extends RuntimeException {
+public class SearchTermNotFoundException extends RuntimeException {
 	
     private static final long serialVersionUID = 1L;
 
-	public TagNotFoundException(String message) {
+	public SearchTermNotFoundException(String message) {
         super(message);
     }
 
