@@ -29,6 +29,7 @@ public class TextService {
 			tekst.setTextId(existingText.getTextId());
 		}
 		checkTextDate(tekst);
+		tekst.setText(tekst.getText().strip());
 		return textRepo.save(tekst);
 	}
 
@@ -38,6 +39,7 @@ public class TextService {
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
 		checkTextDate(tekst);
+		tekst.setText(tekst.getText().strip());
 		tekst = textRepo.save(tekst);
 		return tekst;
 	}
@@ -49,7 +51,7 @@ public class TextService {
 		}
 		tekst.getZettels().add(zettel);
 		checkTextDate(tekst);
-
+		tekst.setText(tekst.getText().strip());
 		return textRepo.save(tekst);
 
 	}
@@ -115,7 +117,7 @@ public class TextService {
 		updatedTekst.setTextDate(tekst.getTextDate());
 		checkTextDate(updatedTekst);
 		updatedTekst.setSource(tekst.getSource());
-
+		tekst.setText(tekst.getText().strip());
 		textRepo.save(updatedTekst);
 		saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
 		zettel.setTekst(updatedTekst);
