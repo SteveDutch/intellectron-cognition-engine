@@ -56,7 +56,7 @@ public class SearchController {
 	@GetMapping("/search/topic/")
 	public String searchBytopicFragment(@RequestParam("topicFragment") String topicFragment, ModelMap model) {
 		LOG.info("\n got topicFrgament = " + topicFragment);
-		List<Zettel> zettels = zettelService.findZettelByTopicFragment(topicFragment);
+		List<Zettel> zettels = searchService.findZettelByTopicFragment(topicFragment);
 		if (zettels == null) {
 			LOG.info("\n NO ZETTEL FOUND");
 		} else {

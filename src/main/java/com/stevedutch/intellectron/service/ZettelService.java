@@ -264,8 +264,10 @@ public class ZettelService {
 	 */
 	public void reduceNoteStringListElements(List<Zettel> zettels, int reducedLength) {
 		zettels.forEach(x -> {
+			if (x.getNote() != null) {
 			if (x.getNote().getNoteText().length() > reducedLength) {
 				x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
+			}
 			}
 		});
 	}
