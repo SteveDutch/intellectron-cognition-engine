@@ -2,7 +2,6 @@ package com.stevedutch.intellectron.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Zettel;
-import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.repository.TagRepository;
 
 @Service
@@ -40,6 +38,7 @@ public class TagService {
 			}
 
 		}
+		tag.setTagText(tag.getTagText().strip());
 		return tagRepo.save(tag); // Speichern Sie das neue Tag
 
 	}

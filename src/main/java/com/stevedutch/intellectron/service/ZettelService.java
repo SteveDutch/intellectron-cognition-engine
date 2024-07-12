@@ -228,13 +228,15 @@ public class ZettelService {
 	}
 
 	/**
-	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
+	 * Saves the zettel and sets its attribute changed to LocalDateTime.now() and
+	 * strips the topic of leading and trailing whitespaces
 	 * 
 	 * @param zettel
 	 * @return zettel with set change date
 	 */
 	public Zettel saveZettel(Zettel zettel) {
 		zettel.setChanged(LocalDateTime.now());
+		zettel.setTopic(zettel.getTopic().strip());
 		return zettelRepo.save(zettel);
 	}
 
@@ -265,9 +267,9 @@ public class ZettelService {
 	public void reduceNoteStringListElements(List<Zettel> zettels, int reducedLength) {
 		zettels.forEach(x -> {
 			if (x.getNote() != null) {
-			if (x.getNote().getNoteText().length() > reducedLength) {
-				x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
-			}
+				if (x.getNote().getNoteText().length() > reducedLength) {
+					x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
+				}
 			}
 		});
 	}

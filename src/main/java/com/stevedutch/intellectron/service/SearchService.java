@@ -154,6 +154,19 @@ public class SearchService {
 		return tagRepo.findByTagFragment(tagFragment);
 	}
 
+	/**
+	 * Validates a search term, if it is null or empty it throws a
+	 * SearchTermNotFoundException.
+	 * 
+	 * @param SearchTerm
+	 */
+	public void validateSearchString(String SearchTerm) {
+		if (SearchTerm == null || SearchTerm.isEmpty()) {
+			LOG.info("\n NO SearchTerm  ");
+			throw new SearchTermNotFoundException("no search term provided");
+		}
+	}
+
 	public List<Zettel> findLast10Zettel() {
 		return zettelRepo.findLast10Zettel();
 	}
@@ -167,19 +180,6 @@ public class SearchService {
 			}
 		}
 		return tenRandom;
-	}
-
-	/**
-	 * Validates a search term, if it is null or empty it throws a
-	 * SearchTermNotFoundException.
-	 * 
-	 * @param SearchTerm
-	 */
-	public void validateSearchString(String SearchTerm) {
-		if (SearchTerm == null || SearchTerm.isEmpty()) {
-			LOG.info("\n NO SearchTerm  ");
-			throw new SearchTermNotFoundException("no search term provided");
-		}
 	}
 
 	// XXX is this method ever used?

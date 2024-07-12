@@ -20,6 +20,12 @@ public class NoteService {
 	@Autowired
 	private NoteRepository noteRepository;
 	
+	/**
+	 * Saves note to DB. If note already exists, the existing note is returned. 
+	 * Furthermore, the note text is stripped of leading and trailing whitespaces.
+	 * @param note
+	 * @return note
+	 */
 	public Note saveNote(Note note) {
 		// XXX findOne... wirft keinen Fehler, wennn mehrere vorhanden sinf findBy ... schon
 		Note existingNote = noteRepository.findOneNoteByNoteText(note.getNoteText());
@@ -27,6 +33,8 @@ public class NoteService {
 			note.setZettelId(existingNote.getZettelId());
 			
 		}
+		note.setNoteText(note.getNoteText().strip());
+		
 		return noteRepository.save(note);
     }
 	
@@ -36,13 +44,14 @@ public class NoteService {
 		note.setZettelId(zettel.getZettelId());
 		System.out.println("imtest noteService.saveNotewithZettel;  note = " + Optional.ofNullable(note).isPresent());
 		System.out.println("imtest noteService.saveNotewithZettel;  note.getZettelId() =  " + Optional.ofNullable(note.getZettelId()).isPresent());
-        return noteRepository.save(note);
+		note.setNoteText(note.getNoteText().strip());
+		return noteRepository.save(note);
 
 	}
 
 	/**
 	 * Checks if note is already in DB. if not, a new note is created.
-	 * Thit connects note & zettel.
+	 * Connects note & zettel.
 	 * 
 	 * @param note
 	 * @param zettel
@@ -63,6 +72,7 @@ public class NoteService {
 		Note updatedNote = noteRepository.findByZettelId(zettelId);
 		LOG.info("\n --> NoteService.updateNote, Note vorm Bearbeiten \n" +   "--->" + updatedNote +"\n" + updatedNote.getZettel());
 		updatedNote.setNoteText(note.getNoteText());
+		note.setNoteText(note.getNoteText().strip());
 		noteRepository.save(updatedNote);
 		LOG.info("\n --> NoteService.updateNote, Note nachm Bearbeiten \n" +   "--->" + updatedNote +"\n" + updatedNote.getZettel());
 	}
