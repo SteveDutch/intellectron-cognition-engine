@@ -23,8 +23,6 @@ import com.stevedutch.intellectron.exception.TopicTooLongException;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class ZettelService {
 

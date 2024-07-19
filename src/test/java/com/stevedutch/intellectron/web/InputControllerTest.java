@@ -15,10 +15,9 @@ import org.springframework.ui.ModelMap;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
-import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
-import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 class InputControllerTest {
@@ -27,6 +26,8 @@ class InputControllerTest {
 	private ModelMap model;
 	@Mock
 	private ZettelService zettelServiceMock;
+	@Mock
+	private SearchService searchServiceMock;
 	@InjectMocks
 	private InputController sut = new InputController();
 	
@@ -42,14 +43,14 @@ class InputControllerTest {
 		String result = sut.showInputMask(model);
 		
 		assertThat(result).isEqualTo("/input");
-		Mockito.verify(zettelServiceMock).findLast10Zettel();
+		Mockito.verify(searchServiceMock).findLast10Zettel();
 	}
 	
     // Test showInputMask when ZettelService returns null or empty lists
     @Test
     void test_show_input_mask_with_null_or_empty_lists() {
-        Mockito.when(zettelServiceMock.findLast10Zettel()).thenReturn(null);
-        Mockito.when(zettelServiceMock.find10RandomZettel()).thenReturn(null);
+        Mockito.when(searchServiceMock.findLast10Zettel()).thenReturn(null);
+        Mockito.when(searchServiceMock.find10RandomZettel()).thenReturn(null);
         String result = sut.showInputMask(model);
         assertThat(result).isEqualTo("/input");
         Mockito.verify(model).put("author", new Author());

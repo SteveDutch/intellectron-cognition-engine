@@ -15,18 +15,12 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.SearchService;
-import com.stevedutch.intellectron.service.TagService;
-import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class SearchController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
-	@Autowired
-	private TagService tagService;
-	@Autowired
-	private ZettelService zettelService;
 	@Autowired
 	private SearchService searchService;
 

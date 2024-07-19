@@ -16,55 +16,62 @@ import jakarta.persistence.Table;
 @Entity // NOTE Class name = Author, DB Table name = authors
 @Table(name = "authors")
 public class Author {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "author_id")
 	private Long authorId;
 
-    @Column(name = "first_name", length = 105)
+	@Column(name = "first_name", length = 105)
 	private String authorFirstName;
-    @Column(name = "family_name", length = 105)
+	@Column(name = "family_name", length = 105)
 	private String authorFamilyName;
-    
-    @ManyToMany(mappedBy = "associatedAuthors")
-    private List<Tekst> texts = new ArrayList<>();
-    
-    public Author( String authorFirstName, String authorFamilyName) {
+
+	@ManyToMany(mappedBy = "associatedAuthors")
+	private List<Tekst> texts = new ArrayList<>();
+
+	public Author(String authorFirstName, String authorFamilyName) {
 		this.authorFirstName = authorFirstName;
 		this.authorFamilyName = authorFamilyName;
 	}
-    
+
 	public Author() {
-		// TODO Auto-generated constructor stub
+
 	}
-	
+
 	// Getter & Setter
 	public Long getAuthorId() {
 		return authorId;
 	}
+
 	public void setAuthorId(Long authorId) {
 		this.authorId = authorId;
 	}
+
 	public String getAuthorFirstName() {
 		return authorFirstName;
 	}
+
 	public void setAuthorFirstName(String authorFirstName) {
 		this.authorFirstName = authorFirstName;
 	}
+
 	public String getAuthorFamilyName() {
 		return authorFamilyName;
 	}
+
 	public void setAuthorFamilyName(String authorFamilyName) {
 		this.authorFamilyName = authorFamilyName;
 	}
-	
+
 	public List<Tekst> getTexts() {
 		return texts;
 	}
+
 	public void setTexts(List<Tekst> texts) {
 		this.texts = texts;
 	}
+
 	@Override
 	public String toString() {
 		return "Author \n [authorId=" + authorId + ", \n authorFirstName=" + authorFirstName + ", authorFamilyName="
@@ -89,7 +96,5 @@ public class Author {
 				&& Objects.equals(authorFirstName, other.authorFirstName) && Objects.equals(authorId, other.authorId)
 				&& Objects.equals(texts, other.texts);
 	}
-	
-	
 
 }

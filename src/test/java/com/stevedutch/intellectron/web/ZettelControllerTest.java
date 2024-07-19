@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
@@ -33,6 +35,7 @@ import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
 import com.stevedutch.intellectron.service.ReferenceService;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -55,6 +58,8 @@ class ZettelControllerTest {
     private AuthorService authorService;
     @Mock
     private ReferenceService refService;
+    @Mock
+    private SearchService searchService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
@@ -63,6 +68,7 @@ class ZettelControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(zettelController).build();
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
     }
 
@@ -77,7 +83,7 @@ class ZettelControllerTest {
     	Tekst tekst = new Tekst("test");
     	zettel.setTekst(tekst);
     	tekst.setText("test text");
-        given(zettelService.findZettelById(anyLong())).willReturn(zettel);
+        given(searchService.findZettelById(anyLong())).willReturn(zettel);
 
         // Execute
         mockMvc.perform(get("/zettel/1"))

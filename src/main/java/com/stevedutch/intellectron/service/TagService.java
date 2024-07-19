@@ -22,8 +22,6 @@ public class TagService {
 	@Autowired
 	private TagRepository tagRepo;
 	@Autowired
-	private ZettelService zettelService;
-	@Autowired
 	private SearchService searchService;
 
 	public Tag saveTag(Tag tag) {

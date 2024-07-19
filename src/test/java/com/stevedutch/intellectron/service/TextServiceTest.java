@@ -20,14 +20,15 @@ import com.stevedutch.intellectron.repository.TextRepository;
 class TextServiceTest {
 	
 	@InjectMocks
-	TextService textServiceMock = new TextService();
+	TextService textService = new TextService();
 	
 	@Mock
-	TextRepository textRepoMock;
+	TextRepository textRepo;
 	
 	@Test
 	void testsaveTextwithZettel() {
 		Tekst sut = new Tekst();
+		sut.setText("  This is not a love text	");
 		// Arrange
 		Zettel testZettel = new Zettel();
 		testZettel.setZettelId(42L);
@@ -40,10 +41,10 @@ class TextServiceTest {
 		testZettel.setTekst(sut);
 		
 		// Mock any dependencies if required
-		when(textRepoMock.save(Mockito.eq(sut))).thenReturn(sut);
+		when(textRepo.save(Mockito.eq(sut))).thenReturn(sut);
 		
 		// Act
-		Tekst result = textServiceMock.saveTextwithZettel(sut, testZettel);
+		Tekst result = textService.saveTextwithZettel(sut, testZettel);
 		
 		// Assert
 		assertNotNull(result);

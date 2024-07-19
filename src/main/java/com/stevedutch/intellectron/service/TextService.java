@@ -19,8 +19,6 @@ public class TextService {
 	@Autowired
 	private TextRepository textRepo;
 	@Autowired
-	private ZettelService zettelService;
-	@Autowired
 	private SearchService searchService;
 
 	public Tekst saveText(Tekst tekst) {

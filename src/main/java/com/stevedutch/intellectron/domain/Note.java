@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 @Table(name = "notes")
 public class Note {
 
-
 	@Id
 	private Long zettelId;
 
@@ -25,15 +24,11 @@ public class Note {
 
 	@Column(length = 65000)
 	private String noteText;
-	
 
-
- 
-	
 	public Note() {
-		// TODO Auto-generated constructor stub
+
 	}
-	
+
 	public Note(String noteText) {
 		this.noteText = noteText;
 	}
@@ -67,13 +62,10 @@ public class Note {
 		return "Note [zettelId=" + zettelId + ", zettel=" + zettel + ", noteText=" + noteText + "]";
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(noteText, zettel, zettelId);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

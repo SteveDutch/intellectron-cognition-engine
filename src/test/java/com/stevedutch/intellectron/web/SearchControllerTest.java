@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ModelMap;
 
@@ -33,7 +33,7 @@ import com.stevedutch.intellectron.service.ZettelService;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchControllerTest {
-
+	
     @InjectMocks
     private SearchController searchController;
     
@@ -45,14 +45,14 @@ public class SearchControllerTest {
     
     @Mock
     private ZettelService zettelService;
-
+    
     @Mock
     private ModelMap model;
 
     @BeforeEach
     void setUp() {
         // Initialisierung, falls benötigt
-    	 MockitoAnnotations.openMocks(this);
+//    	 MockitoAnnotations.openMocks(this);
     	   ZettelService zettelService = mock(ZettelService.class);
     }
 
@@ -64,26 +64,20 @@ public class SearchControllerTest {
         
     }
 
-    // The 'searchByTag' method logs the tagText parameter and retrieves a list of zettels associated with the tagText parameter. The method then adds the wantedTag and zettels to the model and returns the string "/results".
     @Test
-    public void test_search_by_tag() {
+    void testSearchZettelByTagFragment_ValidTagFragment_TagsFound() {
         // Arrange
- 
-        String tagText = "exampleTag";
-        ModelMap model = new ModelMap();
-        
-        // Mock behavior
-        Tag tag = new Tag();
-        tag.setTagText(tagText);
-        when(tagService.findTagByText(tagText)).thenReturn(tag);
-    
+        String tagFragment = "test";
+        List<Tag> expectedTags = Arrays.asList(new Tag("test"), new Tag("test2"));
+        when(searchService.findTagByTagFragment(tagFragment)).thenReturn(expectedTags);
+
         // Act
-        String result = searchController.searchZettelByTagFragment(tagText, model);
-    
+        String viewName = searchController.searchZettelByTagFragment(tagFragment, model);
+
         // Assert
-        assertEquals("/results", result);
-        assertEquals(tag, model.get("tag"));
-        assertNotNull(model.get("zettels"));
+        assertEquals("/tags", viewName);
+        verify(searchService).findTagByTagFragment(tagFragment);
+        verify(model).addAttribute("wantedTags", expectedTags);
     }
     
     @Test
@@ -111,7 +105,7 @@ public class SearchControllerTest {
         Zettel zettel = new Zettel();  
         expectedZettels.add(zettel);
         
-        when(zettelService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
+        when(searchService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
 
         // Act
         String viewName = searchController.searchBytopicFragment(topicFragment, model);

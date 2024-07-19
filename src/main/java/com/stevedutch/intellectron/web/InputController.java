@@ -35,6 +35,7 @@ public class InputController {
 	private ZettelService zettelService;
 	@Autowired
 	private SearchService searchService;
+	
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
 
