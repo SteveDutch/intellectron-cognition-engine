@@ -59,8 +59,6 @@ public class Tekst {
 	}
 
 	public Tekst() {
-		this.textDate = LocalDate.EPOCH;
-		// TODO Auto-generated constructor stub
 	}
 
 	// Getter & Setter
