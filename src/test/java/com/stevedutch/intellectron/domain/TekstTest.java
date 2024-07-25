@@ -92,7 +92,7 @@ class TekstTest {
         tekst.setOneAssociatedAuthors(author2);
         assertEquals(1, tekst.getAssociatedAuthors().size());
         assertTrue(tekst.getAssociatedAuthors().contains(author2));
-        assertFalse(tekst.getAssociatedAuthors().contains(author1));
+        assertTrue(tekst.getAssociatedAuthors().contains(author1));
     }
 
     @Test

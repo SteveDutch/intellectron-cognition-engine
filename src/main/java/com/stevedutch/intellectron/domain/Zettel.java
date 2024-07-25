@@ -66,7 +66,6 @@ public class Zettel {
 	private Tekst tekst;
 
 	public Zettel() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Zettel(String topic) {
@@ -175,10 +174,10 @@ public class Zettel {
 		this.tekst = tekst;
 	}
 	
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return zettelId != null ? zettelId.hashCode() : 0;
+    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -195,7 +194,7 @@ public class Zettel {
 	
 	@Override
 	public String toString() {
-		return "\n Zettel \n [zettelId =" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available") + " added=" + added
+		return "\n Zettel \n [zettelId =" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available, it's NULL") + " added=" + added
 				+ ", changed=" + changed + ", signature=" + signature
 				+ ",  Anzahl der tags=" + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
 				+ ", \n tekst=" + tekst 
