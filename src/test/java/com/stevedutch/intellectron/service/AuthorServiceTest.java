@@ -1,6 +1,8 @@
 package com.stevedutch.intellectron.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -118,6 +120,47 @@ public class AuthorServiceTest {
         verify(textService, times(1)).saveTextWithAuthor(tekst, author);
         assertEquals(author, savedAuthor);
     }
+    
+    @Test
+    void testConnectAuthorWithText() {
+        // Arrange
+        Author author = new Author("Paul", "Breitner");
+        Tekst tekst = new Tekst("super text");
+        
+        when(authorRepo.findByAuthorFirstNameAndAuthorFamilyName("Paul", "Breitner"))
+            .thenReturn(null);
+
+        // Act
+        Author result = authorService.connectAuthorWithText(author, tekst);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("Paul", result.getAuthorFirstName());
+        assertEquals("Breitner", result.getAuthorFamilyName());
+        assertTrue(result.getTexts().contains(tekst));
+        assertEquals(result, tekst.getAssociatedAuthors().get(0));
+    }
+
+    @Test
+    void testConnectAuthorWithTextExistingAuthor() {
+        // Arrange
+        Author existingAuthor = new Author("Fritz", "Schuhmacher");
+        Tekst tekst = new Tekst("test text");
+        
+        when(authorRepo.findByAuthorFirstNameAndAuthorFamilyName("Fritz", "Schuhmacher"))
+            .thenReturn(existingAuthor);
+
+        // Act
+        Author result = authorService.connectAuthorWithText(existingAuthor, tekst);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("Fritz", result.getAuthorFirstName());
+        assertEquals("Schuhmacher", result.getAuthorFamilyName());
+        assertTrue(result.getTexts().contains(tekst));
+        assertEquals(result, tekst.getAssociatedAuthors().get(0));
+    }
+
 
     @Test
     public void testFindAuthorByLastNameLike() {
