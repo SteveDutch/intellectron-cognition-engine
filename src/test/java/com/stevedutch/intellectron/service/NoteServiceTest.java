@@ -27,64 +27,61 @@ import com.stevedutch.intellectron.repository.NoteRepository;
 @ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
 
-    @Mock
-    private NoteRepository noteRepository;
+	@Mock
+	private NoteRepository noteRepository;
 
-    @InjectMocks
-    private NoteService noteService;
+	@InjectMocks
+	private NoteService noteService;
 
-    private Note testNote;
-    private Zettel testZettel;
+	private Note testNote;
+	private Zettel testZettel;
 
-    @BeforeEach
-    void setUp() {
-        testNote = new Note("Test note");
-        testZettel = new Zettel();
-        testZettel.setZettelId(1L);
-    }
+	@BeforeEach
+	void setUp() {
+		testNote = new Note("Test note");
+		testZettel = new Zettel();
+		testZettel.setZettelId(1L);
+	}
 
-    
-    
-    
-    @Test
-    void testSaveNote_NewNote() {
-        when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(null);
-        when(noteRepository.save(any(Note.class))).thenReturn(testNote);
+	@Test
+	void testSaveNote_NewNote() {
+		when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(null);
+		when(noteRepository.save(any(Note.class))).thenReturn(testNote);
 
-        Note result = noteService.saveNote(testNote);
+		Note result = noteService.saveNote(testNote);
 
-        assertNotNull(result);
-        assertEquals("Test note", result.getNoteText());
-        verify(noteRepository).save(testNote);
-    }
+		assertNotNull(result);
+		assertEquals("Test note", result.getNoteText());
+		verify(noteRepository).save(testNote);
+	}
 
-    @Test
-    void testSaveNote_ExistingNote() {
-        Note existingNote = new Note("Test note");
-        existingNote.setZettelId(2L);
+	@Test
+	void testSaveNote_ExistingNote() {
+		Note existingNote = new Note("Test note");
+		existingNote.setZettelId(2L);
 
-        when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(existingNote);
-        when(noteRepository.save(any(Note.class))).thenReturn(existingNote);
+		when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(existingNote);
+		when(noteRepository.save(any(Note.class))).thenReturn(existingNote);
 
-        Note result = noteService.saveNote(testNote);
+		Note result = noteService.saveNote(testNote);
 
-        assertNotNull(result);
-        assertEquals(2L, result.getZettelId());
-        verify(noteRepository).save(testNote);
-    }
+		assertNotNull(result);
+		assertEquals(2L, result.getZettelId());
+		verify(noteRepository).save(testNote);
+	}
 
-    @Test
-    void testSaveNoteWithZettel() {
-        when(noteRepository.save(any(Note.class))).thenReturn(testNote);
+	@Test
+	void testSaveNoteWithZettel() {
+		when(noteRepository.save(any(Note.class))).thenReturn(testNote);
 
-        Note result = noteService.saveNotewithZettel(testNote, testZettel);
+		Note result = noteService.saveNotewithZettel(testNote, testZettel);
 
-        assertNotNull(result);
-        assertEquals(testZettel, result.getZettel());
-        assertEquals(testZettel.getZettelId(), result.getZettelId());
-        verify(noteRepository).save(testNote);
-    }
-    
+		assertNotNull(result);
+		assertEquals(testZettel, result.getZettel());
+		assertEquals(testZettel.getZettelId(), result.getZettelId());
+		verify(noteRepository).save(testNote);
+	}
+
 	void testSaveNotewithZettel() {
 		// Arrange
 		Note sut = new Note();
@@ -97,89 +94,87 @@ class NoteServiceTest {
 		testZettel.setNote(sut);
 
 		// Mock any dependencies if required
-        when(noteRepository.save(sut)).thenReturn(sut);
-		// Act 
-				
-        Note result = noteService.saveNotewithZettel(sut, testZettel);
-		
-		//Assert
+		when(noteRepository.save(sut)).thenReturn(sut);
+		// Act
+
+		Note result = noteService.saveNotewithZettel(sut, testZettel);
+
+		// Assert
 		assertNotNull(result.getZettelId());
 		assertNotNull(result.getZettel());
 		assertNotNull(result.getNoteText());
-		
+
 	}
 
+	@Test
+	void testConnectNoteWithZettel_NewNote() {
+		when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(null);
 
+		Note result = noteService.connectNotewithZettel(testNote, testZettel);
 
-    @Test
-    void testConnectNoteWithZettel_NewNote() {
-        when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(null);
+		assertNotNull(result);
+		assertEquals(testZettel, result.getZettel());
+		assertEquals(testZettel.getZettelId(), result.getZettelId());
+	}
 
-        Note result = noteService.connectNotewithZettel(testNote, testZettel);
+	@Test
+	void testConnectNoteWithZettel_ExistingNote() {
+		when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(testNote);
 
-        assertNotNull(result);
-        assertEquals(testZettel, result.getZettel());
-        assertEquals(testZettel.getZettelId(), result.getZettelId());
-    }
+		Note result = noteService.connectNotewithZettel(testNote, testZettel);
 
-    @Test
-    void testConnectNoteWithZettel_ExistingNote() {
-        when(noteRepository.findOneNoteByNoteText(anyString())).thenReturn(testNote);
+		assertNotNull(result);
+		assertEquals(testZettel, result.getZettel());
+		assertEquals(testZettel.getZettelId(), result.getZettelId());
+	}
 
-        Note result = noteService.connectNotewithZettel(testNote, testZettel);
+	@Test
+	void testUpdateNote() {
+		Note existingNote = new Note("Old note");
+		when(noteRepository.findByZettelId(anyLong())).thenReturn(existingNote);
 
-        assertNotNull(result);
-        assertEquals(testZettel, result.getZettel());
-        assertEquals(testZettel.getZettelId(), result.getZettelId());
-    }
+		noteService.updateNote(1L, testNote);
 
-    @Test
-    void testUpdateNote() {
-        Note existingNote = new Note("Old note");
-        when(noteRepository.findByZettelId(anyLong())).thenReturn(existingNote);
+		assertEquals("Test note", existingNote.getNoteText());
+		verify(noteRepository).save(existingNote);
+	}
 
-        noteService.updateNote(1L, testNote);
+	@Test
+	void testNoteEmptyOrBlankCheck_ValidNote() {
+		assertDoesNotThrow(() -> noteService.noteEmptyOrBlankCheck(testNote));
+	}
 
-        assertEquals("Test note", existingNote.getNoteText());
-        verify(noteRepository).save(existingNote);
-    }
+	@Test
+	void testNoteEmptyOrBlankCheck_EmptyNote() {
+		Note emptyNote = new Note("");
+		assertThrows(EmptyZettelException.class, () -> noteService.noteEmptyOrBlankCheck(emptyNote));
+	}
 
-    @Test
-    void testNoteEmptyOrBlankCheck_ValidNote() {
-        assertDoesNotThrow(() -> noteService.noteEmptyOrBlankCheck(testNote));
-    }
+	@Test
+	void testNoteEmptyOrBlankCheck_BlankNote() {
+		Note blankNote = new Note("   ");
+		assertThrows(EmptyZettelException.class, () -> noteService.noteEmptyOrBlankCheck(blankNote));
+	}
 
-    @Test
-    void testNoteEmptyOrBlankCheck_EmptyNote() {
-        Note emptyNote = new Note("");
-        assertThrows(EmptyZettelException.class, () -> noteService.noteEmptyOrBlankCheck(emptyNote));
-    }
+	@Test
+	public void testNoteEmptyOrBlankCheck_ThrowsException() {
+		// Arrange
+		Note emptyNote = new Note("");
 
-    @Test
-    void testNoteEmptyOrBlankCheck_BlankNote() {
-        Note blankNote = new Note("   ");
-        assertThrows(EmptyZettelException.class, () -> noteService.noteEmptyOrBlankCheck(blankNote));
-    }
-    
-    @Test
-    public void testNoteEmptyOrBlankCheck_ThrowsException() {
-        // Arrange
-        Note emptyNote = new Note("");
+		// Act & Assert
+		assertThrows(EmptyZettelException.class, () -> {
+			noteService.noteEmptyOrBlankCheck(emptyNote);
+		});
+	}
 
-        // Act & Assert
-        assertThrows(EmptyZettelException.class, () -> {
-            noteService.noteEmptyOrBlankCheck(emptyNote);
-        });
-    }
+	@Test
+	public void testNoteEmptyOrBlankCheck_DoesNotThrowException() {
+		// Arrange
+		Note validNote = new Note("Valid Note");
 
-    @Test
-    public void testNoteEmptyOrBlankCheck_DoesNotThrowException() {
-        // Arrange
-        Note validNote = new Note("Valid Note");
-
-        // Act & Assert
-        assertDoesNotThrow(() -> {
-            noteService.noteEmptyOrBlankCheck(validNote);
-        });
-    }
+		// Act & Assert
+		assertDoesNotThrow(() -> {
+			noteService.noteEmptyOrBlankCheck(validNote);
+		});
+	}
 }
