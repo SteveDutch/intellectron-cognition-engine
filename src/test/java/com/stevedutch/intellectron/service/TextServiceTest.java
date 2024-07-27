@@ -1,54 +1,200 @@
 package com.stevedutch.intellectron.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.TextRepository;
 
 @ExtendWith(MockitoExtension.class)
-class TextServiceTest {
-	
-	@InjectMocks
-	TextService textService = new TextService();
-	
+public class TextServiceTest {
+
 	@Mock
-	TextRepository textRepo;
-	
+	private TextRepository textRepo;
+
+	@Mock
+	private SearchService searchService;
+
+	@InjectMocks
+	private TextService textService;
+
+	private Tekst tekst;
+	private Author author;
+	private Zettel zettel;
+
+	@BeforeEach
+	public void setUp() {
+		tekst = new Tekst();
+		tekst.setText("testText");
+		author = new Author();
+		zettel = new Zettel();
+	}
+
 	@Test
-	void testsaveTextwithZettel() {
-		Tekst sut = new Tekst();
-		sut.setText("  This is not a love text	");
+	public void testSaveTextNew() {
 		// Arrange
-		Zettel testZettel = new Zettel();
-		testZettel.setZettelId(42L);
-		testZettel.setAdded(LocalDateTime.now());
-		testZettel.setChanged(LocalDateTime.now());
-		testZettel.setSignature(null);
-		testZettel.setReferences(null);
-		testZettel.setTags(null);
-		testZettel.setNote(null);
-		testZettel.setTekst(sut);
-		
-		// Mock any dependencies if required
-		when(textRepo.save(Mockito.eq(sut))).thenReturn(sut);
-		
+		when(textRepo.findByText(anyString())).thenReturn(null);
+		when(textRepo.save(any(Tekst.class))).thenReturn(tekst);
+
 		// Act
-		Tekst result = textService.saveTextwithZettel(sut, testZettel);
-		
+		Tekst savedTekst = textService.saveText(tekst);
+
 		// Assert
-		assertNotNull(result);
-		
+		assertEquals(tekst, savedTekst);
+		verify(textRepo, times(1)).save(tekst);
+	}
+
+	@Test
+	public void testSaveTextExisting() {
+		// Arrange
+		when(textRepo.findByText(anyString())).thenReturn(tekst);
+
+		// Act
+		Tekst savedTekst = textService.saveText(tekst);
+
+		// Assert
+		assertEquals(tekst, savedTekst);
+		verify(textRepo, never()).save(any(Tekst.class));
+	}
+
+	@Test
+	public void testSaveTextWithAuthor() {
+		// Arrange
+		when(textRepo.save(any(Tekst.class))).thenReturn(tekst);
+
+		// Act
+		Tekst savedTekst = textService.saveTextWithAuthor(tekst, author);
+
+		// Assert
+		assertEquals(author, savedTekst.getAssociatedAuthors());
+		verify(textRepo, times(1)).save(tekst);
+	}
+
+	@Test
+	public void testSaveTextWithZettel() {
+		// Arrange
+		when(textRepo.findByText(anyString())).thenReturn(null);
+		when(textRepo.save(any(Tekst.class))).thenReturn(tekst);
+
+		// Act
+		Tekst savedTekst = textService.saveTextwithZettel(tekst, zettel);
+
+		// Assert
+		assertEquals(1, savedTekst.getZettels().size());
+		verify(textRepo, times(1)).save(tekst);
+	}
+
+	@Test
+	public void testUpdateTekst() {
+		// Arrange
+		Long zettelId = 123L;
+		Tekst tekst = new Tekst("Sample text");
+		Zettel zettel = new Zettel();
+		Tekst updatedTekst = new Tekst("Updated text");
+
+		when(searchService.findZettelById(zettelId)).thenReturn(zettel);
+		when(searchService.findByText(tekst.getText())).thenReturn(null);
+		when(textRepo.save(any(Tekst.class))).thenReturn(updatedTekst);
+
+		// Act
+		Tekst result = textService.updateTekst(zettelId, tekst);
+
+		// Assert
+		verify(searchService).findZettelById(zettelId);
+		verify(searchService).findByText(tekst.getText());
+
+		// Additional assertions can be added based on the expected behavior of the
+		// method
+	}
+
+	@Test
+	public void testCheckForExistingTekstExisting() {
+		// Arrange
+		when(textRepo.findByText(anyString())).thenReturn(tekst);
+
+		// Act
+		Tekst existingTekst = textService.checkForExistingTekst(tekst);
+
+		// Assert
+		assertEquals(tekst, existingTekst);
+	}
+
+	@Test
+	public void testCheckForExistingTekstNew() {
+		// Arrange
+		when(textRepo.findByText(anyString())).thenReturn(null);
+
+		// Act
+		Tekst newTekst = textService.checkForExistingTekst(tekst);
+
+		// Assert
+		assertEquals(tekst, newTekst);
+	}
+
+	@Test
+	public void testUpdateTekst_existingTekst() {
+		// Arrange
+		Long zettelId = 1L;
+		Tekst tekst = new Tekst("Test Text");
+		Zettel zettel = new Zettel();
+		Tekst existingTekst = new Tekst("Test Text");
+
+		when(searchService.findZettelById(zettelId)).thenReturn(zettel);
+		when(searchService.findByText(tekst.getText())).thenReturn(existingTekst);
+		when(textRepo.save(any(Tekst.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+		// Act
+		Tekst updatedTekst = textService.updateTekst(zettelId, tekst);
+
+		// Assert
+		assertEquals(tekst.getTitle(), updatedTekst.getTitle());
+		assertEquals(tekst.getTextDate(), updatedTekst.getTextDate());
+		assertEquals(tekst.getSource(), updatedTekst.getSource());
+		assertEquals(tekst.getText().strip(), updatedTekst.getText());
+		verify(textRepo, times(1)).save(updatedTekst);
+		verify(textService, times(1)).saveTextwithZettel(updatedTekst, zettel);
+		assertEquals(updatedTekst, zettel.getTekst());
+	}
+
+	@Test
+	public void testUpdateTekst_newTekst() {
+		// Arrange
+		Long zettelId = 1L;
+		Tekst tekst = new Tekst("New Text");
+		Zettel zettel = new Zettel();
+
+		when(searchService.findZettelById(zettelId)).thenReturn(zettel);
+		when(searchService.findByText(tekst.getText())).thenReturn(null);
+		when(textRepo.save(any(Tekst.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+		// Act
+		Tekst updatedTekst = textService.updateTekst(zettelId, tekst);
+
+		// Assert
+		assertEquals(tekst.getTitle(), updatedTekst.getTitle());
+		assertEquals(tekst.getTextDate(), updatedTekst.getTextDate());
+		assertEquals(tekst.getSource(), updatedTekst.getSource());
+		assertEquals(tekst.getText().strip(), updatedTekst.getText());
+		verify(textRepo, times(1)).save(updatedTekst);
+		verify(textService, times(1)).saveTextwithZettel(updatedTekst, zettel);
+		assertEquals(updatedTekst, zettel.getTekst());
 	}
 
 }

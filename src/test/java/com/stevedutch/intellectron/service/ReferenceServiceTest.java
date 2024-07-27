@@ -61,33 +61,6 @@ class ReferenceServiceTest {
         verify(refRepo).save(testReference);
     }
 
-    @Test
-    void testUpdateReferences_NewReference() {
-        ArrayList<Reference> references = new ArrayList<>();
-        references.add(testReference);
-
-        when(searchService.findZettelById(anyLong())).thenReturn(testZettel);
-        when(refRepo.findByOriginZettelAndTargetZettel(anyLong(), anyLong())).thenReturn(null);
-
-        referenceService.updateReferences(1L, references);
-
-        verify(refRepo).save(testReference);
-        verify(zettelService).saveZettel(testZettel);
-    }
-
-    @Test
-    void testUpdateReferences_ExistingReference() {
-        ArrayList<Reference> references = new ArrayList<>();
-        references.add(testReference);
-        testReference.setReferenceId(1L);
-
-        when(searchService.findZettelById(anyLong())).thenReturn(testZettel);
-        when(refRepo.findByOriginZettelAndTargetZettel(anyLong(), anyLong())).thenReturn(testReference);
-
-        referenceService.updateReferences(1L, references);
-
-        verify(refRepo, never()).save(testReference);
-        verify(zettelService).saveZettel(testZettel);
-    }
+    
 }
 

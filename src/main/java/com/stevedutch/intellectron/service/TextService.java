@@ -105,11 +105,6 @@ public class TextService {
 		LOG.info("\n -->TekstService.updateTekst, Tekst " + updatedTekst);
 		if (updatedTekst == null) {
 			updatedTekst = new Tekst(tekst.getText());
-//            updatedTekst.setText(tekst.getText());
-//            updatedTekst.setTitle(tekst.getTitle());
-//            updatedTekst.setTextDate(tekst.getTextDate());
-//            updatedTekst.setSource(tekst.getSource());
-//            textRepo.save(updatedTekst);
 		}
 		updatedTekst.setTitle(tekst.getTitle());
 		updatedTekst.setTextDate(tekst.getTextDate());
@@ -117,7 +112,9 @@ public class TextService {
 		updatedTekst.setSource(tekst.getSource());
 		tekst.setText(tekst.getText().strip());
 		textRepo.save(updatedTekst);
-		saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
+		
+		// saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
+		saveTextwithZettel(updatedTekst, zettel);
 		zettel.setTekst(updatedTekst);
 		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" + "--->" + updatedTekst + "\n"
 				+ updatedTekst.getZettels());

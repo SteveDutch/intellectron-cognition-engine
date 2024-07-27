@@ -49,7 +49,7 @@ class TagTest {
         		+ " Tag [id=1, tagText=TestTag, \n"
         		+ " zettels=[\n"
         		+ " Zettel \n"
-        		+ " [zettelId =null, topic=testing rules Note : No note available added=null, changed=null, signature=null,  Anzahl der tags=0, \n"
+        		+ " [zettelId =null, topic=testing rules Note : No note available, it's NULL added=null, changed=null, signature=null,  Anzahl der tags=0, \n"
         		+ " tekst=null , \n"
         		+ "  References: []]\n"
         		+ " \n"
