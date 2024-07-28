@@ -28,7 +28,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class SearchService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelController.class);
-
+	private static final String WHITESPACE_REGEX = "\\\\s+|\\p{Zs}+";
 	@Autowired
 	private ZettelRepository zettelRepo;
 	@Autowired
@@ -60,7 +60,7 @@ public class SearchService {
 		return result;
 	}
 
-	// XXX is this method ever used?
+	// XXX is this method ever used? NO 
 	public List<Zettel> findAllZettelWithTopic() {
 		return zettelRepo.findAllZettelWithTopic();
 	}
@@ -158,10 +158,11 @@ public class SearchService {
 	 * Validates a search term, if it is null or empty it throws a
 	 * SearchTermNotFoundException.
 	 * 
-	 * @param SearchTerm
+	 * @param searchTerm
 	 */
-	public void validateSearchString(String SearchTerm) {
-		if (SearchTerm == null || SearchTerm.isEmpty()) {
+	public void validateSearchString(String searchTerm) {
+		if (searchTerm == null || searchTerm.isEmpty() 
+				|| searchTerm.matches(WHITESPACE_REGEX)) {
 			LOG.info("\n NO SearchTerm  ");
 			throw new SearchTermNotFoundException("no search term provided");
 		}

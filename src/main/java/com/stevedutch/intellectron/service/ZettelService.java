@@ -119,7 +119,8 @@ public class ZettelService {
 	 * @param zettelDto
 	 */
 	public void topicEmptyOrBlankCheck(Zettel zettel) {
-		if (zettel.getTopic().isEmpty() || zettel.getTopic().isBlank()) {
+		if ( zettel.getTopic() == null|| zettel.getTopic().isBlank()
+				|| zettel.getTopic().isEmpty()) {
 			throw new EmptyZettelException("this zettel's topic is empty");
 		}
 	}

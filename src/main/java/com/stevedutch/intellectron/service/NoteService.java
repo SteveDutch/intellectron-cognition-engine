@@ -51,7 +51,7 @@ public class NoteService {
 
 	/**
 	 * Checks if note is already in DB. if not, a new note is created.
-	 * Connects note & zettel.
+	 * Connects note & zettel.Returns the note.
 	 * 
 	 * @param note
 	 * @param zettel
