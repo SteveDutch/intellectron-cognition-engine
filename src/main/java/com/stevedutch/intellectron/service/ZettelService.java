@@ -176,11 +176,8 @@ public class ZettelService {
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" + "--->" + updatedZettel + "\n"
 				+ "--->" + zettelDto);
-//		
 		// save Note
 		Note newNote = noteService.saveNotewithZettel(zettelDto.note(), updatedZettel);
-		// Zettel führt zu neuem Zettel
-//		updatedZettel = setupZettel(zettelDto, newNote);
 
 		ArrayList<Tag> newTags = zettelDto.tags();
 
@@ -215,7 +212,6 @@ public class ZettelService {
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 		updatedZettel.setTopic(changes.zettel().getTopic());
-		// updatedZettel.setSignature(changes.zettel().getSignature());
 		updatedZettel = saveZettel(updatedZettel);
 		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 

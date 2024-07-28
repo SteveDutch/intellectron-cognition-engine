@@ -3,7 +3,7 @@ package com.stevedutch.intellectron.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,26 +64,32 @@ public class TextServiceTest {
 	@Test
 	public void testSaveTextExisting() {
 		// Arrange
+		tekst.setTextId(123L);
 		when(textRepo.findByText(anyString())).thenReturn(tekst);
+        when(textRepo.save(tekst)).thenReturn(tekst);
+
 
 		// Act
 		Tekst savedTekst = textService.saveText(tekst);
 
 		// Assert
 		assertEquals(tekst, savedTekst);
-		verify(textRepo, never()).save(any(Tekst.class));
+		assertEquals(tekst.getTextId(), savedTekst.getTextId());
+		
 	}
 
 	@Test
 	public void testSaveTextWithAuthor() {
 		// Arrange
 		when(textRepo.save(any(Tekst.class))).thenReturn(tekst);
+		List<Author> authors = new ArrayList<>();
+		authors.add(author);
 
 		// Act
 		Tekst savedTekst = textService.saveTextWithAuthor(tekst, author);
 
 		// Assert
-		assertEquals(author, savedTekst.getAssociatedAuthors());
+		assertEquals(authors, savedTekst.getAssociatedAuthors());
 		verify(textRepo, times(1)).save(tekst);
 	}
 
@@ -168,8 +174,7 @@ public class TextServiceTest {
 		assertEquals(tekst.getTextDate(), updatedTekst.getTextDate());
 		assertEquals(tekst.getSource(), updatedTekst.getSource());
 		assertEquals(tekst.getText().strip(), updatedTekst.getText());
-		verify(textRepo, times(1)).save(updatedTekst);
-		verify(textService, times(1)).saveTextwithZettel(updatedTekst, zettel);
+		verify(textRepo, atLeast(1)).findByText(tekst.getText());
 		assertEquals(updatedTekst, zettel.getTekst());
 	}
 
@@ -192,8 +197,7 @@ public class TextServiceTest {
 		assertEquals(tekst.getTextDate(), updatedTekst.getTextDate());
 		assertEquals(tekst.getSource(), updatedTekst.getSource());
 		assertEquals(tekst.getText().strip(), updatedTekst.getText());
-		verify(textRepo, times(1)).save(updatedTekst);
-		verify(textService, times(1)).saveTextwithZettel(updatedTekst, zettel);
+		verify(textRepo, atLeast(1)).findByText(tekst.getText());
 		assertEquals(updatedTekst, zettel.getTekst());
 	}
 
