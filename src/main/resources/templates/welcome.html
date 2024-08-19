@@ -1,45 +1,383 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>welcome to intellectron</title>
-    <link rel="stylesheet" href="/css/zettel.css" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <!-- Falls du eine separate CSS-Datei hast -->
-          <!-- XXX how Trevor does it -->
-      <!-- <script
-        src="https://kit.fontawesome.com/a7bea4f05b.js"
-        crossorigin="anonymous"
-      ></script> -->
-      <!-- XXX how I did it at UDACITY -->
-<!--       <link
-        rel="stylesheet prefetch"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
-      /> -->
-      <!-- <link rel="stylesheet" href="css/app.css" /> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" crossorigin="anonymous">
+    <!-- Bulma Version 1-->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/bulma.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/welcome2.css">
 </head>
 
 <body>
-    <header>
-        <h1>
-            Willkommen zu intellectron, die Revolution auf dem Nischenmarkt der
-            Orga-Apps
-        </h1>
-        <nav>
-            <ul>
-                <li><a href="input">Startseite</a></li>
-                <li><a href="search">Suche</a></li>
-                <li><a href="#">Über Uns</a></li>
-                <li><a href="#">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <footer>
-        <p>&copy; 2023-2024 Meine Firma. Alle Rechte vorbehalten.</p>
-    </footer>
+    <!-- START NAV Band-->
+    <nav class="navbar is-white">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item brand-text" href="/search">
+                    Search
+                </a>
+                <div class="navbar-burger burger" data-target="navMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="#">
+                        Brauche ich das überhaupt ...?
+                    </a>
+                    <a class="navbar-item" href="admin.html">
+                        Oder hier  Zettel (Anzeige aller Zettel)
+                    </a>
+                    <a class="navbar-item" href="admin.html">
+                        Und hier Tags
+                    </a>
+                    <a class="navbar-item" href="admin.html">
+                        ...Autoren ...
+                    </a>
+                    <a class="navbar-item" href="admin.html">
+                        Referenzen ...
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <!-- END NAV -->
+    
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3 ">
+                <!-- Start Seitenmenuleiste -->
+                <aside class="menu is-hidden-mobile">
+                    <p class="menu-label">
+                        OVERVIEW
+                    </p>
+                    <ul class="menu-list">
+                        <li><a class="is-active">Dashboard</a></li>
+                        <!-- <li><a>Customers</a></li>
+                        <li><a>Other</a></li> -->
+                    </ul>
+                    <p class="menu-label">
+                        SEARCH
+                    </p>
+                    <ul class="menu-list">
+                        <li>
+                            <a>Zettel</a>
+                            <ul>
+                                <li><a>Topic</a></li>
+                                <li><a>Note</a></li>
+                                <li><a>via Text</a></li>
+                            </ul>
+                        </li>
+                        <li><a>Tags</a></li>
+                        <li><a>Authors</a></li>
+                        <li><a>Texts</a></li>
+                        <li><a>Quellen?</a></li>
+                    </ul>
+                    <p class="menu-label">
+                        TBA
+                    </p>
+                    <ul class="menu-list">
+                        <li><a>crEate a new Zettel</a></li>
+                        <li><a>UND EIN +BUTTON AUF JEDER SEITE</a></li>
+                        <li><a>tba</a></li>
+                        <li><a>tba</a></li>
+                    </ul>
+                </aside>
+                <!-- End Seitenmenuleiste -->
+            </div>
+            <div class="column is-9">
+                <!-- <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="../">Bulma</a></li>
+                        <li><a href="../">Templates</a></li>
+                        <li><a href="../">Examples</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Admin</a></li>
+                    </ul>
+                </nav> -->
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title">
+                                Hei, Scholar.
+                            </h1>
+                            <h2 class="subtitle">
+                                Time to enlarge knowledge. Carpe diem. Take a note
+                            </h2>
+                        </div>
+                    </div>
+                </section>
+                <section class="info-tiles">
+                    <div class="tile is-ancestor has-text-centered">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">439k</p>
+                                <p class="subtitle">Zettel <br>
+                                (Klick = neue Seite mit 10 zufälligen & den letzten 10, inkl. Suchfuktion dorten) </p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">59k</p>
+                                <p class="subtitle">Texts<br>
+                                    (Klick = neue Seite mit 10 zufälligen & den letzten 10) </p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">3.4k</p>
+                                <p class="subtitle">Tags<br>
+                                    (Klick = neue Seite mit 10 zufälligen & den letzten 10)</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">19</p>
+                                <p class="subtitle">Autoren<br>
+                                    (Klick = neue Seite mit 10 zufälligen & den letzten 10) </p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                <div class="columns">
+                    <div class="column is-6">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Last 10 Zettel
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                                    <span class="icon">
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </a>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Anzeige vom Topic & erste Wörter der Notiz</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary"
+                                                        href="#">Action</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="card-footer-item">View All</a>
+                            </footer>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="column is-6">
+                        <div class="columns is-multiline">
+                            <div class="column is-12">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <p class="card-header-title">
+                                            4 random Zettel [statt Inventory Search]
+                                        </p>
+                                        <a href="#" class="card-header-icon" aria-label="more options">
+                                            <span class="icon">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </header>
+                                    <div class="card-table">
+                                        <div class="content">
+                                            <table class="table is-fullwidth is-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                        <td>Anzeige vom Topic & erste Wörter der Notiz</td>
+                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                        <td>Lorum ipsum dolem aire</td>
+                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                                    </tr> <tr>
+                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                        <td>Lorum ipsum dolem aire</td>
+                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                                    </tr> <tr>
+                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                        <td>Lorum ipsum dolem aire</td>
+                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                                    <!-- </tr> <tr>
+                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                        <td>Lorum ipsum dolem aire</td>
+                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-12">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <p class="card-header-title">
+                                            5 random texts (vielleicht auch/nur die letzten 5) 
+                                        </p>
+                                        <a href="#" class="card-header-icon" aria-label="more options">
+                                            <span class="icon">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </header>
+
+                                    <!--Elemente hinzu, z.B. Tags oder Buttons -->
+                                    <div class="card-content">
+                                        <div class="tags">
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr> <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr> <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-12">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <p class="card-header-title">
+                                            5 random tags [statt User Search]
+                                        </p>
+                                        <a href="#" class="card-header-icon" aria-label="more options">
+                                            <span class="icon">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </header>
+
+                                    <!--Elemente hinzu, z.B. Tags oder Buttons -->
+                                    <div class="card-content">
+                                        <div class="tags">
+                                            <span class="tag is-primary">Tag 1</span>
+                                            <span class="tag is-info">Tag 2</span>
+                                            <span class="tag is-success">Tag 3</span>
+                                            <span class="tag is-warning">Tag 4</span>
+                                            <span class="tag is-warning">Tag 5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-12">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <p class="card-header-title">
+                                            5 random authors [statt User Search]
+                                        </p>
+                                        <a href="#" class="card-header-icon" aria-label="more options">
+                                            <span class="icon">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </header>
+
+                                    <!--Elemente hinzu, z.B. Tags oder Buttons -->
+                                    <div class="card-content">
+                                        <div class="tags">
+                                            <span class="tag is-primary">author 1</span>
+                                            <span class="tag is-info">author 2</span>
+                                            <span class="tag is-success">author 3</span>
+                                            <span class="tag is-warning">author 4</span>
+                                            <span class="tag is-warning">author 5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script async type="text/javascript" src="../js/bulma.js"></script>
 </body>
 
 </html>
