@@ -1,104 +1,220 @@
-<!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/results.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
-    <title>Your intellectron found</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/search.css" />
-    <script type="text/javascript" src="/js/search.js" defer></script>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <title>Modal Cards - Free Bulma template</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" crossorigin="anonymous">
+  <!-- Bulma Version 1-->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+  <link rel="stylesheet" type="text/css" href="/css/hero.css">
+  <link rel="stylesheet" href="/css/modal-fx.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" type="text/css" href="/css/results.css">
+  <style>
+    .columns:nth-child(2) {
+      margin-top: -10rem;
+    }
+
+    ::-webkit-scrollbar {
+      height: 10px;
+      width: 10px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #efefef;
+      border-radius: 6px
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #d5d5d5;
+      border-radius: 6px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #c4c4c4
+    }
+  </style>
 </head>
 
 <body>
-    <h1>Search Results</h1>
-
-
-<!-- Tag results -->
-    <div th:if="${tag}">
-        <h2>Search Results: Zettel found for Tag: <span th:text="${tag.tagText}"></span></h2>
+  <section class="hero is-info is-small">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <p class="title">
+          Search results as Modal Cards
+        </p>
+        <p class="subtitle">
+          Subtitle
+        </p>
+      </div>
     </div>
-    <div th:if="${#lists.isEmpty(zettels)}">
-        <p>No zettels found for this tag.</p>
+  </section>
+  <div class="box cta">
+    <p class="has-text-centered">
+      <span class="tag is-primary">New</span> Here we have modal cards. When you click on them they will open functional
+      modal examples.
+    </p>
+  </div>
+  <section class="container">
+    <!-- <div class="columns features">
+        <div class="column is-4">
+          <div class="card is-shady">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://images.unsplash.com/photo-1515555230216-82228b88ea98?auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="Placeholder image" class="modal-button" data-target="modal-image2">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4>Click on image above</h4>
+                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
+                <span class="button is-link modal-button" data-target="modal-image2">Image modal</span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+    <div class="columns is-multiline">
+      <div class="card is-shady column is-one-half " th:each="zettel : ${zettels}">
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img
+              src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+              alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
+            <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
+            <h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
+            <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
+            <span class="button is-link modal-button" data-target="modal-card">Modal Card</span>
+        
+            <button class="js-modal-trigger" 
+                data-target="modal-example" 
+                th:data-zettel-id="${zettel.zettelId}">
+              Open JS example modal
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-<!-- Zettel results -->
-    <div th:unless="${#lists.isEmpty(zettels)}">
-        <h3>Zettels:</h3>
-        <ul>
-            <li th:each="zettel : ${zettels}">
-                <!-- Display zettel details here -->
-                <span th:text="${zettel.topic}"></span>
+    <!-- <div class="column is-4 modal-button" data-target="modal-image">
+          <div class="card is-shady">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://res.cloudinary.com/ameo/image/upload/v1568711475/pexels-photo-1302883_fjje0f.jpg" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4>Click anywhere on card</h4>
+                <p>Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis.</p>
+                <span class="button is-link modal-button" data-target="modal-image">Image modal</span>
+              </div>
+            </div>
+          </div>
+        </div> -->
 
-                <!-- Add more zettel fields as needed -->
-            </li>
-        </ul>
+    <!-- <div class="columns features">
+        <div class="column is-4 modal-button" data-target="modal-card">
+          <div class="card is-shady">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://res.cloudinary.com/ameo/image/upload/v1568711475/pexels-photo-1302883_fjje0f.jpg" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4>Click anywhere on card to <br>expand into modal card</h4>
+                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
+                <span class="button is-link modal-button">Modal card</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="card is-shady">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://images.unsplash.com/photo-1529774172307-627a0ae46dae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="butterfly image" class="modal-button" data-target="modal-image4">
+              </figure>
+            </div>
+            <div class="card-content  modal-button" data-target="modal-card2">
+              <div class="content">
+                <h4>Click anywhere on card to <br>expand into modal card - header image expands into bigger image</h4>
+                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis.</p>
+                <span class="button is-link modal-button">Modal card</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+  </section>
+  <footer>
+    <section class="section">
+
+    </section>
+    <div class="content has-text-centered">
+      <div class="control level-item">
+        <a href="https://github.com/BulmaTemplates/bulma-templates">
+          <div class="tags has-addons">
+            <span class="tag is-dark">Bulma Templates</span>
+            <span class="tag is-info">MIT license</span>
+          </div>
+        </a>
+      </div>
     </div>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Signature</th>
-                    <th>Topic</th>
-                    <th>Tags</th>
-                    <th>References</th>
-                    <th>Note</th>
-                    <th>Text</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${#lists.isEmpty(zettels) || #strings.isEmpty(zettels)}">
-                    <td colspan="2"> No Zettel Available </td>
-                </tr>
-                <tr th:each="zettel : ${zettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span
-                                class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
-                    <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
-                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> Tag </span></td>
-                    <td><span th:each="reference : ${zettel.references}"
-                            th:text="${reference.targetZettel} + ' // ' "></span></td>
-                    <td><span th:text="${zettel.note.noteText}">//</span></td>
-                    <td><span th:text="${zettel.tekst.text}"></span></td>
-                </tr>
-            </tbody>
-        </table>
+  </footer>
+
+  <!--  ===============
+     MODALS
+    ===============  -->
+
+  <!-- modal: the main container -->
+  <div id="modal-example" class="modal">
+    <!-- modal-background: a transparent overlay that can act as a click target to close the modal -->
+    <div class="modal-background"></div>
+    <!-- modal-content: a horizontally and vertically centered container, 
+    with a maximum width of 640px, in which you can include any content -->
+    <div class="modal-content">
+      <!-- This is where the rendered Mustache template will be inserted -->
     </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
 
-    <!-- Textsucheergebnis -->
-    <table>
-        <p class="tablehead">Search Results, found texts for given textfragment: </p>
-        <thead>
-            <tr>
-                <th>Titel</th>
-                <th>Text</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr th:if="${#lists.isEmpty(texts) || #strings.isEmpty(texts)}">
-                <td colspan="2"> No Zettel Available </td>
-            </tr>
-            <tr th:each="text : ${texts}">
-                <td><span th:text="${text.title}"></span></td>
-                <td><span th:text="${text.text}"></span></td>
+  <!-- Mustache template -->
+  <script id="modal-template" type="text/template">
+  <div class="box">
+    <h2 class="title">{{zettel.topic}}</h2>
+    <p>{{modalContent}}</p>
+    {{#hasImage}}
+    <p>{{tekst}}</p>
+    <figure class="image">
+      <img src="{{imageUrl}}" alt="{{imageAlt}}">
+    </figure>
+    {{/hasImage}}
+  </div>
+</script>
 
 
-            </tr>
-
-        </tbody>
-    </table>
-    <div th:if="${tekst}">
-
-    </div>
-    <div th:if="${#lists.isEmpty(texts)}">
-        <p>No zettels found for this tag.</p>
-    </div>
-
-
-
-
-
-
+  <!--  ===============
+     end of MODALS
+    ===============  -->
+  <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+    integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+  <script src="/js/wild.js"></script>
+  <!-- from bulma doc as well -->
+  <script src="/js/results.js"></script>
 
 </body>
 

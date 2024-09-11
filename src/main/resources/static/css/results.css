@@ -1,0 +1,23 @@
+/* .container {
+    margin: 2%;
+    padding: 0%;
+
+} */
+
+.text-reducer {
+    width: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-reducer {
+    width: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
