@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,6 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.SearchService;
 
 @Controller
-// vermutlich nur für mustache, unfortunately i forgot it & didn'tmake a note :| 
 public class ResultsController {
 	
 	@Autowired
@@ -23,6 +21,7 @@ public class ResultsController {
 	@Autowired
 	SearchService searchService;
 	
+	// TODO vermutlich nur für mustache, unfortunately i forgot it & didn'tmake a note :| 
 	@GetMapping("/results")
 	public String showSearchResults (ModelMap model) {
 		
@@ -42,10 +41,6 @@ public class ResultsController {
 		response.put("modalContent", zettel.getTekst().getText());
 		response.put("zettel", zettel.getZettelId());
 
-        String modalContent = zettel.getTekst().getText();
- 
-	  
-	    // Return the Mustache template name
 	    return response;
 	}
 }

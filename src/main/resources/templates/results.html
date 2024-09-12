@@ -49,38 +49,20 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <p class="title">
-          Search results as Modal Cards
+          Search results 
         </p>
         <p class="subtitle">
-          Subtitle
+          Search term: <span id ="searchTerm" ></span>
         </p>
       </div>
     </div>
   </section>
   <div class="box cta">
     <p class="has-text-centered">
-      <span class="tag is-primary">New</span> Here we have modal cards. When you click on them they will open functional
-      modal examples.
+      <span class="tag is-primary">New</span> write here something, leave blanc or delete ;) 
     </p>
   </div>
   <section class="container">
-    <!-- <div class="columns features">
-        <div class="column is-4">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://images.unsplash.com/photo-1515555230216-82228b88ea98?auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="Placeholder image" class="modal-button" data-target="modal-image2">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click on image above</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
-                <span class="button is-link modal-button" data-target="modal-image2">Image modal</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
     <div class="columns is-multiline">
       <div class="card is-shady column is-one-half " th:each="zettel : ${zettels}">
@@ -97,68 +79,16 @@
             <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
             <h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
             <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
-            <span class="button is-link modal-button" data-target="modal-card">Modal Card</span>
-        
-            <button class="js-modal-trigger" 
+                    
+            <button class="button is-black js-modal-trigger" 
                 data-target="modal-example" 
                 th:data-zettel-id="${zettel.zettelId}">
-              Open JS example modal
+              Open Text
             </button>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="column is-4 modal-button" data-target="modal-image">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://res.cloudinary.com/ameo/image/upload/v1568711475/pexels-photo-1302883_fjje0f.jpg" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click anywhere on card</h4>
-                <p>Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                <span class="button is-link modal-button" data-target="modal-image">Image modal</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-    <!-- <div class="columns features">
-        <div class="column is-4 modal-button" data-target="modal-card">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://res.cloudinary.com/ameo/image/upload/v1568711475/pexels-photo-1302883_fjje0f.jpg" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click anywhere on card to <br>expand into modal card</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
-                <span class="button is-link modal-button">Modal card</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://images.unsplash.com/photo-1529774172307-627a0ae46dae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="butterfly image" class="modal-button" data-target="modal-image4">
-              </figure>
-            </div>
-            <div class="card-content  modal-button" data-target="modal-card2">
-              <div class="content">
-                <h4>Click anywhere on card to <br>expand into modal card - header image expands into bigger image</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis.</p>
-                <span class="button is-link modal-button">Modal card</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
   </section>
   <footer>
     <section class="section">
@@ -168,7 +98,7 @@
       <div class="control level-item">
         <a href="https://github.com/BulmaTemplates/bulma-templates">
           <div class="tags has-addons">
-            <span class="tag is-dark">Bulma Templates</span>
+            <span class="tag is-dark">this page has</span>
             <span class="tag is-info">MIT license</span>
           </div>
         </a>
@@ -179,7 +109,6 @@
   <!--  ===============
      MODALS
     ===============  -->
-
   <!-- modal: the main container -->
   <div id="modal-example" class="modal">
     <!-- modal-background: a transparent overlay that can act as a click target to close the modal -->
@@ -205,13 +134,12 @@
     {{/hasImage}}
   </div>
 </script>
-
-
   <!--  ===============
      end of MODALS
     ===============  -->
-  <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
-    integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+
+  <!-- <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+    integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script> -->
   <script src="/js/wild.js"></script>
   <!-- from bulma doc as well -->
   <script src="/js/results.js"></script>

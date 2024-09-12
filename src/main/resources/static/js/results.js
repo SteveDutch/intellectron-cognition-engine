@@ -1,3 +1,16 @@
+        // Aktuelle URL abrufen
+        const url = window.location.href;
+
+        // URL in Teile zerlegen
+        const urlParts = new URL(url);
+
+        // Hostnamen extrahieren
+        const searchTerm = urlParts.search;
+
+        // Hostnamen in das HTML-Element einfügen
+        document.getElementById('searchTerm').textContent = searchTerm;
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
     const modalTriggers = document.querySelectorAll('.js-modal-trigger');
