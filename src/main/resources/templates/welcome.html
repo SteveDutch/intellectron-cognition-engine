@@ -12,7 +12,8 @@
     <!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" /> -->
     <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
     <!-- <link rel="stylesheet" type="text/css" href="/css/bulma.min.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/css/welcome2.css">
+    <link rel="stylesheet" type="text/css" href="/css/welcome.css">
+    <script src="/js/results.js" defer></script>
 </head>
 
 <body>
@@ -79,7 +80,17 @@
                                 <li><a href="search">via Text</a></li>
                             </ul>
                         </li>
-                        <li><a>Tags</a></li>
+                        <li>
+                            <form th:action="@{/search/tag/}" method="get"  class="field has-addons">
+                                <div class="control is-expanded">     
+                                    <input class="input" type="text" name="tagFragment" placeholder="enter tag (fragment)"
+                                    >
+                                </div>
+                                <div class="control">
+                                    <button class="button is-darkred" type="submit">go!</button>
+                                </div>   
+                            </form>
+                        </li>
                         <li><a>Authors</a></li>
                         <li><a>Texts</a></li>
                         <li><a>Quellen?</a></li>

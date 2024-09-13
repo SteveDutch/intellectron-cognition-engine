@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <title>Modal Cards - Free Bulma template</title>
+  <title>the fabulous search results page/title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" crossorigin="anonymous">
@@ -64,7 +64,7 @@
   </div>
   <section class="container">
 
-    <div class="columns is-multiline">
+    <div th:if="${zettels}" class="columns is-multiline">
       <div class="card is-shady column is-one-half " th:each="zettel : ${zettels}">
         <div class="card-image">
           <figure class="image is-4by3">
@@ -89,6 +89,33 @@
         </div>
       </div>
     </div>
+
+    <div th:if="${texts}" class="columns is-multiline">
+      <div class="card is-shady column is-one-half " th:each="text : ${texts}">
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img
+              src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+              alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
+            <!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+            <h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
+            <!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+                    
+            <button class="button is-black js-modal-trigger" 
+                data-target="modal-example" >
+                <!-- th:data-zettel-id="${zettel.zettelId}"> -->
+              Open Text
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> 
+
   </section>
   <footer>
     <section class="section">
