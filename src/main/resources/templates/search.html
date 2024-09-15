@@ -15,14 +15,14 @@
     <h1>The Fabulous Search Page</h1>
     <h2>Search a Zettel</h2>
     <div>
-        <!--         Tagsuche -->
+<!--         Tagsuche -->
     
         <form th:action="@{/search/tag/}" method="get">
             <input type="text" name="tagFragment" placeholder="Tag eingeben">
             <button type="submit">Suchen mit thymeleaf </button>
         </form>
     
-        <!--         TopicSuche -->
+<!--         TopicSuche -->
         <form th:action="@{/search/topic/}" method="get">
             <input type="text" name="topicFragment" placeholder="Topic eingeben"  >
             <button type="submit">Suchen mit thymeleaf</button>

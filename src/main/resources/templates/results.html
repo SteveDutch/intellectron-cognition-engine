@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html>
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <title>the fabulous search results page/title>
+  <title>the fabulous search results page</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" crossorigin="anonymous">
@@ -63,8 +62,8 @@
     </p>
   </div>
   <section class="container">
-
-    <div th:if="${zettels}" class="columns is-multiline">
+<!-- Zettel -->
+    <div  th:if="${zettels}" class="columns is-multiline">
       <div class="card is-shady column is-one-half " th:each="zettel : ${zettels}">
         <div class="card-image">
           <figure class="image is-4by3">
@@ -89,7 +88,7 @@
         </div>
       </div>
     </div>
-
+<!-- Tekst -->
     <div th:if="${texts}" class="columns is-multiline">
       <div class="card is-shady column is-one-half " th:each="text : ${texts}">
         <div class="card-image">
@@ -115,6 +114,8 @@
         </div>
       </div>
     </div> 
+
+    
 
   </section>
   <footer>
