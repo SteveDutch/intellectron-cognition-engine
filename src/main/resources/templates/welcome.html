@@ -69,7 +69,7 @@
 												placeholder="enter topic (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary" type="submit">go</button>
+											<button class="button has-background-primary-light" type="submit">go</button>
 										</div>
 									</form>
 								</li>
@@ -81,7 +81,7 @@
 												placeholder="enter note (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary" type="submit">go</button>
+											<button class="button has-background-primary-light" type="submit">go</button>
 										</div>
 									</form>
 								</li>
@@ -93,7 +93,7 @@
 												placeholder="enter text (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary" type="submit">go</button>
+											<button class="button has-background-primary-light" type="submit">go</button>
 										</div>
 									</form>
 								</li>
@@ -110,7 +110,7 @@
 										placeholder="enter tag (fragment)">
 								</div>
 								<div class="control">
-									<button class="button has-background-primary" type="submit">go</button>
+									<button class="button has-background-primary-light" type="submit">go</button>
 
 									<br />
 								</div>
@@ -126,7 +126,7 @@
 										placeholder="enter Author's family name">
 								</div>
 								<div class="control">
-									<button class="button has-background-primary" type="submit">go</button>
+									<button class="button has-background-primary-light" type="submit">go</button>
 									<br />
 								</div>
 							</form>
@@ -139,7 +139,7 @@
 										placeholder="enter text (fragment)">
 								</div>
 								<div class="control">
-									<button class="button has-background-primary" type="submit">go</button>
+									<button class="button has-background-primary-light" type="submit">go</button>
 									<br />
 								</div>
 							</form></li>
@@ -177,7 +177,7 @@
 					<div class="tile is-ancestor has-text-centered">
 						<div class="tile is-parent">
 							<article class="tile is-child box">
-								<p class="title">439k</p>
+								<p class="title" th:text="${zettelNumber}">439k</p>
 								<p class="subtitle">
 									Zettel <br> (Klick = neue Seite mit 10 zufälligen & den
 									letzten 10, inkl. Suchfuktion dorten)
@@ -186,7 +186,7 @@
 						</div>
 						<div class="tile is-parent">
 							<article class="tile is-child box">
-								<p class="title">59k</p>
+								<p class="title" th:text="${textsNumber}">59k</p>
 								<p class="subtitle">
 									Texts<br> (Klick = neue Seite mit 10 zufälligen & den
 									letzten 10)
@@ -195,7 +195,7 @@
 						</div>
 						<div class="tile is-parent">
 							<article class="tile is-child box">
-								<p class="title">3.4k</p>
+								<p class="title" th:text="${tagsNumber}">3.4k</p>
 								<p class="subtitle">
 									Tags<br> (Klick = neue Seite mit 10 zufälligen & den
 									letzten 10)
@@ -204,7 +204,7 @@
 						</div>
 						<div class="tile is-parent">
 							<article class="tile is-child box">
-								<p class="title">19</p>
+								<p class="title" th:text="${authorsNumber}">19</p>
 								<p class="subtitle">
 									Autoren<br> (Klick = neue Seite mit 10 zufälligen & den
 									letzten 10)

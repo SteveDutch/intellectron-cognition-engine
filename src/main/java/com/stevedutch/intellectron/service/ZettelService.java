@@ -268,4 +268,8 @@ public class ZettelService {
 			}
 		});
 	}
+	
+	public Long countZettel() {
+		return zettelRepo.count();
+	}
 }

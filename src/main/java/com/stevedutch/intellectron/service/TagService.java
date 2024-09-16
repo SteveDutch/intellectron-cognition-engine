@@ -106,4 +106,8 @@ public class TagService {
 		newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}
 
+	public Long countTags() {
+		return tagRepo.count();
+	}
+
 }

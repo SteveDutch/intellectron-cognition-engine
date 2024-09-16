@@ -135,7 +135,10 @@ public class TextService {
 			return existingText;
 		}
 		return tekst;
-
+	}
+	
+	public Long countText() {
+		return textRepo.count();
 	}
 
 }

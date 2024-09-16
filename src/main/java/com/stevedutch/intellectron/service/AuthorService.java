@@ -94,4 +94,8 @@ public class AuthorService  {
 		return givenAuthor;
 	}
 
+	public Long countAuthors() {
+		return authorRepo.count();
+	}
+
 }
