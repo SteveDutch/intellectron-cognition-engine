@@ -228,66 +228,70 @@
 								<div class="content">
 									<table class="table is-fullwidth is-striped">
 										<tbody>
-											<tr>
+											
+											
+											<tr th:each="zettel : ${zettels}">
 												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Anzeige vom Topic & erste Wörter der Notiz</td>
+												<td th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'" >Anzeige vom Topic & erste Wörter der Notiz</td>
 												<td class="level-right"><a
 													class="button is-small is-primary" href="#">Action</a></td>
 											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
+											
+											
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
+<!-- 											<tr> -->
+<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
+<!-- 												<td>Lorum ipsum dolem aire</td> -->
+<!-- 												<td class="level-right"><a -->
+<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
+<!-- 											</tr> -->
 										</tbody>
 									</table>
 								</div>

@@ -268,6 +268,16 @@ public class ZettelService {
 			}
 		});
 	}
+		
+		public void reduceTopicStringListElements(List<Zettel> zettels, int reducedLength) {
+			zettels.forEach(x -> {
+				if (x.getTopic() != null) {
+					if (x.getTopic().length() > reducedLength) {
+						x.setTopic(x.getTopic().substring(0, reducedLength));
+					}
+				}
+			});
+	}
 	
 	public Long countZettel() {
 		return zettelRepo.count();

@@ -1,11 +1,15 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.AuthorService;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -21,6 +25,8 @@ public class HomeController {
 	private TagService tagService;
 	@Autowired
 	private AuthorService authorService;
+	@Autowired
+	private SearchService searchService;
 	
 	@GetMapping("/")
 	public String showHomePage(Model model) {
@@ -30,10 +36,19 @@ public class HomeController {
 		Long tagsNumber = tagService.countTags();
 		Long authorsNumber = authorService.countAuthors();
 		
+		List<Zettel> zettels = searchService.findLast10Zettel();
+		zettelService.reduceStringListElements(zettels, 23);
+		zettelService.reduceNoteStringListElements(zettels, 23);
+		zettelService.reduceTopicStringListElements(zettels, 23);
+
+		
+		
 		model.addAttribute("zettelNumber", zettelNumber);
 		model.addAttribute("textsNumber", textsNumber);
 		model.addAttribute("tagsNumber", tagsNumber);
 		model.addAttribute("authorsNumber", authorsNumber);
+		model.addAttribute("zettels", zettels);
+		
 		return "/welcome";
 	}
 	// TODO vermutlich nicht regelkonform (check: Ja) & abfangen von Typos
