@@ -37,10 +37,14 @@ public class HomeController {
 		Long authorsNumber = authorService.countAuthors();
 		
 		List<Zettel> zettels = searchService.findLast10Zettel();
-		zettelService.reduceStringListElements(zettels, 23);
+		zettelService.reduceTekstStringListElements(zettels, 23);
 		zettelService.reduceNoteStringListElements(zettels, 23);
 		zettelService.reduceTopicStringListElements(zettels, 23);
-
+		
+		List<Zettel> randomZettels = searchService.find10RandomZettel();
+		zettelService.reduceTekstStringListElements(randomZettels, 23);
+		zettelService.reduceNoteStringListElements(randomZettels, 23);
+		zettelService.reduceTopicStringListElements(randomZettels, 23);
 		
 		
 		model.addAttribute("zettelNumber", zettelNumber);
@@ -48,6 +52,7 @@ public class HomeController {
 		model.addAttribute("tagsNumber", tagsNumber);
 		model.addAttribute("authorsNumber", authorsNumber);
 		model.addAttribute("zettels", zettels);
+		model.addAttribute("randomZettels", randomZettels);
 		
 		return "/welcome";
 	}

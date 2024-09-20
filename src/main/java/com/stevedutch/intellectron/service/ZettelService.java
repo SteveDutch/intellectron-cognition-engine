@@ -243,7 +243,7 @@ public class ZettelService {
 	 * @param int     - number of reduced characters
 	 * 
 	 */
-	public void reduceStringListElements(List<Zettel> zettels, int reducedLength) {
+	public void reduceTekstStringListElements(List<Zettel> zettels, int reducedLength) {
 		zettels.forEach(x -> {
 			if (x.getTekst().getText().length() > reducedLength) {
 				x.getTekst().setText(x.getTekst().getText().substring(0, reducedLength));

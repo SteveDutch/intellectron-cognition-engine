@@ -120,9 +120,10 @@ public class SearchService {
 				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
 	
 	}
-
+	// TODO scheint so, als würde mit dem ganzen String gesucht. Was bei großen Werten? Hash oder so nutzen?
 	public Tekst findByText(String text) {
 		/// TODO null check
+		
 		return textRepo.findByText(text);
 	}
 

@@ -54,8 +54,8 @@ public class InputController {
 		List<Zettel> zettels = searchService.findLast10Zettel();
 		List<Zettel> randomZettels = searchService.find10RandomZettel();
 		// TODO rename
-		zettelService.reduceStringListElements(zettels, 220);
-		zettelService.reduceStringListElements(randomZettels, 220);
+		zettelService.reduceTekstStringListElements(zettels, 220);
+		zettelService.reduceTekstStringListElements(randomZettels, 220);
 		// TODO rename
 		zettelService.reduceNoteStringListElements(zettels, 220);
 		zettelService.reduceNoteStringListElements(randomZettels, 220);

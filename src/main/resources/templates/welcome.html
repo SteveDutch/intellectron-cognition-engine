@@ -229,69 +229,13 @@
 									<table class="table is-fullwidth is-striped">
 										<tbody>
 											
-											
 											<tr th:each="zettel : ${zettels}">
 												<td width="5%"><i class="fa fa-bell-o"></i></td>
 												<td th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'" >Anzeige vom Topic & erste Wörter der Notiz</td>
 												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
+													class="button is-small is-primary" th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank">Action</a></td>
 											</tr>
-											
-											
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
-<!-- 											<tr> -->
-<!-- 												<td width="5%"><i class="fa fa-bell-o"></i></td> -->
-<!-- 												<td>Lorum ipsum dolem aire</td> -->
-<!-- 												<td class="level-right"><a -->
-<!-- 													class="button is-small is-primary" href="#">Action</a></td> -->
-<!-- 											</tr> -->
+
 										</tbody>
 									</table>
 								</div>
@@ -309,8 +253,7 @@
 							<div class="column is-12">
 								<div class="card">
 									<header class="card-header">
-										<p class="card-header-title">4 random Zettel [statt
-											Inventory Search]</p>
+										<p class="card-header-title">4 random Zettel (wenn die Funktion geändert ist)</p>
 										<a href="#" class="card-header-icon" aria-label="more options">
 											<span class="icon"> <i class="fa fa-angle-down"
 												aria-hidden="true"></i>
@@ -321,37 +264,19 @@
 										<div class="content">
 											<table class="table is-fullwidth is-striped">
 												<tbody>
-													<tr>
+													<tr th:each="zettel : ${randomZettels}">
 														<td width="5%"><i class="fa fa-bell-o"></i></td>
-														<td>Anzeige vom Topic & erste Wörter der Notiz</td>
+														<td
+															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">Anzeige
+															vom Topic & erste Wörter der Notiz</td>
 														<td class="level-right"><a
-															class="button is-small is-primary" href="#">Action</a></td>
+															class="button is-small is-primary"
+															th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+															target="_blank">Action</a></td>
 													</tr>
-													<tr>
-														<td width="5%"><i class="fa fa-bell-o"></i></td>
-														<td>Lorum ipsum dolem aire</td>
-														<td class="level-right"><a
-															class="button is-small is-primary" href="#">Action</a></td>
-													</tr>
-													<tr>
-														<td width="5%"><i class="fa fa-bell-o"></i></td>
-														<td>Lorum ipsum dolem aire</td>
-														<td class="level-right"><a
-															class="button is-small is-primary" href="#">Action</a></td>
-													</tr>
-													<tr>
-														<td width="5%"><i class="fa fa-bell-o"></i></td>
-														<td>Lorum ipsum dolem aire</td>
-														<td class="level-right"><a
-															class="button is-small is-primary" href="#">Action</a></td>
-														<!-- </tr> <tr>
-                                                        <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                        <td>Lorum ipsum dolem aire</td>
-                                                        <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
-                                                    </tr> -->
+													
 												</tbody>
 											</table>
-										</div>
 									</div>
 								</div>
 							</div>
