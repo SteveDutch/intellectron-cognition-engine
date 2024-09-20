@@ -485,7 +485,7 @@ class SearchServiceTest {
 		Zettel randomZettel = new Zettel();
 		when(zettelRepo.findOneRandomZettel()).thenReturn(randomZettel);
 
-		List<Zettel> result = searchService.find10RandomZettel();
+		List<Zettel> result = searchService.findRandomZettel(10);
 
 		assertEquals(10, result.size());
 		verify(zettelRepo, times(10)).findOneRandomZettel();

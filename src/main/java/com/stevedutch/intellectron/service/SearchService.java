@@ -172,10 +172,15 @@ public class SearchService {
 	public List<Zettel> findLast10Zettel() {
 		return zettelRepo.findLast10Zettel();
 	}
-
-	public List<Zettel> find10RandomZettel() {
+	/**
+	 *finds x random Zettel
+	 *
+	 * @param x - number of Zettel to be found
+	 * @return List<Zettel> of x random Zettel
+	 */
+	public List<Zettel> findRandomZettel(int x) {
 		List<Zettel> tenRandom = new ArrayList<>();
-		while (tenRandom.size() < 10) {
+		while (tenRandom.size() < x) {
 			Zettel randomZettel = zettelRepo.findOneRandomZettel();
 			if (randomZettel != null) {
 				tenRandom.add(randomZettel);

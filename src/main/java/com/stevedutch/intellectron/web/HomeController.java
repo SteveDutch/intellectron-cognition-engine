@@ -41,11 +41,15 @@ public class HomeController {
 		zettelService.reduceNoteStringListElements(zettels, 23);
 		zettelService.reduceTopicStringListElements(zettels, 23);
 		
-		List<Zettel> randomZettels = searchService.find10RandomZettel();
+		List<Zettel> randomZettels = searchService.findRandomZettel(10);
 		zettelService.reduceTekstStringListElements(randomZettels, 23);
 		zettelService.reduceNoteStringListElements(randomZettels, 23);
 		zettelService.reduceTopicStringListElements(randomZettels, 23);
 		
+		List<Zettel> fourRandomZettels = searchService.findRandomZettel(4);
+		zettelService.reduceTekstStringListElements(fourRandomZettels, 23);
+		zettelService.reduceNoteStringListElements(fourRandomZettels, 23);
+		zettelService.reduceTopicStringListElements(fourRandomZettels, 23);
 		
 		model.addAttribute("zettelNumber", zettelNumber);
 		model.addAttribute("textsNumber", textsNumber);
@@ -53,6 +57,7 @@ public class HomeController {
 		model.addAttribute("authorsNumber", authorsNumber);
 		model.addAttribute("zettels", zettels);
 		model.addAttribute("randomZettels", randomZettels);
+		model.addAttribute("fourRandomZettels", fourRandomZettels);
 		
 		return "/welcome";
 	}

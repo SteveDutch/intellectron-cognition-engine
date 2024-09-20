@@ -52,7 +52,7 @@ public class InputController {
 //		List<Reference> references = refService.findAll();
 //		model.put("references", references);
 		List<Zettel> zettels = searchService.findLast10Zettel();
-		List<Zettel> randomZettels = searchService.find10RandomZettel();
+		List<Zettel> randomZettels = searchService.findRandomZettel(10);
 		// TODO rename
 		zettelService.reduceTekstStringListElements(zettels, 220);
 		zettelService.reduceTekstStringListElements(randomZettels, 220);
@@ -62,6 +62,7 @@ public class InputController {
 		
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);
+
 		return "/input";
 	}
 

@@ -50,7 +50,7 @@ class InputControllerTest {
     @Test
     void test_show_input_mask_with_null_or_empty_lists() {
         Mockito.when(searchServiceMock.findLast10Zettel()).thenReturn(null);
-        Mockito.when(searchServiceMock.find10RandomZettel()).thenReturn(null);
+        Mockito.when(searchServiceMock.findRandomZettel(10)).thenReturn(null);
         String result = sut.showInputMask(model);
         assertThat(result).isEqualTo("/input");
         Mockito.verify(model).put("author", new Author());

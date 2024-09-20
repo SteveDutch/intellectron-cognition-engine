@@ -264,7 +264,7 @@
 										<div class="content">
 											<table class="table is-fullwidth is-striped">
 												<tbody>
-													<tr th:each="zettel : ${randomZettels}">
+													<tr th:each="zettel : ${fourRandomZettels}">
 														<td width="5%"><i class="fa fa-bell-o"></i></td>
 														<td
 															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">Anzeige
