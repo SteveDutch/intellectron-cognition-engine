@@ -1,8 +1,10 @@
 package com.stevedutch.intellectron.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stevedutch.intellectron.domain.Author;
-import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
@@ -60,7 +61,7 @@ public class SearchService {
 		return result;
 	}
 
-	// XXX is this method ever used? NO 
+	// XXX is this method ever used? NO - ausser im Test
 	public List<Zettel> findAllZettelWithTopic() {
 		return zettelRepo.findAllZettelWithTopic();
 	}
@@ -172,6 +173,9 @@ public class SearchService {
 	public List<Zettel> findLast10Zettel() {
 		return zettelRepo.findLast10Zettel();
 	}
+	
+	//TODO rename tenRandom & Zettel & and not woking, 
+	//stuck in loop when there are less than 10 Zettel
 	/**
 	 *finds x random Zettel
 	 *
@@ -182,16 +186,33 @@ public class SearchService {
 		List<Zettel> tenRandom = new ArrayList<>();
 		while (tenRandom.size() < x) {
 			Zettel randomZettel = zettelRepo.findOneRandomZettel();
-			if (randomZettel != null) {
+			if (randomZettel != null && !tenRandom.contains(randomZettel)) {
 				tenRandom.add(randomZettel);
 			}
 		}
 		return tenRandom;
 	}
+	
+	public List<Tekst> findRandomText(int x) {
+	    Set<Tekst> uniqueTexts = new HashSet<>();
+	    int maxAttempts = x * 3;  
+	    int attempts = 0;
 
-	// XXX is this method ever used?
-	public List<Reference> findAll() {
-		return refRepo.findAll();
+	    while (uniqueTexts.size() < x && attempts < maxAttempts) {
+	        Tekst randomTekst = textRepo.findOneRandomTekst();
+	        if (randomTekst != null) {
+	            uniqueTexts.add(randomTekst);
+	        }
+	        attempts++;
+	    }
+
+	    return new ArrayList<>(uniqueTexts);
 	}
+
+	// XXX is this method ever used? NOPE
+//	public List<Reference> findAll() {
+//		return refRepo.findAll();
+//	}
+
 
 }

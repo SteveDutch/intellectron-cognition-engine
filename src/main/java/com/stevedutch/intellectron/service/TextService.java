@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,6 +140,28 @@ public class TextService {
 	
 	public Long countText() {
 		return textRepo.count();
+	}
+	/**
+	 * reduces the size of each Tekst.text element of a list of Tekst to chosen length
+	 * 
+	 * @param tekster - List of tekst objects
+	 * @param reducedLength . number of reduced characters
+	 */
+	public void reduceTextStringListElements(List<Tekst> tekster, int reducedLength) {
+        tekster.forEach(x -> {
+            if (x.getText().length() > reducedLength) {
+                x.setText(x.getText().substring(0, reducedLength));
+            }
+        });
+    
+	}
+
+	public void reduceTitleStringListElements(List<Tekst> tekster, int reducedLength) {
+		tekster.forEach(x -> {
+			if (x.getTitle().length() > reducedLength) {
+				x.setTitle(x.getTitle().substring(0, reducedLength));
+			}
+		});
 	}
 
 }

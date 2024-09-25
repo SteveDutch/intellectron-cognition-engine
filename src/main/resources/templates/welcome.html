@@ -294,26 +294,22 @@
 									</header>
 
 									<!--Elemente hinzu, z.B. Tags oder Buttons -->
-									<div class="card-content">
-										<div class="tags">
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-											</tr>
-											<tr>
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
-												<td>Lorum ipsum dolem aire</td>
-												<td class="level-right"><a
-													class="button is-small is-primary" href="#">Action</a></td>
-										</div>
+									<div class="card-table">
+										<div class="content">
+											<table class="table is-fullwidth is-striped">
+												<tbody>
+													<tr th:each="text : ${fourRandomTexts}">
+														<td width="5%"><i class="fa fa-bell-o"></i></td>
+														<td
+															th:text="${text.title} + ' : ' + ${text.text} + '...'">Anzeige
+															vom Topic & erste Wörter der Notiz</td>
+														<td class="level-right"><a
+															class="button is-small is-primary"
+															target="_blank">Action</a></td>
+													</tr>
+													
+												</tbody>
+											</table>
 									</div>
 								</div>
 

@@ -100,7 +100,6 @@ public class Reference {
 
 	public Long getReferenceId(Reference reference) {
 		this.referenceId = reference.getReferenceId();
-		// TODO Auto-generated method stub
 		return referenceId;
 	}
 	

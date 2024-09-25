@@ -13,8 +13,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +30,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Tag;
+import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
 import com.stevedutch.intellectron.repository.TagRepository;
+import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -50,6 +54,13 @@ class SearchServiceTest {
 
 	@Mock
 	private TagRepository tagRepo;
+	
+	@Mock 
+    private TextRepository textRepo;
+	
+	private static final int EXPECTED_ZETTEL_COUNT = 10;
+
+	private static final int EXPECTED_TEXT_COUNT = 10;
 
 	@BeforeEach
 	void setUp() {
@@ -481,13 +492,69 @@ class SearchServiceTest {
 	}
 
 	@Test
-	void testFind10RandomZettel() {
-		Zettel randomZettel = new Zettel();
-		when(zettelRepo.findOneRandomZettel()).thenReturn(randomZettel);
+	void testFindRandomZettel_shouldReturnRequestedNumberOfUniqueZettels() {
+        // Arrange
 
-		List<Zettel> result = searchService.findRandomZettel(10);
+        // Create a list of unique Zettels
+        List<Zettel> uniqueZettels = new ArrayList<>();
+        for (int i = 0; i < EXPECTED_ZETTEL_COUNT; i++) {
+            uniqueZettels.add(new Zettel());
+        }
+		
+        // Set up the mock to return unique Zettels in sequence, then null
+        when(zettelRepo.findOneRandomZettel())
+            .thenReturn(uniqueZettels.get(0))
+            .thenReturn(uniqueZettels.get(1))
+            .thenReturn(uniqueZettels.get(2))
+            .thenReturn(uniqueZettels.get(3))
+            .thenReturn(uniqueZettels.get(4))
+            .thenReturn(uniqueZettels.get(5))
+            .thenReturn(uniqueZettels.get(6))
+            .thenReturn(uniqueZettels.get(7))
+            .thenReturn(uniqueZettels.get(8))
+            .thenReturn(uniqueZettels.get(9))
+            .thenReturn(null);
+        // Act
+		List<Zettel> result = searchService.findRandomZettel(EXPECTED_ZETTEL_COUNT);
 
-		assertEquals(10, result.size());
-		verify(zettelRepo, times(10)).findOneRandomZettel();
+		 // Assert
+        assertEquals(EXPECTED_ZETTEL_COUNT, result.size(), "Should return exactly 10 Zettels");
+        assertEquals(new HashSet<>(uniqueZettels), new HashSet<>(result), "All Zettels should be unique");
+        verify(zettelRepo, times(EXPECTED_ZETTEL_COUNT)).findOneRandomZettel();
+	}
+	
+	@Test
+	void testFindRandomTekst () {
+		// Arrange
+
+        // Create a list of unique Texts
+        List<Tekst> uniqueTexts = new ArrayList<>();
+        for (Integer i = 0; i < EXPECTED_TEXT_COUNT; i++) {
+            Tekst tekst = new Tekst();
+            tekst.setText(i.toString());
+            System.out.println("Created Tekst: " + tekst.hashCode());
+            uniqueTexts.add(tekst);
+        }
+		
+        // Set up the mock to return unique Zettels in sequence, then null
+        when(textRepo.findOneRandomTekst())
+            .thenReturn(uniqueTexts.get(0))
+            .thenReturn(uniqueTexts.get(1))
+            .thenReturn(uniqueTexts.get(2))
+            .thenReturn(uniqueTexts.get(3))
+            .thenReturn(uniqueTexts.get(4))
+            .thenReturn(uniqueTexts.get(5))
+            .thenReturn(uniqueTexts.get(6))
+            .thenReturn(uniqueTexts.get(7))
+            .thenReturn(uniqueTexts.get(8))
+            .thenReturn(uniqueTexts.get(9))
+            .thenReturn(null);
+        // Act
+		List<Tekst> result = searchService.findRandomText(EXPECTED_TEXT_COUNT);
+
+		 // Assert
+        assertEquals(EXPECTED_TEXT_COUNT, result.size(), "Should return exactly 10 Texts");
+        assertEquals(new HashSet<>(uniqueTexts), new HashSet<>(result), "All Texts should be unique");
+        verify(textRepo, times(EXPECTED_TEXT_COUNT)).findOneRandomTekst();
 	}
 }

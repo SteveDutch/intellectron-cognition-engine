@@ -66,8 +66,7 @@ public class TextServiceTest {
 		// Arrange
 		tekst.setTextId(123L);
 		when(textRepo.findByText(anyString())).thenReturn(tekst);
-        when(textRepo.save(tekst)).thenReturn(tekst);
-
+		when(textRepo.save(tekst)).thenReturn(tekst);
 
 		// Act
 		Tekst savedTekst = textService.saveText(tekst);
@@ -75,7 +74,7 @@ public class TextServiceTest {
 		// Assert
 		assertEquals(tekst, savedTekst);
 		assertEquals(tekst.getTextId(), savedTekst.getTextId());
-		
+
 	}
 
 	@Test
@@ -155,7 +154,7 @@ public class TextServiceTest {
 	}
 
 	@Test
-	public void testUpdateTekst_existingTekst() {
+	void testUpdateTekst_existingTekst() {
 		// Arrange
 		Long zettelId = 1L;
 		Tekst tekst = new Tekst("Test Text");
@@ -199,6 +198,50 @@ public class TextServiceTest {
 		assertEquals(tekst.getText().strip(), updatedTekst.getText());
 		verify(textRepo, atLeast(1)).findByText(tekst.getText());
 		assertEquals(updatedTekst, zettel.getTekst());
+	}
+
+	@Test
+	void testReduceTextStringListElements() {
+		// Arrange
+		List<Tekst> tekster = new ArrayList<>();
+		Tekst tekst1 = new Tekst("Test Text 1");
+		Tekst tekst2 = new Tekst("Test Text 2");
+		Tekst tekst3 = new Tekst("kurz");
+		tekster.add(tekst1);
+		tekster.add(tekst2);
+		tekster.add(tekst3);
+
+		// Act
+		textService.reduceTextStringListElements(tekster, 5);
+
+		// Assert
+		assertEquals("Test ", tekster.get(0).getText());
+		assertEquals("Test ", tekster.get(1).getText());
+		assertEquals("kurz", tekster.get(2).getText());
+
+	}
+	@Test
+	void testReduceTitleStringListElements() {
+		// Arrange
+		List<Tekst> tekster = new ArrayList<>();
+		Tekst tekst1 = new Tekst("Test Title 1");
+		Tekst tekst2 = new Tekst("Test Title 2");
+		Tekst tekst3 = new Tekst("kurz");
+		tekst1.setTitle("Test Titel 1");
+		tekst2.setTitle("Test Titel 2");
+		tekst3.setTitle("kurz");
+		tekster.add(tekst1);
+		tekster.add(tekst2);
+		tekster.add(tekst3);
+
+		// Act
+		textService.reduceTitleStringListElements(tekster, 5);
+
+		// Assert
+		assertEquals("Test ", tekster.get(0).getTitle());
+		assertEquals("Test ", tekster.get(1).getTitle());
+		assertEquals("kurz", tekster.get(2).getTitle());
+
 	}
 
 }
