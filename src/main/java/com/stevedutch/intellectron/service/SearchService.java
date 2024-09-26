@@ -209,6 +209,23 @@ public class SearchService {
 	    return new ArrayList<>(uniqueTexts);
 	}
 
+	public List<Tag> findRandomTag(int x) {
+		Set<Tag> uniqueTags = new HashSet<>();
+		int maxAttempts = x * 3;
+		int attempts = 0;
+		
+		while (uniqueTags.size() < x && attempts < maxAttempts) {
+			Tag randomTag = tagRepo.findOneRandomTag();
+			if (randomTag != null) {
+				uniqueTags.add(randomTag);
+				LOG.info("\n SearchService.findRandomTag() --> Random Tag: " + randomTag.getId() + " / " + randomTag.getTagText());
+			}
+			
+			attempts++;
+		}
+		return new ArrayList<>(uniqueTags);
+	}
+
 	// XXX is this method ever used? NOPE
 //	public List<Reference> findAll() {
 //		return refRepo.findAll();

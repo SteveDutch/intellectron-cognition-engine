@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.AuthorService;
@@ -53,8 +54,10 @@ public class HomeController {
 		zettelService.reduceTopicStringListElements(fourRandomZettels, 23);
 		
 		List<Tekst> fourRandomTexts = searchService.findRandomText(5);
-		textService.reduceTextStringListElements(fourRandomTexts, 23);
+		textService.reduceTextStringListElements(fourRandomTexts, 55);
 		textService.reduceTitleStringListElements(fourRandomTexts, 23);
+		
+		List<Tag> fiveRandomTags = searchService.findRandomTag(5);
 		
 		model.addAttribute("zettelNumber", zettelNumber);
 		model.addAttribute("textsNumber", textsNumber);
@@ -64,6 +67,7 @@ public class HomeController {
 		model.addAttribute("randomZettels", randomZettels);
 		model.addAttribute("fourRandomZettels", fourRandomZettels);
 		model.addAttribute("fourRandomTexts", fourRandomTexts);
+		model.addAttribute("fiveRandomTags", fiveRandomTags);
 		
 		return "/welcome";
 	}

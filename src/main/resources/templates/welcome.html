@@ -328,11 +328,13 @@
 										<!--Elemente hinzu, z.B. Tags oder Buttons -->
 										<div class="card-content">
 											<div class="tags">
-												<span class="tag is-primary">Tag 1</span> <span
-													class="tag is-info">Tag 2</span> <span
-													class="tag is-success">Tag 3</span> <span
-													class="tag is-warning">Tag 4</span> <span
-													class="tag is-warning">Tag 5</span>
+												<tr th:each="tag : ${fiveRandomTags}">
+													
+													<td></td>
+														<span th:text="${tag.tagText}" class="tag is-warning">Anzeige
+														vom Topic & erste Wörter der Notiz</span>
+													<td class="level-right" ><a></a></td>
+												</tr>
 											</div>
 										</div>
 									</div>
@@ -353,7 +355,8 @@
 										<!--Elemente hinzu, z.B. Tags oder Buttons -->
 										<div class="card-content">
 											<div class="tags">
-												<span class="tag is-primary">author 1</span> <span
+												<span class="tag is-primary">author 1</span> 
+												<span
 													class="tag is-info">author 2</span> <span
 													class="tag is-success">author 3</span> <span
 													class="tag is-warning">author 4</span> <span

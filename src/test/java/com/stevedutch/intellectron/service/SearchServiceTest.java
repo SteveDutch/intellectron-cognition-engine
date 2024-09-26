@@ -62,6 +62,8 @@ class SearchServiceTest {
 
 	private static final int EXPECTED_TEXT_COUNT = 10;
 
+	private static final int EXPECTED_TAG_COUNT = 5;
+
 	@BeforeEach
 	void setUp() {
 		// In JUnit 5 mit Mockito-Extension ist keine explizite Initialisierung nötig
@@ -557,4 +559,35 @@ class SearchServiceTest {
         assertEquals(new HashSet<>(uniqueTexts), new HashSet<>(result), "All Texts should be unique");
         verify(textRepo, times(EXPECTED_TEXT_COUNT)).findOneRandomTekst();
 	}
+	
+	@Test
+	void testFindRandomTag () {
+        // Arrange
+
+        // Create a list of unique Tags
+        List<Tag> uniqueTags = new ArrayList<>();
+        for (Integer i = 0; i < EXPECTED_TAG_COUNT; i++) {
+            Tag tag = new Tag();
+            tag.setTagText(i.toString());
+            System.out.println("Created Tag: " + tag.hashCode());
+            uniqueTags.add(tag);
+        }
+        
+        // Set up the mock to return unique Zettels in sequence, then null
+        when(tagRepo.findOneRandomTag())
+            .thenReturn(uniqueTags.get(0))
+            .thenReturn(uniqueTags.get(1))
+            .thenReturn(uniqueTags.get(2))
+            .thenReturn(uniqueTags.get(3))
+            .thenReturn(uniqueTags.get(4))
+            .thenReturn(null)
+            ;
+        // Act
+        List<Tag> result = searchService.findRandomTag(EXPECTED_TAG_COUNT);
+
+         // Assert
+        assertEquals(EXPECTED_TAG_COUNT, result.size(), "Should return exactly 5 Tags");
+        assertEquals(new HashSet<>(uniqueTags), new HashSet<>(result), "All Tags should be unique");
+        verify(tagRepo, times(EXPECTED_TAG_COUNT)).findOneRandomTag();
+    }
 }
