@@ -198,7 +198,7 @@
 								<p class="title" th:text="${tagsNumber}">3.4k</p>
 								<p class="subtitle">
 									Tags<br> (Klick = neue Seite mit 10 zufälligen & den
-									letzten 10)
+									letzten 10) (oder Anzeige der 5 zufälligen hier, natürlich verlinkt)
 								</p>
 							</article>
 						</div>
@@ -329,9 +329,9 @@
 										<div class="card-content">
 											<div class="tags">
 												<tr th:each="tag : ${fiveRandomTags}">
-													
 													<td></td>
-														<span th:text="${tag.tagText}" class="tag is-warning">Anzeige
+														<a th:href="@{/search/tag/(tagFragment=${tag.tagText})}">
+														<span th:text="${tag.tagText}" class="tag is-medium is-link is-hoverable">Anzeige
 														vom Topic & erste Wörter der Notiz</span>
 													<td class="level-right" ><a></a></td>
 												</tr>
@@ -355,13 +355,16 @@
 										<!--Elemente hinzu, z.B. Tags oder Buttons -->
 										<div class="card-content">
 											<div class="tags">
-												<span class="tag is-primary">author 1</span> 
-												<span
-													class="tag is-info">author 2</span> <span
-													class="tag is-success">author 3</span> <span
-													class="tag is-warning">author 4</span> <span
-													class="tag is-warning">author 5</span>
+												<tr th:each="author : ${fiveRandomAuthors}">
+													<td></td>
+														<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}">
+															<span th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}" 
+															class="tag is-medium is-danger">Anzeige
+														vom Topic & erste Wörter der Notiz</span></a>
+													<td class="level-right" ></td>
+												</tr>
 											</div>
+										</div>
 										</div>
 									</div>
 								</div>

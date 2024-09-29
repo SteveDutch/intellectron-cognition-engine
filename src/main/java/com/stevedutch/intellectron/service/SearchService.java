@@ -226,6 +226,22 @@ public class SearchService {
 		return new ArrayList<>(uniqueTags);
 	}
 
+	public List<Author> findRandomAuthor(int x) {
+		Set<Author> uniqueAuthors = new HashSet<>();
+		int maxAttempts = x * 3;
+		int attempts = 0;
+		
+		while (uniqueAuthors.size() < x && attempts < maxAttempts) {
+			Author randomAuthor = authorRepo.findOneRandomAuthor();
+			if (randomAuthor != null) {
+				uniqueAuthors.add(randomAuthor);
+				LOG.info("\n SearchService.findRandomAuthor() --> Random Author: " + randomAuthor.getAuthorId() + " / " + randomAuthor.getAuthorFamilyName());
+			}
+			attempts++;
+		}
+		return new ArrayList<>(uniqueAuthors);
+	}
+
 	// XXX is this method ever used? NOPE
 //	public List<Reference> findAll() {
 //		return refRepo.findAll();

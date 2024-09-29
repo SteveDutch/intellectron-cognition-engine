@@ -55,7 +55,7 @@ class HomeControllerTest {
 	
 	@Test
 	void testShowAlsoHomePage() {
-		String result = sut.showAlsoHomePage();
+		String result = sut.redirectToHomePage();
 		
 		assertThat(result).isEqualTo("/welcome");
 	}
