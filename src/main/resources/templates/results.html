@@ -84,6 +84,10 @@
                 th:data-zettel-id="${zettel.zettelId}">
               Open Text
             </button>
+            <button class="button is-black">
+              <a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}">Edit</a>
+              Open Zettel
+            </button>
           </div>
         </div>
       </div>

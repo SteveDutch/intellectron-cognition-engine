@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import com.stevedutch.intellectron.service.AuthorService;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
@@ -31,6 +32,8 @@ class HomeControllerTest {
     private TagService tagService;
     @Mock
     private AuthorService authorService;
+    @Mock
+    private SearchService searchService;
 	
     @Mock
     private ModelMap model;
