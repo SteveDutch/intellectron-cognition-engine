@@ -80,11 +80,18 @@ function zettelToJava() {
 		if (!response.ok) {
 		  throw response;
 		}
-		return response.json();
-	  })
+		    // Check if the response is a redirect
+		    if (response.redirected) {
+		        // If it's a redirect, navigate to the new URL
+		        window.location.href = response.url;
+		    } else {
+		        // If it's not a redirect, parse the JSON
+		        return response.json();
+		    }
+		})
 	  .then(data => {
 		// Handle the successful response
-		console.log(data);
+		console.log("Response data:", data);
 	  })
 	  .catch(error => {
 		// Pass the error response to the handleError function

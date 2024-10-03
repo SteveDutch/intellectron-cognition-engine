@@ -28,14 +28,14 @@ import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class InputController {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
 	@Autowired
 	private ZettelService zettelService;
 	@Autowired
 	private SearchService searchService;
-	
+
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
 
@@ -59,7 +59,7 @@ public class InputController {
 		// TODO rename
 		zettelService.reduceNoteStringListElements(zettels, 220);
 		zettelService.reduceNoteStringListElements(randomZettels, 220);
-		
+
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);
 
@@ -73,27 +73,30 @@ public class InputController {
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
 
-		//  check if names are empty TODO:right place? NO zu authorService
-		if (zettelDto.author().getAuthorFamilyName() == null || zettelDto.author().getAuthorFamilyName() == "" 
-				|| zettelDto.author().getAuthorFamilyName().trim().isBlank())  {
+		// check if names are empty TODO:right place? NO zu authorService
+		if (zettelDto.author().getAuthorFamilyName() == null || zettelDto.author().getAuthorFamilyName() == ""
+				|| zettelDto.author().getAuthorFamilyName().trim().isBlank()) {
 			zettelDto.author().setAuthorFamilyName(unknownFamily);
 		}
 		if (zettelDto.author().getAuthorFirstName() == null || zettelDto.author().getAuthorFirstName() == ""
-				|| zettelDto.author().getAuthorFirstName().trim().isBlank())  {
+				|| zettelDto.author().getAuthorFirstName().trim().isBlank()) {
 			zettelDto.author().setAuthorFirstName(unknownName);
 		}
-		System.out.println("ZettelDtoRecord =  \n" + zettelDto + "\n");
-//		ZettelDtoRecord zettelDtoRecord = new ZettelDtoRecord( zettel,  tekst,  note,  author, tags, reference);
-		zettelService.createZettel(zettelDto);
-		return "redirect:/input";
+		System.out.println("\n ZettelDtoRecord =  \n" + zettelDto + "\n");
+		ZettelDtoRecord newZettel = zettelService.createZettel(zettelDto);
+		Long zettelId = newZettel.zettel().getZettelId();
+
+		return "redirect:/zettel/" + zettelId;
+
 	}
 	// // XXX for historical & maybe learning reasons
 	// @GetMapping("/400")
 	// public String showErrorPage(RedirectAttributes attributes, Model model) {
-	//     // This method is not strictly necessary if you're only using flash attributes, as Thymeleaf can access them directly.
-	//     // However, it's useful if you need to add more attributes or perform additional logic.
-	//     return "400";
+	// // This method is not strictly necessary if you're only using flash
+	// attributes, as Thymeleaf can access them directly.
+	// // However, it's useful if you need to add more attributes or perform
+	// additional logic.
+	// return "400";
 	// }
-	
 
 }
