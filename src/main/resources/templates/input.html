@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-</html>
-
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,13 +14,13 @@
 
 <body>
 	<section class="hero is-small is-danger">
-  <div class="hero-body">
-    <p class="title has-text-centered">Feed your intellectron</p>
-   
-  </div>
-</section>
-	
- 
+		<div class="hero-body">
+			<p class="title has-text-centered">Feed your intellectron</p>
+
+		</div>
+	</section>
+
+
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
 		<div>
 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
@@ -40,7 +38,7 @@
 					<br />
 					<!-- <input type="text" /> -->
 				</div>
-				 <br />
+				<br />
 				<div>
 					<label for="note">Note: </label>
 					<textarea id="notiz" name="article" th:field="${note.noteText}"
@@ -49,7 +47,7 @@
 					<!-- <input type="text"  /><br /> -->
 				</div>
 			</div>
-			 
+
 			<div class="column">
 				<div>
 					<label for="title">Title:</label>
@@ -67,42 +65,45 @@
 				</div>
 			</div>
 		</div>
-<hr />
+		<hr />
 		<div>
 			<label for="tags">Tags: </label><br />
 			<div id="tagsContainer" class="tags">
-				 
+
 				<div th:each="tag, status : ${tags}">
-<input type="text" th:id="'tag' + ${status.index}" 
-                	th:name="'tags'" 
-                	th:value="${tag.tagText}" />
-                <button type="button" onclick="this.parentNode.remove()">rydde ut Tag</button>
-            </div>
+					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
+						th:value="${tag.tagText}" />
+					<button type="button" onclick="this.parentNode.remove()">rydde
+						ut Tag</button>
+				</div>
 
 			</div>
 			<button id="addTagButton" type="button">Add Tag</button>
 		</div>
-<hr />
-
-		<div>
-			<label for="author">Author first name</label><br /> <input
-				type="text" id="authorFirstName"
-				th:field="${author.authorFirstName}" /><br />
-		</div>
 		<hr />
-		<div>
-			<label for="author">Author family name</label><br /> <input
-				type="text" id="authorFamilyName"
-				th:field="${author.authorFamilyName}" /><br />
-		</div>
-		<label for="timestamp">date of text:</label><br /> <input type="date"
-			id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
+		<div class="columns">
+			<div class="column">
+				<label for="author">Author first name</label><br /> <input
+					type="text" id="authorFirstName"
+					th:field="${author.authorFirstName}" /><br />
+			</div>
+			<hr />
+			<div class="column">
+				<label for="author">Author family name</label><br /> <input
+					type="text" id="authorFamilyName"
+					th:field="${author.authorFamilyName}" /><br />
+			</div>
+			<div class="column">
+				<label for="timestamp">date of text:</label><br /> <input
+					type="date" id="timestamp" name="timestamp"
+					th:field="${tekst.textDate}" /><br />
 
-		<hr />
+			</div>
 
-		<div>
-			<label for="source">Source:</label><br /> <input type="text"
-				id="source" name="source" th:field="${tekst.source}" /><br />
+			<div class="column">
+				<label for="source">Source:</label><br /> <input type="text"
+					id="source" name="source" th:field="${tekst.source}" /><br />
+			</div>
 		</div>
 		<hr />
 		<div>
@@ -119,12 +120,26 @@
 				<button id="addReferenceButton" type="button">Add Reference</button>
 			</div>
 			<hr />
-			<input type="submit" id="submit" value="Submit" />
+
+			<div class="container">
+				<div class="columns is-centered">
+					<div class="column ">
+						<input class="button is-dark is-medium is-rounded"
+							type="submit" id="submit" value="Submit" />
+					</div>
+				</div>
+			</div>
 	</form>
-	<h1>last 10 zettels</h1>
+	<section class="hero is-small is-warning">
+		<div class="hero-body">
+			<p class="title  has-text-centered ">last 10 zettels</p>
+
+		</div>
+	</section>
 	<div>
 		<!-- show last 10 zettels -->
-		<table>
+		<table
+			class="table is-bordered has-background-grey-lighter thick-black-border">
 			<thead>
 				<tr>
 					<th>Signature</th>
@@ -157,10 +172,16 @@
 			</tbody>
 		</table>
 	</div>
-	<h1>10 random zettels</h1>
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title has-text-centered">10 random zettels</p>
+
+		</div>
+	</section>
 	<div>
 		<!-- show 10 random zettels -->
-		<table>
+		<table
+			class="table  is-bordered has-background-grey-lighter thick-black-border">
 			<thead>
 				<tr>
 					<th>Signature</th>
