@@ -22,6 +22,7 @@
 
 		</div>
 	</section>
+	<br>
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
 		<div class="columns">
 			<div class="column">
@@ -66,7 +67,7 @@
 		<div>
 			<label for="tags">Tags: </label><br />
 			<div id="tagsContainer">
-				// Tags will be added here
+<!-- 				 Tags will be added here -->
 				<div th:each="tag, status : ${tags}">
 					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 						th:value="${tag.tagText}" />

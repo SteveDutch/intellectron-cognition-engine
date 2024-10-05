@@ -16,19 +16,19 @@
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
 			<p class="title has-text-centered">Feed your intellectron</p>
-
+			<p class="subtitle has-text-centered"> with a new Zettel</p>
 		</div>
 	</section>
 
-
+<br />
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
-		<div>
-			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
+<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
+<!-- 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> --> 
 
-			<p th:if="${zettel.zettelId == null}">new Zettel</p>
-			<p th:if="${zettel.zettelId != null}"
-				th:text="|ID: ${zettel.zettelId}|"></p>
-		</div>
+<!-- 			<p th:if="${zettel.zettelId == null}">new Zettel</p> -->
+<!-- 			<p th:if="${zettel.zettelId != null}" -->
+<!-- 				th:text="|ID: ${zettel.zettelId}|"></p> -->
+<!-- 		</div> -->
 		<div class="columns">
 			<div class="column">
 				<div>
@@ -136,8 +136,8 @@
 
 		</div>
 	</section>
+<!-- 					show last 10 zettels -->
 	<div>
-		<!-- show last 10 zettels -->
 		<table
 			class="table is-bordered has-background-grey-lighter thick-black-border">
 			<thead>
@@ -178,8 +178,8 @@
 
 		</div>
 	</section>
-	<div>
 		<!-- show 10 random zettels -->
+	<div>
 		<table
 			class="table  is-bordered has-background-grey-lighter thick-black-border">
 			<thead>
