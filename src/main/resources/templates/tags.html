@@ -2,54 +2,64 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Your tag List, found by intellectron</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/search.css" />
-    <!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Your tag List, found by intellectron</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+<link rel="stylesheet" href="/css/tags.css" />
+<!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body>
-    <h1>tag List</h1>
-    <div th:if="${#lists.isEmpty(wantedTags)}">
-        <p>No tags found.</p>
-    </div>
 
-    <div th:unless="${#lists.isEmpty(wantedTags)}">
-        <h3>tags:</h3>
-        <ul>
-            <li th:each="tag : ${wantedTags}">
-                <h4 th:text="${tag.tagText}"></h4>
-                <!-- <p th:text="${tag.zettel}"></p> -->
-                <!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
-            </li>
-        </ul>
-    </div>
+	<section class="hero is-small is-primary">
+		<div class="hero-body">
+			<p class="title has-text-centered">your intellectron shows your
+				tag list</p>
+			<p class="subtitle has-text-centered">
+				searched for <span id="searchTerm"></span>
+			</p>
+		</div>
+	</section>
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>tag</th>
-                    <th>Zettel  </th>
+	<h1>tag List</h1>
+	<div th:if="${#lists.isEmpty(wantedTags)}">
+		<p>No tags found.</p>
+	</div>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="tag : ${wantedTags}">
-                    <td><span th:text="${tag.tagText}"></span></td>
+	<div th:unless="${#lists.isEmpty(wantedTags)}">
+		<h3>tags:</h3>
+		<ul>
+			<li th:each="tag : ${wantedTags}">
+				<h4 th:text="${tag.tagText}"></h4> <!-- <p th:text="${tag.zettel}"></p> -->
+				<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
+			</li>
+		</ul>
+	</div>
 
-                    <td th:each="zettel : ${tag.zettels}">
-              
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th>tag</th>
+					<th>Zettel</th>
 
-                        <span th:text="${zettel.topic}"></span></td>
-                    <!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
-                 
-                </tr>
-            </tbody>
-        </table>
-    </div>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="tag : ${wantedTags}">
+					<td><span th:text="${tag.tagText}"></span></td>
+
+					<td th:each="zettel : ${tag.zettels}"><span
+						th:text="${zettel.topic}"></span></td>
+					<!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script src="/js/common.js"></script>
 </body>
 
 </html>

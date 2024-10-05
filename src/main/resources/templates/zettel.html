@@ -19,7 +19,6 @@
 			<p class="subtitle has-text-centered">
 				Zettel no <span id="zettelId" th:text="|${zettel.zettelId}|"></span>
 			</p>
-
 		</div>
 	</section>
 	<br>
@@ -67,7 +66,7 @@
 		<div>
 			<label for="tags">Tags: </label><br />
 			<div id="tagsContainer">
-<!-- 				 Tags will be added here -->
+				<!-- 				 Tags will be added here -->
 				<div th:each="tag, status : ${tags}">
 					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 						th:value="${tag.tagText}" />
@@ -146,7 +145,8 @@
 
 	<!--   Delete Zettel -->
 	<div>
-		<button class="button is-small is-danger" id="openDeleteModal" type="button">delete</button>
+		<button class="button is-small is-danger" id="openDeleteModal"
+			type="button">delete</button>
 	</div>
 
 	<div id="deleteModal" class="modal">
