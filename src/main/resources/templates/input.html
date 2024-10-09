@@ -16,19 +16,19 @@
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
 			<p class="title has-text-centered">Feed your intellectron</p>
-			<p class="subtitle has-text-centered"> with a new Zettel</p>
+			<p class="subtitle has-text-centered">with a new Zettel</p>
 		</div>
 	</section>
 
-<br />
+	<br />
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
-<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
-<!-- 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> --> 
+		<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
+		<!-- 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
 
-<!-- 			<p th:if="${zettel.zettelId == null}">new Zettel</p> -->
-<!-- 			<p th:if="${zettel.zettelId != null}" -->
-<!-- 				th:text="|ID: ${zettel.zettelId}|"></p> -->
-<!-- 		</div> -->
+		<!-- 			<p th:if="${zettel.zettelId == null}">new Zettel</p> -->
+		<!-- 			<p th:if="${zettel.zettelId != null}" -->
+		<!-- 				th:text="|ID: ${zettel.zettelId}|"></p> -->
+		<!-- 		</div> -->
 		<div class="columns">
 			<div class="column">
 				<div>
@@ -73,12 +73,13 @@
 				<div th:each="tag, status : ${tags}">
 					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 						th:value="${tag.tagText}" />
-					<button type="button" onclick="this.parentNode.remove()">rydde
-						ut Tag</button>
+					<button class="button is-small is-warning" type="button"
+						onclick="this.parentNode.remove()">rydde ut Tag</button>
 				</div>
 
 			</div>
-			<button id="addTagButton" type="button">Add Tag</button>
+			<button class="button is-small is-warning" id="addTagButton"
+				type="button">Add Tag</button>
 		</div>
 		<hr />
 		<div class="columns">
@@ -113,19 +114,21 @@
 				<div th:each="reference, status : ${references}">
 					<input type="number" min="100000000000" max="999999999999"
 						pattern="[0-9]{12}" required th:id="'signature' + ${status.index}"
-						th:name="'references[' + ${status.index} + ']'"
-						th:value="${reference.targetZettel}" />
+						th:name="'references' " th:value="${reference.targetZettel}" />
+					<button class="button is-small is-warning" type="button"
+						onclick="this.parentNode.remove()">rydde ut referanse</button>
 				</div>
 				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button id="addReferenceButton" type="button">Add Reference</button>
+				<button class="button is-small is-warning" id="addReferenceButton"
+					type="button">Add Reference</button>
 			</div>
 			<hr />
 
 			<div class="container">
 				<div class="columns is-centered">
 					<div class="column ">
-						<input class="button is-dark is-medium is-rounded"
-							type="submit" id="submit" value="Submit" />
+						<input class="button is-dark is-medium is-rounded" type="submit"
+							id="submit" value="Submit" />
 					</div>
 				</div>
 			</div>
@@ -136,7 +139,7 @@
 
 		</div>
 	</section>
-<!-- 					show last 10 zettels -->
+	<!-- 					show last 10 zettels -->
 	<div>
 		<table
 			class="table is-bordered has-background-grey-lighter thick-black-border">
@@ -178,7 +181,7 @@
 
 		</div>
 	</section>
-		<!-- show 10 random zettels -->
+	<!-- show 10 random zettels -->
 	<div>
 		<table
 			class="table  is-bordered has-background-grey-lighter thick-black-border">

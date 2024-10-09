@@ -70,73 +70,81 @@
 				<div th:each="tag, status : ${tags}">
 					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 						th:value="${tag.tagText}" />
-					<button type="button" onclick="this.parentNode.remove()">rydde
-						ut Tag</button>
+					<button class="button is-small is-warning" type="button"
+						onclick="this.parentNode.remove()">rydde ut Tag</button>
 				</div>
 
 			</div>
-			<button id="addTagButton" type="button">Add Tag</button>
+			<button class="button is-small is-warning" id="addTagButton"
+				type="button">Add Tag</button>
 		</div>
 		<hr />
 
-		<div id="authorFirstName">
-			<label for="authorFirstName">Author first name</label><br />
-			<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-				<input type="text" th:id="${'authorFirstName' + status.index}"
-					th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
-					th:value="${author.authorFirstName}" /><br />
+		<div class="columns">
+			<div class="column">
+				<div id="authorFirstName">
+					<label for="authorFirstName">Author first name</label><br />
+					<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+						<input type="text" th:id="${'authorFirstName' + status.index}"
+							th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
+							th:value="${author.authorFirstName}" /><br />
+					</div>
+				</div>
 			</div>
-		</div>
-
-		<hr />
-		<!--     <div>
-        <label for="author">Author family name</label><br />
-        <div th:each="zettel.tekst.associatedAuthors, status : ${zettel.tekst.associatedAuthors}"></div>
-        <input type="text" th:id="'authorFamilyName' " th:name="'zettel.tekst.associatedAuthors.authorFamilyName[' +  ']'"
+			<hr />
+			<!--     <div>
+  	      <label for="author">Author family name</label><br />
+   	     <div th:each="zettel.tekst.associatedAuthors, status : ${zettel.tekst.associatedAuthors}"></div>
+    	    <input type="text" th:id="'authorFamilyNam-e' " th:name="'zettel.tekst.associatedAuthors.authorFamilyName[' +  ']'"
             th:value="${zettel.tekst.associatedAuthors}" /><br />
-    </div> -->
-
-		<div id="authorFamilyName">
-			<label for="author">Author family name</label><br />
-			<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-				<input type="text" th:id="${'authorFamilyName' + status.index}"
-					th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
-					th:value="${author.authorFamilyName}" /><br />
+  				  </div> -->
+			<div class="column">
+				<div id="authorFamilyName">
+					<label for="author">Author family name</label><br />
+					<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+						<input type="text" th:id="${'authorFamilyName' + status.index}"
+							th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
+							th:value="${author.authorFamilyName}" /><br />
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<label for="timestamp">date of text:</label><br /> <span
+					id="timestamp" name="timestamp" th:text="|${tekst.textDate}|"></span>
+				<span>change date:</span><input id="textDate" type="date"
+					name="textDate" th:field="${tekst.textDate}" /><br /> <br />
+			</div>
+			<div class="column">
+				<div>
+					<label for="source">Source:</label><br /> <input type="text"
+						id="source" name="source" th:field="${tekst.source}" /><br />
+				</div>
 			</div>
 		</div>
 
-		<hr />
-		<label for="timestamp">date of text:</label><br /> <span
-			id="timestamp" name="timestamp" th:text="|${tekst.textDate}|"></span><br />
-		<span>change date:</span><br /> <input id="textDate" type="date"
-			name="textDate" th:field="${tekst.textDate}" /><br />
-		<hr />
-
-		<div>
-			<label for="source">Source:</label><br /> <input type="text"
-				id="source" name="source" th:field="${tekst.source}" /><br />
-		</div>
 		<hr />
 		<div>
 			<label for="Signatur">signature to which should be referred /
 				Signatur, auf die verwiesen werden soll:</label><br />
 			<div id="signatureContainer">
-				// Signature will be added here
 				<div th:each="reference, status : ${references}">
 					<input type="number" min="100000000000" max="999999999999"
 						pattern="[0-9]{12}" required th:id="'signature' + ${status.index}"
 						th:name="'references'" th:value="${reference.targetZettel}" />
-					<button type="button" onclick="this.parentNode.remove()">rydde
-						ut referanse</button>
+					<button class="button is-small is-warning" type="button"
+						onclick="this.parentNode.remove()">rydde ut referanse</button>
 				</div>
 				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button id="addReferenceButton" type="button">Add Reference</button>
+				<button class="button is-small is-warning" id="addReferenceButton"
+					type="button">Add Reference</button>
 			</div>
 			<hr />
 			<!--  Submit / Change Zettel -->
-			<input type="submit" id="submit" value="Submit" />
+			<input class="button is-small is-link" type="submit" id="submit"
+				value="Submit" />
 		</div>
 	</form>
+	</div>
 	<div id="changedcontainer">
 		last changed:<br /> <span name="changed" th:field="${zettel.changed}"
 			th:text="${zettel.changed}"></span>
