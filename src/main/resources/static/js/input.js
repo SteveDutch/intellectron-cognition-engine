@@ -5,13 +5,14 @@ let zettel = {};
 let note = {};
 let author = {};
 
-document.getElementById('addTagButton').addEventListener('click', function () {
+/* document.getElementById('addTagButton').addEventListener('click', function () {
     var tagsContainer = document.getElementById('tagsContainer');
     var newDiv = document.createElement('div');
     var newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.name = 'tags'; // Name attribute to bind the input to an ArrayList
     var newRemoveButton = document.createElement('button');
+	newRemoveButton.classList.add('button', 'is-small', 'is-warning');
     newRemoveButton.type = 'button';
     newRemoveButton.textContent = 'rydde ut Tag';
     newRemoveButton.onclick = function () {
@@ -20,10 +21,10 @@ document.getElementById('addTagButton').addEventListener('click', function () {
     tagsContainer.appendChild(newDiv);
     newDiv.appendChild(newInput);
     newDiv.appendChild(newRemoveButton);
-});
+}); */
 
 
-document.getElementById('addReferenceButton').addEventListener('click', function () { 
+/* document.getElementById('addReferenceButton').addEventListener('click', function () { 
     var signatureContainer = document.getElementById('signatureContainer');
     var newDiv = document.createElement('div');
     var newReferenceInput = document.createElement('input');
@@ -35,6 +36,7 @@ document.getElementById('addReferenceButton').addEventListener('click', function
     newReferenceInput.name = 'references'; // Name attribute to bind the input to an ArrayList
     var newRemoveRefButton = document.createElement('button');
     newRemoveRefButton.type = 'button';
+	newRemoveRefButton.classList.add('button', 'is-small', 'is-warning');
     newRemoveRefButton.textContent = 'rydde ut referanse';
     newRemoveRefButton.onclick = function () {
         this.parentNode.remove();
@@ -42,7 +44,7 @@ document.getElementById('addReferenceButton').addEventListener('click', function
     signatureContainer.appendChild(newDiv);
     newDiv.appendChild(newReferenceInput);
     newDiv.appendChild(newRemoveRefButton);
-});
+}); */
 
 submitBtn.addEventListener("click", function (event) {
 	// suppress HTML sending form
