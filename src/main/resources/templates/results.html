@@ -2,49 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<title>the fabulous search results page</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans"
-	rel="stylesheet" crossorigin="anonymous">
-<!-- Bulma Version 1-->
-<!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<link rel="stylesheet" type="text/css" href="/css/hero.css">
-<link rel="stylesheet" href="/css/modal-fx.min.css"
-	crossorigin="anonymous" />
-<link rel="stylesheet" type="text/css" href="/css/results.css">
-<style>
-.columns:nth-child(2) {
-	margin-top: -10rem;
-}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<title>the fabulous search results page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" crossorigin="anonymous">
+	<!-- Bulma Version 1-->
+	<!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+	<link rel="stylesheet" type="text/css" href="/css/hero.css">
+	<link rel="stylesheet" href="/css/modal-fx.min.css" crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="/css/results.css">
 
-::-webkit-scrollbar {
-	height: 10px;
-	width: 10px
-}
-
-::-webkit-scrollbar-track {
-	background: #efefef;
-	border-radius: 6px
-}
-
-::-webkit-scrollbar-thumb {
-	background: #d5d5d5;
-	border-radius: 6px
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #c4c4c4
-}
-</style>
 </head>
 
 <body>
@@ -67,12 +40,10 @@
 	<section class="container">
 		<!-- Zettel -->
 		<div th:if="${zettels}" class="columns is-multiline">
-			<div class="card is-shady column is-one-half "
-				th:each="zettel : ${zettels}">
+			<div class="card is-shady column is-one-half " th:each="zettel : ${zettels}">
 				<div class="card-image">
 					<figure class="image is-4by3">
-						<img
-							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+						<img src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
 							alt="Placeholder image">
 					</figure>
 				</div>
@@ -86,8 +57,7 @@
 						<p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter
 							für zettel.tekst.</p>
 
-						<button class="button is-black js-modal-trigger"
-							data-target="modal-example"
+						<button class="button is-black js-modal-trigger" data-target="modal-example"
 							th:data-zettel-id="${zettel.zettelId}">Open Text</button>
 						<button class="button is-black">
 							<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}">Edit</a>
@@ -99,12 +69,10 @@
 		</div>
 		<!-- Tekst -->
 		<div th:if="${texts}" class="columns is-multiline">
-			<div class="card is-shady column is-one-half "
-				th:each="text : ${texts}">
+			<div class="card is-shady column is-one-half " th:each="text : ${texts}">
 				<div class="card-image">
 					<figure class="image is-4by3">
-						<img
-							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+						<img src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
 							alt="Placeholder image">
 					</figure>
 				</div>
@@ -115,8 +83,7 @@
 						<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
 						<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
 
-						<button class="button is-black js-modal-trigger"
-							data-target="modal-example">
+						<button class="button is-black js-modal-trigger" data-target="modal-example">
 							<!-- th:data-zettel-id="${zettel.zettelId}"> -->
 							Open Text
 						</button>
@@ -134,8 +101,7 @@
 			<div class="control level-item">
 				<a href="https://github.com/BulmaTemplates/bulma-templates">
 					<div class="tags has-addons">
-						<span class="tag is-dark">this page has</span> <span
-							class="tag is-info">MIT license</span>
+						<span class="tag is-dark">this page has</span> <span class="tag is-info">MIT license</span>
 					</div>
 				</a>
 			</div>

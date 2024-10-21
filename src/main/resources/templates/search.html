@@ -3,80 +3,94 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Let your intellectron find</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/search.css" />
-    <script type="text/javascript" src="/js/search.js" defer></script>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<title>Fabulous Intellectron Search Page</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+	<link rel="stylesheet" href="/css/search.css" />
+	<script type="text/javascript" src="/js/search.js" defer></script>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body>
-    <h1>The Fabulous Search Page</h1>
-    <h2>Search a Zettel</h2>
-    <div>
-<!--         Tagsuche -->
-    
-        <form th:action="@{/search/tag/}" method="get">
-            <input type="text" name="tagFragment" placeholder="Tag eingeben">
-            <button type="submit">Suchen mit thymeleaf </button>
-        </form>
-    
-<!--         TopicSuche -->
-        <form th:action="@{/search/topic/}" method="get">
-            <input type="text" name="topicFragment" placeholder="Topic eingeben"  >
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-<!-- NoteSuche -->
-        <form th:action="@{/search/note/}" method="get">
-            <input type="text" name="noteFragment" placeholder="enter note (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-<!-- TextSuche -->
-        <form th:action="@{/search/text/}" method="get">
-            <input type="text" name="textFragment" placeholder="enter text (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-    </div>
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title is-1 has-text-centered">The Fabulous Intellectron
+				Search Page</p>
+			<p class="subtitle has-text-centered">with a new Zettel</p>
+		</div>
+	</section>
 
-    <hr />
-    <h2>Search an Author</h2>
-    <div>
-        <form th:action="@{/search/author/}" method="get">
-            <label for="author">Author:</label>
-            <input type="text" name="lastName" placeholder="enter Author's family name" />
-            <button type="submit">Search</button><br />
-        </form>
-    </div>
-    <hr />
-    <h2>Search a Text</h2>
-    <div>
-        <form th:action="@{/search/text4tekst/}" method="get">
-            <input type="text" name="textFragment" placeholder="enter text (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
+	<br>
+	<h2 class="title is-2">Search a Zettel</h2>
+	<div>
 
-    </div>
-    <hr />
+		<!--         TopicSuche -->
+		<form th:action="@{/search/topic/}" method="get">
+			<input type="text" name="topicFragment" placeholder="Topic eingeben">
+			<button type="submit">Suchen</button>
+		</form>
+		<!-- NoteSuche -->
+		<form th:action="@{/search/note/}" method="get">
+			<input type="text" name="noteFragment"
+				placeholder="enter note (fragment)">
+			<button type="submit">Suchen</button>
+		</form>
+		<!-- TextSuche -->
+		<form th:action="@{/search/text/}" method="get">
+			<input type="text" name="textFragment"
+				placeholder="enter text (fragment)">
+			<button type="submit">Suchen</button>
+		</form>
+	</div>
+	<hr />
+	<!--         Tagsuche -->
+	<h2 class="title is-2">Search a Tag</h2>
+	<form th:action="@{/search/tag/}" method="get">
+		<input type="text" name="tagFragment" placeholder="Tag eingeben">
+		<button type="submit">Suchen</button>
+	</form>
+	<hr />
+	<h2 class="title is-2">Search an Author</h2>
+	<div>
+		<form th:action="@{/search/author/}" method="get">
+			<label for="author">Author:</label> <input type="text"
+				name="lastName" placeholder="enter Author's family name" />
+			<button type="submit">Search</button>
+			<br />
+		</form>
+	</div>
+	<hr />
+	<h2 class="title is-2">Search a Text</h2>
+	<div>
+		<form th:action="@{/search/text4tekst/}" method="get">
+			<input type="text" name="textFragment"
+				placeholder="enter text (fragment)">
+			<button type="submit">Suchen</button>
+		</form>
 
-                <div th:if="${tag}">
-                    <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
-                
-                    <div th:if="${#lists.isEmpty(zettels)}">
-                        <p>No zettels found for this tag.</p>
-                    </div>
-                
-                    <div th:unless="${#lists.isEmpty(zettels)}">
-                        <h3>Zettels:</h3>
-                        <ul>
-                            <li th:each="zettel : ${zettels}">
-                                <!-- Display zettel details here -->
-                                <span th:text="${zettel.topic}"></span>
-                                <!-- Add more zettel fields as needed -->
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </body>
+	</div>
+	<hr />
+
+	<div th:if="${tag}">
+		<h2>
+			Search Results for Tag: <span th:text="${tag.tagText}"></span>
+		</h2>
+
+		<div th:if="${#lists.isEmpty(zettels)}">
+			<p>No zettels found for this tag.</p>
+		</div>
+
+		<div th:unless="${#lists.isEmpty(zettels)}">
+			<h3>Zettels:</h3>
+			<ul>
+				<li th:each="zettel : ${zettels}">
+					<!-- Display zettel details here --> <span
+					th:text="${zettel.topic}"></span> <!-- Add more zettel fields as needed -->
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
 
 </html>

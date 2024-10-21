@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Your tag List, found by intellectron</title>
+<title>tag List, found by intellectron</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="preload" href="/css/bulma.css" as="style">
@@ -11,33 +11,34 @@
 <link rel="stylesheet" type="text/css" href="/css/tags.css" />
 <!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script src="/js/common.js" defer></script>
 </head>
 
 <body>
 	<div class="main-container">
 		<section class="hero is-small is-primary">
 			<div class="hero-body">
-				<p class="title has-text-centered">your intellectron shows your
-					tag list</p>
+				<p class="title is-1 has-text-centered">your intellectron shows
+					your tag list</p>
 				<p class="subtitle has-text-centered">
 					searched for <span id="searchTerm"></span>
 				</p>
 			</div>
 		</section>
 
-		<h1>tag List</h1>
+		<h1 class="title is-3">tag list</h1>
 		<div th:if="${#lists.isEmpty(wantedTags)}">
 			<p>No tags found.</p>
 		</div>
 
 		<div th:unless="${#lists.isEmpty(wantedTags)}">
-			<h3>tags:</h3>
+			<h2 class="title is-5">tags found:</h2>
 			<ul>
-				<li class="tag is-large" th:each="tag : ${wantedTags}">
-				<a th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}" target="_blank" rel="noopener noreferrer">
-					<h4 th:text="${tag.tagText}"></h4> <!-- <p th:text="${tag.zettel}"></p> -->
-					<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
-				</li>
+				<li class="tag is-large" th:each="tag : ${wantedTags}"><a
+					th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
+					target="_blank" rel="noopener noreferrer">
+						<h4 th:text="${tag.tagText}"></h4> <!-- <p th:text="${tag.zettel}"></p> -->
+						<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> --></li>
 			</ul>
 		</div>
 
@@ -53,23 +54,26 @@
 				<tbody>
 					<tr th:each="tag : ${wantedTags}">
 						<td><span class="tag is-medium" th:text="${tag.tagText}">
-				<a th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}" target="_blank" rel="noopener noreferrer">
+								<a
+								th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
+								target="_blank" rel="noopener noreferrer">
 						</span></td>
 
-						<td th:each="zettel : ${tag.zettels}">
-						<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
-							target="_blank" rel="noopener noreferrer"> <span th:text="${zettel.topic}"></span></td>
+						<td th:each="zettel : ${tag.zettels}"><a
+							th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+							target="_blank" rel="noopener noreferrer"> <span
+								th:text="${zettel.topic}"></span></td>
 
 					</tr>
 				</tbody>
 			</table>
 		</div>
-<br>
-	    <footer  class="column is-narrow">
-        <p>&copy; 2023-2024 Meine Firma. Alle Rechte vorbehalten.</p>
-    </footer>	
-    </div>
-	<script src="/js/common.js"></script>
+		<br>
+		<footer class="column is-narrow">
+			<p>&copy; 2023-2024 Meine Firma. Alle Rechte vorbehalten.</p>
+		</footer>
+	</div>
+
 </body>
 
 </html>

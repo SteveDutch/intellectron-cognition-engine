@@ -51,7 +51,7 @@ public class AuthorServiceTest {
         when(authorRepo.save(author)).thenReturn(author);
 
         // Act
-        Author savedAuthor = authorService.saveAuthorIfUnknown(author);
+        Author savedAuthor = authorService.saveAuthor(author);
 
         // Assert
         verify(authorRepo, times(1)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
@@ -66,7 +66,7 @@ public class AuthorServiceTest {
         when(authorRepo.findByAuthorFirstNameAndAuthorFamilyName("John", "Doe")).thenReturn(author);
 
         // Act
-        Author savedAuthor = authorService.saveAuthorIfUnknown(author);
+        Author savedAuthor = authorService.saveAuthor(author);
 
         // Assert
         verify(authorRepo, times(1)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
@@ -92,7 +92,7 @@ public class AuthorServiceTest {
 
         // Assert
         verify(searchService, times(1)).findByText("Sample text");
-        verify(authorRepo, times(2)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
+        verify(authorRepo, times(3)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
         verify(authorRepo, times(2)).save(author);
         verify(textService, times(1)).saveTextWithAuthor(tekst, author);
         assertEquals(author, savedAuthor);
@@ -109,14 +109,13 @@ public class AuthorServiceTest {
 
         when(searchService.findByText("Sample text")).thenReturn(tekst);
         when(authorRepo.findByAuthorFirstNameAndAuthorFamilyName("John", "Doe")).thenReturn(author);
-        when(authorRepo.save(author)).thenReturn(author);
 
         // Act
         Author savedAuthor = authorService.saveAuthorWithText(author, tekst);
 
         // Assert
         verify(searchService, times(1)).findByText("Sample text");
-        verify(authorRepo, times(1)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
+        verify(authorRepo, times(2)).findByAuthorFirstNameAndAuthorFamilyName("John", "Doe");
         verify(textService, times(1)).saveTextWithAuthor(tekst, author);
         assertEquals(author, savedAuthor);
     }
