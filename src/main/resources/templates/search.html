@@ -28,19 +28,19 @@
 		<!--         TopicSuche -->
 		<form th:action="@{/search/topic/}" method="get">
 			<input type="text" name="topicFragment" placeholder="Topic eingeben">
-			<button type="submit">Suchen</button>
+			<button class="button is-small is-warning" type="submit">Suchen</button>
 		</form>
 		<!-- NoteSuche -->
 		<form th:action="@{/search/note/}" method="get">
 			<input type="text" name="noteFragment"
 				placeholder="enter note (fragment)">
-			<button type="submit">Suchen</button>
+			<button class="button is-small is-warning" type="submit">Suchen</button>
 		</form>
 		<!-- TextSuche -->
 		<form th:action="@{/search/text/}" method="get">
 			<input type="text" name="textFragment"
 				placeholder="enter text (fragment)">
-			<button type="submit">Suchen</button>
+			<button class="button is-small is-warning" type="submit">Suchen</button>
 		</form>
 	</div>
 	<hr />
@@ -48,7 +48,7 @@
 	<h2 class="title is-2">Search a Tag</h2>
 	<form th:action="@{/search/tag/}" method="get">
 		<input type="text" name="tagFragment" placeholder="Tag eingeben">
-		<button type="submit">Suchen</button>
+		<button class="button is-small is-warning" type="submit">Suchen</button>
 	</form>
 	<hr />
 	<h2 class="title is-2">Search an Author</h2>
@@ -56,7 +56,7 @@
 		<form th:action="@{/search/author/}" method="get">
 			<label for="author">Author:</label> <input type="text"
 				name="lastName" placeholder="enter Author's family name" />
-			<button type="submit">Search</button>
+			<button class="button is-small is-warning" type="submit">Search</button>
 			<br />
 		</form>
 	</div>
@@ -66,7 +66,7 @@
 		<form th:action="@{/search/text4tekst/}" method="get">
 			<input type="text" name="textFragment"
 				placeholder="enter text (fragment)">
-			<button type="submit">Suchen</button>
+			<button class="button is-small is-warning" type="submit">Suchen</button>
 		</form>
 
 	</div>
