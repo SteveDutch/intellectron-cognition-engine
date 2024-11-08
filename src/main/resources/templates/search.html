@@ -1,18 +1,41 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/search.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
-	<title>Fabulous Intellectron Search Page</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-	<link rel="stylesheet" href="/css/search.css" />
-	<script type="text/javascript" src="/js/search.js" defer></script>
-	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Fabulous Intellectron Search Page</title>
+<meta charset="UTF-8" />
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1.0"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/bulma.css"
+/>
+<link
+	rel="stylesheet"
+	href="/css/search.css"
+/>
+<script
+	type="text/javascript"
+	src="/js/search.js"
+	defer
+></script>
+<link
+	rel="icon"
+	type="image/x-icon"
+	href="/favicon.ico"
+>
 </head>
 
 <body>
+	<nav th:replace="fragments/common :: navbar"></nav>
+
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
 			<p class="title is-1 has-text-centered">The Fabulous Intellectron
@@ -26,47 +49,103 @@
 	<div>
 
 		<!--         TopicSuche -->
-		<form th:action="@{/search/topic/}" method="get">
-			<input type="text" name="topicFragment" placeholder="Topic eingeben">
-			<button class="button is-small is-warning" type="submit">Suchen</button>
+		<form
+			th:action="@{/search/topic/}"
+			method="get"
+		>
+			<input
+				type="text"
+				name="topicFragment"
+				placeholder="Topic eingeben"
+			>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Suchen</button>
 		</form>
 		<!-- NoteSuche -->
-		<form th:action="@{/search/note/}" method="get">
-			<input type="text" name="noteFragment"
-				placeholder="enter note (fragment)">
-			<button class="button is-small is-warning" type="submit">Suchen</button>
+		<form
+			th:action="@{/search/note/}"
+			method="get"
+		>
+			<input
+				type="text"
+				name="noteFragment"
+				placeholder="enter note (fragment)"
+			>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Suchen</button>
 		</form>
 		<!-- TextSuche -->
-		<form th:action="@{/search/text/}" method="get">
-			<input type="text" name="textFragment"
-				placeholder="enter text (fragment)">
-			<button class="button is-small is-warning" type="submit">Suchen</button>
+		<form
+			th:action="@{/search/text/}"
+			method="get"
+		>
+			<input
+				type="text"
+				name="textFragment"
+				placeholder="enter text (fragment)"
+			>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Suchen</button>
 		</form>
 	</div>
 	<hr />
 	<!--         Tagsuche -->
 	<h2 class="title is-2">Search a Tag</h2>
-	<form th:action="@{/search/tag/}" method="get">
-		<input type="text" name="tagFragment" placeholder="Tag eingeben">
-		<button class="button is-small is-warning" type="submit">Suchen</button>
+	<form
+		th:action="@{/search/tag/}"
+		method="get"
+	>
+		<input
+			type="text"
+			name="tagFragment"
+			placeholder="Tag eingeben"
+		>
+		<button
+			class="button is-small is-warning"
+			type="submit"
+		>Suchen</button>
 	</form>
 	<hr />
 	<h2 class="title is-2">Search an Author</h2>
 	<div>
-		<form th:action="@{/search/author/}" method="get">
-			<label for="author">Author:</label> <input type="text"
-				name="lastName" placeholder="enter Author's family name" />
-			<button class="button is-small is-warning" type="submit">Search</button>
+		<form
+			th:action="@{/search/author/}"
+			method="get"
+		>
+			<label for="author">Author:</label> <input
+				type="text"
+				name="lastName"
+				placeholder="enter Author's family name"
+			/>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Search</button>
 			<br />
 		</form>
 	</div>
 	<hr />
 	<h2 class="title is-2">Search a Text</h2>
 	<div>
-		<form th:action="@{/search/text4tekst/}" method="get">
-			<input type="text" name="textFragment"
-				placeholder="enter text (fragment)">
-			<button class="button is-small is-warning" type="submit">Suchen</button>
+		<form
+			th:action="@{/search/text4tekst/}"
+			method="get"
+		>
+			<input
+				type="text"
+				name="textFragment"
+				placeholder="enter text (fragment)"
+			>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Suchen</button>
 		</form>
 
 	</div>
@@ -85,7 +164,8 @@
 			<ul>
 				<li th:each="zettel : ${zettels}">
 					<!-- Display zettel details here --> <span
-					th:text="${zettel.topic}"></span> <!-- Add more zettel fields as needed -->
+					th:text="${zettel.topic}"
+				></span> <!-- Add more zettel fields as needed -->
 				</li>
 			</ul>
 		</div>

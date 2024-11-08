@@ -1,20 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
 <title>tag List, found by intellectron</title>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="preload" href="/css/bulma.css" as="style">
-<link rel="preload" href="/css/tags.css" as="style">
-<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<link rel="stylesheet" type="text/css" href="/css/tags.css" />
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1.0"
+/>
+<link
+	rel="preload"
+	href="/css/bulma.css"
+	as="style"
+>
+<link
+	rel="preload"
+	href="/css/tags.css"
+	as="style"
+>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/bulma.css"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/tags.css"
+/>
 <!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<script src="/js/common.js" defer></script>
+<link
+	rel="icon"
+	type="image/x-icon"
+	href="/favicon.ico"
+>
+<script
+	src="/js/common.js"
+	defer
+></script>
 </head>
 
 <body>
+	<nav th:replace="fragments/common :: navbar"></nav>
 	<div class="main-container">
 		<section class="hero is-small is-primary">
 			<div class="hero-body">
@@ -34,9 +64,14 @@
 		<div th:unless="${#lists.isEmpty(wantedTags)}">
 			<h2 class="title is-5">tags found:</h2>
 			<ul>
-				<li class="tag is-large" th:each="tag : ${wantedTags}"><a
+				<li
+					class="tag is-large"
+					th:each="tag : ${wantedTags}"
+				><a
 					th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
-					target="_blank" rel="noopener noreferrer">
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 						<h4 th:text="${tag.tagText}"></h4> <!-- <p th:text="${tag.zettel}"></p> -->
 						<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> --></li>
 			</ul>
@@ -53,16 +88,20 @@
 				</thead>
 				<tbody>
 					<tr th:each="tag : ${wantedTags}">
-						<td><span class="tag is-medium" th:text="${tag.tagText}">
-								<a
+						<td><span
+							class="tag is-medium"
+							th:text="${tag.tagText}"
+						> <a
 								th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
-								target="_blank" rel="noopener noreferrer">
-						</span></td>
+								target="_blank"
+								rel="noopener noreferrer"
+							></span></td>
 
 						<td th:each="zettel : ${tag.zettels}"><a
 							th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
-							target="_blank" rel="noopener noreferrer"> <span
-								th:text="${zettel.topic}"></span></td>
+							target="_blank"
+							rel="noopener noreferrer"
+						> <span th:text="${zettel.topic}"></span></td>
 
 					</tr>
 				</tbody>

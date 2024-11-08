@@ -1,75 +1,107 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
-    <title>Authors List, found by intellectron</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/css/bulma.min.css" />
-    <link rel="stylesheet" href="/css/authors.css" />
+<title>Authors List, found by intellectron</title>
+<meta charset="UTF-8" />
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1.0"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/bulma.min.css"
+/>
+<link
+	rel="stylesheet"
+	href="/css/authors.css"
+/>
 <!--     <link rel="preload" href="/css/bulma.min.css" as="style"> -->
 <!--     <link rel="preload" href="/css/authors.css" as="style"> -->
-    <!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
+<link
+	rel="icon"
+	type="image/x-icon"
+	href="/favicon.ico"
+>
 
- </head>
+</head>
 
 <body>
-    <section class="hero is-small is-primary">
-        <div class="hero-body">
-            <h1 class="title is-1 has-text-centered">your intellectron shows your Author
-                List</h1>
-            <p class="subtitle has-text-centered">
-                Search term: <span id="searchTerm"></span>
-            </p>
-        </div>
+	<nav th:replace="fragments/common :: navbar"></nav>
+	<section class="hero is-small is-primary">
+		<div class="hero-body">
+			<h1 class="title is-1 has-text-centered">your intellectron shows
+				your Author List</h1>
+			<p class="subtitle has-text-centered">
+				Search term: <span id="searchTerm"></span>
+			</p>
+		</div>
 
-        </div>
-    </section>
-    <h1 class=" title is-2">Author List</h1>
-    <div th:if="${#lists.isEmpty(authors)}">
-        <p>No authors found.</p>
-    </div>
+		</div>
+	</section>
+	<h1 class=" title is-2">Author List</h1>
+	<div th:if="${#lists.isEmpty(authors)}">
+		<p>No authors found.</p>
+	</div>
 
-    <div th:unless="${#lists.isEmpty(authors)}">
-       
-        <h3 class="title is-5">Authors:</h3>
-       <div class="content">
-        <ul>
-            <li th:each="author : ${authors}">
-                <h4 class="title is-6" th:text="${author.authorFamilyName}"></h4>
-                <p class="subtitle is-6" th:text="${author.authorFirstName}"></p>
-                <!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
-            </li>
-        </ul>
-        </div>
-    </div>
+	<div th:unless="${#lists.isEmpty(authors)}">
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>First Name</th>
-                    <th>Titel</th>
-                    <th>Text</th>
-                    <th>Zettel/Topic</th>
+		<h3 class="title is-5">Authors:</h3>
+		<div class="content">
+			<ul>
+				<li th:each="author : ${authors}">
+					<h4
+						class="title is-6"
+						th:text="${author.authorFamilyName}"
+					></h4>
+					<p
+						class="subtitle is-6"
+						th:text="${author.authorFirstName}"
+					></p> <!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
+				</li>
+			</ul>
+		</div>
+	</div>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="author : ${authors}">
-                    <td><span th:text="${author.authorFamilyName}"></span></td>
-                    <td><span th:text="${author.authorFirstName}"></span></td>
-                    <!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
-                    <td th:each="tekst : ${author.texts}"><span th:text="${tekst.title}">Titel</span></td>
-                    <td th:each="tekst : ${author.texts}"><span th:text="${tekst.text}">Text</span></td>
-                    <td th:each="tekst : ${author.texts}"><span th:each="zettel : ${tekst.zettels}"
-                            th:text="${zettel.topic} + '///' ">Zettel-Thema</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <script src="/js/common.js" async></script>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>First Name</th>
+					<th>Titel</th>
+					<th>Text</th>
+					<th>Zettel/Topic</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="author : ${authors}">
+					<td><span th:text="${author.authorFamilyName}"></span></td>
+					<td><span th:text="${author.authorFirstName}"></span></td>
+					<!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
+					<td th:each="tekst : ${author.texts}"><span
+						th:text="${tekst.title}"
+					>Titel</span></td>
+					<td th:each="tekst : ${author.texts}"><span
+						th:text="${tekst.text}"
+					>Text</span></td>
+					<td th:each="tekst : ${author.texts}"><span
+						th:each="zettel : ${tekst.zettels}"
+						th:text="${zettel.topic} + '///' "
+					>Zettel-Thema</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script
+		src="/js/common.js"
+		async
+	></script>
 </body>
 </html>

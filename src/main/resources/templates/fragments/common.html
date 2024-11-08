@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- START NAV -->
+<nav th:fragment="navbar" class="navbar has-background-primary-00">
+    <div class="container ">
+        <div class="navbar-brand">
+            <a class="navbar-item brand-text has-text-warning" href="/">
+                intellectron
+            </a>
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item has-text-warning" href="/">
+                    Dashboard
+                </a>
+                <a class="navbar-item has-text-warning" href="/search">
+                    Search
+                </a>
+                <a class="navbar-item has-text-warning" href="/input">
+                    New Zettel
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+<!-- END NAV -->
+
+</html>
