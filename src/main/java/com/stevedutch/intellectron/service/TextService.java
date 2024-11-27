@@ -138,30 +138,17 @@ public class TextService {
 		return tekst;
 	}
 	
-	public Long countText() {
+	/**
+	 * returns the number of all text in the database
+	 * 
+	 * @return   number of all texts
+	 */
+	public Long countAllText() {
 		return textRepo.count();
 	}
-	/**
-	 * reduces the size of each Tekst.text element of a list of Tekst to chosen length
-	 * 
-	 * @param tekster - List of tekst objects
-	 * @param reducedLength . number of reduced characters
-	 */
-	public void reduceTextStringListElements(List<Tekst> tekster, int reducedLength) {
-        tekster.forEach(x -> {
-            if (x.getText().length() > reducedLength) {
-                x.setText(x.getText().substring(0, reducedLength));
-            }
-        });
-    
-	}
 
-	public void reduceTitleStringListElements(List<Tekst> tekster, int reducedLength) {
-		tekster.forEach(x -> {
-			if (x.getTitle().length() > reducedLength) {
-				x.setTitle(x.getTitle().substring(0, reducedLength));
-			}
-		});
-	}
+
+
+
 
 }

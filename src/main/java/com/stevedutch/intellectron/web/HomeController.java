@@ -14,6 +14,7 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
@@ -30,6 +31,8 @@ public class HomeController {
 	private AuthorService authorService;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private TextManipulationService textManipulationService;
 
 	private static final int TITLE_STRING_LIMIT = 23;
 	private static final int TEXT_STRING_LIMIT = 55;
@@ -41,24 +44,19 @@ public class HomeController {
 	@GetMapping("/")
 	public String showHomePage(Model model) {
 
-		Long numberOfZettels = zettelService.countZettel();
-		Long numberOfTexts = textService.countText();
+		Long numberOfZettels = zettelService.countAllZettel();
+		Long numberOfTexts = textService.countAllText();
 		Long numberOfTags = tagService.countTags();
 		Long numberOfAuthors = authorService.countAuthors();
 
 		List<Zettel> zettels = searchService.findLast10Zettel();
-		reduceZettelStrings(zettels, TITLE_STRING_LIMIT);
-//		XXX ... brauche ich foch ga nicht, ich zeigged doch nur 4 oder? 
-//		List<Zettel> randomZettels = searchService.findRandomZettel(RANDOM_ZETTEL_NUMBER);
-//		zettelService.reduceTekstStringListElements(randomZettels, TITLE_STRING_LIMIT);
-//		zettelService.reduceNoteStringListElements(randomZettels, TITLE_STRING_LIMIT);
-//		zettelService.reduceTopicStringListElements(randomZettels, TITLE_STRING_LIMIT);
+		textManipulationService.reduceZettelStrings(zettels, TITLE_STRING_LIMIT);
 
 		List<Zettel> fourRandomZettels = searchService.findRandomZettel(RANDOM_ZETTEL_NUMBER);
-		reduceZettelStrings(fourRandomZettels, TITLE_STRING_LIMIT);
+		textManipulationService.reduceZettelStrings(fourRandomZettels, TITLE_STRING_LIMIT);
 
 		List<Tekst> fourRandomTexts = searchService.findRandomText(RANDOM_TEKST_NUMBER);
-		reduceTekstStrings(fourRandomTexts, TITLE_STRING_LIMIT, TEXT_STRING_LIMIT);
+		textManipulationService.reduceTekstStrings(fourRandomTexts, TITLE_STRING_LIMIT, TEXT_STRING_LIMIT);
 
 		List<Tag> fiveRandomTags = searchService.findRandomTag(RANDOM_TAG_NUMBER);
 
@@ -82,18 +80,6 @@ public class HomeController {
 	@GetMapping("/welcome")
 	public String redirectToHomePage() {
 		return "/welcome";
-	}
-
-	public void reduceTekstStrings(List<Tekst> fourRandomTexts, int titleCharacterLimit, int textCharacterLimit) {
-		textService.reduceTitleStringListElements(fourRandomTexts, titleCharacterLimit);
-		textService.reduceTextStringListElements(fourRandomTexts, textCharacterLimit);
-	}
-
-	// XXX ev. unterschiedlich Anzahl
-	public void reduceZettelStrings(List<Zettel> zettels, int numberOfCharacters) {
-		zettelService.reduceTekstStringListElements(zettels, numberOfCharacters);
-		zettelService.reduceNoteStringListElements(zettels, numberOfCharacters);
-		zettelService.reduceTopicStringListElements(zettels, numberOfCharacters);
 	}
 
 }

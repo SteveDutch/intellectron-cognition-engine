@@ -24,6 +24,7 @@ import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.SearchService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -35,6 +36,8 @@ public class InputController {
 	private ZettelService zettelService;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private TextManipulationService textManipulationService;
 
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
@@ -54,11 +57,11 @@ public class InputController {
 		List<Zettel> zettels = searchService.findLast10Zettel();
 		List<Zettel> randomZettels = searchService.findRandomZettel(10);
 		// TODO rename
-		zettelService.reduceTekstStringListElements(zettels, 220);
-		zettelService.reduceTekstStringListElements(randomZettels, 220);
+		textManipulationService.reduceTekstStringListElements(zettels, 220);
+		textManipulationService.reduceTekstStringListElements(randomZettels, 220);
 		// TODO rename
-		zettelService.reduceNoteStringListElements(zettels, 220);
-		zettelService.reduceNoteStringListElements(randomZettels, 220);
+		textManipulationService.reduceNoteStringListElements(zettels, 220);
+		textManipulationService.reduceNoteStringListElements(randomZettels, 220);
 
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);

@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ZettelService;
 
@@ -34,6 +35,8 @@ class HomeControllerTest {
     private AuthorService authorService;
     @Mock
     private SearchService searchService;
+    @Mock
+    private TextManipulationService textManipulationService;
 	
     @Mock
     private ModelMap model;
@@ -49,7 +52,7 @@ class HomeControllerTest {
 	void testShowHomePageJustCode() {
 		Model model = mock(Model.class);
 //		HomeController sut = new HomeController();
-		when(zettelService.countZettel()).thenReturn(1L);
+		when(zettelService.countAllZettel()).thenReturn(1L);
 		
 		String result = sut.showHomePage(model);
 		

@@ -45,112 +45,202 @@
 		</div>
 	</section>
 
-	<br>
-	<h2 class="title is-2">Search a Zettel</h2>
-	<div>
+ 
 
-		<!--         TopicSuche -->
-		<form
-			th:action="@{/search/topic/}"
-			method="get"
-		>
-			<input
-				type="text"
-				name="topicFragment"
-				placeholder="Topic eingeben"
-			>
-			<button
-				class="button is-small is-warning"
-				type="submit"
-			>Suchen</button>
-		</form>
-		<!-- NoteSuche -->
-		<form
-			th:action="@{/search/note/}"
-			method="get"
-		>
-			<input
-				type="text"
-				name="noteFragment"
-				placeholder="enter note (fragment)"
-			>
-			<button
-				class="button is-small is-warning"
-				type="submit"
-			>Suchen</button>
-		</form>
-		<!-- TextSuche -->
-		<form
-			th:action="@{/search/text/}"
-			method="get"
-		>
-			<input
-				type="text"
-				name="textFragment"
-				placeholder="enter text (fragment)"
-			>
-			<button
-				class="button is-small is-warning"
-				type="submit"
-			>Suchen</button>
-		</form>
-	</div>
-	<hr />
-	<!--         Tagsuche -->
-	<h2 class="title is-2">Search a Tag</h2>
-	<form
-		th:action="@{/search/tag/}"
-		method="get"
-	>
-		<input
-			type="text"
-			name="tagFragment"
-			placeholder="Tag eingeben"
-		>
-		<button
-			class="button is-small is-warning"
-			type="submit"
-		>Suchen</button>
-	</form>
-	<hr />
-	<h2 class="title is-2">Search an Author</h2>
-	<div>
-		<form
-			th:action="@{/search/author/}"
-			method="get"
-		>
-			<label for="author">Author:</label> <input
-				type="text"
-				name="lastName"
-				placeholder="enter Author's family name"
-			/>
-			<button
-				class="button is-small is-warning"
-				type="submit"
-			>Search</button>
-			<br />
-		</form>
-	</div>
-	<hr />
-	<h2 class="title is-2">Search a Text</h2>
-	<div>
-		<form
-			th:action="@{/search/text4tekst/}"
-			method="get"
-		>
-			<input
-				type="text"
-				name="textFragment"
-				placeholder="enter text (fragment)"
-			>
-			<button
-				class="button is-small is-warning"
-				type="submit"
-			>Suchen</button>
-		</form>
+	<section class="search">
+			<h2 class="title is-2 has-text-black" >Search a Zettel</h2><div>
 
-	</div>
+			<!--         TopicSuche -->
+			<form
+				th:action="@{/search/topic/}"
+				method="get"
+			>
+				<input
+					type="text"
+					name="topicFragment"
+					placeholder="Topic eingeben"
+				>
+				<button
+					class="button is-small is-warning"
+					type="submit"
+				>Suchen</button>
+			</form>
+			<!-- NoteSuche -->
+			<form
+				th:action="@{/search/note/}"
+				method="get"
+			>
+				<input
+					type="text"
+					name="noteFragment"
+					placeholder="enter note (fragment)"
+				>
+				<button
+					class="button is-small is-warning"
+					type="submit"
+				>Suchen</button>
+			</form>
+			<!-- TextSuche -->
+			<form
+				th:action="@{/search/text/}"
+				method="get"
+			>
+				<input
+					type="text"
+					name="textFragment"
+					placeholder="enter text (fragment)"
+				>
+				<button
+					class="button is-small is-warning"
+					type="submit"
+				>search Zettel via text (fragment)</button>
+			</form>
+		</div>
+		<!--         Tagsuche -->
+		<h2 class="title is-2 has-text-black">Search a Tag</h2>
+		<form
+			th:action="@{/search/tag/}"
+			method="get"
+		>
+			<input
+				type="text"
+				name="tagFragment"
+				placeholder="Tag eingeben"
+			>
+			<button
+				class="button is-small is-warning"
+				type="submit"
+			>Suchen</button>
+		</form>
+		<h2 class="title is-2 has-text-black">Search an Author</h2>
+		<div>
+			<form
+				th:action="@{/search/author/}"
+				method="get"
+			>
+				<label for="author">Author:</label> <input
+					type="text"
+					name="lastName"
+					placeholder="enter Author's family name"
+				/>
+				<button
+					class="button is-small is-warning"
+					type="submit"
+				>Search</button>
+				<br />
+			</form>
+		</div>
+		<h2 class="title is-2 has-text-black">Search a Text</h2>
+		<div>
+			<form
+				th:action="@{/search/text4tekst/}"
+				method="get"
+			>
+				<input
+					type="text"
+					name="textFragment"
+					placeholder="enter text (fragment)"
+				>
+				<button
+					class="button is-small is-warning"
+					type="submit"
+				>Suchen</button>
+			</form>
 
+		</div>
+	</section>
+	
+	<section class="show-last">
+	<h2 class="title is-2 has-text-black" > let your zettel inspire you:</h2>
+	<div class="columns">
+					<div class="column is-6">
+						<div class="card events-card">
+							<header class="card-header">
+								<p class="card-header-title">Last 10 Zettel</p>
+								<a
+									href="#"
+									class="card-header-icon"
+									aria-label="more options"
+								> <span class="icon"> <i
+										class="fa fa-angle-down"
+										aria-hidden="true"
+									></i>
+								</span>
+								</a>
+							</header>
+							<div class="card-table">
+								<div class="content">
+									<table class="table is-fullwidth is-striped">
+										<tbody>
+
+											<tr th:each="zettel : ${zettels}">
+												<td width="5%"><i class="fa fa-bell-o"></i></td>
+												<td
+													th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'"
+												>Anzeige vom Topic & erste Wörter der Notiz</td>
+												<td class="level-right"><a
+													class="button is-small is-primary"
+													th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+													target="_blank"
+												>Action</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+
+					<div class="column is-6">
+						<div class="columns is-multiline">
+							<div class="column is-12">
+								<div class="card">
+									<header class="card-header">
+										<p class="card-header-title">10 random Zettel </p>
+										<a
+											href="#"
+											class="card-header-icon"
+											aria-label="more options"
+										> <span class="icon"> <i
+												class="fa fa-angle-down"
+												aria-hidden="true"
+											></i>
+										</span>
+										</a>
+									</header>
+									<div class="card-table">
+										<div class="content">
+											<table class="table is-fullwidth is-striped">
+												<tbody>
+													<tr th:each="zettel : ${fourRandomZettels}">
+														<td width="5%"><i class="fa fa-bell-o"></i></td>
+														<td
+															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'"
+														>Anzeige vom Topic & erste Wörter der Notiz</td>
+														<td class="level-right"><a
+															class="button is-small is-primary"
+															th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+															target="_blank"
+														>Action</a></td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+
+
+						</div>
+					</div>
+				</div>
+	</section>
+	
 	<div th:if="${tag}">
 		<h2>
 			Search Results for Tag: <span th:text="${tag.tagText}"></span>

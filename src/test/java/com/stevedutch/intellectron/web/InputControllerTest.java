@@ -18,6 +18,7 @@ import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.service.SearchService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 class InputControllerTest {
@@ -28,6 +29,8 @@ class InputControllerTest {
 	private ZettelService zettelServiceMock;
 	@Mock
 	private SearchService searchServiceMock;
+	@Mock
+	private TextManipulationService textManipulationServiceMock;
 	@InjectMocks
 	private InputController sut = new InputController();
 	

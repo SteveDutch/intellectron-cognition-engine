@@ -19,3 +19,10 @@
         // Zeigen Sie eine Fehlermeldung im Frontend an
     });
  */
+
+	document.addEventListener('DOMContentLoaded', () => {
+	    const totalImages = 8;
+	    const randomNumber = Math.floor(Math.random() * totalImages) + 1;
+		console.log(randomNumber);
+	    document.querySelector("section.search").style.backgroundImage = `url('images/${randomNumber}.jpg')`;
+	});

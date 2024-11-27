@@ -3,7 +3,6 @@ package com.stevedutch.intellectron.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class ZettelService {
 
 	@Autowired
 	private ZettelRepository zettelRepo;
-
+	
 	@Lazy
 	@Autowired
 	private TagService tagService;
@@ -235,51 +234,7 @@ public class ZettelService {
 		return zettelRepo.save(zettel);
 	}
 
-	/**
-	 * reduces the size of each Tekst.text element of a list of Zettel to chosen
-	 * characters
-	 * 
-	 * @param zettels - List of zettel objects
-	 * @param int     - number of reduced characters
-	 * 
-	 */
-	public void reduceTekstStringListElements(List<Zettel> zettels, int reducedLength) {
-		zettels.forEach(x -> {
-			if (x.getTekst().getText().length() > reducedLength) {
-				x.getTekst().setText(x.getTekst().getText().substring(0, reducedLength));
-			}
-		});
-	}
-
-	/**
-	 * reduces the size of each zettel.topic element of a list of Zettel to chosen
-	 * number of characters
-	 * 
-	 * @param zettels - List of zettel objects
-	 * @param int     - number of reduced characters
-	 * 
-	 */
-	public void reduceNoteStringListElements(List<Zettel> zettels, int reducedLength) {
-		zettels.forEach(x -> {
-			if (x.getNote() != null) {
-				if (x.getNote().getNoteText().length() > reducedLength) {
-					x.getNote().setNoteText(x.getNote().getNoteText().substring(0, reducedLength));
-				}
-			}
-		});
-	}
-		
-		public void reduceTopicStringListElements(List<Zettel> zettels, int reducedLength) {
-			zettels.forEach(x -> {
-				if (x.getTopic() != null) {
-					if (x.getTopic().length() > reducedLength) {
-						x.setTopic(x.getTopic().substring(0, reducedLength));
-					}
-				}
-			});
-	}
-	
-	public Long countZettel() {
+	public Long countAllZettel() {
 		return zettelRepo.count();
 	}
 }

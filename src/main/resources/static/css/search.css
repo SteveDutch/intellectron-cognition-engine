@@ -11,3 +11,7 @@ body {
     font-weight: bold; /* Setzt die Schriftart auf Bold */
 }
 
+section.search {
+	background-image: url("../images/1.jpg");
+	background-size: cover;
+}
