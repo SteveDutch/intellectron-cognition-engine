@@ -15,3 +15,12 @@ section.search {
 	background-image: url("../images/1.jpg");
 	background-size: cover;
 }
+
+.thick-black-border {
+  border: 2px solid black;
+}
+
+.thick-black-border th,
+.thick-black-border td {
+  border: 22px solid black;
+}

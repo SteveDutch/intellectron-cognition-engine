@@ -216,7 +216,7 @@
 										<div class="content">
 											<table class="table is-fullwidth is-striped">
 												<tbody>
-													<tr th:each="zettel : ${fourRandomZettels}">
+													<tr th:each="zettel : ${randomZettels}">
 														<td width="5%"><i class="fa fa-bell-o"></i></td>
 														<td
 															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'"
@@ -261,6 +261,121 @@
 			</ul>
 		</div>
 	</div>
-</body>
+	
+<!-- 			<section class="show-detail"> -->
+<!-- 			<h2 class="title is-2 has-text-black" > inspiration in more detail</h2> -->
+		<!-- 					show last 10 zettels -->
+		<section class="show-last">
+	<h2 class="title is-2 has-text-black" > let your zettel inspire you in more detail:</h2>
+	</section>
+    <section th:replace="fragments/common :: last10-random10-table"></section>
 
-</html>
+<!-- 	<div> -->
+<!-- 		<table -->
+<!-- 			class="table is-bordered has-background-grey-lighter thick-black-border" -->
+<!-- 		> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 					<th>Signature</th> -->
+<!-- 					<th>Topic</th> -->
+<!-- 					<th>Note</th> -->
+<!-- 					<th>Text</th> -->
+<!-- 					<th>Tags</th> -->
+<!-- 					<th>References</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr th:if="${zettels.empty}"> -->
+<!-- 					<td colspan="2">No Zettel Available</td> -->
+<!-- 				</tr> -->
+<!-- 				<tr th:each="zettel : ${zettels}"> -->
+<!-- 					<td><a -->
+<!-- 						th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" -->
+<!-- 						target="_blank" -->
+<!-- 					><span -->
+<!-- 							class="showLast" -->
+<!-- 							th:text="${zettel.signature}" -->
+<!-- 						> signature </span></a></td> -->
+<!-- 					<td><span -->
+<!-- 						class="showLast" -->
+<!-- 						th:text="${zettel.topic}" -->
+<!-- 					> topic </span></td> -->
+<!-- 					<td><span -->
+<!-- 						class="showLast" -->
+<!-- 						th:if="${zettel.note!= null}" -->
+<!-- 						th:text="${zettel.note.noteText}" -->
+<!-- 					>note</span></td> -->
+<!-- 					<td><span -->
+<!-- 						class="showLast" -->
+<!-- 						th:text="${zettel.tekst.text}" -->
+<!-- 					></span></td> -->
+<!-- 					<td><span -->
+<!-- 						th:each="tag : ${zettel.tags}" -->
+<!-- 						th:text="${tag.tagText} + ' // ' " -->
+<!-- 					> topic </span></td> -->
+<!-- 					<td><span -->
+<!-- 						th:each="reference : ${zettel.references}" -->
+<!-- 						th:text="${reference.targetZettel} + ' // ' " -->
+<!-- 					></span></td> -->
+<!-- 				</tr> -->
+<!-- 			</tbody> -->
+<!-- 		</table> -->
+<!-- 	</div> -->
+	
+<!-- 	<section class="hero is-small is-danger"> -->
+<!-- 		<div class="hero-body"> -->
+<!-- 			<p class="title has-text-centered">10 random zettels</p> -->
+
+<!-- 		</div> -->
+<!-- 	</section> -->
+<!-- 	<!-- show 10 random zettels --> -->
+<!-- 	<div> -->
+<!-- 		<table -->
+<!-- 			class="table  is-bordered has-background-grey-lighter thick-black-border" -->
+<!-- 		> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 					<th>Signature</th> -->
+<!-- 					<th>Topic</th> -->
+<!-- 					<th>Tags</th> -->
+<!-- 					<th>Text</th> -->
+<!-- 					<th>References</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr th:if="${randomZettels.empty}"> -->
+<!-- 					<td colspan="2">No Zettel Available</td> -->
+<!-- 				</tr> -->
+<!-- 				<tr th:each="zettel : ${randomZettels}"> -->
+<!-- 					<td><a -->
+<!-- 						th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" -->
+<!-- 						target="_blank" -->
+<!-- 					> <span -->
+<!-- 							class="showRandom" -->
+<!-- 							th:text="${zettel.signature}" -->
+<!-- 						> signature </span></a></td> -->
+<!-- 					<td><span -->
+<!-- 						class="showRandom" -->
+<!-- 						th:text="${zettel.topic}" -->
+<!-- 					> topic </span></td> -->
+<!-- 					<td><span -->
+<!-- 						th:each="tag : ${zettel.tags}" -->
+<!-- 						th:text="${tag.tagText} + ' // ' " -->
+<!-- 					> topic </span></td> -->
+<!-- 					<td><span -->
+<!-- 						class="showRandom" -->
+<!-- 						th:text="${zettel.tekst.text}" -->
+<!-- 					></span></td> -->
+<!-- 					<td><span -->
+<!-- 						th:each="reference : ${zettel.references}" -->
+<!-- 						th:text="${reference.targetZettel} + ' // ' " -->
+<!-- 					></span></td> -->
+<!-- 				</tr> -->
+<!-- 			</tbody> -->
+<!-- 		</table> -->
+<!-- 	</div> -->
+	
+<!--     <section th:replace="fragments/common :: last10-random10-table"></section> -->
+	
+	
+</body>

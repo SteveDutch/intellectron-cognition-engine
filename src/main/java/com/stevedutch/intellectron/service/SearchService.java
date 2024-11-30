@@ -34,6 +34,7 @@ public class SearchService {
 	private ZettelRepository zettelRepo;
 	@Autowired
 	private TextRepository textRepo;
+	// XXX check this: repo-Zugriff außerhalb der betreffenden Entity-Serviceklasse?
 	@Autowired
 	private AuthorRepository authorRepo;
 	@Autowired

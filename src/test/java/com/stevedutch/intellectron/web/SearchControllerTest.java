@@ -29,6 +29,7 @@ import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +48,9 @@ public class SearchControllerTest {
     private ZettelService zettelService;
     
     @Mock
+    private TextManipulationService textManipulationService;
+    
+    @Mock
     private ModelMap model;
 
     @BeforeEach
@@ -58,7 +62,7 @@ public class SearchControllerTest {
 
     @Test
     public void testShowSearchPage() {
-        String result = searchController.showSearchPage();
+        String result = searchController.showSearchPage(model);
 
         assertThat(result).isEqualTo("/search");
         

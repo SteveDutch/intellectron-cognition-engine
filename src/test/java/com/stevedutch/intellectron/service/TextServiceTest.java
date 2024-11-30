@@ -22,7 +22,6 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.TextRepository;
-import com.stevedutch.intellectron.service.TextManipulationService;
 
 @ExtendWith(MockitoExtension.class)
 public class TextServiceTest {

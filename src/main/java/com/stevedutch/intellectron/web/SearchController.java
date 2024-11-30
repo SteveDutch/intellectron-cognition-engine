@@ -15,6 +15,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.service.SearchService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 
 @Controller
 public class SearchController {
@@ -23,9 +24,25 @@ public class SearchController {
 
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private TextManipulationService textManipulationService;
+	
+	private static final int TITLE_STRING_LIMIT = 23;
+	private static final int RANDOM_ZETTEL_NUMBER = 10;
+	
 
 	@GetMapping("/search")
-	public String showSearchPage() {
+	public String showSearchPage(ModelMap model) {
+		
+		List<Zettel> zettels = searchService.findLast10Zettel();
+		textManipulationService.reduceZettelStrings(zettels, TITLE_STRING_LIMIT);
+
+		List<Zettel> randomZettels = searchService.findRandomZettel(RANDOM_ZETTEL_NUMBER);
+		textManipulationService.reduceZettelStrings(randomZettels, TITLE_STRING_LIMIT);
+		
+		
+		model.put("zettels", zettels);
+		model.put("randomZettels", randomZettels);
 		return "/search";
 	}
 	
