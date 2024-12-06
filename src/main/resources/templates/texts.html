@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html
+	class="has-navbar-fixed-top"
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+<meta charset="utf-8">
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1"
+>
+<link
+	rel="shortcut icon"
+	href="/favicon.ico"
+	type="image/x-icon"
+>
+<link
+	rel="icon"
+	type="image/x-icon"
+	href="/favicon.ico"
+>
+<title>the fabulous text search results page</title>
+<link
+	rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	crossorigin="anonymous"
+>
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans"
+	rel="stylesheet"
+	crossorigin="anonymous"
+>
+<!-- Bulma Version 1-->
+<!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"
+></script>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/bulma.css"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/hero.css"
+>
+<link
+	rel="stylesheet"
+	href="/css/modal-fx.min.css"
+	crossorigin="anonymous"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="/css/results.css"
+>
+<script
+	src="/js/common.js"
+	defer
+></script>
+</head>
+<body>
+	<nav th:replace="fragments/common :: navbar"></nav>
+	<section class="hero is-info is-small">
+		<div class="hero-body">
+			<div class="container has-text-centered">
+				<p class="title">your intellectron shows
+				your Text List</p>
+				<p class="subtitle">
+					Search term: <span id="searchTerm"></span> </p>
+			</div>
+		</div>
+	</section>
+<div
+			th:if="${texts}"
+			class="columns is-multiline"
+		>
+			<div
+				class="card is-shady column is-one-half "
+				th:each="text : ${texts}"
+			>
+				<div class="card-image">
+					<figure class="image is-4by3">
+						<img
+							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+							alt="Placeholder image"
+						>
+					</figure>
+				</div>
+				<div class="card-content">
+					<div class="content">
+						<h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
+						<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+						<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
+						<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+
+						<button
+							class="button is-black js-modal-trigger"
+							data-target="modal-example"
+						>
+							<!-- th:data-zettel-id="${zettel.zettelId}"> -->
+							Open Text
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</body>
+		</html>

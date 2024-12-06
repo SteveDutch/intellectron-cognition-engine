@@ -112,7 +112,7 @@ public class SearchControllerTest {
         when(searchService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
 
         // Act
-        String viewName = searchController.searchBytopicFragment(topicFragment, model);
+        String viewName = searchController.searchZettelBytopicFragment(topicFragment, model);
 
         // Assert
         assertEquals(viewName, "/results" );

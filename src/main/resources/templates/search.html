@@ -118,7 +118,7 @@
 				th:action="@{/search/author/}"
 				method="get"
 			>
-				<label for="author">Author:</label> <input
+				<input
 					type="text"
 					name="lastName"
 					placeholder="enter Author's family name"
@@ -176,7 +176,7 @@
 											<tr th:each="zettel : ${zettels}">
 												<td width="5%"><i class="fa fa-bell-o"></i></td>
 												<td
-													th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'"
+													th:text="${zettel.topic} + ' ( . . .)  : ' + ${zettel.note.noteText} + ' (. . .)'"
 												>Anzeige vom Topic & erste Wörter der Notiz</td>
 												<td class="level-right"><a
 													class="button is-small is-primary"
@@ -219,7 +219,7 @@
 													<tr th:each="zettel : ${randomZettels}">
 														<td width="5%"><i class="fa fa-bell-o"></i></td>
 														<td
-															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'"
+															th:text="${zettel.topic} + ' ( . . .)  : ' + ${zettel.note.noteText} + ' (. . .)'"
 														>Anzeige vom Topic & erste Wörter der Notiz</td>
 														<td class="level-right"><a
 															class="button is-small is-primary"

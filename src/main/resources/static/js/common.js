@@ -16,6 +16,24 @@ if (searchTerm) {
 }
 // document.getElementById('searchTerm').textContent = getValueAfterEquals(url);
  
+	function getValueBeforeEquals(url) {
+		try {
+			const pathname = new URL(url).pathname;
+			const segments = pathname.split('/').filter(Boolean);
+			if (segments[1]) {
+				return segments[1];
+			}
+		} catch (e) {
+			console.error('Error while parsing URL:', e);
+		}
+	}
+	
+		let searchedVia = document.getElementById('searchedVia');
+		if (searchedVia) {
+			searchedVia.textContent = getValueBeforeEquals(url);
+		} else {
+			console.log("Element with ID 'searchedVia' not found. Probably no result page shown");
+		}
 
 document.getElementById('addTagButton')?.addEventListener('click', function () {
     let tagsContainer = document.getElementById('tagsContainer');
