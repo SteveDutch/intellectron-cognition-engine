@@ -11,12 +11,27 @@ import com.stevedutch.intellectron.domain.Zettel;
 @Service
 public class TextManipulationService {
 
+	/**
+	 *reduces the string of title & text of all elements of a list of tekst to the chosen number of characters
+	 *
+	 * @param texts
+	 * @param titleCharacterLimit
+	 * @param textCharacterLimit
+	 */
 	public void reduceTekstStrings(List<Tekst> texts, int titleCharacterLimit, int textCharacterLimit) {
 		reduceTitleStringListElements(texts, titleCharacterLimit);
 		reduceTextStringListElements(texts, textCharacterLimit);
 	}
 
 	// XXX ev. unterschiedliche Anzahl
+	/**
+	 * reduces the string size of zettel.Tekst.text, zettel.note, zettel.topic of  all elements of a list of zettel to chosen number
+	 * of characters
+	 * 
+	 * @param zettels            - List of zettel objects
+	 * @param numberOfCharacters - number of reduced characters
+	 * 
+	 */
 	public void reduceZettelStrings(List<Zettel> zettels, int numberOfCharacters) {
 		reduceTekstStringListElements(zettels, numberOfCharacters);
 		reduceNoteStringListElements(zettels, numberOfCharacters);

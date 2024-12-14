@@ -67,16 +67,28 @@
 		</div>
 		<div>
 			<label for="tags">Tags: </label><br />
-			<div id="tagsContainer">
+			<div id="tagsContainer" class="tags">
 				<!-- 				 Tags will be added here -->
 				<div th:each="tag, status : ${tags}">
-					<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'" th:value="${tag.tagText}" />
-					<button class="button is-small is-warning" type="button" onclick="this.parentNode.remove()">rydde ut
-						Tag</button>
+					<input
+						type="text"
+						th:id="'tag' + ${status.index}"
+						th:name="'tags'"
+						th:value="${tag.tagText}"
+					/>
+					<button
+						class="button is-small is-warning"
+						type="button"
+						onclick="this.parentNode.remove()"
+					>rydde ut Tag</button>
 				</div>
 
 			</div>
-			<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
+			<button
+				class="button is-small is-warning"
+				id="addTagButton"
+				type="button"
+			>Add Tag</button>
 		</div>
 		<hr />
 
