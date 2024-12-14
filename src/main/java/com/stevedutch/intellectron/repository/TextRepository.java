@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.stevedutch.intellectron.domain.Tekst;
@@ -13,9 +14,18 @@ public interface TextRepository extends JpaRepository<Tekst, Long>{
 	
 	public Tekst findByText(String text);
 	
-	@Query("SELECT tekst FROM Tekst tekst WHERE tekst.text LIKE %:searchTerm%")
-	public List<Tekst> findTekstByTextFragment(String searchTerm);
+	// Native query used for performance and simplicity during refactoring
+	// XXX: Consider introducing DTO in future iterations if needed
+	@Query(value = "SELECT text_id, SUBSTRING(tekst, 1, :maxLength) as tekst, title, tekstdato, source " +
+            "FROM texts " +
+            "WHERE tekst LIKE CONCAT('%', :searchTerm, '%')", 
+    nativeQuery = true)
+	public List<Tekst> findTruncatedTekstByTextFragment(String searchTerm, @Param("maxLength") int maxLength);
 
+//	@Query(value = "SELECT SUBSTRING(text, 1, :maxLength) FROM tekst WHERE text LIKE %:searchTerm%", nativeQuery = true)
+//	List<String> findTruncatedTekstByTextFragment(@Param("searchTerm") String searchTerm, @Param("maxLength") int maxLength);
+//	
+	
 	@Query("SELECT tekst FROM Tekst tekst WHERE tekst.id = (SELECT FLOOR(MAX(tekst.id) * RAND()) FROM Tekst tekst) ORDER BY tekst.id LIMIT 1")
 	public Tekst findOneRandomTekst();
 

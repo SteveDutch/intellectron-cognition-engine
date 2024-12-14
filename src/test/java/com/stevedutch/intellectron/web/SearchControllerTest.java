@@ -91,12 +91,12 @@ public class SearchControllerTest {
         Tekst tekst = new Tekst(); 
         expectedTexts.add(tekst);
 
-        when(searchService.findTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString())).thenReturn(expectedTexts);
 
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
 
         assertThat(viewName).isEqualTo("/results");
-        verify(searchService).findTekstByTextFragment(textFragment);
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment);
         verify(model, times(1)).addAttribute(eq("textFragment"), eq(textFragment));
         verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
     }
@@ -112,7 +112,7 @@ public class SearchControllerTest {
         when(searchService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
 
         // Act
-        String viewName = searchController.searchZettelBytopicFragment(topicFragment, model);
+        String viewName = searchController.searchBytopicFragment(topicFragment, model);
 
         // Assert
         assertEquals(viewName, "/results" );
@@ -168,14 +168,14 @@ public class SearchControllerTest {
         List<Tekst> expectedTexts = new ArrayList<>();
         expectedTexts.add(new Tekst("Example text"));
 
-        when(searchService.findTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString())).thenReturn(expectedTexts);
 
         // Act
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
 
         // Assert
         assertEquals("/results", viewName);
-        verify(searchService).findTekstByTextFragment(textFragment);
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment);
         verify(model, times(1)).addAttribute("textFragment", textFragment);
         verify(model, times(1)).addAttribute("texts", expectedTexts);
     }

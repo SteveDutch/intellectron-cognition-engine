@@ -29,6 +29,7 @@ public class SearchController {
 	
 	private static final int TITLE_STRING_LIMIT = 23;
 	private static final int RANDOM_ZETTEL_NUMBER = 10;
+	private static final int TRUNCATED_TEXT_LIMIT = 555;
 	
 
 	@GetMapping("/search")
@@ -109,7 +110,8 @@ public class SearchController {
 	@GetMapping("/search/text4tekst/")
 	public String searchTextByTextFragment(@RequestParam String textFragment, ModelMap model) {
 		LOG.info("\n got textFragment = " + textFragment);
-		List<Tekst> texts = searchService.findTekstByTextFragment(textFragment);
+		List<Tekst> texts = searchService.findTruncatedTekstByTextFragment(textFragment, TRUNCATED_TEXT_LIMIT);
+		// TODO tekst not found exception window o.ä.
 		if (texts == null) {
 			LOG.info("\n NO TEKST FOUND");
 		} else {

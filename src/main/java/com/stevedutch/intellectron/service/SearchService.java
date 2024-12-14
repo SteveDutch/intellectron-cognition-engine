@@ -129,10 +129,10 @@ public class SearchService {
 		return textRepo.findByText(text);
 	}
 
-	public List<Tekst> findTekstByTextFragment(String textFragment) {
+	public List<Tekst> findTruncatedTekstByTextFragment(String textFragment, int maxLength) {
 	
 		validateSearchString(textFragment);
-		List<Tekst> result = textRepo.findTekstByTextFragment(textFragment);
+		List<Tekst> result = textRepo.findTruncatedTekstByTextFragment(textFragment,  maxLength);
 		return result;
 	}
 
