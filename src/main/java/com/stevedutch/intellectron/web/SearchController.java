@@ -117,7 +117,7 @@ public class SearchController {
 		}	
 		model.addAttribute("textFragment",textFragment);
 		model.addAttribute("texts", texts);
-		return "/results";
+		return "/texts";
 		}
 	
 	@GetMapping("/search/author/")
