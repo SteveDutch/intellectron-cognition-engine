@@ -22,11 +22,21 @@ public interface TextRepository extends JpaRepository<Tekst, Long>{
     nativeQuery = true)
 	public List<Tekst> findTruncatedTekstByTextFragment(String searchTerm, @Param("maxLength") int maxLength);
 
+	
+	
+	@Query(value = "SELECT text_id, SUBSTRING(tekst, 1, :maxLength) as tekst, title, tekstdato, source " + "FROM texts "
+			+ "WHERE texts.text_id LIKE :textId", nativeQuery = true)
+	public Tekst findTruncatedTextbyId(Long textId, int maxLength);
+
+	
 //	@Query(value = "SELECT SUBSTRING(text, 1, :maxLength) FROM tekst WHERE text LIKE %:searchTerm%", nativeQuery = true)
 //	List<String> findTruncatedTekstByTextFragment(@Param("searchTerm") String searchTerm, @Param("maxLength") int maxLength);
 //	
 	
+	
+	
 	@Query("SELECT tekst FROM Tekst tekst WHERE tekst.id = (SELECT FLOOR(MAX(tekst.id) * RAND()) FROM Tekst tekst) ORDER BY tekst.id LIMIT 1")
 	public Tekst findOneRandomTekst();
+
 
 }

@@ -5,10 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
@@ -29,7 +32,8 @@ public class SearchController {
 	
 	private static final int TITLE_STRING_LIMIT = 23;
 	private static final int RANDOM_ZETTEL_NUMBER = 10;
-	private static final int TRUNCATED_TEXT_LIMIT = 555;
+	private static final int TRUNCATED_TEXTS_LIMIT = 555;
+	private static final int ONE_TRUNCATED_TEXT_LIMIT = 1111;
 	
 
 	@GetMapping("/search")
@@ -110,7 +114,7 @@ public class SearchController {
 	@GetMapping("/search/text4tekst/")
 	public String searchTextByTextFragment(@RequestParam String textFragment, ModelMap model) {
 		LOG.info("\n got textFragment = " + textFragment);
-		List<Tekst> texts = searchService.findTruncatedTekstByTextFragment(textFragment, TRUNCATED_TEXT_LIMIT);
+		List<Tekst> texts = searchService.findTruncatedTekstByTextFragment(textFragment, TRUNCATED_TEXTS_LIMIT);
 		// TODO tekst not found exception window o.ä.
 		if (texts == null) {
 			LOG.info("\n NO TEKST FOUND");
@@ -121,6 +125,21 @@ public class SearchController {
 		model.addAttribute("texts", texts);
 		return "/texts";
 		}
+	
+
+@GetMapping("/search/text/truncatedText/{textId}")
+	public String showTruncatedText(ModelMap model, @PathVariable Long textId) {
+	LOG.info("Got textId = {}", textId);  // Better logging practice using placeholder
+		Tekst tekst = searchService.findTruncatedTekstById(textId, ONE_TRUNCATED_TEXT_LIMIT);
+		// XXX TODO tekst not found exception window o.ä
+		if (tekst == null) {
+			LOG.info("No text found for id: {}", textId);
+		} else {
+			LOG.info("\n  found " + tekst);
+		}
+		model.addAttribute("tekst", tekst);
+		  return "/texts";  
+	}
 	
 	@GetMapping("/search/author/")
 	public String searchAuthor(@RequestParam String lastName, ModelMap model) {

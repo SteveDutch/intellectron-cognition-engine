@@ -1,112 +1,107 @@
 <!DOCTYPE html>
-<html
-	class="has-navbar-fixed-top"
-	lang="en"
-	xmlns:th="http://www.thymeleaf.org"
->
+<html class="has-navbar-fixed-top" lang="en"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="utf-8">
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1"
->
-<link
-	rel="shortcut icon"
-	href="/favicon.ico"
-	type="image/x-icon"
->
-<link
-	rel="icon"
-	type="image/x-icon"
-	href="/favicon.ico"
->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>the fabulous text search results page</title>
-<link
-	rel="stylesheet"
+<link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	crossorigin="anonymous"
->
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans"
-	rel="stylesheet"
-	crossorigin="anonymous"
->
+	crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans"
+	rel="stylesheet" crossorigin="anonymous">
 <!-- Bulma Version 1-->
 <!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"
-></script>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/bulma.css"
-/>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/hero.css"
->
-<link
-	rel="stylesheet"
-	href="/css/modal-fx.min.css"
-	crossorigin="anonymous"
-/>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/results.css"
->
-<script
-	src="/js/common.js"
-	defer
-></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+<link rel="stylesheet" type="text/css" href="/css/hero.css">
+<link rel="stylesheet" href="/css/modal-fx.min.css"
+	crossorigin="anonymous" />
+<link rel="stylesheet" type="text/css" href="/css/results.css">
+<script src="/js/texts.js" defer></script>
+<script src="/js/common.js" defer></script>
 </head>
+
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
 			<div class="container has-text-centered">
-				<p class="title">your intellectron shows
-				your Text List</p>
+				<p class="title">your intellectron shows your Text List</p>
 				<p class="subtitle">
-					Search term: <span id="searchTerm"></span> </p>
+					Search term: <span id="searchTerm"></span>
+				</p>
 			</div>
 		</div>
 	</section>
-<div
-			th:if="${texts}"
-			class="columns is-multiline"
-		>
-			<div
-				class="card is-shady column is-one-half "
-				th:each="text : ${texts}"
-			>
-				<div class="card-image">
-					<figure class="image is-4by3">
-						<img
-							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
-							alt="Placeholder image"
-						>
-					</figure>
-				</div>
-				<div class="card-content">
-					<div class="content">
-						<h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
-						<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
-						<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
-						<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+	<div th:if="${texts}" class="columns is-multiline">
+		<div class="card is-shady column is-one-half "
+			th:each="text : ${texts}">
+			<div class="card-image">
+				<figure class="image is-4by3">
+					<img
+						src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+						alt="Placeholder image">
+				</figure>
+			</div>
+			<div class="card-content">
+				<div class="content">
+					<h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
+					<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+					<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
+					<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
 
-						<button
-							class="button is-black js-modal-trigger"
-							data-target="modal-example"
-						>
-							<!-- th:data-zettel-id="${zettel.zettelId}"> -->
-							Open Text
-						</button>
-					</div>
+					<button class="button is-black js-modal-trigger text-preview"
+						data-target="modal-example" th:data-text-id="${text.textId}">
+						Open Text</button>
+
 				</div>
 			</div>
 		</div>
-		</body>
-		</html>
+	</div>
+
+
+	<!--  
+	===============
+     MODALS
+    ===============  -->
+	<!-- modal: the main container -->
+	<div id="modal-example" class="modal">
+		<!-- modal-background: a transparent overlay that can act as a click target to close the modal -->
+		<div class="modal-background"></div>
+		<!-- modal-content: a horizontally and vertically centered container, 
+    with a maximum width of 640px, in which you can include any content -->
+<div th:fragment="modalContent" class="modal-content">
+    <div class="box">
+        <h2 class="title" th:text="${tekst.title}">Title</h2>
+        <p th:text="${tekst.text}">Content</p>
+    </div>
+</div>
+		<button class="modal-close is-large" aria-label="close"></button>
+	</div>
+
+	<!-- Mustache template -->
+	<script
+		id="modal-template"
+		type="text/template"
+	>
+  <div class="box">
+    <h2 class="title">{{text.title}}</h2>
+    <p>{{modalContent}}</p>
+    {{#hasImage}}
+    <p>{{text.text}}</p>
+    <figure class="image">
+      <img src="{{imageUrl}}" alt="{{imageAlt}}">
+    </figure>
+    {{/hasImage}}
+  </div>
+</script>
+	<!--  ===============
+     end of MODALS
+    ===============  -->
+</body>
+</html>

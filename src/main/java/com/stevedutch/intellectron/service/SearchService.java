@@ -136,6 +136,11 @@ public class SearchService {
 		return result;
 	}
 
+	public Tekst findTruncatedTekstById(Long textId, int maxLength) {
+		Tekst resultTekst = textRepo.findTruncatedTextbyId(textId, maxLength);
+		return resultTekst;
+	}
+
 	// XXX brauche ich irgendwann eine genaue Tagsuche?
 	public Tag findTagByText(String tagText) {
 		return tagRepo.findByTagText(tagText)
@@ -242,6 +247,7 @@ public class SearchService {
 		}
 		return new ArrayList<>(uniqueAuthors);
 	}
+
 
 	// XXX is this method ever used? NOPE
 //	public List<Reference> findAll() {

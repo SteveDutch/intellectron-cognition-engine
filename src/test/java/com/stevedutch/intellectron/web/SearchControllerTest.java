@@ -91,12 +91,12 @@ public class SearchControllerTest {
         Tekst tekst = new Tekst(); 
         expectedTexts.add(tekst);
 
-        when(searchService.findTruncatedTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString(), 9)).thenReturn(expectedTexts);
 
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
 
         assertThat(viewName).isEqualTo("/results");
-        verify(searchService).findTruncatedTekstByTextFragment(textFragment);
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment, 9);
         verify(model, times(1)).addAttribute(eq("textFragment"), eq(textFragment));
         verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
     }
@@ -168,14 +168,14 @@ public class SearchControllerTest {
         List<Tekst> expectedTexts = new ArrayList<>();
         expectedTexts.add(new Tekst("Example text"));
 
-        when(searchService.findTruncatedTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString(), 9)).thenReturn(expectedTexts);
 
         // Act
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
 
         // Assert
         assertEquals("/results", viewName);
-        verify(searchService).findTruncatedTekstByTextFragment(textFragment);
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment, 9);
         verify(model, times(1)).addAttribute("textFragment", textFragment);
         verify(model, times(1)).addAttribute("texts", expectedTexts);
     }
