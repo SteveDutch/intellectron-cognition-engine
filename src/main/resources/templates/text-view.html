@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>the fabulous text view page</title>
+<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+<link rel="stylesheet" type="text/css" href="/css/hero.css">
+<link rel="stylesheet" href="/css/modal-fx.min.css"
+	crossorigin="anonymous" />
+<link rel="stylesheet" type="text/css" href="/css/results.css">
+</head>
+
+</head>
+<body>
+	<nav th:replace="fragments/common :: navbar"></nav>
+        <div class="container">
+            <!-- Hauptinhalt mit optimaler Lesebreite -->
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <!-- Content-Klasse für optimierte Textdarstellung -->
+                    <div class="content">
+                        <h1 class="title" th:text="${tekst.title}">title</h1> 
+                        <p class="is-size-5 has-text-justified" th:text="${tekst.text}">
+                            text
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

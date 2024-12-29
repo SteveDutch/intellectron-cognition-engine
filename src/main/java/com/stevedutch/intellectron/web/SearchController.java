@@ -1,10 +1,13 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -127,18 +130,34 @@ public class SearchController {
 		}
 	
 
-@GetMapping("/search/text/truncatedText/{textId}")
-	public String showTruncatedText(ModelMap model, @PathVariable Long textId) {
-	LOG.info("Got textId = {}", textId);  // Better logging practice using placeholder
+	@GetMapping("/search/text/truncatedText/{textId}")
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> showTruncatedText(@PathVariable Long textId) {
+		LOG.info("Got textId = {}", textId);  // Better logging practice using placeholder
 		Tekst tekst = searchService.findTruncatedTekstById(textId, ONE_TRUNCATED_TEXT_LIMIT);
-		// XXX TODO tekst not found exception window o.ä
 		if (tekst == null) {
-			LOG.info("No text found for id: {}", textId);
-		} else {
-			LOG.info("\n  found " + tekst);
+			LOG.warn("No text found for id: {}", textId);
+			 return ResponseEntity.notFound().build();
 		}
-		model.addAttribute("tekst", tekst);
-		  return "/texts";  
+		LOG.info("\n  found " + tekst);
+	    Map<String, String> response = new HashMap<>();
+	    response.put("title", tekst.getTitle());
+	    response.put("content", tekst.getText());
+	    return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/search/text/{textId}")
+	public String showfullText(ModelMap model, @PathVariable Long textId) {
+		LOG.info("Got textId = {}", textId);  // Better logging practice using placeholder
+		Tekst tekst = searchService.findById(textId);
+		if (tekst == null) {
+			LOG.warn("No text found for id: {}", textId);
+			return "/";
+		}
+		LOG.info("\n  found " + tekst.getTextId() + tekst.getTitle());
+	    model.addAttribute("title", tekst.getTitle());
+	    model.addAttribute("tekst", tekst);
+	    return "/text-view";
 	}
 	
 	@GetMapping("/search/author/")
