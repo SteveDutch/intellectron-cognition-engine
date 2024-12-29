@@ -45,6 +45,9 @@ public class SearchService {
 	public List<Zettel> findZettelByNoteFragment(String noteFragment) {
 
 		validateSearchString(noteFragment);
+		if (zettelRepo.findZettelByNoteFragment(noteFragment).isEmpty()) {
+            throw new SearchTermNotFoundException("No Zettel found with note: " + noteFragment);
+            }
 		List<Zettel> result = zettelRepo.findZettelByNoteFragment(noteFragment);
 		return result;
 	}
@@ -52,6 +55,9 @@ public class SearchService {
 	public List<Zettel> findZettelByTextFragment(String textFragment) {
 
 		validateSearchString(textFragment);
+		if (zettelRepo.findZettelByTextFragment(textFragment).isEmpty()) {
+			throw new SearchTermNotFoundException("No Zettel found with text: " + textFragment);
+		}
 		List<Zettel> result = zettelRepo.findZettelByTextFragment(textFragment);
 		return result;
 	}
@@ -81,6 +87,9 @@ public class SearchService {
 	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
 	
 		validateSearchString(topicFragment);
+		if (zettelRepo.findZettelByTopicFragment(topicFragment).isEmpty()) {
+			throw new SearchTermNotFoundException("No Zettel found with topic: " + topicFragment);
+		}
 		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
 		return result;
 	}
@@ -148,7 +157,7 @@ public class SearchService {
 	}
 
 	/**
-	 * 
+	 * throws a SearchTermNotFoundException if no Tag is found with the search term
 	 * @param tagFragment - a String for the search term
 	 * @return - List<Tag> of all tags that contain the search term
 	 */
