@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html class="has-navbar-fixed-top">
 <head>
 	<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,15 +7,29 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>the fabulous text view page</title>
 <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<link rel="stylesheet" type="text/css" href="/css/hero.css">
-<link rel="stylesheet" href="/css/modal-fx.min.css"
-	crossorigin="anonymous" />
-<link rel="stylesheet" type="text/css" href="/css/results.css">
+<!-- <link rel="stylesheet" type="text/css" href="/css/hero.css"> -->
+<!-- <link rel="stylesheet" href="/css/modal-fx.min.css"	crossorigin="anonymous" /> -->
+<link rel="stylesheet" type="text/css" href="/css/welcome.css">
 </head>
 
-</head>
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
+	
+	<section class="hero is-info welcome is-small">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title has-text-centered" th:text="${tekst.title}">Hei, Scholar.</h1>
+								<p class="subtitle has-text-centered is-size-6">
+					full text view
+				</p>
+				<h2 class="subtitle has-text-centered">
+					Time to enlarge knowledge. Carpe diem. <a href="/input"  target="_blank"
+   rel="noopener noreferrer">Take a	note</a>
+				</h2>
+			</div>
+		</div>
+	</section>
+	
         <div class="container">
             <!-- Hauptinhalt mit optimaler Lesebreite -->
             <div class="columns is-centered">

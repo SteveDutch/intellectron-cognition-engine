@@ -60,7 +60,7 @@ async function loadTruncatedText(textId) {
         modalContent.innerHTML = `
             <h2 class="title">${data.title}</h2>
             <p>${data.content}</p>
-			            <p><a href="/search/text/${textId}">Mehr anzeigen</a></p>
+			            <p><a href="/search/text/${textId}"  target="_blank" rel="noopener noreferrer">Mehr anzeigen</a></p>
 						</div>
 								<button class="modal-close is-large" aria-label="close"></button>
 							</div>
