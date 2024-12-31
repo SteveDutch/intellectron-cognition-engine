@@ -128,7 +128,7 @@ public class SearchService {
 
 	public Tekst findById(Long textId) {
 		return textRepo.findById(textId)
-				.orElseThrow(() -> new NoSuchElementException("Tekst mit dieser ID inexistent"));
+				.orElseThrow(() -> new SearchTermNotFoundException("Tekst mit dieser ID inexistent " +"( " + textId + " )"));
 	
 	}
 	// TODO scheint so, als würde mit dem ganzen String gesucht. Was bei großen Werten? Hash oder so nutzen?
@@ -138,15 +138,28 @@ public class SearchService {
 		return textRepo.findByText(text);
 	}
 
+	/**
+	 * searches for a Tekst by the given fragment ,
+	 * 
+	 * @param textFragment the search term
+	 * @param maxLength the maximum length of the returned text  
+	 * @return List of Tekst 
+	 */
 	public List<Tekst> findTruncatedTekstByTextFragment(String textFragment, int maxLength) {
 	
 		validateSearchString(textFragment);
 		List<Tekst> result = textRepo.findTruncatedTekstByTextFragment(textFragment,  maxLength);
-		return result;
+		if (result.isEmpty()) {
+            throw new SearchTermNotFoundException("No Tekst found with text: " + textFragment);
+		}
+            return result;
 	}
 
 	public Tekst findTruncatedTekstById(Long textId, int maxLength) {
 		Tekst resultTekst = textRepo.findTruncatedTextbyId(textId, maxLength);
+		if (resultTekst == null) {
+			throw new SearchTermNotFoundException("No Tekst found with id: " + textId);
+		}
 		return resultTekst;
 	}
 
