@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const modalId = trigger.getAttribute('data-target');
       const zettelId = trigger.getAttribute('data-zettel-id');
       // const modal = document.getElementById(modalId);
-      console.log('Zettel ID:', zettelId); // Add this line for debugging 
+      console.log('Zettel ID:', zettelId);
 
       if (zettelId) {
         const modal = document.getElementById(modalId);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.add('is-active');
     document.body.classList.add('is-clipped');
 
-    console.log('Zettel ID (zumZwoten):', zettelId); // Add this line for debugging 
+    console.log('Zettel ID (zumZwoten):', zettelId);  
     fetch(`/modal-content/${zettelId}`)
       .then(response => response.json())
       .then(data => {

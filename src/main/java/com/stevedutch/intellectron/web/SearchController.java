@@ -118,12 +118,7 @@ public class SearchController {
 	public String searchTextByTextFragment(@RequestParam String textFragment, ModelMap model) {
 		LOG.info("\n got textFragment = " + textFragment);
 		List<Tekst> texts = searchService.findTruncatedTekstByTextFragment(textFragment, TRUNCATED_TEXTS_LIMIT);
-		// TODO tekst not found exception window o.ä.
-		if (texts == null) {
-			LOG.info("\n NO TEKST FOUND");
-		} else {
-			LOG.info("\n  found " + texts.size()+ " Texts: \n" + texts);
-		}	
+		LOG.info("\n  found " + texts.size()+ " Texts: \n" + texts);
 		model.addAttribute("textFragment",textFragment);
 		model.addAttribute("texts", texts);
 		return "/texts";
@@ -164,11 +159,7 @@ public class SearchController {
 	public String searchAuthor(@RequestParam String lastName, ModelMap model) {
 		LOG.info("\n got author name = " + lastName);
 		List<Author> authors = searchService.findAuthorByName(lastName);
-		if (authors == null) {
-			LOG.info("\n NO Author FOUND");
-		} else {
-			LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
-		}
+		LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
 
 		model.addAttribute("authors", authors);
 		return "/authors";

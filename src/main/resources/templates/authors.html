@@ -21,9 +21,6 @@
 	rel="stylesheet"
 	href="/css/authors.css"
 />
-<!--     <link rel="preload" href="/css/bulma.min.css" as="style"> -->
-<!--     <link rel="preload" href="/css/authors.css" as="style"> -->
-<!-- <script type="text/javascript" src="/js/author.js" defer></script> -->
 <link
 	rel="icon"
 	type="image/x-icon"
@@ -43,7 +40,6 @@
 			</p>
 		</div>
 
-		</div>
 	</section>
 	<h1 class=" title is-2">Author List</h1>
 	<div th:if="${#lists.isEmpty(authors)}">
@@ -70,7 +66,7 @@
 	</div>
 
 	<div>
-		<table>
+		<table class="table is-striped is-hoverable is-fullwidth">
 			<thead>
 				<tr>
 					<th>Name</th>

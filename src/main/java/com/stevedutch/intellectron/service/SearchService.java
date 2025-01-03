@@ -105,6 +105,7 @@ public class SearchService {
 	 * 
 	 * @param name String
 	 * @return List<Author>
+	 * @throws SearchTermNotFoundException if no author is found with the given name
 	 */
 	public List<Author> findAuthorByName(String name) {
 		validateSearchString(name);
@@ -112,6 +113,9 @@ public class SearchService {
 		String lastName = nameParts[nameParts.length - 1];
 		LOG.info("\n Now searching for author family name: " + lastName);
 		List<Author> result = findAuthorByLastNameLike(lastName);
+		if (result.isEmpty()) {
+            throw new SearchTermNotFoundException("No Author found with name: " + lastName);
+		}
 		return result;
 	}
 
@@ -125,7 +129,12 @@ public class SearchService {
 		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
 		return result;
 	}
-
+	/**
+	 * searches text by id
+	 * @param textId 
+	 * @return
+	 * @throws SearchTermNotFoundException if no tekst is found with the given id
+	 */
 	public Tekst findById(Long textId) {
 		return textRepo.findById(textId)
 				.orElseThrow(() -> new SearchTermNotFoundException("Tekst mit dieser ID inexistent " +"( " + textId + " )"));
@@ -139,11 +148,12 @@ public class SearchService {
 	}
 
 	/**
-	 * searches for a Tekst by the given fragment ,
+	 * searches for  Teksts by the given fragment, and truncates them to the given length
 	 * 
-	 * @param textFragment the search term
+	 * @param textFragment   the search term
 	 * @param maxLength the maximum length of the returned text  
-	 * @return List of Tekst 
+	 * @return List of Teksts 
+	 * @throws SearchTermNotFoundException if no tekst is found with the search term
 	 */
 	public List<Tekst> findTruncatedTekstByTextFragment(String textFragment, int maxLength) {
 	
@@ -154,7 +164,13 @@ public class SearchService {
 		}
             return result;
 	}
-
+	/**
+	 * searches for a Tekst by the Iand truncates it to the given length
+	 * @param textId
+	 * @param maxLength
+	 * @return Tekst
+	 * @throws SearchTermNotFoundException if no tekst is found with the given id
+	 */
 	public Tekst findTruncatedTekstById(Long textId, int maxLength) {
 		Tekst resultTekst = textRepo.findTruncatedTextbyId(textId, maxLength);
 		if (resultTekst == null) {

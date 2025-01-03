@@ -42,9 +42,8 @@ public class TextManipulationService {
 	 * reduces the size of each Tekst.text element of a list of Zettel to chosen
 	 * number of characters
 	 * 
-	 * @param zettels       - List of zettel objects
-	 * @param reducedLength TODO
-	 * @param int           - number of reduced characters
+	 * @param zettels  List of zettel objects
+	 * @param reducedLength  an int for the number of reduced characters
 	 * 
 	 */
 	public void reduceTekstStringListElements(List<Zettel> zettels, int reducedLength) {
