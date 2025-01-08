@@ -168,7 +168,7 @@ public class SearchControllerTest {
         List<Tekst> expectedTexts = new ArrayList<>();
         expectedTexts.add(new Tekst("Example text"));
 
-        when(searchService.findTruncatedTekstByTextFragment(anyString(), 9)).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString(), eq(9))).thenReturn(expectedTexts);
 
         // Act
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
@@ -186,14 +186,14 @@ public class SearchControllerTest {
         String lastName = "Smith";
         List<Author> expectedAuthors = new ArrayList<>();
         expectedAuthors.add(new Author("John", "Smith"));
-        when(searchService.findAuthorByName(lastName)).thenReturn(expectedAuthors);
+        when(searchService.findAuthorByNameWithTruncatedTexts(lastName, 22)).thenReturn(expectedAuthors);
 
         // Act
         String viewName = searchController.searchAuthor(lastName, model);
 
         // Assert
         assertEquals("/authors", viewName);
-        verify(searchService).findAuthorByName(lastName);
+        verify(searchService).findAuthorByNameWithTruncatedTexts(lastName, 22);
         verify(model, times(1)).addAttribute("authors", expectedAuthors);
     }
     
@@ -201,14 +201,14 @@ public class SearchControllerTest {
     public void testSearchAuthor_NoAuthorsFound() {
         // Arrange
         String lastName = "NonExistent";
-        when(searchService.findAuthorByName(lastName)).thenReturn(null);
+        when(searchService.findAuthorByNameWithTruncatedTexts(lastName, 555)).thenReturn(null);
 
         // Act
         String viewName = searchController.searchAuthor(lastName, model);
 
         // Assert
         assertEquals("/authors", viewName);
-        verify(searchService).findAuthorByName(lastName);
+        verify(searchService).findAuthorByNameWithTruncatedTexts(lastName, 22);
         verify(model, times(1)).addAttribute("authors", null);
     }
 }

@@ -158,7 +158,7 @@ public class SearchController {
 	@GetMapping("/search/author/")
 	public String searchAuthor(@RequestParam String lastName, ModelMap model) {
 		LOG.info("\n got author name = " + lastName);
-		List<Author> authors = searchService.findAuthorByName(lastName);
+		List<Author> authors = searchService.findAuthorByNameWithTruncatedTexts(lastName, TRUNCATED_TEXTS_LIMIT);
 		LOG.info("\n  found " + authors.size()+ " Authors: \n" + authors);
 
 		model.addAttribute("authors", authors);

@@ -104,10 +104,11 @@ public class SearchService {
 	 * family name to find authors with similar names.
 	 * 
 	 * @param name String
-	 * @return List<Author>
+	 * @param maxLength an int which determines the truncated length of the associated texts
+	 * @return List<Author> with truncated texts
 	 * @throws SearchTermNotFoundException if no author is found with the given name
 	 */
-	public List<Author> findAuthorByName(String name) {
+	public List<Author> findAuthorByNameWithTruncatedTexts(String name, int maxLength) {
 		validateSearchString(name);
 		String[] nameParts = name.split("\\s+");
 		String lastName = nameParts[nameParts.length - 1];
@@ -116,6 +117,13 @@ public class SearchService {
 		if (result.isEmpty()) {
             throw new SearchTermNotFoundException("No Author found with name: " + lastName);
 		}
+		result.forEach(author -> {
+			author.getTexts().forEach(text -> {
+				if (text.getText().length() > maxLength) {
+                    text.setText(text.getText().substring(0, maxLength) + " . . . ");
+                }
+			});
+		});
 		return result;
 	}
 

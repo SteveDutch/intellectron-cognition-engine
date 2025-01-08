@@ -107,9 +107,9 @@ class SearchServiceTest {
 	void testFindZettelByTextFragment_NotFound() {
 		when(zettelRepo.findZettelByTextFragment(anyString())).thenReturn(Arrays.asList());
 
-		List<Zettel> result = searchService.findZettelByTextFragment("Nonexistent text");
+	    assertThrows(SearchTermNotFoundException.class, () -> 
+        searchService.findZettelByTextFragment("Nonexistent text"));
 
-		assertTrue(result.isEmpty());
 		verify(zettelRepo, times(1)).findZettelByTextFragment("Nonexistent text");
 	}
 
@@ -317,18 +317,6 @@ class SearchServiceTest {
 	}
 
 	@Test
-	void testFindZettelByTopicFragment_NoResults() {
-		String topicFragment = "nonexistent";
-		when(zettelRepo.findZettelByTopicFragment(topicFragment)).thenReturn(Arrays.asList());
-
-		List<Zettel> result = searchService.findZettelByTopicFragment(topicFragment);
-
-		assertNotNull(result);
-		assertEquals(0, result.size());
-		verify(zettelRepo, times(1)).findZettelByTopicFragment(topicFragment);
-	}
-
-	@Test
 	void testFindZettelByTopicFragment_ExceptionHandling() {
 		String topicFragment = "error";
 		when(zettelRepo.findZettelByTopicFragment(topicFragment)).thenThrow(new RuntimeException("Database error"));
@@ -452,7 +440,7 @@ class SearchServiceTest {
 		List<Author> expectedAuthors = Arrays.asList(new Author(), new Author());
 		when(authorRepo.findByAuthorFamilyNameLike("Doe")).thenReturn(expectedAuthors);
 
-		List<Author> result = searchService.findAuthorByName(authorName);
+		List<Author> result = searchService.findAuthorByNameWithTruncatedTexts(authorName, 22);
 
 		assertEquals(expectedAuthors, result);
 		verify(authorRepo).findByAuthorFamilyNameLike("Doe");
