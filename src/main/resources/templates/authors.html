@@ -1,31 +1,15 @@
 <!DOCTYPE html>
-<html
-	class="has-navbar-fixed-top"
-	lang="en"
-	xmlns:th="http://www.thymeleaf.org"
->
+<html class="has-navbar-fixed-top" lang="en"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <title>Authors List, found by intellectron</title>
 <meta charset="UTF-8" />
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1.0"
-/>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/bulma.min.css"
-/>
-<link
-	rel="stylesheet"
-	href="/css/authors.css"
-/>
-<link
-	rel="icon"
-	type="image/x-icon"
-	href="/favicon.ico"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/bulma.min.css" />
+<link rel="stylesheet" href="/css/authors.css" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<script src="/js/common.js" defer></script>
 
 </head>
 
@@ -52,14 +36,9 @@
 		<div class="content">
 			<ul>
 				<li th:each="author : ${authors}">
-					<h4
-						class="title is-6"
-						th:text="${author.authorFamilyName}"
-					></h4>
-					<p
-						class="subtitle is-6"
-						th:text="${author.authorFirstName}"
-					></p> <!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
+					<h4 class="title is-6" th:text="${author.authorFamilyName}"></h4>
+					<p class="subtitle is-6" th:text="${author.authorFirstName}"></p>
+					<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
 				</li>
 			</ul>
 		</div>
@@ -83,22 +62,87 @@
 					<td><span th:text="${author.authorFirstName}"></span></td>
 					<!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
 					<td th:each="tekst : ${author.texts}"><span
-						th:text="${tekst.title}"
-					>Titel</span></td>
+						th:text="'texttitel = ' + ${tekst.title}">Titel</span></td>
 					<td th:each="tekst : ${author.texts}"><span
-						th:text="${tekst.text}"
-					>Text</span></td>
+						th:text=" 'text itself = ' + ${tekst.text}">Text</span></td>
 					<td th:each="tekst : ${author.texts}"><span
 						th:each="zettel : ${tekst.zettels}"
-						th:text="${zettel.topic} + '///' "
-					>Zettel-Thema</span></td>
+						th:text=" 'zettel = ' + ${zettel.topic} + '///' ">Zettel-Thema</span></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<script
-		src="/js/common.js"
-		async
-	></script>
+	<!-- cards -->
+	<div th:if="${authors}" class="columns is-multiline">
+		<div th:each="author : ${authors}">
+			<div th:each="tekst : ${author.texts}">
+				<div class="card is-shady column is-one-half ">
+
+
+
+					<!-- hier wahrschlich je tex eine Karte -->
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img
+								src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+								alt="Placeholder image">
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="content">
+							<h4
+								th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}">Platzhalter
+								für Autoenname</h4>
+							<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+							<h5 th:text="${tekst.title}">Platzhalter für tekst.title</h5>
+							<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+							<span th:text="${tekst.text}">Platzhalter für tekst</span>
+							<button class="button is-black js-modal-trigger text-preview"
+								data-target="modal-example" th:data-text-id="${tekst.textId}">
+								Open Text</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!--  
+	===============
+     MODALS
+    ===============  -->
+		<!-- modal: the main container -->
+		<div id="modal-example" class="modal">
+			<!-- modal-background: a transparent overlay that can act as a click target to close the modal -->
+			<div class="modal-background"></div>
+			<!-- modal-content: a horizontally and vertically centered container, 
+    with a maximum width of 640px, in which you can include any content -->
+			<div th:fragment="modalContent" class="modal-content">
+				<div class="box">
+					<h2 class="title">
+					<!-- <p th:text="${tekst.title}">Content</p></h2> -->
+				</div>
+			</div>
+			<button class="modal-close is-large" aria-label="close"></button>
+		</div>
+
+		<!-- Mustache template -->
+		<script id="modal-template" type="text/template">
+  <div class="box">
+    <h2 class="title">{{tekst.title}}</h2>
+    <p>{{modalContent}}</p>
+    {{#hasImage}}
+    <p>{{text.text}}</p>
+    <figure class="image">
+      <img src="{{imageUrl}}" alt="{{imageAlt}}">
+    </figure>
+    {{/hasImage}}
+  </div>
+</script>
+		<!--  ===============
+     end of MODALS
+    ===============  -->
+		<script src="/js/common.js" async></script>
 </body>
 </html>
