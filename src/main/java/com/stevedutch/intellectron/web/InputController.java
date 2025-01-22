@@ -92,14 +92,6 @@ public class InputController {
 		return "redirect:/zettel/" + zettelId;
 
 	}
-	// // XXX for historical & maybe learning reasons
-	// @GetMapping("/400")
-	// public String showErrorPage(RedirectAttributes attributes, Model model) {
-	// // This method is not strictly necessary if you're only using flash
-	// attributes, as Thymeleaf can access them directly.
-	// // However, it's useful if you need to add more attributes or perform
-	// additional logic.
-	// return "400";
-	// }
+
 
 }

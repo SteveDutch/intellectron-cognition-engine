@@ -35,8 +35,14 @@
                 <div class="column is-8">
                     <!-- Content-Klasse für optimierte Textdarstellung -->
                     <div class="content">
-                        <h1 class="title" th:text="${tekst.title}">title</h1> 
-                        <p class="is-size-5 has-text-justified" th:text="${tekst.text}">
+                        <p class="title is-1" th:text="${tekst.title}">title</p> 
+
+						<div class="subtitle is-4 has-text-right" th:each="author : ${tekst.associatedAuthors}" >
+							<p th:text="${author.authorFirstName} +' ' +  ${author.authorFamilyName}">author.authorFirstName">author</p>
+ 						</div>
+                       
+						
+						<p class="is-size-5 has-text-justified" th:text="${tekst.text}">
                             text
                         </p>
                     </div>
