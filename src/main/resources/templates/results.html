@@ -87,12 +87,13 @@
 		>
 			<div
 				class="card is-shady column is-one-half "
-				th:each="zettel : ${zettels}"
+				th:each="zettel, iterStat : ${zettels}"
 			>
 				<div class="card-image">
 					<figure class="image is-4by3">
 						<img
-							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+						th:with="imageNumber=${(iterStat.index + #dates.createNow().getTime()) *23 % 4 + 1}"
+						th:src="@{'/images/cards/' + ${imageNumber} + '.jpg'}"
 							alt="Placeholder image"
 						>
 					</figure>

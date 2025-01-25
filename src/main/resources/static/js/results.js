@@ -52,16 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Add a click event on buttons to open a specific modal WAR DOPPELT
-  // (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-  //   const modal = $trigger.dataset.target;
-  //   const $target = document.getElementById(modal);
-
-  //   $trigger.addEventListener('click', () => {
-  //     openModal($target);
-  //   });
-  // });
-
   // Add a click event on various child elements to close the parent modal
   (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
     const $target = $close.closest('.modal');
@@ -78,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
 document.querySelector('.js-modal-trigger').addEventListener('click', function () {
   var modalTemplate = document.getElementById('modal-template').innerHTML;
   // var modalContent = Mustache.render(modalTemplate, data);
