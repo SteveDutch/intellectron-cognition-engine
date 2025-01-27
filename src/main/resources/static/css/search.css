@@ -24,3 +24,8 @@ section.search {
 .thick-black-border td {
   border: 22px solid black;
 }
+
+::placeholder {
+    color: black; 
+    opacity: 1; 
+  }

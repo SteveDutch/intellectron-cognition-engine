@@ -33,7 +33,7 @@ public class SearchController {
 	@Autowired
 	private TextManipulationService textManipulationService;
 	
-	private static final int TITLE_STRING_LIMIT = 23;
+	private static final int TITLE_STRING_LIMIT = 42;
 	private static final int RANDOM_ZETTEL_NUMBER = 10;
 	private static final int TRUNCATED_TEXTS_LIMIT = 555;
 	private static final int ONE_TRUNCATED_TEXT_LIMIT = 1111;
