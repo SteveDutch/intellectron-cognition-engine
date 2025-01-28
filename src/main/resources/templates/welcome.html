@@ -5,8 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>welcome to intellectron</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-		crossorigin="anonymous">
+	<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous"> -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" crossorigin="anonymous">
 	<!-- Bulma Version 1-->
 	<!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" /> -->
@@ -147,14 +147,7 @@
 
 
 			<div class="column is-9">
-				<!-- <nav class="breadcrumb" aria-label="breadcrumbs">
-                    <ul>
-                        <li><a href="../">Bulma</a></li>
-                        <li><a href="../">Templates</a></li>
-                        <li><a href="../">Examples</a></li>
-                        <li class="is-active"><a href="#" aria-current="page">Admin</a></li>
-                    </ul>
-                </nav> -->
+
 
 				<section class="info-tiles">
 					<div class="tile is-ancestor has-text-centered">
@@ -162,17 +155,14 @@
 							<article class="tile is-child box">
 								<p class="title" th:text="${zettelNumber}">439k</p>
 								<p class="subtitle">
-									Zettel <br> (Klick = neue Seite mit 10 zufälligen & den
-									letzten 10, inkl. Suchfuktion dorten)
-								</p>
+									Zettel <br> </p>
 							</article>
 						</div>
 						<div class="tile is-parent">
 							<article class="tile is-child box">
 								<p class="title" th:text="${textsNumber}">59k</p>
 								<p class="subtitle">
-									Texts<br> (Klick = neue Seite mit 10 zufälligen & den
-									letzten 10)
+									Texts<br>  
 								</p>
 							</article>
 						</div>
@@ -180,9 +170,7 @@
 							<article class="tile is-child box">
 								<p class="title" th:text="${tagsNumber}">3.4k</p>
 								<p class="subtitle">
-									Tags<br> (Klick = neue Seite mit 10 zufälligen & den
-									letzten 10) (oder Anzeige der 5 zufälligen hier, natürlich
-									verlinkt)
+									Tags<br>  
 								</p>
 							</article>
 						</div>
@@ -190,21 +178,20 @@
 							<article class="tile is-child box">
 								<p class="title" th:text="${authorsNumber}">19</p>
 								<p class="subtitle">
-									Authors<br> (Klick = neue Seite mit 10 zufälligen & den
-									letzten 10)
+									Authors<br>  
 								</p>
 							</article>
 						</div>
 					</div>
 				</section>
 				<!-- last 10 zettels and so -->
- 				<div class="columns">
+				<div class="columns">
 					<div class="column is-6">
 						<div class="card events-card">
 							<header class="card-header">
 								<p class="card-header-title">Last 10 Zettel</p>
-								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
-											class="fa fa-angle-down" aria-hidden="true"></i>
+								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon">
+										<i class="fa fa-angle-down" aria-hidden="true"></i>
 									</span>
 								</a>
 							</header>
@@ -214,25 +201,31 @@
 										<tbody>
 
 											<tr th:each="zettel : ${zettels}">
-												<td width="5%"><i class="fa fa-bell-o"></i></td>
+												<td width="5%">
+													<span class="icon">
+														<!-- Ihre eigene Icon-Variante -->
+														<img th:src="@{/images/arrow.png}" class="is-small"
+															aria-hidden="true" />
+													</span>
+												</td>
 												<td th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">
 													Anzeige vom Topic & erste Wörter der Notiz</td>
 												<td class="level-right"><a class="button is-small is-primary"
 														th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
-														target="_blank">Action</a></td>
+														target="_blank">Look</a></td>
 											</tr>
 
 										</tbody>
 									</table>
 								</div>
 							</div>
-<!-- 							<footer class="card-footer">
+							<!-- 							<footer class="card-footer">
 								<a href="#" class="card-footer-item">View All</a>
 							</footer> -->
 						</div>
 					</div>
 
-					
+
 
 
 
@@ -241,25 +234,27 @@
 							<div class="column is-12">
 								<div class="card">
 									<header class="card-header">
-										<p class="card-header-title">4 random Zettel (wenn die
-											Funktion geändert ist)</p>
-										<a href="#" class="card-header-icon" aria-label="more options"> <span
-												class="icon"> <i class="fa fa-angle-down" aria-hidden="true"></i>
-											</span>
-										</a>
+										<p class="card-header-title">4 random Zettel </p>
+										 
 									</header>
 									<div class="card-table">
 										<div class="content">
 											<table class="table is-fullwidth is-striped">
 												<tbody>
 													<tr th:each="zettel : ${fourRandomZettels}">
-														<td width="5%"><i class="fa fa-bell-o"></i></td>
+														<td width="5%">
+															<span class="icon">
+																<!-- Ihre eigene Icon-Variante -->
+																<img th:src="@{/images/arrow.png}" class="is-small"
+																	aria-hidden="true" />
+															</span>
+														</td>
 														<td
 															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">
 															Anzeige vom Topic & erste Wörter der Notiz</td>
 														<td class="level-right"><a class="button is-small is-primary"
 																th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
-																target="_blank">Action</a></td>
+																target="_blank">Look</a></td>
 													</tr>
 
 												</tbody>
@@ -272,10 +267,6 @@
 									<div class="card">
 										<header class="card-header">
 											<p class="card-header-title">5 random texts</p>
-											<a href="#" class="card-header-icon" aria-label="more options"> <span
-													class="icon"> <i class="fa fa-angle-down" aria-hidden="true"></i>
-												</span>
-											</a>
 										</header>
 
 										<!--Elemente hinzu, z.B. Tags oder Buttons -->
@@ -284,12 +275,19 @@
 												<table class="table is-fullwidth is-striped">
 													<tbody>
 														<tr th:each="text : ${fourRandomTexts}">
-															<td width="5%"><i class="fa fa-bell-o"></i></td>
+															<td width="5%">
+																<span class="icon">
+																	<!-- Ihre eigene Icon-Variante -->
+																	<img th:src="@{/images/arrow.png}" class="is-small"
+																		aria-hidden="true" />
+																</span>
+															</td>
 															<td th:text="${text.title} + ' : ' + ${text.text} + '...'">
 																Anzeige vom Topic & erste Wörter der Notiz</td>
 															<td class="level-right"><a
 																	class="button is-small is-primary"
-																	target="_blank">Action</a></td>
+																	th:href="@{/search/text/{textId}(textId=${text.textId})}"
+																	target="_blank">Look</a></td>
 														</tr>
 
 													</tbody>
@@ -301,11 +299,7 @@
 											<div class="card">
 												<header class="card-header">
 													<p class="card-header-title">5 random tags</p>
-													<a href="#" class="card-header-icon" aria-label="more options">
-														<span class="icon"> <i class="fa fa-angle-down"
-																aria-hidden="true"></i>
-														</span>
-													</a>
+ 
 												</header>
 
 												<!--Elemente hinzu, z.B. Tags oder Buttons -->
@@ -327,13 +321,8 @@
 										<div class="column is-12">
 											<div class="card">
 												<header class="card-header">
-													<p class="card-header-title">5 random authors [statt
-														User Search]</p>
-													<a href="#" class="card-header-icon" aria-label="more options">
-														<span class="icon"> <i class="fa fa-angle-down"
-																aria-hidden="true"></i>
-														</span>
-													</a>
+													<p class="card-header-title">5 random authors </p>
+ 
 												</header>
 
 												<!--Elemente hinzu, z.B. Tags oder Buttons -->
