@@ -11,6 +11,23 @@ import com.stevedutch.intellectron.domain.Zettel;
 @Service
 public class TextManipulationService {
 
+	
+	public String brToNewLine (String text) {
+		StringBuilder sb = new StringBuilder(text);
+	    if (text == null) {
+	        return null;
+	    } 	
+		int index = sb.indexOf("<br>");
+
+	        while (index != -1) {
+	            sb.replace(index, index + 4, "\n");
+	            index = sb.indexOf("<br>", index + 1);
+	        }
+	        text = sb.toString();
+	        return text;
+		
+	}
+	
 	/**
 	 *reduces the string of title & text of all elements of a list of tekst to the chosen number of characters
 	 *

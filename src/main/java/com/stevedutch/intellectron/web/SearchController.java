@@ -149,6 +149,8 @@ public class SearchController {
 			LOG.warn("No text found for id: {}", textId);
 			return "/";
 		}
+		String cleanedText = textManipulationService.brToNewLine(tekst.getText());
+		tekst.setText(cleanedText);
 		LOG.info("\n  found " + tekst.getTextId() + tekst.getTitle());
 	    model.addAttribute("title", tekst.getTitle());
 	    model.addAttribute("tekst", tekst);
