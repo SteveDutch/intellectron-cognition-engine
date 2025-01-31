@@ -49,7 +49,7 @@ public class ZettelController {
 		Zettel zettel = searchService.findZettelById(zettelId);
 
 		String formattedText = zettel.getTekst().getText();
-		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
+//		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
 		model.put("zettel", zettel);
 		model.put("note", zettel.getNote());
 		model.put("tekst", zettel.getTekst());

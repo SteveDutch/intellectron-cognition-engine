@@ -7,9 +7,8 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>the fabulous text view page</title>
 <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<!-- <link rel="stylesheet" type="text/css" href="/css/hero.css"> -->
-<!-- <link rel="stylesheet" href="/css/modal-fx.min.css"	crossorigin="anonymous" /> -->
-<link rel="stylesheet" type="text/css" href="/css/welcome.css">
+<link rel="stylesheet" type="text/css" href="/css/text-view.css" />
+<!-- <link rel="stylesheet" type="text/css" href="/css/welcome.css"> -->
 </head>
 
 <body>
@@ -35,20 +34,20 @@
                 <div class="column is-8">
                     <!-- Content-Klasse für optimierte Textdarstellung -->
                     <div class="content">
-                        <p class="title is-1" th:text="${tekst.title}">title</p> 
+                        <p class="title is-1 line-break" th:text="${tekst.title}">title</p> 
 
 						<div class="subtitle is-4 has-text-right" th:each="author : ${tekst.associatedAuthors}" >
 							<p th:text="${author.authorFirstName} +' ' +  ${author.authorFamilyName}">author.authorFirstName">author</p>
  						</div>
                        
 						
-						<p class="is-size-5 has-text-justified" th:text="${tekst.text}">
+						<p class="is-size-5 has-text-justified line-break" th:text="${tekst.text}">
                             text
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+ 
 </body>
 </html>

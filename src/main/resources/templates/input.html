@@ -111,7 +111,7 @@
 					<textarea
 						id="tekst"
 						name="tekst"
-						th:field="${tekst.text}"
+						th:text="${tekst.text}"
 						rows="5"
 						cols="33"
 						autocomplete="on"
@@ -231,8 +231,20 @@
 			</div>
 	</form>
 
-    <section th:replace="fragments/common :: last10-random10-table"></section>
+<section class="hero is-small is-warning">
+	<div class="hero-body">
+		<p class="title  has-text-centered ">last 10 zettels</p>
+	</div>
+</section>
+<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
 
+<section class="hero is-small is-danger">
+	<div class="hero-body">
+		<p class="title has-text-centered">10 random zettels</p>
+
+	</div>
+</section>
+<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
 </body>
 
 </html>
