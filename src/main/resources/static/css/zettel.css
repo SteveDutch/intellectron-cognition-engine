@@ -1,15 +1,18 @@
+ 
 
+/* Moderne Best Practice mit CSS Custom Properties */
 :root {
-  --bulma-primary-h: 128deg;
+   	--bulma-primary-h: 128deg;
+    --page-background: lightgrey;
 }
 
-
+ 
 /* .is-fullheight-100vh{ */
 /*     height:100vh; */
 /*   } */
   
-body {
-    background-color: lightgrey;
+html, body {
+   	background-color: var(--page-background);  
     height: 100vh;
 }
 
