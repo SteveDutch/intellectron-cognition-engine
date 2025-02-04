@@ -24,7 +24,7 @@
 	</section>
 
 	<section class="search">
-		<h2 class="title is-2 has-text-black">Search a Zettel</h2>
+		<h2 class="title is-2 has-text-black search-headline">Search a Zettel</h2>
 		<div>
 
 			<!--         TopicSuche -->
@@ -44,12 +44,12 @@
 			</form>
 		</div>
 		<!--         Tagsuche -->
-		<h2 class="title is-2 has-text-black">Search a Tag</h2>
+		<h2 class="title is-2 has-text-black search-headline">Search a Tag</h2>
 		<form th:action="@{/search/tag/}" method="get">
 			<input type="text" name="tagFragment" placeholder="Tag eingeben">
 			<button class="button is-small is-warning" type="submit">Suchen</button>
 		</form>
-		<h2 class="title is-2 has-text-black">Search an Author</h2>
+		<h2 class="title is-2 has-text-black search-headline">Search an Author</h2>
 		<div>
 			<form th:action="@{/search/author/}" method="get">
 				<input type="text" name="lastName" placeholder="enter Author's family name" />
@@ -57,7 +57,7 @@
 				<br />
 			</form>
 		</div>
-		<h2 class="title is-2 has-text-black">Search a Text</h2>
+		<h2 class="title is-2 has-text-black search-headline">Search a Text</h2>
 		<div>
 			<form th:action="@{/search/text4tekst/}" method="get">
 				<input type="text" name="textFragment" placeholder="enter text (fragment)">
