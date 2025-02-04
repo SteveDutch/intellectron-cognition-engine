@@ -16,6 +16,12 @@ section.search {
 	background-size: cover;
 }
 
+.search-headline {
+		color: black; 
+		-webkit-text-stroke: 2px white;
+		 font-size: 48px;
+}
+
 .thick-black-border {
   border: 2px solid black;
 }
