@@ -1,42 +1,16 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/input.html -->
 <!DOCTYPE html>
-<html
-	class="has-navbar-fixed-top"
-	lang="en"
-	xmlns:th="http://www.thymeleaf.org"
->
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="UTF-8" />
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1.0"
-/>
-<title>feed your intellectron</title>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/bulma.css"
-/>
-<link
-	rel="stylesheet"
-	href="css/input.css"
-/>
-<script
-	type="text/javascript"
-	src="../js/input.js"
-	defer
-></script>
-<script
-	type="text/javascript"
-	src="../js/common.js"
-	defer
-></script>
-<link
-	rel="icon"
-	type="image/x-icon"
-	href="favicon.ico"
->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>feed your intellectron</title>
+	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+	<link rel="stylesheet" href="css/input.css" />
+	<script type="text/javascript" src="../js/input.js" defer></script>
+	<script type="text/javascript" src="../js/common.js" defer></script>
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -49,11 +23,7 @@
 	</section>
 
 	<br />
-	<form
-		action="/input"
-		method="post"
-		th:object="${ZettelDtoRecord}"
-	>
+	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
 		<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
 		<!-- 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
 
@@ -62,31 +32,63 @@
 		<!-- 				th:text="|ID: ${zettel.zettelId}|"></p> -->
 		<!-- 		</div> -->
 		<div class="columns">
-			<div class="column">
+
+			<div class="column is-2">
+
+				<div>
+					<label for="tags">Tags: </label><br />
+					<div id="tagsContainer" class="tags">
+
+						<div th:each="tag, status : ${tags}">
+							<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
+								th:value="${tag.tagText}" />
+							<button class="button is-small is-warning" type="button"
+								onclick="this.parentNode.remove()">rydde ut
+								Tag</button>
+						</div>
+
+					</div>
+					<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
+				</div>
+				<hr />
+
+				<div>
+					<label for="author">Author first name</label><br /> <input type="text" id="authorFirstName"
+						th:field="${author.authorFirstName}" /><br />
+				</div>
+
+				<div>
+					<label for="author">Author family name</label><br /> <input type="text" id="authorFamilyName"
+						th:field="${author.authorFamilyName}" /><br />
+				</div>
+				<div>
+					<label for="timestamp">date of text:</label><br /> <input type="date" id="timestamp"
+						name="timestamp" th:field="${tekst.textDate}" /><br />
+
+				</div>
+
+				<div>
+					<label for="source">Source:</label><br /> <input type="text" id="source" name="source"
+						th:field="${tekst.source}" /><br />
+				</div>
+
+			</div>
+
+
+
+			<div class="column is-5">
 				<div>
 					<label for="title">Topic: </label>
-					<textarea
-						id="title"
-						name="title"
-						th:field="${zettel.topic}"
-						rows="3"
-						cols="33"
-						autocomplete="on"
-					></textarea>
+					<textarea class=" is-link" placeholder="Topic" id="title" name="title" th:field="${zettel.topic}"
+						rows="3" autocomplete="on"></textarea>
 					<br />
 					<!-- <input type="text" /> -->
 				</div>
 				<br />
 				<div>
 					<label for="note">Note: </label>
-					<textarea
-						id="notiz"
-						name="article"
-						th:field="${note.noteText}"
-						rows="5"
-						cols="33"
-						autocomplete="on"
-					></textarea>
+					<textarea id="notiz" name="article" th:field="${note.noteText}" rows="10"
+						autocomplete="on"></textarea>
 					<br />
 					<!-- <input type="text"  /><br /> -->
 				</div>
@@ -95,156 +97,61 @@
 			<div class="column">
 				<div>
 					<label for="title">Title:</label>
-					<textarea
-						id="texttitle"
-						name="title"
-						th:field="${tekst.title}"
-						rows="3"
-						cols="33"
-						autocomplete="on"
-					></textarea>
+					<textarea id="texttitle" name="title" th:field="${tekst.title}" rows="3"
+						autocomplete="on"></textarea>
 					<br />
 				</div>
 				<br />
 				<div>
 					<label for="tekst">Text: </label>
-					<textarea
-						id="tekst"
-						name="tekst"
-						th:text="${tekst.text}"
-						rows="5"
-						cols="33"
-						autocomplete="on"
-					></textarea>
+					<textarea id="tekst" name="tekst" th:text="${tekst.text}" rows="10" autocomplete="on"></textarea>
 					<br />
 					<!-- <input id="tekst" th:field="${tekst.text}" /> -->
 				</div>
 			</div>
 		</div>
-		<hr />
-		<div>
-			<label for="tags">Tags: </label><br />
-			<div
-				id="tagsContainer"
-				class="tags"
-			>
 
-				<div th:each="tag, status : ${tags}">
-					<input
-						type="text"
-						th:id="'tag' + ${status.index}"
-						th:name="'tags'"
-						th:value="${tag.tagText}"
-					/>
-					<button
-						class="button is-small is-warning"
-						type="button"
-						onclick="this.parentNode.remove()"
-					>rydde ut Tag</button>
-				</div>
-
-			</div>
-			<button
-				class="button is-small is-warning"
-				id="addTagButton"
-				type="button"
-			>Add Tag</button>
-		</div>
-		<hr />
-		<div class="columns">
-			<div class="column">
-				<label for="author">Author first name</label><br /> <input
-					type="text"
-					id="authorFirstName"
-					th:field="${author.authorFirstName}"
-				/><br />
-			</div>
-			<hr />
-			<div class="column">
-				<label for="author">Author family name</label><br /> <input
-					type="text"
-					id="authorFamilyName"
-					th:field="${author.authorFamilyName}"
-				/><br />
-			</div>
-			<div class="column">
-				<label for="timestamp">date of text:</label><br /> <input
-					type="date"
-					id="timestamp"
-					name="timestamp"
-					th:field="${tekst.textDate}"
-				/><br />
-
-			</div>
-
-			<div class="column">
-				<label for="source">Source:</label><br /> <input
-					type="text"
-					id="source"
-					name="source"
-					th:field="${tekst.source}"
-				/><br />
-			</div>
-		</div>
 		<hr />
 		<div>
 			<label for="Signatur">signature to which should be referred /
 				Signatur, auf die verwiesen werden soll:</label><br />
 			<div id="signatureContainer">
 				<div th:each="reference, status : ${references}">
-					<input
-						type="number"
-						min="100000000000"
-						max="999999999999"
-						pattern="[0-9]{12}"
-						required
-						th:id="'signature' + ${status.index}"
-						th:name="'references' "
-						th:value="${reference.targetZettel}"
-					/>
-					<button
-						class="button is-small is-warning"
-						type="button"
-						onclick="this.parentNode.remove()"
-					>rydde ut referanse</button>
+					<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
+						th:id="'signature' + ${status.index}" th:name="'references' "
+						th:value="${reference.targetZettel}" />
+					<button class="button is-small is-warning" type="button" onclick="this.parentNode.remove()">rydde ut
+						referanse</button>
 				</div>
 				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button
-					class="button is-small is-warning"
-					id="addReferenceButton"
-					type="button"
-				>Add Reference</button>
+				<button class="button is-small is-warning" id="addReferenceButton" type="button">Add Reference</button>
 			</div>
 			<hr />
 
 			<div class="container">
 				<div class="columns is-centered">
 					<div class="column ">
-						<input
-							class="button is-dark is-medium is-rounded"
-							type="submit"
-							id="submit"
-							value="Submit"
-						/>
+						<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
 					</div>
 				</div>
 			</div>
+		</div>
 	</form>
 
-<section class="hero is-small is-warning">
-	<div class="hero-body">
-		<p class="title  has-text-centered ">last 10 zettels</p>
-	</div>
-</section>
-<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+	<section class="hero is-small is-warning">
+		<div class="hero-body">
+			<p class="title  has-text-centered ">last 10 zettels</p>
+		</div>
+	</section>
+	<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
 
-<section class="hero is-small is-danger">
-	<div class="hero-body">
-		<p class="title has-text-centered">10 random zettels</p>
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title has-text-centered">10 random zettels</p>
 
-	</div>
-</section>
-<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
+		</div>
+	</section>
+	<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
 </body>
 
 </html>

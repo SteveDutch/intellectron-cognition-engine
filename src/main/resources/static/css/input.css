@@ -2,6 +2,11 @@ body {
     background-color: lightgrey;
 }
 
+textarea {
+    resize: vertical; /* erlaubt nur vertikales Resizing */
+	width: 90%;
+}
+
 .thick-black-border {
   border: 2px solid black;
 }
