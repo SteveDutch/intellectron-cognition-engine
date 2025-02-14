@@ -44,7 +44,7 @@ document.getElementById('addTagButton')?.addEventListener('click', function () {
     let newRemoveButton = document.createElement('button');
 	newRemoveButton.classList.add('button', 'is-small', 'is-warning');
     newRemoveButton.type = 'button';
-    newRemoveButton.textContent = 'rydde ut Tag';
+    newRemoveButton.textContent = 'del';
     newRemoveButton.onclick = function () {
         this.parentNode.remove();
     }
@@ -67,7 +67,7 @@ document.getElementById('addReferenceButton')?.addEventListener('click', functio
     let newRemoveRefButton = document.createElement('button');
     newRemoveRefButton.type = 'button';
 	newRemoveRefButton.classList.add('button', 'is-small', 'is-warning');
-    newRemoveRefButton.textContent = 'rydde ut referanse';
+    newRemoveRefButton.textContent = 'del';
     newRemoveRefButton.onclick = function () {
         this.parentNode.remove();
     }

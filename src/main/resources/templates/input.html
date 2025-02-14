@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>feed your intellectron</title>
 	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-	<link rel="stylesheet" href="css/input.css" />
+	<link rel="stylesheet" type="text/css" href="/css/input.css" />
 	<script type="text/javascript" src="../js/input.js" defer></script>
 	<script type="text/javascript" src="../js/common.js" defer></script>
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -25,7 +25,7 @@
 	<br />
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
 		<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
-		<!-- 			<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
+		<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
 
 		<!-- 			<p th:if="${zettel.zettelId == null}">new Zettel</p> -->
 		<!-- 			<p th:if="${zettel.zettelId != null}" -->
@@ -43,9 +43,8 @@
 							<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 								th:value="${tag.tagText}" />
 							<button class="button is-small is-warning" type="button"
-								onclick="this.parentNode.remove()">rydde ut
-								Tag</button>
-						</div>
+								onclick="this.parentNode.remove()">del</button>
+							</div>
 
 					</div>
 					<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
@@ -84,7 +83,7 @@
 					<br />
 					<!-- <input type="text" /> -->
 				</div>
-				<br />
+				
 				<div>
 					<label for="note">Note: </label>
 					<textarea id="notiz" name="article" th:field="${note.noteText}" rows="10"
@@ -94,7 +93,7 @@
 				</div>
 			</div>
 
-			<div class="column">
+			<div class="column is-5">
 				<div>
 					<label for="title">Title:</label>
 					<textarea id="texttitle" name="title" th:field="${tekst.title}" rows="3"

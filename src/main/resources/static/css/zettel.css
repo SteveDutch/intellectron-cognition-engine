@@ -2,9 +2,9 @@
 
 /* Moderne Best Practice mit CSS Custom Properties */
 :root {
-   	--bulma-primary-h: 128deg;
-    --page-background: lightgrey;
-}
+   	/* --bulma-primary-h: 128deg; */
+    --page-background: #f3e5ab;
+} 
 
  
 /* .is-fullheight-100vh{ */
@@ -16,7 +16,11 @@ html, body {
     height: 100vh;
 }
 
- 
+textarea {
+    resize: vertical; /* erlaubt nur vertikales Resizing */
+	width: 90%;
+}
+
 
 /* The Modal (background) */
 #deleteModal {

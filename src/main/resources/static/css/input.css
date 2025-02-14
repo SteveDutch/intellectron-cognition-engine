@@ -1,5 +1,11 @@
-body {
-    background-color: lightgrey;
+/* Moderne Best Practice mit CSS Custom Properties */
+:root {
+   	/* --bulma-primary-h: 128deg; */
+    --page-background: #f3e5ab;
+} 
+
+html, body {
+    background-color: var(--page-background);
 }
 
 textarea {
