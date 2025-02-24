@@ -10,11 +10,10 @@ function getValueAfterEquals(url) {
 // Suchbegriff in das HTML-Element einfügen
 let searchTerm = document.getElementById('searchTerm');
 if (searchTerm) {
-    searchTerm.textContent = getValueAfterEquals(url);
+    searchTerm.textContent = decodeURIComponent(getValueAfterEquals(url)).replace(/\+/g, ' ');
 } else {
     console.log("Element with ID 'searchTerm' not found. Probably no result page shown");
 }
-// document.getElementById('searchTerm').textContent = getValueAfterEquals(url);
  
 	function getValueBeforeEquals(url) {
 		try {

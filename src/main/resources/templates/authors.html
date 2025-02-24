@@ -15,15 +15,15 @@
 
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
-	<section class="hero is-small is-primary">
+	<section class="hero is-primary is-bold">
 		<div class="hero-body">
-			<h1 class="title is-1 has-text-centered">your intellectron shows
-				your Author List</h1>
-			<p class="subtitle has-text-centered">
-				Search term: <span id="searchTerm"></span>
-			</p>
+			<div class="container">
+				<h1 class="title is-1 has-text-centered">Author List</h1>
+				<p class="subtitle has-text-centered">
+					Search term: <span id="searchTerm" class="has-text-weight-bold"></span>
+				</p>
+			</div>
 		</div>
-
 	</section>
 	<h1 class=" title is-2">Author List</h1>
 	<div th:if="${#lists.isEmpty(authors)}">
@@ -145,5 +145,15 @@
      end of MODALS
     ===============  -->
 		<script src="/js/common.js" async></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const urlParams = new URLSearchParams(window.location.search);
+				const searchTerm = urlParams.get('search');
+				if (searchTerm) {
+					const decodedSearchTerm = decodeURIComponent(searchTerm);
+					document.getElementById('searchTerm').textContent = decodedSearchTerm;
+				}
+			});
+		</script>
 </body>
 </html>

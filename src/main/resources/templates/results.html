@@ -114,10 +114,12 @@
 							class="button is-black js-modal-trigger"
 							data-target="modal-example"
 							th:data-zettel-id="${zettel.zettelId}"
-						>Open Text</button>
+						>preview Text</button>
 						<button class="button is-black">
-							<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}">Edit</a>
-							Open Zettel
+							<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank" rel="noopener noreferrer">Open Zettel</a>
+						</button>
+						<button class="button is-black">
+							 <a th:href="@{/search/text/{textId}(textId=${zettel.tekst.textId})}"  target="_blank" rel="noopener noreferrer">open text</a>
 						</button>
 					</div>
 				</div>
@@ -162,20 +164,7 @@
 
 
 	</section>
-	<footer>
-		<section class="section"></section>
-		<div class="content has-text-centered">
-			<div class="control level-item">
-				<a href="https://github.com/BulmaTemplates/bulma-templates">
-					<div class="tags has-addons">
-						<span class="tag is-dark">this page has</span> <span
-							class="tag is-info"
-						>MIT license</span>
-					</div>
-				</a>
-			</div>
-		</div>
-	</footer>
+
 
 	<!--  
 	===============
