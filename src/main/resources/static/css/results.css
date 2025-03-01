@@ -1,23 +1,114 @@
-/* .container {
-    margin: 2%;
-    padding: 0%;
-
-} */
-
-.text-reducer {
-    width: auto;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
-    text-overflow: ellipsis;
+ Container spacing 
+.container {
+    padding: 1.5rem;
 }
 
-.note-reducer {
+/* Navbar consistency */
+/*.navbar {*/
+/*    min-height: 3.25rem;*/
+/*    padding: 0.5rem 0;*/
+/*}*/
+
+/*.navbar-brand {*/
+/*    min-height: 3.25rem;*/
+/*    align-items: stretch;*/
+/*}*/
+
+/*.navbar-item {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/
+
+/* Card styling */
+.card {
+    transition: transform 0.3s ease;
+    height: 100%;  /* Ensure consistent height */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Content organization */
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #363636;
+}
+
+.content h5 {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    color: #4a4a4a;
+}
+
+/* Text reducers with improved styling */
+.text-reducer, .note-reducer {
     width: auto;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #4a4a4a;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Button group styling */
+.content .buttons {
+    margin-top: auto;  /* Push buttons to bottom */
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.button.is-black {
+    transition: all 0.3s ease;
+}
+
+.button.is-black:hover {
+    background-color: #363636;
+    transform: translateY(-2px);
+}
+
+/* Image handling */
+.card-image {
+    overflow: hidden;
+}
+
+.card-image img {
+    transition: transform 0.3s ease;
+}
+
+.card-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .content h4 {
+        font-size: 1.25rem;
+    }
+    
+    .content h5 {
+        font-size: 1.1rem;
+    }
 }
