@@ -22,54 +22,43 @@
 	href="/favicon.ico"
 >
 <title>the fabulous search results page</title>
+
+<!-- Font Awesome -->
 <link
 	rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 	crossorigin="anonymous"
 >
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans"
-	rel="stylesheet"
-	crossorigin="anonymous"
->
-<!-- Bulma Version 1-->
-<!-- <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" crossorigin="anonymous" /> -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"
-></script>
+
+<!-- Bulma CSS -->
 <link
 	rel="stylesheet"
 	type="text/css"
 	href="/css/bulma.css"
-/>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/hero.css"
 >
-<link
-	rel="stylesheet"
-	href="/css/modal-fx.min.css"
-	crossorigin="anonymous"
-/>
+
+<!-- Custom CSS -->
 <link
 	rel="stylesheet"
 	type="text/css"
 	href="/css/results.css"
 >
 
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"
+></script>
 </head>
 
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
-			<div class="container has-text-centered">
-				<p class="title">Zettel results</p>
-				<p class="subtitle">
+			
+				<p class="title is-1 has-text-centered">Zettel results</p>
+				<p class="subtitle has-text-centered">
 					found via search term: <span id="searchTerm"></span>, searched in:
 				<span id="searchedVia"></span></p>
-			</div>
+			
 		</div>
 	</section>
 	<div class="box cta">
@@ -111,14 +100,14 @@
 						>Platzhalter für zettel.tekst.</p>
 
 						<button
-							class="button is-black js-modal-trigger"
+							class="button is-black is-small js-modal-trigger"
 							data-target="modal-example"
 							th:data-zettel-id="${zettel.zettelId}"
 						>preview Text</button>
-						<button class="button is-black">
+						<button class="button is-black is-small">
 							<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank" rel="noopener noreferrer">Open Zettel</a>
 						</button>
-						<button class="button is-black">
+						<button class="button is-black is-small">
 							 <a th:href="@{/search/text/{textId}(textId=${zettel.tekst.textId})}"  target="_blank" rel="noopener noreferrer">open text</a>
 						</button>
 					</div>
