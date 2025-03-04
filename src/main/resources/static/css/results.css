@@ -1,29 +1,10 @@
- Container spacing 
-.container {
-    padding: 1.5rem;
-}
-
-/* Navbar consistency */
-/*.navbar {*/
-/*    min-height: 3.25rem;*/
-/*    padding: 0.5rem 0;*/
-/*}*/
-
-/*.navbar-brand {*/
-/*    min-height: 3.25rem;*/
-/*    align-items: stretch;*/
-/*}*/
-
-/*.navbar-item {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*}*/
-
 /* Card styling */
 .card {
     transition: transform 0.3s ease;
     height: 100%;  /* Ensure consistent height */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -31,16 +12,27 @@
 }
 
 .card-content {
-    height: 100%;
+    flex: 1; /* This makes the card content expand to fill available space */
     display: flex;
     flex-direction: column;
+    padding: 1.5rem; /* Consistent padding */
+}
+
+/* Make columns equal height */
+.columns.is-multiline {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.column.is-one-half {
+    display: flex;
 }
 
 /* Content organization */
 .content {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1; /* Makes content area expand */
 }
 
 .content h4 {
@@ -69,11 +61,14 @@
 }
 
 /* Button group styling */
-.content .buttons {
+.content .buttons, 
+.content .button {
     margin-top: auto;  /* Push buttons to bottom */
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+}
+
+.content .button {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .button.is-black {
@@ -90,12 +85,28 @@
     overflow: hidden;
 }
 
+/* Rounded image corners */
+.card-image .image.is-4by3 {
+    border-radius: 6px 6px 12px 12px; 
+    overflow: hidden;
+}
+
 .card-image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
     transition: transform 0.3s ease;
 }
 
 .card-image:hover img {
     transform: scale(1.05);
+}
+
+/* Optional: Different handling for portrait vs landscape images */
+@supports (aspect-ratio: 1) {
+    .card-image img[width][height] {
+        aspect-ratio: attr(width) / attr(height);
+    }
 }
 
 /* Responsive adjustments */
