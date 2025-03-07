@@ -37,26 +37,24 @@
 		</div>
 	</section>
 	<div th:if="${texts}" class="columns is-multiline">
-		<div class="card is-shady column is-one-half "
-			th:each="text : ${texts}">
-			<div class="card-image">
-				<figure class="image is-4by3">
-					<img
-						src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
-						alt="Placeholder image">
-				</figure>
-			</div>
-			<div class="card-content">
-				<div class="content">
-					<h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
-					<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
-					<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
-					<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+		<div class="column is-one-third" th:each="text : ${texts}">
+			<div class="card is-shady">
+				<div class="card-image">
+					<figure class="image is-4by3">
+						<img
+							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+							alt="Placeholder image">
+					</figure>
+				</div>
+				<div class="card-content">
+					<div class="content">
+						<p class="title is-4" th:text="${text.title}">Platzhalter für zettel.topic</p>
+						<p class="subtitle is-5" th:text="${text.text}">Platzhalter für zettel.tekst.title</p>
 
-					<button class="button is-black js-modal-trigger text-preview"
-						data-target="modal-example" th:data-text-id="${text.textId}">
-						Open Text</button>
-
+						<button class="button is-black js-modal-trigger text-preview"
+							data-target="modal-example" th:data-text-id="${text.textId}">
+							Open Text</button>
+					</div>
 				</div>
 			</div>
 		</div>
