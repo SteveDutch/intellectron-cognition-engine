@@ -1,0 +1,183 @@
+ 
+
+/* Moderne Best Practice mit CSS Custom Properties */
+:root {
+   	/* --bulma-primary-h: 128deg; */
+    --page-background: #f3e5ab;
+} 
+
+ 
+/* .is-fullheight-100vh{ */
+/*     height:100vh; */
+/*   } */
+  
+html, body {
+   	background-color: var(--page-background);  
+    height: 100vh;
+}
+
+textarea {
+    resize: vertical; /* erlaubt nur vertikales Resizing */
+	width: 90%;	/* Card styling */
+	.card {
+	    transition: transform 0.3s ease;
+	    height: 100%;  /* Ensure consistent height */
+	    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	    display: flex;
+	    flex-direction: column;
+	}
+
+	.card:hover {
+	    transform: translateY(-5px);
+	}
+
+	.card-content {
+	    flex: 1; /* This makes the card content expand to fill available space */
+	    display: flex;
+	    flex-direction: column;
+	    padding: 1.5rem; /* Consistent padding */
+	}
+
+	/* Make columns equal height */
+	.columns.is-multiline {
+	    display: flex;
+	    flex-wrap: wrap;
+	}
+
+	.column.is-one-half {
+	    display: flex;
+	}
+
+	/* Content organization */
+/*	.content {*/
+/*	    display: flex;*/
+/*	    flex-direction: column;*/
+/*	    flex: 1;  Makes content area expand */
+/*	}*/
+
+/*	.content h4 {*/
+/*	    font-size: 1.5rem;*/
+/*	    margin-bottom: 1rem;*/
+/*	    color: #363636;*/
+/*	}*/
+
+/*	.content h5 {*/
+/*	    font-size: 1.25rem;*/
+/*	    margin-top: 1rem;*/
+/*	    color: #4a4a4a;*/
+/*	}*/
+
+/*	 Text reducers with improved styling */
+/*	.text-reducer, .note-reducer {*/
+/*	    width: auto;*/
+/*	    display: -webkit-box;*/
+/*	    -webkit-box-orient: vertical;*/
+/*	    -webkit-line-clamp: 3;*/
+/*	    overflow: hidden;*/
+/*	    text-overflow: ellipsis;*/
+/*	    color: #4a4a4a;*/
+/*	    line-height: 1.5;*/
+/*	    margin-bottom: 1rem;*/
+/*	}*/
+
+	/* Button group styling */
+/*	.content .buttons, */
+/*	.content .button {*/
+/*	    margin-top: auto;   Push buttons to bottom */
+/*	}*/
+
+/*	.content .button {*/
+/*	    margin-right: 0.5rem;*/
+/*	    margin-bottom: 0.5rem;*/
+/*	}*/
+
+/*	.button.is-black {*/
+/*	    transition: all 0.3s ease;*/
+/*	}*/
+
+/*	.button.is-black:hover {*/
+/*	    background-color: #363636;*/
+/*	    transform: translateY(-2px);*/
+/*	}*/
+
+	/* Image handling */
+	.card-image {
+	    overflow: hidden;
+	}
+
+	/* Rounded image corners */
+	.card-image .image.is-4by3 {
+	    border-radius: 6px 6px 12px 12px; 
+	    overflow: hidden;
+	}
+
+	.card-image img {
+	    object-fit: cover;
+	    width: 100%;
+	    height: 100%;
+	    transition: transform 0.3s ease;
+	}
+
+	.card-image:hover img {
+	    transform: scale(1.05);
+	}
+
+	/* Optional: Different handling for portrait vs landscape images */
+	@supports (aspect-ratio: 1) {
+	    .card-image img[width][height] {
+	        aspect-ratio: attr(width) / attr(height);
+	    }
+	}
+
+	/* Responsive adjustments */
+	@media screen and (max-width: 768px) {
+	    .container {
+	        padding: 1rem;
+	    }
+	    
+	    .content h4 {
+	        font-size: 1.25rem;
+	    }
+	    
+	    .content h5 {
+	        font-size: 1.1rem;
+	    }
+	}
+}
+
+
+/* The Modal (background) */
+#deleteModal {
+    display: none;    /* Hidden by default */
+    position: fixed;    /* Stay in place */
+    z-index: 1;    /* Sit on top */
+    left: 0;    top: 0;
+    width: 100%;    /* Full width */
+    height: 100%;    /* Full height */
+    overflow: auto;    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    flex: auto;
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+#deleteModal .modal-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#deleteModal .modal-content button {
+    margin-right: 10px;
+    /* Fügt etwas Abstand zwischen den Buttons hinzu */
+}

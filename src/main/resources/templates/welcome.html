@@ -185,7 +185,7 @@
 				<!-- last 10 zettels and so -->
 				<div class="columns">
 					<div class="column is-6">
-						<div class="card events-card">
+						<div class="card events-card card mt-4">
 							<header class="card-header">
 								<p class="card-header-title">Last 10 Zettel</p>
 								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon">
@@ -221,6 +221,25 @@
 								<a href="#" class="card-footer-item">View All</a>
 							</footer> -->
 						</div>
+						
+						<div class="card mt-4">
+							<header class="card-header">
+								<p class="card-header-title">5 random tags</p>
+							</header>
+							<div class="card-content">
+								<div class="tags">
+									<tr th:each="tag : ${fiveRandomTags}">
+										<td></td>
+										<a th:href="@{/search/tag/(tagFragment=${tag.tagText})}">
+											<span th:text="${tag.tagText}"
+												class="tag is-medium is-link is-hoverable">Anzeige
+												vom Topic & erste Wörter der Notiz</span>
+										</a>
+										<td class="level-right"><a></a></td>
+									</tr>
+								</div>
+							</div>
+						</div>
 					</div>
 
 
@@ -230,10 +249,9 @@
 					<div class="column is-6">
 						<div class="columns is-multiline">
 							<div class="column is-12">
-								<div class="card">
+								<div class="card mt-4">
 									<header class="card-header">
 										<p class="card-header-title">4 random Zettel </p>
-										 
 									</header>
 									<div class="card-table">
 										<div class="content">
@@ -261,90 +279,54 @@
 									</div>
 								</div>
 
-								<div class="column is-12">
-									<div class="card">
-										<header class="card-header">
-											<p class="card-header-title">5 random texts</p>
-										</header>
+								<div class="card mt-4">
+									<header class="card-header">
+										<p class="card-header-title">5 random texts</p>
+									</header>
+									<div class="card-table">
+										<div class="content">
+											<table class="table is-fullwidth is-striped">
+												<tbody>
+													<tr th:each="text : ${fourRandomTexts}">
+														<td width="5%">
+															<span class="icon">
+																<!-- Ihre eigene Icon-Variante -->
+																<img th:src="@{/images/arrow.png}" class="is-small"
+																	aria-hidden="true" />
+															</span>
+														</td>
+														<td th:text="${text.title} + ' : ' + ${text.text} + '...'">
+															Anzeige vom Topic & erste Wörter der Notiz</td>
+														<td class="level-right"><a
+																class="button is-small is-primary"
+																th:href="@{/search/text/{textId}(textId=${text.textId})}"
+																target="_blank">Look</a></td>
+													</tr>
 
-										<!--Elemente hinzu, z.B. Tags oder Buttons -->
-										<div class="card-table">
-											<div class="content">
-												<table class="table is-fullwidth is-striped">
-													<tbody>
-														<tr th:each="text : ${fourRandomTexts}">
-															<td width="5%">
-																<span class="icon">
-																	<!-- Ihre eigene Icon-Variante -->
-																	<img th:src="@{/images/arrow.png}" class="is-small"
-																		aria-hidden="true" />
-																</span>
-															</td>
-															<td th:text="${text.title} + ' : ' + ${text.text} + '...'">
-																Anzeige vom Topic & erste Wörter der Notiz</td>
-															<td class="level-right"><a
-																	class="button is-small is-primary"
-																	th:href="@{/search/text/{textId}(textId=${text.textId})}"
-																	target="_blank">Look</a></td>
-														</tr>
-
-													</tbody>
-												</table>
-											</div>
-										</div>
-
-										<div class="column is-12">
-											<div class="card">
-												<header class="card-header">
-													<p class="card-header-title">5 random tags</p>
- 
-												</header>
-
-												<!--Elemente hinzu, z.B. Tags oder Buttons -->
-												<div class="card-content">
-													<div class="tags">
-														<tr th:each="tag : ${fiveRandomTags}">
-															<td></td>
-															<a th:href="@{/search/tag/(tagFragment=${tag.tagText})}">
-																<span th:text="${tag.tagText}"
-																	class="tag is-medium is-link is-hoverable">Anzeige
-																	vom Topic & erste Wörter der Notiz</span>
-																<td class="level-right"><a></a></td>
-														</tr>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<div class="column is-12">
-											<div class="card">
-												<header class="card-header">
-													<p class="card-header-title">5 random authors </p>
- 
-												</header>
-
-												<!--Elemente hinzu, z.B. Tags oder Buttons -->
-												<div class="card-content">
-													<div class="tags">
-														<tr th:each="author : ${fiveRandomAuthors}">
-															<td></td>
-															<a
-																th:href="@{/search/author/(lastName=${author.authorFamilyName})}">
-																<span
-																	th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}"
-																	class="tag is-medium is-danger">Anzeige vom Topic &
-																	erste Wörter der Notiz</span></a>
-															<td class="level-right"></td>
-														</tr>
-													</div>
-												</div>
-											</div>
+												</tbody>
+											</table>
 										</div>
 									</div>
+								</div>
 
+								<div class="card mt-4">
+									<header class="card-header">
+										<p class="card-header-title">5 random authors</p>
+									</header>
+									<div class="card-content">
+										<div class="tags">
+											<tr th:each="author : ${fiveRandomAuthors}">
+												<td></td>
+												<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}">
+													<span th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}"
+														class="tag is-medium is-danger">Anzeige vom Topic & erste Wörter der Notiz</span>
+												</a>
+												<td class="level-right"></td>
+											</tr>
+										</div>
+									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
