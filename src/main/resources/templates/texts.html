@@ -15,14 +15,15 @@
 	rel="stylesheet" crossorigin="anonymous">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="/css/texts.css">
-<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
  
 <link rel="stylesheet" href="/css/modal-fx.min.css"
 	crossorigin="anonymous" />
 
 <script src="/js/texts.js" defer></script>
 <script src="/js/common.js" defer></script>
+<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/texts.css">
 </head>
 
 <body>
@@ -36,6 +37,12 @@
 				</p>
 		</div>
 	</section>
+	<div class="box cta">
+		<p class="has-text-centered">
+			<span class="tag is-primary">FOUND</span> 
+			<span th:text="${#lists.size(texts)}"></span> Texts:
+		</p>
+	</div>
 	<div th:if="${texts}" class="columns is-multiline">
 		<div class="column is-one-third" th:each="text : ${texts}">
 			<div class="card is-shady">

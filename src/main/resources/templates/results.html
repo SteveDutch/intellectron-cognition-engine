@@ -41,6 +41,11 @@
 <link
 	rel="stylesheet"
 	type="text/css"
+	href="/css/common.css"
+>
+<link
+	rel="stylesheet"
+	type="text/css"
 	href="/css/results.css"
 >
 
@@ -73,43 +78,38 @@
 			class="columns is-multiline"
 		>
 			<div
-				class="card is-shady column is-one-half "
+				class="column is-one-third"
 				th:each="zettel, iterStat : ${zettels}"
 			>
-				<div class="card-image">
-					<figure class="image is-4by3">
-						<img
-						th:with="imageNumber=${(iterStat.index + #dates.createNow().getTime()) *23 % 4 + 1}"
-						th:src="@{'/images/cards/' + ${imageNumber} + '.jpg'}"
-							alt="Placeholder image"
-						>
-					</figure>
-				</div>
-				<div class="card-content">
-					<div class="content">
-						<h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
-						<p
-							class="note-reducer"
-							th:text="${zettel.note.noteText}"
-						>Platzhalter für zettel.note.noteText</p>
-						<h5 th:text="${zettel.tekst.title}">Platzhalter für
-							zettel.tekst.title</h5>
-						<p
-							class="text-reducer"
-							th:text="${zettel.tekst.text}"
-						>Platzhalter für zettel.tekst.</p>
-
-						<button
-							class="button is-black is-small js-modal-trigger"
-							data-target="modal-example"
-							th:data-zettel-id="${zettel.zettelId}"
-						>preview Text</button>
-						<button class="button is-black is-small">
-							<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank" rel="noopener noreferrer">Open Zettel</a>
-						</button>
-						<button class="button is-black is-small">
-							 <a th:href="@{/search/text/{textId}(textId=${zettel.tekst.textId})}"  target="_blank" rel="noopener noreferrer">open text</a>
-						</button>
+				<div class="card is-shady">
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img
+							th:with="imageNumber=${(iterStat.index + #dates.createNow().getTime()) *23 % 4 + 1}"
+							th:src="@{'/images/cards/' + ${imageNumber} + '.jpg'}"
+								alt="Placeholder image"
+							>
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="content">
+							<h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
+							<p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
+							<h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
+							<p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
+							
+							<div class="button-group mt-auto">
+								<button class="button is-black is-small js-modal-trigger"
+									data-target="modal-example"
+									th:data-zettel-id="${zettel.zettelId}">preview Text</button>
+								<button class="button is-black is-small">
+									<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank" rel="noopener noreferrer">Open Zettel</a>
+								</button>
+								<button class="button is-black is-small">
+									<a th:href="@{/search/text/{textId}(textId=${zettel.tekst.textId})}" target="_blank" rel="noopener noreferrer">open text</a>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -120,12 +120,13 @@
 			class="columns is-multiline"
 		>
 			<div
-				class="card is-shady column is-one-half "
+				class="column is-one-third"
 				th:each="text : ${texts}"
 			>
-				<div class="card-image">
-					<figure class="image is-4by3">
-						<img
+				<div class="card is-shady">
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img
 							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
 							alt="Placeholder image"
 						>
@@ -184,9 +185,9 @@
 	>
   <div class="box">
     <h2 class="title">{{zettel.topic}}</h2>
-    <p>{{modalContent}}</p>
+    <p class="modal-text">{{modalContent}}</p>
     {{#hasImage}}
-    <p>{{tekst}}</p>
+    <p class="modal-text">{{tekst}}</p>
     <figure class="image">
       <img src="{{imageUrl}}" alt="{{imageAlt}}">
     </figure>
