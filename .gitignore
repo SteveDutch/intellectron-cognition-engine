@@ -75,3 +75,4 @@ mvnw.cmd
 *.bak
 systemctl
 qodana.yaml
+.qodo

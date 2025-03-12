@@ -146,3 +146,42 @@
 .modal-text::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* Content Section Styling - Labels and Icons for Card Sections
+-------------------------------------------------- 
+Defines the layout and appearance of section headers within cards,
+including arrow icons, labels, and content spacing.
+*/
+
+.content-section {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.3rem;
+}
+
+.section-label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 600;
+    min-width: 70px;
+}
+
+.content-section .icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.content-section .icon img {
+    width: 100%;
+    height: auto;
+}
+
+.content-section h4,
+.content-section h5,
+.content-section p {
+    margin: 0;
+    flex: 1;
+}

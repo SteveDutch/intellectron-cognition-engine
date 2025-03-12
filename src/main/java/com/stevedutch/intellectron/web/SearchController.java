@@ -60,13 +60,7 @@ public class SearchController {
 		LOG.info("\n  got tagText = " + tagFragment);
 
 		List<Tag> wantedTags = searchService.findTagByTagFragment(tagFragment);
-		
-//		List<Zettel> zettels = zettelService.findZettelByTag(wantedTag.getTagText()); // bei Ähnlichkeitssuche anhand eines Suchterms kann eine Liste zurückgebeen werden
-//		if (zettels == null) {
-//			LOG.info("\n NO ZETTEL FOUND"); // derzeit gehandelt über SearchTermNotFoundException
-//		} else {
-//			LOG.info("\n  got " + zettels.size()+ " Zettels: \n" + zettels);
-//		}
+
 		LOG.info("\n  got " + wantedTags.size()+ " Tags: \n" + wantedTags.iterator().next().getTagText());
 		model.addAttribute("wantedTags",wantedTags);
 		return "/tags";

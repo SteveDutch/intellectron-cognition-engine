@@ -93,10 +93,41 @@
 					</div>
 					<div class="card-content">
 						<div class="content">
-							<h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
-							<p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
-							<h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
-							<p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
+							<!-- Topic Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Topic:</span>
+								<h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
+							</div>
+
+							<!-- Note Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Note:</span>
+								<p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
+							</div>
+
+							<!-- Text Title Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Title:</span>
+								<h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
+							</div>
+
+							<!-- Text Content Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Text:</span>
+								<p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
+							</div>
 							
 							<div class="button-group mt-auto">
 								<button class="button is-black is-small js-modal-trigger"
@@ -114,6 +145,7 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- Tekst -->
 		<div
 			th:if="${texts}"
@@ -130,29 +162,39 @@
 							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
 							alt="Placeholder image"
 						>
-					</figure>
-				</div>
-				<div class="card-content">
-					<div class="content">
-						<h4 th:text="${text.title}">Platzhalter für zettel.topic</h4>
-						<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
-						<h5 th:text="${text.text}">Platzhalter für zettel.tekst.title</h5>
-						<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="content">
+							<!-- Title Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Title:</span>
+								<h4 th:text="${text.title}">Platzhalter für text.title</h4>
+							</div>
 
-						<button
-							class="button is-black js-modal-trigger"
-							data-target="modal-example"
-						>
-							<!-- th:data-zettel-id="${zettel.zettelId}"> -->
-							Open Text
-						</button>
+							<!-- Text Content Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Text:</span>
+								<h5 th:text="${text.text}">Platzhalter für text.text</h5>
+							</div>
+
+							<button
+								class="button is-black js-modal-trigger"
+								data-target="modal-example"
+							>
+								Open Text
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
-
 	</section>
 
 
