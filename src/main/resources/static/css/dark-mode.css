@@ -1,0 +1,29 @@
+:root {
+  /* Light theme variables (default) */
+  --background-color: #ffffff;
+  --text-color: #4a4a4a;
+  --border-color: #dbdbdb;
+}
+
+.theme-dark {
+  /* Dark theme variables */
+  --background-color: #1a1a1a;
+  --text-color: #ffffff;
+  --border-color: #363636;
+  
+  /* Override Bulma variables for dark mode */
+  --bulma-scheme-main: #1a1a1a;
+  --bulma-scheme-main-bis: #242424;
+  --bulma-scheme-main-ter: #2f2f2f;
+  --bulma-scheme-invert: #ffffff;
+  --bulma-text: #dbdbdb;
+  --bulma-text-strong: #ffffff;
+  --bulma-border: #363636;
+}
+
+/* Apply theme colors to elements */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+} 
