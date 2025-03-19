@@ -1,48 +1,44 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top" lang="en"
-	xmlns:th="http://www.thymeleaf.org">
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<title>the fabulous text search results page</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	crossorigin="anonymous">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<title>the fabulous text search results page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans"
-	rel="stylesheet" crossorigin="anonymous">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
- 
-<link rel="stylesheet" href="/css/modal-fx.min.css"
-	crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
 
-<script src="/js/texts.js" defer></script>
-<script src="/js/common.js" defer></script>
-<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" href="/css/modal-fx.min.css" crossorigin="anonymous" />
+
+	<script src="/js/texts.js" defer></script>
+	<script src="/js/common.js" defer></script>
+	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
 	<link rel="stylesheet" type="text/css" href="/css/texts.css">
 	<link rel="stylesheet" href="/css/dark-mode.css">
+	<script src="/js/dark-mode.js" defer></script>
 </head>
 
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
-			
-				<p class="title is-1 has-text-centered">your intellectron shows your Text List</p>
-				<p class="subtitle has-text-centered">
-					Search term: <span id="searchTerm"></span>
-				</p>
+
+			<p class="title is-1 has-text-centered">your intellectron shows your Text List</p>
+			<p class="subtitle has-text-centered">
+				Search term: <span id="searchTerm"></span>
+			</p>
 		</div>
 	</section>
 	<div class="box cta">
 		<p class="has-text-centered">
-			<span class="tag is-primary">FOUND</span> 
+			<span class="tag is-primary">FOUND</span>
 			<span th:text="${#lists.size(texts)}"></span> Texts:
 		</p>
 	</div>
@@ -51,8 +47,7 @@
 			<div class="card is-shady">
 				<div class="card-image">
 					<figure class="image is-4by3">
-						<img
-							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+						<img src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
 							alt="Placeholder image">
 					</figure>
 				</div>
@@ -61,8 +56,8 @@
 						<p class="title is-4" th:text="${text.title}">Platzhalter für zettel.topic</p>
 						<p class="subtitle is-5" th:text="${text.text}">Platzhalter für zettel.tekst.title</p>
 
-						<button class="button is-black js-modal-trigger text-preview"
-							data-target="modal-example" th:data-text-id="${text.textId}">
+						<button class="button is-black js-modal-trigger text-preview" data-target="modal-example"
+							th:data-text-id="${text.textId}">
 							Open Text</button>
 					</div>
 				</div>
@@ -81,20 +76,17 @@
 		<div class="modal-background"></div>
 		<!-- modal-content: a horizontally and vertically centered container, 
     with a maximum width of 640px, in which you can include any content -->
-<div class="modal-content">
-    <div class="box">
-        <h2 class="title" th:text="${tekst.title}">Title</h2>
-        <p th:text="${tekst.text}">Content</p>
-    </div>
-</div>
+		<div class="modal-content">
+			<div class="box">
+				<h2 class="title" th:text="${tekst.title}">Title</h2>
+				<p th:text="${tekst.text}">Content</p>
+			</div>
+		</div>
 		<button class="modal-close is-large" aria-label="close"></button>
 	</div>
 
 	<!-- Mustache template -->
-	<script
-		id="modal-template"
-		type="text/template"
-	>
+	<script id="modal-template" type="text/template">
   <div class="box">
     <h2 class="title">{{text.title}}</h2>
     <p>{{modalContent}}</p>
@@ -110,4 +102,5 @@
      end of MODALS
     ===============  -->
 </body>
+
 </html>
