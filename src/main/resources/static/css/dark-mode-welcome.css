@@ -1,0 +1,209 @@
+/* Welcome Page - Dark Mode Styles */
+
+.theme-dark .hero.is-info.welcome {
+  background: #000000;
+}
+
+.theme-dark .hero.welcome .title, 
+.theme-dark .hero.welcome .subtitle {
+  color: #ffffff;
+}
+
+.theme-dark .hero.welcome .subtitle a {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+/* NavBar Styling - ohne !important */
+.theme-dark .navbar.has-background-primary-00 {
+  background-color: #000000;
+  box-shadow: 0 2px 10px rgba(57, 255, 20, 0.3);
+}
+
+/* Spezifischere Selektoren statt !important */
+.theme-dark .navbar .navbar-item.has-text-warning,
+.theme-dark .navbar .navbar-brand .navbar-item.has-text-warning,
+.theme-dark .navbar .navbar-brand .brand-text.has-text-warning {
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.theme-dark .navbar .navbar-item.has-text-warning:hover,
+.theme-dark .navbar .navbar-brand .navbar-item.has-text-warning:hover {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+}
+
+/* Menu styling - mit neongrünen Buttons und Hover-Effekt */
+.theme-dark .menu {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.theme-dark .menu-label {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.theme-dark .menu-list a {
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.theme-dark .menu-list a:hover {
+  background-color: rgba(57, 255, 20, 0.1);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+  transform: translateY(-1px);
+}
+
+/* Hellere Placeholder-Texte im Menü */
+.theme-dark .menu input::placeholder {
+  color: #e4e4e4;
+  opacity: 0.9;
+}
+
+/* Buttons im Menü-Bereich - mit deutlich neongrünem Hintergrund */
+.theme-dark .menu .button,
+.theme-dark .menu button,
+.theme-dark section .menu form button {
+  background-color: #39FF14; /* Direkter neongrüner Farbwert für höchste Priorität */
+  color: #000000;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.theme-dark .menu .button:hover,
+.theme-dark .menu button:hover,
+.theme-dark section .menu form button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(57, 255, 20, 0.4);
+}
+
+/* Info Tiles mit weißem Text und Glow-Effekt */
+.theme-dark .info-tiles .tile.is-child.box {
+  background-color: #121212;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.theme-dark .info-tiles .tile.is-child.box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(57, 255, 20, 0.5);
+}
+
+.theme-dark .info-tiles .title,
+.theme-dark .info-tiles .subtitle,
+.theme-dark .info-tiles p {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+.theme-dark .info-tiles .title {
+  font-size: 2.5rem;
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+}
+
+.theme-dark .info-tiles .subtitle {
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
+/* Verstärkter Glow-Effekt bei Hover */
+.theme-dark .info-tiles .tile.is-child.box:hover .title {
+  text-shadow: 0 0 20px rgba(57, 255, 20, 0.9);
+}
+
+.theme-dark .info-tiles .tile.is-child.box:hover .subtitle {
+  text-shadow: 0 0 12px rgba(57, 255, 20, 0.7);
+}
+
+/* Cards */
+.theme-dark .card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.theme-dark .card-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.theme-dark .card-header-title {
+  color: var(--accent-color);
+}
+
+/* Tables in cards */
+.theme-dark .card-table .table {
+  background-color: transparent;
+  border-collapse: collapse;
+}
+
+.theme-dark .table {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+/* Verbesserte Zeilentrennstriche für Tabellen */
+.theme-dark .card-table .table tbody tr {
+  border-bottom: 3px solid #990000;
+}
+
+/* Entfernt ALLE Grenzen von Tabellenzellen */
+.theme-dark .card-table .table td {
+  border: none; /* Entfernt zellenspezifische Grenzen */
+}
+
+.theme-dark .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: rgba(10, 10, 10, 0.3);
+}
+
+.theme-dark .table tr:hover {
+  background-color: #1a1a1a;
+}
+
+/* Verbesserte Placeholder-Texte in Tabellen (Last 10-Sektion) */
+.theme-dark .card-table .table tr td {
+  color: #e4e4e4;
+}
+
+.theme-dark .card-table .table tr:hover td {
+  color: var(--accent-color);
+}
+
+/* Tags and Authors */
+.theme-dark .tag.is-medium.is-link,
+.theme-dark .tag.is-medium.is-danger,
+.theme-dark .tag.is-medium.is-warning {
+  background-color: var(--card-background);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.theme-dark .tag.is-medium.is-link:hover,
+.theme-dark .tag.is-medium.is-danger:hover,
+.theme-dark .tag.is-medium.is-warning:hover {
+  background-color: var(--accent-color);
+  color: #000000;
+}
+
+/* Buttons */
+.theme-dark .button.is-small.is-primary {
+  background-color: #39FF14; /* Direkter neongrüner Farbwert für höchste Priorität */
+  color: #000000;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.theme-dark .button.is-small.is-primary:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(57, 255, 20, 0.4);
+} 

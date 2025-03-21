@@ -10,14 +10,13 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
 	<link rel="stylesheet" type="text/css" href="/css/welcome.css">
-	<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
+	<link rel="stylesheet" type="text/css" href="/css/dark-mode-base.css">
 	<script src="/js/results.js" defer></script>
 	<script type="text/javascript" src="/js/dark-mode.js" defer></script>
 
 </head>
 
 <body>
-
 
 	<nav th:replace="fragments/common :: navbar"></nav>
 	<section class="hero  is-small is-info has-background-primary-80">
@@ -54,7 +53,7 @@
 												placeholder="enter topic (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary-light"
+											<button class="button is-info"
 												type="submit">go</button>
 										</div>
 									</form>
@@ -66,7 +65,7 @@
 												placeholder="enter note (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary-light"
+											<button class="button is-info"
 												type="submit">go</button>
 										</div>
 									</form>
@@ -78,7 +77,7 @@
 												placeholder="enter text (fragment)">
 										</div>
 										<div class="control">
-											<button class="button has-background-primary-light"
+											<button class="button is-info"
 												type="submit">go</button>
 										</div>
 									</form>
@@ -97,7 +96,7 @@
 											placeholder="enter tag (fragment)">
 									</div>
 									<div class="control">
-										<button class="button has-background-primary-light" type="submit">go</button>
+										<button class="button is-info" type="submit">go</button>
 
 										<br />
 									</div>
@@ -115,7 +114,7 @@
 											placeholder="author's surname (fragment)">
 									</div>
 									<div class="control">
-										<button class="button has-background-primary-light" type="submit">go</button>
+										<button class="button is-info" type="submit">go</button>
 										<br />
 									</div>
 								</form>
@@ -130,7 +129,7 @@
 											placeholder="enter text (fragment)">
 									</div>
 									<div class="control">
-										<button class="button has-background-primary-light" type="submit">go</button>
+										<button class="button is-info" type="submit">go</button>
 										<br />
 									</div>
 								</form>
@@ -234,7 +233,7 @@
 										<td></td>
 										<a th:href="@{/search/tag/(tagFragment=${tag.tagText})}">
 											<span th:text="${tag.tagText}"
-												class="tag is-medium is-link is-hoverable">Anzeige
+												class="tag is-medium is-warning is-hoverable">Anzeige
 												vom Topic & erste Wörter der Notiz</span>
 										</a>
 										<td class="level-right"><a></a></td>
