@@ -1,5 +1,3 @@
- 
-
 /* Moderne Best Practice mit CSS Custom Properties */
 :root {
    	/* --bulma-primary-h: 128deg; */
@@ -12,8 +10,12 @@
 /*   } */
   
 html, body {
-   	background-color: var(--page-background);  
-    height: 100vh;
+   	height: 100vh;
+}
+
+/* Light mode background */
+body:not(.theme-dark) {
+    background-color: var(--page-background);
 }
 
 textarea {

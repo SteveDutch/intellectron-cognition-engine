@@ -1,3 +1,5 @@
+/* Global Dark Mode Styles */
+
 :root {
   /* Light theme variables (default) */
   --background-color: #ffffff;
@@ -7,9 +9,12 @@
 
 .theme-dark {
   /* Dark theme variables */
-  --background-color: #1a1a1a;
+  --accent-color: #39FF14;  /* Neon green */
+  --background-color: #050505;
+  --card-background: #1a1a1a;
   --text-color: #ffffff;
-  --border-color: #363636;
+  --border-color: #333333;
+  --shadow-color: rgba(57, 255, 20, 0.3);
   
   /* Override Bulma variables for dark mode */
   --bulma-scheme-main: #1a1a1a;
@@ -21,9 +26,309 @@
   --bulma-border: #363636;
 }
 
+/* Base styles */
+.theme-dark body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* Hero sections */
+.theme-dark .hero.is-info.welcome,
+.theme-dark .hero.is-small.is-primary {
+  background-color: #000000;
+  box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.theme-dark .hero .title,
+.theme-dark .hero .subtitle {
+  color: var(--text-color);
+  text-shadow: 0 0 10px var(--shadow-color);
+}
+
+.theme-dark .hero .subtitle a {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
 /* Apply theme colors to elements */
 body {
   background-color: var(--background-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
-} 
+}
+
+/* NavBar Styling */
+.theme-dark .navbar.has-background-primary-00 {
+    background-color: #000000;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.theme-dark .navbar .navbar-item.has-text-warning,
+.theme-dark .navbar .navbar-brand .navbar-item.has-text-warning,
+.theme-dark .navbar .navbar-brand .brand-text.has-text-warning {
+    color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.theme-dark .navbar .navbar-item.has-text-warning:hover,
+.theme-dark .navbar .navbar-brand .navbar-item.has-text-warning:hover {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+}
+
+/* Form elements */
+.theme-dark textarea,
+.theme-dark input[type="text"],
+.theme-dark input[type="number"],
+.theme-dark input[type="date"] {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.theme-dark textarea:focus,
+.theme-dark input[type="text"]:focus,
+.theme-dark input[type="number"]:focus,
+.theme-dark input[type="date"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.25);
+    transform: translateY(-1px);
+}
+
+.theme-dark textarea:hover,
+.theme-dark input[type="text"]:hover,
+.theme-dark input[type="number"]:hover,
+.theme-dark input[type="date"]:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--shadow-color);
+}
+
+/* Placeholder styles */
+.theme-dark textarea::placeholder,
+.theme-dark input[type="text"]::placeholder,
+.theme-dark input[type="number"]::placeholder,
+.theme-dark input[type="date"]::placeholder {
+    color: #e4e4e4;
+    opacity: 0.9;
+}
+
+.theme-dark label {
+    color: var(--text-color);
+    text-shadow: 0 0 5px var(--shadow-color);
+}
+
+/* Buttons */
+.theme-dark .button {
+    background-color: var(--accent-color);
+    color: #000000;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--accent-color);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+}
+
+.theme-dark .button:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(57, 255, 20, 0.4);
+    text-shadow: 0 0 8px var(--accent-color);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+}
+
+/* Override specific button variants */
+.theme-dark .button.is-dark,
+.theme-dark .button.is-info,
+.theme-dark .button.is-primary,
+.theme-dark .button.is-warning,
+.theme-dark .button.is-danger {
+    background-color: var(--accent-color);
+    color: #000000;
+    font-weight: bold;
+    border: none;
+}
+
+.theme-dark .button.is-dark:hover,
+.theme-dark .button.is-info:hover,
+.theme-dark .button.is-primary:hover,
+.theme-dark .button.is-warning:hover,
+.theme-dark .button.is-danger:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(57, 255, 20, 0.4);
+}
+
+/* Small buttons */
+.theme-dark .button.is-small {
+    background-color: var(--accent-color);
+    color: #000000;
+    font-weight: bold;
+    border: none;
+}
+
+.theme-dark .button.is-small:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(57, 255, 20, 0.4);
+}
+
+/* Modal */
+.theme-dark .modal-content {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--accent-color);
+}
+
+.theme-dark .modal-content button {
+    transition: all 0.3s ease;
+}
+
+.theme-dark .modal-content button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Tags */
+.theme-dark .tags .tag {
+    background-color: var(--card-background);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--shadow-color);
+}
+
+.theme-dark .tags .tag:hover {
+    background-color: var(--accent-color);
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    text-shadow: none;
+}
+
+/* Tables */
+.theme-dark .table {
+    background-color: var(--card-background);
+    color: var(--text-color);
+}
+
+.theme-dark .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+    background-color: rgba(10, 10, 10, 0.3);
+}
+
+.theme-dark .table tr:hover {
+    background-color: #1a1a1a;
+}
+
+.theme-dark .table td {
+    color: #e4e4e4;
+    vertical-align: middle;
+}
+
+.theme-dark .table tr:hover td {
+    color: var(--accent-color);
+}
+
+/* Verbesserte Zeilentrennstriche für Tabellen */
+.theme-dark .card-table .table tbody tr {
+    border-bottom: 3px solid #390404;
+  }
+  
+  /* Entfernt ALLE Grenzen von Tabellenzellen */
+  .theme-dark .card-table .table td {
+    border: none; /* Entfernt zellenspezifische Grenzen */
+  }
+  
+  .theme-dark .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+    background-color: rgba(10, 10, 10, 0.3);
+  }
+  
+  .theme-dark .table tr:hover {
+    background-color: #1a1a1a;
+  }
+
+/* Cards */
+.theme-dark .card {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.theme-dark .card-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.theme-dark .card-header-title {
+    color: var(--accent-color);
+}
+
+/* Info Tiles */
+.theme-dark .info-tiles .tile.is-child.box {
+    background-color: var(--card-background);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.theme-dark .info-tiles .tile.is-child.box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(57, 255, 20, 0.5);
+}
+
+.theme-dark .info-tiles .title,
+.theme-dark .info-tiles .subtitle,
+.theme-dark .info-tiles p {
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--shadow-color);
+}
+
+.theme-dark .info-tiles .title {
+    font-size: 2.5rem;
+    text-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+}
+
+.theme-dark .info-tiles .subtitle {
+    color: var(--accent-color);
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
+/* Dark Mode Toggle Button */
+.theme-dark #darkModeToggle {
+    background-color: var(--card-background);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.theme-dark #darkModeToggle:hover {
+    background-color: var(--accent-color);
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Fix for Last 10 section table cells */
+.theme-dark .card-table .table td {
+    padding: 0.75rem;
+    line-height: 1.5;
+}
+
+/* Center the Look button in its cell */
+.theme-dark .card-table .table td.level-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+}
+
+.theme-dark .card-table .table td.level-right .button {
+    margin: 0;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+}
