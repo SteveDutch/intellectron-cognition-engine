@@ -116,14 +116,11 @@
 				</div>
 			</div>
 
-
-
-
-
 		</div>
 
 		<hr />
-		<div>
+		<div class="columns">
+			<div class="column is-6">
 			<label for="Signatur">signature to which should be referred /
 				Signatur, auf die verwiesen werden soll:</label><br />
 			<div id="signatureContainer">
@@ -139,7 +136,15 @@
 					Reference</button>
 			</div>
 		</div>
+		<div id="changedcontainer" class="column is-6">
+			zettel was last changed: <span name="changed" th:field="${zettel.changed}" th:text="${zettel.changed}"></span>
+
+		</div>
 		<hr />
+		</div>
+	</div>
+		<hr />
+
 		<div class="columns">
 			<!--  Submit / Change Zettel -->
 			<div class="column is-half">
@@ -150,12 +155,7 @@
 				<button class="button is-medium is-danger is-dark is-rounded" id="openDeleteModal"
 					type="button">delete</button>
 			</div>
-		</div>
-		<div id="changedcontainer">
-			last changed: <span name="changed" th:field="${zettel.changed}" th:text="${zettel.changed}"></span>
-
-		</div>
-		</div>
+				 </div>
 	</form>
 
 	

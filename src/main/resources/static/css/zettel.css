@@ -4,11 +4,6 @@
     --page-background: #f3e5ab;
 } 
 
- 
-/* .is-fullheight-100vh{ */
-/*     height:100vh; */
-/*   } */
-  
 html, body {
    	height: 100vh;
 }

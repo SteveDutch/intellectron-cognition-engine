@@ -34,7 +34,7 @@
 }
 
 /* Hero sections */
-.theme-dark .hero.is-info.welcome,
+.theme-dark .hero.is-info,
 .theme-dark .hero.is-small.is-primary {
   background-color: #000000;
   box-shadow: 0 2px 10px var(--shadow-color);
