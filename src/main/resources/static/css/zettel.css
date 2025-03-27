@@ -54,3 +54,11 @@ textarea {
     margin-right: 10px;
     /* Fügt etwas Abstand zwischen den Buttons hinzu */
 }
+
+ .modal-container {
+    max-width: 800px;  /* increased from 300px */
+    min-width: 300px;  /* ensures it doesn't get too small */
+    margin: 20% auto;
+}
+
+ 

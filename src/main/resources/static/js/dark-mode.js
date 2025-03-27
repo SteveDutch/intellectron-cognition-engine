@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cssFile = '';
     
     // Determine which page-specific CSS to load
-    if (currentPath === '/' || currentPath.includes('welcome')) {
+/*     if (currentPath === '/' || currentPath.includes('welcome')) {
       cssFile = '/css/dark-mode-welcome.css';
     } else if (currentPath.includes('input')) {
       cssFile = '/css/dark-mode-input.css';
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
       cssFile = '/css/dark-mode-zettel.css';
     } else if (currentPath.includes('search')) {
       cssFile = '/css/dark-mode-search.css';
-    }
+    } */
     
     // Only load if we have a specific file to load
     if (cssFile) {

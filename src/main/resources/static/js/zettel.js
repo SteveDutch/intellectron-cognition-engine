@@ -2,12 +2,29 @@ let submitBtn = document.getElementById("submit");
 let zettel = {};
 let note = {};
 let author = {};
+//save modal
+const saveModal = document.getElementById("saveModal");
+const saveModalMessage = document.getElementById("saveModalMessage");
+const saveModalClose = document.getElementById("saveModalClose");
 // get ID of the zettel to be updated
 let zettelId = parseInt(document.getElementById("zettelId").textContent);
 
 submitBtn.addEventListener("click", function (event) {
     // suppress HTML sending form
     event.preventDefault();
+    
+    // Add confirmation dialog
+    if (!confirm('Are you sure you want to submit these changes?')) {
+        // Show modal for cancelled save
+        saveModalMessage.textContent = "Save cancelled";
+        saveModal.style.display = "block";
+        return; // If user clicks Cancel, stop here
+    }
+    
+    // Show modal for confirmed save
+    saveModalMessage.textContent = "Save confirmed";
+    saveModal.style.display = "block";
+    
     console.log("hooray! submit was clicked");
     prepareZettel();
 });
@@ -73,28 +90,35 @@ function zettelToJava() {
                   die abweichung localhost zu 127.0.0.1 war schon zuviel ;)
                   but seems to cause trouble if missing at other computers or 
                   maybe esp. at macs */
-            mode: "no-cors",
+          //   mode: "no-cors", --> not necessary, since we are using the same origin
             "Content-Type": "application/json",
         },
         body: JSON.stringify(zettel, author, 4),
-
     }).then(response => {
-		if (!response.ok) {
-		  throw response;
-		}
-		return response.json();
-	  })
-	  .then(data => {
-		// Handle the successful response
-		console.log(data);
-	  })
-	  .catch(error => {
-		// Pass the error response to the handleError function
-		handleError(error);
-	  });;
-
-    
-    console.log("als JSON gesendet:  " + JSON.stringify(zettel, author, 4));
+        if (!response.ok) {
+            console.log(response);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+             // Check if there's actually content to parse
+             const contentType = response.headers.get("content-type");
+             if (contentType && contentType.includes("application/json")) {
+                 return response.json();
+             }
+             return response.text() // if you expect text
+         })
+    .then(data => {
+        // Handle the successful response
+        console.log(data);
+        saveModalMessage.textContent = "Save successful!";
+        saveModal.style.display = "block";
+    })
+    .catch(error => {
+        // Simplified error handling
+        console.error('Error:', error);
+        saveModalMessage.textContent = "Error saving: " + error.message;
+        saveModal.style.display = "block";
+        handleError(error);
+    });
 }
 
 
@@ -116,22 +140,41 @@ window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
+    if (event.target == saveModal) {
+        saveModal.style.display = "none";
+    }
 }
 
 document.getElementById('delete').addEventListener('click', function () {
     deleteZettel();
 });
 
+// Add save modal close functionality
+saveModalClose.onclick = function() {
+    saveModal.style.display = "none";
+}
+
 function handleError(error) {
-    error.json().then(data => {
-        // Assuming the server sends a JSON response with a 'message' field
-        const message = data.message;
-        console.error('Error:', message);
-        // Display the message on the page
-        // For example, you could set the text content of an element with id 'errorMessage' to the message
-       // document.alarm('errorMessage').textContent = message;
-	   alert(message);
-    }).catch(err => {
-        console.error('Error parsing error response:', err);
-    });
+    // Try to parse error as JSON if possible
+    if (error.json) {
+        error.json().then(data => {
+            // Handle JSON error response
+            const message = data.message;
+            console.error('Error:', message);
+            saveModalMessage.textContent = "Error: " + message;
+            saveModal.style.display = "block";
+        }).catch(err => {
+            // Handle non-JSON error
+            console.error('Error parsing error response:', err);
+            saveModalMessage.textContent = "Error saving changes";
+            saveModal.style.display = "block";
+            alert(err.message); // Keep existing alert as fallback
+        });
+    } else {
+        // Handle plain error
+        console.error('Error:', error);
+        saveModalMessage.textContent = "Error saving changes";
+        saveModal.style.display = "block";
+        alert(error.message); // Keep existing alert as fallback
+    }
 }
