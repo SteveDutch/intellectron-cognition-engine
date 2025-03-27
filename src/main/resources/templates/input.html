@@ -38,41 +38,37 @@
 		<div class="columns">
 
 			<div class="column is-2">
-
-				<div>
-					<label for="tags">Tags: </label><br />
+				<div class="field">
+					<label class="label has-text-weight-bold" for="tags">Tags:</label>
 					<div id="tagsContainer" class="tags">
-
 						<div th:each="tag, status : ${tags}">
 							<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
 								th:value="${tag.tagText}" />
 							<button class="button is-small is-warning" type="button"
 								onclick="this.parentNode.remove()">del</button>
-							</div>
-
+						</div>
 					</div>
 					<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
 				</div>
 				<hr />
 
-				<div>
-					<label for="author">Author first name</label><br /> <input type="text" id="authorFirstName"
-						th:field="${author.authorFirstName}" /><br />
+				<div class="field">
+					<label class="label has-text-weight-bold" for="authorFirstName">Author first name</label>
+					<input type="text" id="authorFirstName" th:field="${author.authorFirstName}" />
 				</div>
 
-				<div>
-					<label for="author">Author family name</label><br /> <input type="text" id="authorFamilyName"
-						th:field="${author.authorFamilyName}" /><br />
+				<div class="field">
+					<label class="label has-text-weight-bold" for="authorFamilyName">Author family name</label>
+					<input type="text" id="authorFamilyName" th:field="${author.authorFamilyName}" />
 				</div>
-				<div>
-					<label for="timestamp">date of text:</label><br /> <input type="date" id="timestamp"
-						name="timestamp" th:field="${tekst.textDate}" /><br />
-
+				<div class="field">
+					<label class="label has-text-weight-bold" for="timestamp">Date of text:</label>
+					<input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" />
 				</div>
 
-				<div>
-					<label for="source">Source:</label><br /> <input type="text" id="source" name="source"
-						th:field="${tekst.source}" /><br />
+				<div class="field">
+					<label class="label has-text-weight-bold" for="source">Source:</label>
+					<input type="text" id="source" name="source" th:field="${tekst.source}" />
 				</div>
 
 			</div>
@@ -80,49 +76,50 @@
 
 
 			<div class="column is-5">
-				<div>
-					<label for="title">Topic: </label>
-					<textarea class=" is-link" placeholder="Topic" id="title" name="title" th:field="${zettel.topic}"
-						rows="3" autocomplete="on"></textarea>
-					<br />
-					<!-- <input type="text" /> -->
+				<div class="field">
+					<label class="label has-text-weight-bold" for="title">Topic:</label>
+					<div class="control">
+						<textarea class="textarea is-link" placeholder="Topic" id="title" name="title" 
+							th:field="${zettel.topic}" rows="3" autocomplete="on"></textarea>
+					</div>
 				</div>
-				
-				<div>
-					<label for="note">Note: </label>
-					<textarea id="notiz" name="article" th:field="${note.noteText}" rows="10"
-						autocomplete="on"></textarea>
-					<br />
-					<!-- <input type="text"  /><br /> -->
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="notiz">Note:</label>
+					<div class="control">
+						<textarea class="textarea" id="notiz" name="article" 
+							th:field="${note.noteText}" rows="10" autocomplete="on"></textarea>
+					</div>
 				</div>
 			</div>
 
 			<div class="column is-5">
-				<div>
-					<label for="title">Title:</label>
-					<textarea id="texttitle" name="title" th:field="${tekst.title}" rows="3"
-						autocomplete="on"></textarea>
-					<br />
+				<div class="field">
+					<label class="label has-text-weight-bold" for="texttitle">Title:</label>
+					<div class="control">
+						<textarea class="textarea" id="texttitle" name="title" 
+							th:field="${tekst.title}" rows="3" autocomplete="on"></textarea>
+					</div>
 				</div>
-				<br />
-				<div>
-					<label for="tekst">Text: </label>
-					<textarea id="tekst" name="tekst" th:text="${tekst.text}" rows="10" autocomplete="on"></textarea>
-					<br />
-					<!-- <input id="tekst" th:field="${tekst.text}" /> -->
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="tekst">Text:</label>
+					<div class="control">
+						<textarea class="textarea" id="tekst" th:field="${tekst.text}" 
+							rows="10" autocomplete="on"></textarea>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<hr />
-		<div>
-			<label for="Signatur">signature to which should be referred /
-				Signatur, auf die verwiesen werden soll:</label><br />
+		<div class="field">
+			<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred / 
+				Signatur, auf die verwiesen werden soll:</label>
 			<div id="signatureContainer">
 				<div th:each="reference, status : ${references}">
 					<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-						th:id="'signature' + ${status.index}" th:name="'references' "
-						th:value="${reference.targetZettel}" />
+						th:id="'signature' + ${status.index}" th:name="'references'" th:value="${reference.targetZettel}" />
 					<button class="button is-small is-warning" type="button" onclick="this.parentNode.remove()">rydde ut
 						referanse</button>
 				</div>
