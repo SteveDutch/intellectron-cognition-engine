@@ -211,46 +211,50 @@ body {
     text-shadow: none;
 }
 
-/* Tables */
+/* Table Styling */
 .theme-dark .table {
     background-color: var(--card-background);
     color: var(--text-color);
+    border: none;
 }
 
-.theme-dark .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
-    background-color: rgba(10, 10, 10, 0.3);
+.theme-dark .table.is-striped tbody tr:nth-child(even) {
+    background-color: #111111 !important;
+}
+
+.theme-dark .table.is-striped tbody tr:nth-child(odd) {
+    background-color: #000000;
+}
+
+.theme-dark .table thead th {
+    background-color: #111;
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.theme-dark .table td, 
+.theme-dark .table th {
+    color: #e4e4e4;
+    border: none;
+    padding: 0.75rem;
+    vertical-align: middle;
 }
 
 .theme-dark .table tr:hover {
     background-color: #1a1a1a;
 }
 
-.theme-dark .table td {
-    color: #e4e4e4;
-    vertical-align: middle;
-}
-
 .theme-dark .table tr:hover td {
     color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-color);
+    transition: all 0.3s ease;
 }
 
-/* Verbesserte Zeilentrennstriche für Tabellen */
-.theme-dark .card-table .table tbody tr {
-    border-bottom: 3px solid #390404;
-  }
-  
-  /* Entfernt ALLE Grenzen von Tabellenzellen */
-  .theme-dark .card-table .table td {
-    border: none; /* Entfernt zellenspezifische Grenzen */
-  }
-  
-  .theme-dark .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
-    background-color: rgba(10, 10, 10, 0.3);
-  }
-  
-  .theme-dark .table tr:hover {
-    background-color: #1a1a1a;
-  }
+.theme-dark .card-table {
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    overflow: hidden;
+}
 
 /* Cards */
 .theme-dark .card {
@@ -260,7 +264,8 @@ body {
 }
 
 .theme-dark .card-header {
-    border-bottom: 1px solid var(--border-color);
+    background-color: #111111;  /* subtle grey for the header */
+    border-bottom: 2px solid var(--accent-color);
 }
 
 .theme-dark .card-header-title {
@@ -331,4 +336,28 @@ body {
     height: 100%;
     display: inline-flex;
     align-items: center;
+}
+
+/* Table styling for dark mode */
+.theme-dark .thick-black-border {
+    border: none;
+    background-color: black;
+}
+
+/* Fix for column and container white space */
+.theme-dark .columns {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.theme-dark .column {
+    background-color: #000000;
+    padding: 0.75rem;
+}
+
+.theme-dark .card-table,
+.theme-dark .content,
+.theme-dark .card {
+    background-color: #000000;
 }
