@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.exception.TopicTooLongException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -63,6 +64,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
     
+    @ExceptionHandler(TagNotFoundException.class)
+    public ResponseEntity<String> handleTagNotFoundException(TagNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
     
 
 }

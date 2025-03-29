@@ -16,6 +16,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
 import com.stevedutch.intellectron.repository.ReferenceRepository;
 import com.stevedutch.intellectron.repository.TagRepository;
@@ -292,6 +293,11 @@ public class SearchService {
 			attempts++;
 		}
 		return new ArrayList<>(uniqueAuthors);
+	}
+
+	public Tag findTagById(Long tagId) {
+		return tagRepo.findById(tagId)
+				.orElseThrow(() -> new TagNotFoundException("Tag not found with id " + tagId));
 	}
 
 

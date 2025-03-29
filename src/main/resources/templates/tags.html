@@ -62,58 +62,27 @@
 			</div>
 		</section>
 
-		<h1 class="title is-3">tag list</h1>
-		<div th:if="${#lists.isEmpty(wantedTags)}">
-			<p>No tags found.</p>
+		<!-- Tag Cloud Section -->
+		<div class="section">
+			<h2 class="title is-4">Found Tags</h2>
+			<div class="tags are-medium">
+				<span th:each="tag : ${wantedTags}" 
+					  class="tag is-link is-clickable"
+					  th:onclick="'window.location.href=\'' + @{/search/tag/{tagId}(tagId=${tag.id})} + '\''">
+					<span th:text="${tag.tagText}"></span>
+					<span class="tag is-info is-light" th:text="${#lists.size(tag.zettels)}"></span>
+				</span>
+			</div>
 		</div>
 
-		<div th:unless="${#lists.isEmpty(wantedTags)}">
-			<h2 class="title is-5">tags found:</h2>
-			<ul>
-				<li
-					class="tag is-large"
-					th:each="tag : ${wantedTags}"
-				><a
-					th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-						<h4 th:text="${tag.tagText}"></h4> <!-- <p th:text="${tag.zettel}"></p> -->
-						<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> --></li>
-			</ul>
+		<!-- Zettel Results Section -->
+		<div class="section" th:if="${selectedTag != null}">
+			<h2 class="title is-4">
+				Zettels tagged with: <span class="tag is-primary" th:text="${selectedTag.tagText}"></span>
+			</h2>
+			<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
 		</div>
 
-		<div>
-			<table>
-				<thead>
-					<tr>
-						<th>tag</th>
-						<th>Zettel</th>
-
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="tag : ${wantedTags}">
-						<td><span
-							class="tag is-medium"
-							th:text="${tag.tagText}"
-						> <a
-								th:href="@{/search/tag/?tagFragment={tagText}(tagText=${tag.tagText})}"
-								target="_blank"
-								rel="noopener noreferrer"
-							></span></td>
-
-						<td th:each="zettel : ${tag.zettels}"><a
-							th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
-							target="_blank"
-							rel="noopener noreferrer"
-						> <span th:text="${zettel.topic}"></span></td>
-
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<br>
 		<footer class="column is-narrow">
 			<p>&copy; 2023-2024 Meine Firma. Alle Rechte vorbehalten.</p>
 		</footer>

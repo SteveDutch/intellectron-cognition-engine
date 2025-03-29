@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,13 +55,12 @@ public class SearchController {
 	
 	@GetMapping("/search/tag/")
 	public String searchZettelByTagFragment(@RequestParam("tagFragment") String tagFragment, ModelMap model) {
-
-		LOG.info("\n  got tagText = " + tagFragment);
-
+		LOG.info("Got & Searching for tag fragment: {}", tagFragment);
 		List<Tag> wantedTags = searchService.findTagByTagFragment(tagFragment);
-
 		LOG.info("\n  got " + wantedTags.size()+ " Tags: \n" + wantedTags.iterator().next().getTagText());
-		model.addAttribute("wantedTags",wantedTags);
+
+		model.addAttribute("wantedTags", wantedTags);
+		model.addAttribute("tagFragment", tagFragment);
 		return "/tags";
 	}
 	
@@ -160,6 +158,19 @@ public class SearchController {
 		model.addAttribute("authors", authors);
 		return "/authors";
 		
+	}
+	
+	@GetMapping("/search/tag/{tagId}")
+	public String showTagDetails(@PathVariable Long tagId, ModelMap model) {
+		LOG.info("Showing details for tag ID: {}", tagId);
+		Tag selectedTag = searchService.findTagById(tagId);
+		
+		// Get the associated Zettels
+		List<Zettel> zettels = searchService.findZettelByTag(selectedTag.getTagText());
+		
+		model.addAttribute("selectedTag", selectedTag);
+		model.addAttribute("zettels", zettels);
+		return "/tags";
 	}
 	
 }
