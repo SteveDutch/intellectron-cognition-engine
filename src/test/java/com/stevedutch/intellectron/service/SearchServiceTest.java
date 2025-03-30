@@ -33,6 +33,7 @@ import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
 import com.stevedutch.intellectron.repository.TagRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
@@ -64,9 +65,14 @@ class SearchServiceTest {
 
 	private static final int EXPECTED_TAG_COUNT = 5;
 
+	private Tag testTag;
+	private Long testTagId;
+
 	@BeforeEach
 	void setUp() {
-		// In JUnit 5 mit Mockito-Extension ist keine explizite Initialisierung nötig
+		testTagId = 1L;
+		testTag = new Tag("Test Tag");
+		testTag.setId(testTagId);
 	}
 
 	@Test
@@ -578,4 +584,42 @@ class SearchServiceTest {
         assertEquals(new HashSet<>(uniqueTags), new HashSet<>(result), "All Tags should be unique");
         verify(tagRepo, times(EXPECTED_TAG_COUNT)).findOneRandomTag();
     }
+
+	@Test
+	void findTagById_WhenTagExists_ShouldReturnTag() {
+		// Arrange
+		when(tagRepo.findById(testTagId)).thenReturn(Optional.of(testTag));
+
+		// Act
+		Tag result = searchService.findTagById(testTagId);
+
+		// Assert
+		assertNotNull(result);
+		assertEquals(testTagId, result.getId());
+		assertEquals("Test Tag", result.getTagText());
+		verify(tagRepo).findById(testTagId);
+	}
+
+	@Test
+	void findTagById_WhenTagDoesNotExist_ShouldThrowTagNotFoundException() {
+		// Arrange
+		when(tagRepo.findById(testTagId)).thenReturn(Optional.empty());
+
+		// Act & Assert
+		TagNotFoundException exception = assertThrows(TagNotFoundException.class, 
+			() -> searchService.findTagById(testTagId));
+		
+		assertEquals("Tag not found with id " + testTagId, exception.getMessage());
+		verify(tagRepo).findById(testTagId);
+	}
+
+	@Test
+	void findTagById_WhenTagIdIsNull_ShouldThrowTagNotFoundException() {
+		// Act & Assert
+		TagNotFoundException exception = assertThrows(TagNotFoundException.class, 
+			() -> searchService.findTagById(null));
+		
+		assertEquals("Tag not found with id null", exception.getMessage());
+		verify(tagRepo).findById(null);
+	}
 }

@@ -15,11 +15,29 @@ import com.stevedutch.intellectron.exception.TopicTooLongException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+/**
+ * Global exception handler for the application.
+ * This class provides centralized exception handling across all {@code @RequestMapping} methods
+ * through {@code @ExceptionHandler} methods.
+ * 
+ * <p>Each method handles a specific type of exception and returns an appropriate
+ * HTTP response with error details. The handler methods are designed to provide
+ * consistent error responses across the application.</p>
+ *
+ * @author stevedutch
+ * @since 1.0
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
+    /**
+     * Handles exceptions when a search term is not found.
+     *
+     * @param ex the SearchTermNotFoundException that was thrown
+     * @return ResponseEntity containing the error message with HTTP status 404 (NOT_FOUND)
+     */
     @ExceptionHandler(SearchTermNotFoundException.class)
-    public ResponseEntity<String> handleTagNotFoundException(SearchTermNotFoundException ex) {
+    public ResponseEntity<String> SearchTermNotFoundException(SearchTermNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
     	// XXX for gistorical & maybe learning reasons
@@ -43,6 +61,12 @@ public class GlobalExceptionHandler {
 //        return "redirect:/400";
 //    }
     
+    /**
+     * Handles exceptions when an empty Zettel is submitted.
+     *
+     * @param ex the EmptyZettelException that was thrown
+     * @return ResponseEntity containing a map with the error message and HTTP status 400 (BAD_REQUEST)
+     */
     @ExceptionHandler(EmptyZettelException.class)
     public ResponseEntity<Map<String, String>> handleEmptyZettelException(EmptyZettelException ex) {
         Map<String, String> error = new HashMap<>();
@@ -50,6 +74,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     
+    /**
+     * Handles exceptions when a topic exceeds the maximum allowed length.
+     *
+     * @param ex the TopicTooLongException that was thrown
+     * @return ResponseEntity containing a map with the error message and HTTP status 400 (BAD_REQUEST)
+     */
     @ExceptionHandler(TopicTooLongException.class)
     public ResponseEntity<Map<String, String>> handleTopicTooLongException(TopicTooLongException ex) {
         Map<String, String> error = new HashMap<>();
@@ -57,6 +87,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     
+    /**
+     * Handles JPA entity not found exceptions.
+     *
+     * @param ex the EntityNotFoundException that was thrown
+     * @return ResponseEntity containing a map with the error message and HTTP status 404 (NOT_FOUND)
+     */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException ex) {
         Map<String, String> error = new HashMap<>();
@@ -64,6 +100,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
     
+    /**
+     * Handles exceptions when a requested tag cannot be found.
+     *
+     * @param ex the TagNotFoundException that was thrown
+     * @return ResponseEntity containing the error message with HTTP status 404 (NOT_FOUND)
+     */
     @ExceptionHandler(TagNotFoundException.class)
     public ResponseEntity<String> handleTagNotFoundException(TagNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());

@@ -57,7 +57,7 @@ public class SearchController {
 	public String searchZettelByTagFragment(@RequestParam("tagFragment") String tagFragment, ModelMap model) {
 		LOG.info("Got & Searching for tag fragment: {}", tagFragment);
 		List<Tag> wantedTags = searchService.findTagByTagFragment(tagFragment);
-		LOG.info("\n  got " + wantedTags.size()+ " Tags: \n" + wantedTags.iterator().next().getTagText());
+		LOG.info("\n  got " + wantedTags.size());
 
 		model.addAttribute("wantedTags", wantedTags);
 		model.addAttribute("tagFragment", tagFragment);
@@ -160,6 +160,18 @@ public class SearchController {
 		
 	}
 	
+	/**
+	 * Handles the GET request to display details of a specific tag and its associated Zettels.
+	 * This endpoint retrieves a tag by its ID and finds all Zettels that are tagged with it.
+	 * The results are added to the model for rendering in the tags view.
+	 *
+	 * @param tagId the unique identifier of the tag to display
+	 * @param model the Spring ModelMap to which the tag and associated Zettels are added
+	 * @return the name of the view template to render ("/tags")
+	 * @throws TagNotFoundException if no tag is found with the given ID
+	 * @see com.stevedutch.intellectron.domain.Tag
+	 * @see com.stevedutch.intellectron.domain.Zettel
+	 */
 	@GetMapping("/search/tag/{tagId}")
 	public String showTagDetails(@PathVariable Long tagId, ModelMap model) {
 		LOG.info("Showing details for tag ID: {}", tagId);

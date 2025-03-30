@@ -295,6 +295,14 @@ public class SearchService {
 		return new ArrayList<>(uniqueAuthors);
 	}
 
+	/**
+	 * Retrieves a Tag entity by its ID from the repository.
+	 *
+	 * @param tagId the unique identifier of the tag to retrieve
+	 * @return the Tag entity if found
+	 * @throws TagNotFoundException if no tag is found with the given ID
+	 * @see com.stevedutch.intellectron.exception.TagNotFoundException
+	 */
 	public Tag findTagById(Long tagId) {
 		return tagRepo.findById(tagId)
 				.orElseThrow(() -> new TagNotFoundException("Tag not found with id " + tagId));
