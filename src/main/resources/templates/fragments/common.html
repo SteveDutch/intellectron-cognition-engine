@@ -28,11 +28,17 @@
 </nav>
 <!-- END NAV -->
 
+<!-- START TABLE SORTING RESOURCES -->
+<head th:fragment="table-sort-resources">
+    <link rel="stylesheet" type="text/css" href="/css/table-sort.css">
+    <script type="text/javascript" src="/js/table-sort.js" defer></script>
+</head>
+<!-- END TABLE SORTING RESOURCES -->
+
 <!-- START SHOW ZETTELS IN TABLE-->
  
 	<div th:fragment="zettel-table(zettels)">
-		<table class="table is-fullwidth is-bordered is-striped has-background-grey-lighter thick-black-border">
-
+		<table class="table is-fullwidth is-bordered is-striped has-background-grey-lighter thick-black-border sortable-table">
 			<thead>
 				<tr>
 					<th>Signature</th>
