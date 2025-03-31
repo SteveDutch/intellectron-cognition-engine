@@ -57,11 +57,11 @@ public class InputController {
 		List<Zettel> zettels = searchService.findLast10Zettel();
 		List<Zettel> randomZettels = searchService.findRandomZettel(10);
 		// TODO rename
-		textManipulationService.reduceTekstStringListElements(zettels, 220);
-		textManipulationService.reduceTekstStringListElements(randomZettels, 220);
+		textManipulationService.reduceTekstStringListElements(zettels, 42);
+		textManipulationService.reduceTekstStringListElements(randomZettels, 42);
 		// TODO rename
-		textManipulationService.reduceNoteStringListElements(zettels, 220);
-		textManipulationService.reduceNoteStringListElements(randomZettels, 220);
+		textManipulationService.reduceNoteStringListElements(zettels, 42);
+		textManipulationService.reduceNoteStringListElements(randomZettels, 42);
 
 		model.put("zettels", zettels);
 		model.put("randomZettels", randomZettels);

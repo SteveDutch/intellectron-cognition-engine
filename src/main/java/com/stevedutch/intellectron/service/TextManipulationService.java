@@ -42,7 +42,7 @@ public class TextManipulationService {
 
 	// XXX ev. unterschiedliche Anzahl
 	/**
-	 * reduces the string size of zettel.Tekst.text, zettel.note, zettel.topic of  all elements of a list of zettel to chosen number
+	 * reduces the string size of zettel.Tekst.text, zettel.note, zettel.topic of  all elements of a list of zettel to the same chosen number
 	 * of characters
 	 * 
 	 * @param zettels            - List of zettel objects
