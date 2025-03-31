@@ -44,22 +44,20 @@ public class SearchService {
 	private TagRepository tagRepo;
 
 	public List<Zettel> findZettelByNoteFragment(String noteFragment) {
-
 		validateSearchString(noteFragment);
-		if (zettelRepo.findZettelByNoteFragment(noteFragment).isEmpty()) {
-            throw new SearchTermNotFoundException("No Zettel found with note: " + noteFragment);
-            }
 		List<Zettel> result = zettelRepo.findZettelByNoteFragment(noteFragment);
+		if (result.isEmpty()) {
+			throw new SearchTermNotFoundException("No Zettel found with note: " + noteFragment);
+		}
 		return result;
 	}
 
 	public List<Zettel> findZettelByTextFragment(String textFragment) {
-
 		validateSearchString(textFragment);
-		if (zettelRepo.findZettelByTextFragment(textFragment).isEmpty()) {
+		List<Zettel> result = zettelRepo.findZettelByTextFragment(textFragment);
+		if (result.isEmpty()) {
 			throw new SearchTermNotFoundException("No Zettel found with text: " + textFragment);
 		}
-		List<Zettel> result = zettelRepo.findZettelByTextFragment(textFragment);
 		return result;
 	}
 	
@@ -88,10 +86,10 @@ public class SearchService {
 	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
 	
 		validateSearchString(topicFragment);
-		if (zettelRepo.findZettelByTopicFragment(topicFragment).isEmpty()) {
+		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
+		if (result.isEmpty()) {
 			throw new SearchTermNotFoundException("No Zettel found with topic: " + topicFragment);
 		}
-		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
 		return result;
 	}
 
@@ -200,13 +198,12 @@ public class SearchService {
 	 * @return - List<Tag> of all tags that contain the search term
 	 */
 	public List<Tag> findTagByTagFragment(String tagFragment) {
-
 		validateSearchString(tagFragment);
-
-		if (tagRepo.findByTagFragment(tagFragment).isEmpty()) {
+		List<Tag> result = tagRepo.findByTagFragment(tagFragment);
+		if (result.isEmpty()) {
 			throw new SearchTermNotFoundException("No Tag found with text: " + tagFragment);
 		}
-		return tagRepo.findByTagFragment(tagFragment);
+		return result;
 	}
 
 	/**
