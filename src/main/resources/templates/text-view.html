@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body class="text-view-page">
 	<nav th:replace="fragments/common :: navbar"></nav>
 
 	<section class="hero is-info welcome is-small">
@@ -33,13 +33,12 @@
 		</div>
 	</section>
 
-	<div class="container">
-            <!-- Hauptinhalt mit optimaler Lesebreite -->
-            <div class="columns is-centered">
-                <div class="column is-8">
-                    <!-- Content-Klasse für optimierte Textdarstellung -->
-                    <div class="content">
-                        <p class="title is-1 line-break" th:text="${tekst.title}">title</p> 
+	<div class="container is-fluid">
+		<div class="section">
+			<div class="columns is-centered">
+				<div class="column is-8">
+					<div class="content">
+						<p class="title is-1 line-break" th:text="${tekst.title}">title</p> 
 
 						<div class="subtitle is-4 has-text-right" th:each="author : ${tekst.associatedAuthors}" >
 							<p th:text="${author.authorFirstName} +' ' +  ${author.authorFamilyName}">author.authorFirstName">author</p>
@@ -49,10 +48,16 @@
 						<p class="is-size-5 has-text-justified line-break" th:text="${tekst.text}">
                             text
                         </p>
-                    </div>
-                </div>
-            </div>
-        </div>
- 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>&copy; 2024 Your Company. All rights reserved.</p>
+		</div>
+	</footer>
 </body>
 </html>
