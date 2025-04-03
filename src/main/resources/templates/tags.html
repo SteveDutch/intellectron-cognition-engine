@@ -67,10 +67,11 @@
 			<h2 class="title is-4">Found Tags</h2>
 			<div class="tags are-medium">
 				<span th:each="tag : ${wantedTags}" 
-					  class="tag is-link is-clickable"
+					  class="tag is-success is-clickable"
 					  th:onclick="'window.location.href=\'' + @{/search/tag/{tagId}(tagId=${tag.id})} + '\''">
 					<span th:text="${tag.tagText}"></span>
-					<span class="tag is-info is-light" th:text="${#lists.size(tag.zettels)}"></span>
+					<span class="tag is-warning is-light ml-2" 
+					      th:text="${#lists.size(tag.zettels)}"></span>
 				</span>
 			</div>
 		</div>
@@ -80,7 +81,17 @@
 			<h2 class="title is-4">
 				Zettels tagged with: <span class="tag is-primary" th:text="${selectedTag.tagText}"></span>
 			</h2>
-			<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+
+			<!-- Use th:block for clean conditional logic -->
+			<th:block th:if="${zettels == null || zettels.isEmpty()}">
+				<p class="has-text-centered is-size-5">No zettels connected to this tag.</p>
+			</th:block>
+
+			<th:block th:unless="${zettels == null || zettels.isEmpty()}">
+				<!-- The table fragment is ONLY included/processed when zettels is not empty -->
+				<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+			</th:block>
+
 		</div>
 
 		<footer class="column is-narrow">
