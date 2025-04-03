@@ -316,7 +316,7 @@ body {
 .theme-dark #darkModeToggle {
     background-color: var(--card-background);
     color: var(--accent-color);
-    border: 1px solid var(--accent-color);
+    border: none;
     transition: all 0.3s ease;
 }
 
