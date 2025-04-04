@@ -8,8 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<link rel="stylesheet" type="text/css" href="/css/bulma.min.css" />
+<link rel="preload" href="/css/bulma.css" as="style">
+<link rel="preload" href="/css/authors.css" as="style">
+<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
 <link rel="stylesheet" href="/css/authors.css" />
+<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <script src="/js/common.js" defer></script>
 <script src="/js/dark-mode.js" defer></script>
@@ -19,98 +22,109 @@
 
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
-	<section class="hero is-primary is-small">
-		<div class="hero-body">
-			
-				<h1 class="title is-1 has-text-centered">Author List</h1>
+	<div class="main-container">
+		<section class="hero is-small is-primary">
+			<div class="hero-body">
+				<p class="title is-1 has-text-centered">your intellectron shows your author list</p>
 				<p class="subtitle has-text-centered">
-					Search term: <span id="searchTerm" class="has-text-weight-bold"></span>
+					search term: <span id="searchTerm" class="has-text-weight-bold"></span>
 				</p>
-		
+			</div>
+		</section>
+
+		<!-- Author Cloud Section -->
+		<div class="section">
+			<h2 class="title is-4">Found Authors</h2>
+			<div class="tags are-medium">
+				<span th:each="author : ${authors}" 
+					  class="tag is-success is-clickable"
+					  th:onclick="'window.location.href=\'' + @{/search/author/(lastName=${author.authorFamilyName})} + '\''">
+					<span th:text="${author.authorFirstName + ' ' + author.authorFamilyName}"></span>
+					<span class="tag is-warning is-light ml-2" 
+						  th:text="${#lists.size(author.texts)}"></span>
+				</span>
+			</div>
 		</div>
-	</section>
-	<h1 class=" title is-2">Author List</h1>
-	<div th:if="${#lists.isEmpty(authors)}">
-		<p>No authors found.</p>
-	</div>
 
-	<div th:unless="${#lists.isEmpty(authors)}">
+		<!-- Author Results Table -->
+		<div class="section">
+			<div th:if="${#lists.isEmpty(authors)}">
+				<p class="has-text-centered is-size-5">No authors found.</p>
+			</div>
 
-		<h3 class="title is-5">Authors:</h3>
-		<div class="content">
-			<ul>
-				<li th:each="author : ${authors}">
-					<h4 class="title is-6" th:text="${author.authorFamilyName}"></h4>
-					<p class="subtitle is-6" th:text="${author.authorFirstName}"></p>
-					<!--TODO <a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a> -->
-				</li>
-			</ul>
+			<div th:unless="${#lists.isEmpty(authors)}">
+				<table class="table is-striped is-hoverable is-fullwidth">
+					<thead>
+						<tr>
+							<th>Author</th>
+							<th>Title</th>
+							<th>Text</th>
+							<th>Zettel/Topic</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="author : ${authors}">
+							<td>
+								<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}"
+								   th:text="${author.authorFirstName + ' ' + author.authorFamilyName}">
+								</a>
+							</td>
+							<td>
+								<div th:each="tekst : ${author.texts}">
+									<span th:text="${tekst.title}">Titel</span>
+								</div>
+							</td>
+							<td>
+								<div th:each="tekst : ${author.texts}">
+									<span th:text="${tekst.text}">Text</span>
+								</div>
+							</td>
+							<td>
+								<div th:each="tekst : ${author.texts}">
+									<span th:each="zettel : ${tekst.zettels}"
+										  th:text="${zettel.topic + ' /// '}">
+										Zettel-Thema
+									</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
 
-	<div>
-		<table class="table is-striped is-hoverable is-fullwidth">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>First Name</th>
-					<th>Titel</th>
-					<th>Text</th>
-					<th>Zettel/Topic</th>
+		<!-- Existing cards and modals section -->
+		<div th:if="${authors}" class="columns is-multiline">
+			<div th:each="author : ${authors}">
+				<div th:each="tekst : ${author.texts}">
+					<div class="card is-shady column is-one-half ">
+						<!-- hier wahrschlich je tex eine Karte -->
+						<div class="card-image">
+							<figure class="image is-4by3">
+								<img
+									src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+									alt="Placeholder image">
+							</figure>
+						</div>
+						<div class="card-content">
+							<div class="content">
+								<h4
+									th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}">Platzhalter
+									für Autoenname</h4>
+								<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+								<h5 th:text="${tekst.title}">Platzhalter für tekst.title</h5>
+								<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+								<span th:text="${tekst.text}">Platzhalter für tekst</span>
+								<button class="button is-black js-modal-trigger text-preview"
+									data-target="modal-example" th:data-text-id="${tekst.textId}">
+									Open Text</button>
 
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="author : ${authors}">
-					<td><span th:text="${author.authorFamilyName}"></span></td>
-					<td><span th:text="${author.authorFirstName}"></span></td>
-					<!-- TODO S<td><a th:href="@{/author/{authorId}(authorId=${author.id})}" target="_blank">View Profile</a></td> -->
-					<td th:each="tekst : ${author.texts}"><span
-						th:text="'texttitel = ' + ${tekst.title}">Titel</span></td>
-					<td th:each="tekst : ${author.texts}"><span
-						th:text=" 'text itself = ' + ${tekst.text}">Text</span></td>
-					<td th:each="tekst : ${author.texts}"><span
-						th:each="zettel : ${tekst.zettels}"
-						th:text=" 'zettel = ' + ${zettel.topic} + '///' ">Zettel-Thema</span></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<!-- cards -->
-	<div th:if="${authors}" class="columns is-multiline">
-		<div th:each="author : ${authors}">
-			<div th:each="tekst : ${author.texts}">
-				<div class="card is-shady column is-one-half ">
-
-
-
-					<!-- hier wahrschlich je tex eine Karte -->
-					<div class="card-image">
-						<figure class="image is-4by3">
-							<img
-								src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
-								alt="Placeholder image">
-						</figure>
-					</div>
-					<div class="card-content">
-						<div class="content">
-							<h4
-								th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}">Platzhalter
-								für Autoenname</h4>
-							<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
-							<h5 th:text="${tekst.title}">Platzhalter für tekst.title</h5>
-							<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
-							<span th:text="${tekst.text}">Platzhalter für tekst</span>
-							<button class="button is-black js-modal-trigger text-preview"
-								data-target="modal-example" th:data-text-id="${tekst.textId}">
-								Open Text</button>
-
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 
 		<!--  
 	===============
@@ -148,16 +162,22 @@
 	===============
      end of MODALS
     ===============  -->
-		<script src="/js/common.js" async></script>
-		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				const urlParams = new URLSearchParams(window.location.search);
-				const searchTerm = urlParams.get('search');
-				if (searchTerm) {
-					const decodedSearchTerm = decodeURIComponent(searchTerm);
-					document.getElementById('searchTerm').textContent = decodedSearchTerm;
-				}
-			});
-		</script>
+	</div>
+
+	<footer class="column is-narrow">
+		<p>&copy; 2023-2024 Meine Firma. Alle Rechte vorbehalten.</p>
+	</footer>
+
+	<script src="/js/common.js" async></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const urlParams = new URLSearchParams(window.location.search);
+			const searchTerm = urlParams.get('search');
+			if (searchTerm) {
+				const decodedSearchTerm = decodeURIComponent(searchTerm);
+				document.getElementById('searchTerm').textContent = decodedSearchTerm;
+			}
+		});
+	</script>
 </body>
 </html>
