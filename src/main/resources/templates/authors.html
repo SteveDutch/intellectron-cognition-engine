@@ -53,41 +53,126 @@
 			</div>
 
 			<div th:unless="${#lists.isEmpty(authors)}">
-				<table class="table is-striped is-hoverable is-fullwidth">
+				<table class="table is-fullwidth is-bordered is-striped has-background-grey-lighter thick-black-border sortable-table">
 					<thead>
 						<tr>
 							<th>Author</th>
 							<th>Title</th>
 							<th>Text</th>
 							<th>Zettel/Topic</th>
+							<th>Tags</th>
+							<th>References</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="author : ${authors}">
-							<td>
-								<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}"
-								   th:text="${author.authorFirstName + ' ' + author.authorFamilyName}">
-								</a>
-							</td>
-							<td>
-								<div th:each="tekst : ${author.texts}">
-									<span th:text="${tekst.title}">Titel</span>
-								</div>
-							</td>
-							<td>
-								<div th:each="tekst : ${author.texts}">
-									<span th:text="${tekst.text}">Text</span>
-								</div>
-							</td>
-							<td>
-								<div th:each="tekst : ${author.texts}">
-									<span th:each="zettel : ${tekst.zettels}"
-										  th:text="${zettel.topic + ' /// '}">
-										Zettel-Thema
-									</span>
-								</div>
-							</td>
-						</tr>
+						<!-- Iteriere durch alle Autoren -->
+						<th:block th:each="author : ${authors}">
+							<!-- Fall 1: Autor ist null ODER hat keine Texte -->
+							<tr th:if="${author == null || author.texts == null || #lists.isEmpty(author.texts)}">
+								<td>
+									<!-- Zeige Autornamen an, falls Autor nicht null ist -->
+									<a th:if="${author != null}" 
+									   th:href="@{/search/author/(lastName=${author.authorFamilyName})}"
+									   th:text="${author.authorFirstName + ' ' + author.authorFamilyName}">
+									</a>
+									<!-- Zeige Platzhalter an, falls Autor null ist -->
+									<span th:if="${author == null}" class="placeholder-text">Invalid Author Data</span>
+								</td>
+								<td class="placeholder-text">No title available</td>
+								<td class="placeholder-text">No text available</td>
+								<td class="placeholder-text">No topics</td>
+								<td class="placeholder-text">No tags</td>
+								<td class="placeholder-text">No references</td>
+							</tr>
+							
+							<!-- Fall 2: Autor ist nicht null UND hat Texte -->
+							<tr th:if="${author != null && author.texts != null && !#lists.isEmpty(author.texts)}" th:each="tekst : ${author.texts}">
+								<td>
+									<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}"
+									   th:text="${author.authorFirstName + ' ' + author.authorFamilyName}">
+									</a>
+								</td>
+								<td>
+									<a th:if="${tekst.title != null && !tekst.title.isEmpty()}"
+									   th:href="@{/search/text/{textId}(textId=${tekst.textId})}"
+									   target="_blank" rel="noopener noreferrer">
+										<span th:text="${tekst.title}">Titel</span>
+									</a>
+									<span th:if="${tekst.title == null || tekst.title.isEmpty()}" 
+										  class="placeholder-text">No title</span>
+								</td>
+								<td>
+									<span th:if="${tekst.text != null && !tekst.text.isEmpty()}" 
+										  th:text="${#strings.abbreviate(tekst.text, 100)}">Text</span>
+									<span th:if="${tekst.text == null || tekst.text.isEmpty()}" 
+										  class="placeholder-text">No text content</span>
+								</td>
+								<td>
+									<!-- Zettel/Topic Spalte -->
+									<div th:if="${tekst.zettels != null && !#lists.isEmpty(tekst.zettels)}">
+										<!-- Block für jeden Zettel -->
+										<div th:each="zettel : ${tekst.zettels}" class="zettel-block">
+											<!-- Verlinktes und gekürztes Topic anzeigen -->
+											<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+											   target="_blank" rel="noopener noreferrer">
+												<span th:text="${#strings.abbreviate(zettel.topic, 100)}">Zettel-Thema</span>
+											</a>
+											<br/>
+											<!-- Signatur in kleinerer, grauer Schrift anzeigen (nicht verlinkt) -->
+											<small class="placeholder-text" th:text="${zettel.signature}">Signatur</small>
+										</div>
+									</div>
+									<!-- Fallback, wenn keine Zettel vorhanden sind -->
+									<span th:if="${tekst.zettels == null || #lists.isEmpty(tekst.zettels)}"
+										  class="placeholder-text">No topics</span>
+								</td>
+								<td>
+									<!-- Tags Spalte -->
+									<div th:if="${tekst.zettels != null && !#lists.isEmpty(tekst.zettels)}">
+										<!-- Block für jeden Zettel -->
+										<div th:each="zettel : ${tekst.zettels}" class="zettel-block">
+											<!-- Prüfe, ob Tags vorhanden sind -->
+											<span th:if="${zettel.tags != null && !#lists.isEmpty(zettel.tags)}">
+												<!-- Iteriere durch jeden Tag und erstelle einen Link -->
+												<span th:each="tag, iterStat : ${zettel.tags}">
+													<a th:href="@{/search/tag/{id}(id=${tag.id})}"
+													   target="_blank" rel="noopener noreferrer"
+													   th:text="${tag.tagText}">Tag</a>
+													<!-- Füge Trennzeichen hinzu, außer beim letzten Tag -->
+													<span th:if="${!iterStat.last}"> /// </span>
+												</span>
+											</span>
+											<!-- Fallback, wenn keine Tags für diesen Zettel vorhanden sind -->
+											<span th:if="${zettel.tags == null || #lists.isEmpty(zettel.tags)}"
+												  class="placeholder-text">No tags</span>
+										</div>
+									</div>
+									<!-- Fallback, wenn keine Zettel (und damit keine Tags) für den Text vorhanden sind -->
+									<span th:if="${tekst.zettels == null || #lists.isEmpty(tekst.zettels)}"
+										  class="placeholder-text">No zettel no tag</span>
+								</td>
+								<td>
+									<!-- References Spalte -->
+									<div th:if="${tekst.zettels != null && !#lists.isEmpty(tekst.zettels)}">
+										<!-- Block für jeden Zettel -->
+										<div th:each="zettel : ${tekst.zettels}" class="zettel-block">
+											<div th:if="${zettel.references != null && !zettel.references.isEmpty()}">
+												<span th:each="reference : ${zettel.references}" 
+													  th:text="${reference.targetZettel + ' /// '}">
+													Reference
+												</span>
+											</div>
+											<div th:if="${zettel.references == null || zettel.references.isEmpty()}" 
+												 class="placeholder-text">
+												No references
+											</div>
+										</div>
+									</div>
+									<span th:if="${tekst.zettels == null || #lists.isEmpty(tekst.zettels)}" 
+										  class="placeholder-text">No zettel no references </span>
+								</td>
+							</tr>
+						</th:block> <!-- Ende th:block th:each="author : ${authors}" -->
 					</tbody>
 				</table>
 			</div>
@@ -95,10 +180,14 @@
 
 		<!-- Existing cards and modals section -->
 		<div th:if="${authors}" class="columns is-multiline">
-			<div th:each="author : ${authors}">
-				<div th:each="tekst : ${author.texts}">
-					<div class="card is-shady column is-one-half ">
-						<!-- hier wahrschlich je tex eine Karte -->
+			<!-- Iterate through each author -->
+			<th:block th:each="author : ${authors}">
+				<!-- Iterate through each text of the current author -->
+				<!-- Create a column for each text card, making it one-third of the width -->
+				<div class="column is-one-third" th:each="tekst : ${author.texts}">
+					<!-- Card container for the text -->
+					<div class="card is-shady">
+						<!-- Card image section -->
 						<div class="card-image">
 							<figure class="image is-4by3">
 								<img
@@ -106,25 +195,27 @@
 									alt="Placeholder image">
 							</figure>
 						</div>
+						<!-- Card content section -->
 						<div class="card-content">
 							<div class="content">
+								<!-- Display author name -->
 								<h4
 									th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}">Platzhalter
 									für Autoenname</h4>
-								<!-- <p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p> -->
+								<!-- Display text title -->
 								<h5 th:text="${tekst.title}">Platzhalter für tekst.title</h5>
-								<!-- <p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p> -->
+								<!-- Display text preview (optional, consider adding a class to limit length if needed) -->
 								<span th:text="${tekst.text}">Platzhalter für tekst</span>
-								<button class="button is-black js-modal-trigger text-preview"
+								<!-- Button to trigger the modal, now full width with margin top -->
+								<button class="button is-black js-modal-trigger text-preview is-fullwidth mt-6"
 									data-target="modal-example" th:data-text-id="${tekst.textId}">
 									Open Text</button>
-
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+					</div> <!-- End of card -->
+				</div> <!-- End of column -->
+			</th:block> <!-- End of author iteration block -->
+		</div> <!-- End of columns container -->
 
 		<!--  
 	===============

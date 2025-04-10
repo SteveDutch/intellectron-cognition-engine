@@ -24,3 +24,68 @@
 		::-webkit-scrollbar-thumb:hover {
 			background: #c4c4c4
 		}
+
+/* Custom class for placeholder text with better contrast */
+.placeholder-text {
+  color: #555555; /* Dunkleres Grau für Light Mode */
+  /* Optional: Mache es kursiv, um es weiter hervorzuheben */
+  /* font-style: italic; */
+}
+
+/* Dark Mode: Setze die Farbe auf das Standard-Grau */
+.theme-dark .placeholder-text {
+  color: var(--bulma-grey); /* Standard-Grau für Dark Mode */
+}
+
+.zettel-block {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #dbdbdb;
+  min-height: 40px;
+}
+
+.zettel-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Dark Mode: Setze den Hintergrund der Tabelle explizit */
+.theme-dark .table.has-background-grey-lighter {
+  background-color: var(--bulma-grey-darker); /* Ein dunkler Grauton für den Tabellenhintergrund */
+}
+
+/* Forest green tag styling with correct count positioning */
+.tags .tag.is-success {
+    display: flex;
+    align-items: center;
+    padding-right: 0; /* Remove right padding for flush count positioning */
+}
+
+/* Position the text count at the right side */
+.tags .tag.is-success .tag.is-warning {
+    margin-left: 0.5rem;
+    margin-right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    position: relative; /* WICHTIG für die Positionierung */
+    right: -1px; /* Pull slightly right for perfect alignment */
+
+    /* Style for light mode */
+    background-color: #2cff33; /* Same green as in tags.css */
+    color: #090801;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+/* For dark mode compatibility */
+.theme-dark .tags .tag.is-success .tag.is-warning {
+    background-color: #000000;
+    color: var(--accent-color); /* Assuming --accent-color is defined globally */
+    border: 1px solid var(--accent-color);
+}
+
+/* Ensure the author name text has proper spacing */
+.tags .tag.is-success > span:first-child {
+    margin-right: 0.5rem;
+}
