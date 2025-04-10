@@ -46,7 +46,7 @@
 					<th>Note</th>
 					<th>Text Title</th>
 					<th>Text</th>
-					<th>Tags</th>
+					<th data-sort-method='none'>Tags</th>
 					<th>References</th>
 				</tr>
 			</thead>
@@ -68,7 +68,19 @@
 					<span th:text="${zettel.tekst.title}"></span></a></td>
 
 					<td><span th:text="${zettel.tekst.text}"></span></td>
-					<td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
+					<td>
+						<span th:if="${zettel.tags != null && !#lists.isEmpty(zettel.tags)}">
+							<span th:each="tag, iterStat : ${zettel.tags}">
+								<a th:href="@{/search/tag/{id}(id=${tag.id})}"
+								   target="_blank" rel="noopener noreferrer"
+								   th:text="${tag.tagText}">Tag Text</a>
+								<span th:if="${!iterStat.last}"> ••• </span>
+							</span>
+						</span>
+						<span th:if="${zettel.tags == null || #lists.isEmpty(zettel.tags)}">
+							No tags
+						</span>
+					</td>
 					<td><span th:each="reference : ${zettel.references}"
 							th:text="${reference.targetZettel} + ' // ' "></span></td>
 				</tr>
