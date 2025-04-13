@@ -139,7 +139,7 @@
 													   target="_blank" rel="noopener noreferrer"
 													   th:text="${tag.tagText}">Tag</a>
 													<!-- Füge Trennzeichen hinzu, außer beim letzten Tag -->
-													<span th:if="${!iterStat.last}"> /// </span>
+													<span th:if="${!iterStat.last}"> ••• </span>
 												</span>
 											</span>
 											<!-- Fallback, wenn keine Tags für diesen Zettel vorhanden sind -->
@@ -158,7 +158,7 @@
 										<div th:each="zettel : ${tekst.zettels}" class="zettel-block">
 											<div th:if="${zettel.references != null && !zettel.references.isEmpty()}">
 												<span th:each="reference : ${zettel.references}" 
-													  th:text="${reference.targetZettel + ' /// '}">
+													  th:text="${reference.targetZettel + ' ••• '}">
 													Reference
 												</span>
 											</div>

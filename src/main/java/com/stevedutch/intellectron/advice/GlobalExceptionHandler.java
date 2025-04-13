@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.ui.Model;
 
 import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
@@ -94,10 +95,10 @@ public class GlobalExceptionHandler {
      * @return ResponseEntity containing a map with the error message and HTTP status 404 (NOT_FOUND)
      */
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    public String handleEntityNotFoundException(EntityNotFoundException ex, Model model) {
+        model.addAttribute("message", ex.getMessage());
+        // Assuming you have an error.html template in your templates directory
+        return "error";  // or whatever your error page template name is
     }
     
     /**
