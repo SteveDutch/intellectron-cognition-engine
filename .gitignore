@@ -66,8 +66,6 @@ build/
 
 ### mein ###
 # see https://www.w3schools.com/git/git_ignore.asp for patterns
-application.properties
-src/main/resources/application.properties
 bin
 mvnw
 mvnw.cmd
