@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -16,13 +16,14 @@
 
 	<link rel="stylesheet" href="/css/modal-fx.min.css" crossorigin="anonymous" />
 
-	<script src="/js/texts.js" defer></script>
+	
 	<script src="/js/common.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
 	<link rel="stylesheet" type="text/css" href="/css/common.css">
 	<link rel="stylesheet" type="text/css" href="/css/texts.css">
 	<link rel="stylesheet" href="/css/dark-mode.css">
 	<script src="/js/dark-mode.js" defer></script>
+	<script src="/js/texts.js" defer></script>
 </head>
 
 <body>
@@ -82,9 +83,10 @@
 		<!-- modal-content: a horizontally and vertically centered container, 
     with a maximum width of 640px, in which you can include any content -->
 		<div class="modal-content">
+			<!-- Static content removed - this box will be populated by JS -->
 			<div class="box">
-				<h2 class="title" th:text="${tekst.title}">Title</h2>
-				<p th:text="${tekst.text}">Content</p>
+				<h2 class="title"></h2> 
+				<p></p> 
 			</div>
 		</div>
 		<button class="modal-close is-large" aria-label="close"></button>
@@ -106,6 +108,11 @@
 	<!--  ===============
      end of MODALS
     ===============  -->
+
+	<footer th:replace="fragments/common :: footer"></footer>
+		
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"   ></script>
 </body>
 
 </html>

@@ -18,146 +18,150 @@
 
 <body>
 	<nav th:replace="fragments/common :: navbar"></nav>
-	<section class="hero is-small is-primary">
-		<div class="hero-body">
-			<p class="title has-text-centered">your intellectron shows</p>
-			<p class="subtitle has-text-centered">
-				Zettel no <span id="zettelId" th:text="|${zettel.zettelId}|"></span>
-				</p>
-		</div>
-	</section>
-	<br>
-	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
-		<div class="columns">
+	
+	<!-- Wrap main content sections in a <main> tag -->
+	<main class="main-content"> 
+		<section class="hero is-small is-primary">
+			<div class="hero-body">
+				<p class="title has-text-centered">your intellectron shows</p>
+				<p class="subtitle has-text-centered">
+					Zettel no <span id="zettelId" th:text="|${zettel.zettelId}|"></span>
+					</p>
+			</div>
+		</section>
+		<br>
+		<form action="/input" method="post" th:object="${ZettelDtoRecord}">
+			<div class="columns">
 
-			<div class="column is-2">
-				<div class="field">
-					<label class="label has-text-weight-bold" for="tags">Tags:</label>
-					<div id="tagsContainer" class="tags">
-						<div th:each="tag, status : ${tags}">
-							<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
-								th:value="${tag.tagText}" />
-							<button class="button is-small is-warning" type="button"
-								onclick="this.parentNode.remove()">del</button>
+				<div class="column is-2">
+					<div class="field">
+						<label class="label has-text-weight-bold" for="tags">Tags:</label>
+						<div id="tagsContainer" class="tags">
+							<div th:each="tag, status : ${tags}">
+								<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
+									th:value="${tag.tagText}" />
+								<button class="button is-small is-warning" type="button"
+									onclick="this.parentNode.remove()">del</button>
+							</div>
+
 						</div>
+						<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
+					</div>
+					<hr />
+					<div class="field">
+						<label class="label has-text-weight-bold" for="authorFirstName">Author first name</label>
+						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+							<input type="text" th:id="${'authorFirstName' + status.index}"
+								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
+								th:value="${author.authorFirstName}" /><br />
+						</div>
+					</div>
 
+					<div class="field">
+						<label class="label has-text-weight-bold" for="authorFamilyName">Author family name</label>
+						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+							<input type="text" th:id="${'authorFamilyName' + status.index}"
+								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
+								th:value="${author.authorFamilyName}" /><br />
+						</div>
 					</div>
-					<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
-				</div>
-				<hr />
-				<div class="field">
-					<label class="label has-text-weight-bold" for="authorFirstName">Author first name</label>
-					<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-						<input type="text" th:id="${'authorFirstName' + status.index}"
-							th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
-							th:value="${author.authorFirstName}" /><br />
+					<hr />
+					<div class="field">
+						<label class="label has-text-weight-bold" for="timestamp">Date of text:</label>
+						<div>
+							<span id="timestamp" name="timestamp"
+								th:text="|${tekst.textDate}|"></span>
+							<span>change date:</span><input id="textDate" type="date" name="textDate"
+								th:field="${tekst.textDate}" /><br /> <br />
+						</div>
+					</div>
+					<div class="field">
+						<label class="label has-text-weight-bold" for="source">Source:</label>
+						<div>
+							<input type="text" id="source" name="source"
+								th:field="${tekst.source}" /><br />
+						</div>
 					</div>
 				</div>
 
-				<div class="field">
-					<label class="label has-text-weight-bold" for="authorFamilyName">Author family name</label>
-					<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-						<input type="text" th:id="${'authorFamilyName' + status.index}"
-							th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
-							th:value="${author.authorFamilyName}" /><br />
+				<div class="column is-5">
+					<div class="field">
+						<label class="label" for="title">Topic:</label>
+						<div class="control">
+							<textarea class="textarea is-link" placeholder="Topic" id="title" name="title" 
+								th:field="${zettel.topic}" rows="3" autocomplete="on"></textarea>
+						</div>
+					</div>
+					
+					<div class="field">
+						<label class="label" for="note">Note:</label>
+						<div class="control">
+							<textarea class="textarea" id="notiz" name="article" 
+								th:field="${note.noteText}" rows="10" autocomplete="on"></textarea>
+						</div>
 					</div>
 				</div>
-				<hr />
-				<div class="field">
-					<label class="label has-text-weight-bold" for="timestamp">Date of text:</label>
-					<div>
-						<span id="timestamp" name="timestamp"
-							th:text="|${tekst.textDate}|"></span>
-						<span>change date:</span><input id="textDate" type="date" name="textDate"
-							th:field="${tekst.textDate}" /><br /> <br />
+
+				<div class="column is-5">
+					<div class="field">
+						<label class="label" for="texttitle">Title:</label>
+						<div class="control">
+							<textarea class="textarea" id="texttitle" name="title" 
+								th:field="${tekst.title}" rows="3" autocomplete="on"></textarea>
+						</div>
+					</div>
+					
+					<div class="field">
+						<label class="label" for="tekst">Text:</label>
+						<div class="control">
+							<textarea class="textarea" id="tekst" name="tekst" 
+								th:text="${tekst.text}" rows="10" autocomplete="on"></textarea>
+						</div>
 					</div>
 				</div>
-				<div class="field">
-					<label class="label has-text-weight-bold" for="source">Source:</label>
-					<div>
-						<input type="text" id="source" name="source"
-							th:field="${tekst.source}" /><br />
-					</div>
-				</div>
+
 			</div>
 
-			<div class="column is-5">
-				<div class="field">
-					<label class="label" for="title">Topic:</label>
-					<div class="control">
-						<textarea class="textarea is-link" placeholder="Topic" id="title" name="title" 
-							th:field="${zettel.topic}" rows="3" autocomplete="on"></textarea>
+			<hr />
+			<div class="columns">
+				<div class="column is-6">
+				<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred /
+					Signatur, auf die verwiesen werden soll:</label><br />
+				<div id="signatureContainer">
+					<div th:each="reference, status : ${references}">
+						<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
+							th:id="'signature' + ${status.index}" th:name="'references'"
+							th:value="${reference.targetZettel}" />
+						<button class="button is-small is-warning" type="button"
+							onclick="this.parentNode.remove()">del</button>
 					</div>
-				</div>
-				
-				<div class="field">
-					<label class="label" for="note">Note:</label>
-					<div class="control">
-						<textarea class="textarea" id="notiz" name="article" 
-							th:field="${note.noteText}" rows="10" autocomplete="on"></textarea>
-					</div>
-				</div>
-			</div>
-
-			<div class="column is-5">
-				<div class="field">
-					<label class="label" for="texttitle">Title:</label>
-					<div class="control">
-						<textarea class="textarea" id="texttitle" name="title" 
-							th:field="${tekst.title}" rows="3" autocomplete="on"></textarea>
-					</div>
-				</div>
-				
-				<div class="field">
-					<label class="label" for="tekst">Text:</label>
-					<div class="control">
-						<textarea class="textarea" id="tekst" name="tekst" 
-							th:text="${tekst.text}" rows="10" autocomplete="on"></textarea>
-					</div>
+					<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
+					<button class="button is-small is-warning" id="addReferenceButton" type="button">Add
+						Reference</button>
 				</div>
 			</div>
+			<div id="changedcontainer" class="column is-6">
+				zettel was last changed: <span name="changed" th:field="${zettel.changed}" th:text="${zettel.changed}"></span>
 
+			</div>
+			<hr />
+			</div>
 		</div>
 
-		<hr />
-		<div class="columns">
-			<div class="column is-6">
-			<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred /
-				Signatur, auf die verwiesen werden soll:</label><br />
-			<div id="signatureContainer">
-				<div th:each="reference, status : ${references}">
-					<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-						th:id="'signature' + ${status.index}" th:name="'references'"
-						th:value="${reference.targetZettel}" />
-					<button class="button is-small is-warning" type="button"
-						onclick="this.parentNode.remove()">del</button>
+
+			<div class="columns">
+				<!--  Submit / Change Zettel -->
+				<div class="column is-half">
+					<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit Changes" />
 				</div>
-				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button class="button is-small is-warning" id="addReferenceButton" type="button">Add
-					Reference</button>
-			</div>
-		</div>
-		<div id="changedcontainer" class="column is-6">
-			zettel was last changed: <span name="changed" th:field="${zettel.changed}" th:text="${zettel.changed}"></span>
-
-		</div>
-		<hr />
-		</div>
-	</div>
- 
-
-		<div class="columns">
-			<!--  Submit / Change Zettel -->
-			<div class="column is-half">
-				<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit Changes" />
-			</div>
-			<!--   Delete Zettel -->
-			<div class="column is-6">
-				<button class="button is-medium is-danger is-dark is-rounded" id="openDeleteModal"
-					type="button">delete</button>
-			</div>
+				<!--   Delete Zettel -->
+				<div class="column is-6">
+					<button class="button is-medium is-danger is-dark is-rounded" id="openDeleteModal"
+						type="button">delete</button>
+				</div>
 				 </div>
-	</form>
+		</form>
+	</main> <!-- Close the <main> tag -->
 
 	
 
@@ -178,6 +182,10 @@
         </div>
     </div>
 
+	<footer th:replace="fragments/common :: footer"></footer>
+
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"></script>
 </body>
 
 </html>
