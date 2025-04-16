@@ -179,6 +179,7 @@ public class SearchController {
 		
 		// Get the associated Zettels
 		List<Zettel> zettels = searchService.findZettelByTag(selectedTag.getTagText());
+		textManipulationService.reduceZettelStrings(zettels, TITLE_STRING_LIMIT);
 		
 		model.addAttribute("selectedTag", selectedTag);
 		model.addAttribute("zettels", zettels);

@@ -24,8 +24,17 @@
     }
 }
 
+/* Add Flexbox to body to manage layout */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+}
+
 .error-container {
-    min-height: calc(100vh - 3.25rem); /* Adjust for navbar */
+    /* Let this container grow to fill available space */
+    flex-grow: 1;
+    /* min-height: calc(100vh - 3.25rem); Remove this - flexbox handles height */
     display: flex;
     justify-content: center;
     align-items: center;

@@ -3,6 +3,11 @@
 body {
     background-color: lightgrey;
     height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .tablehead {
@@ -35,3 +40,19 @@ section.search {
     color: black; 
     opacity: 1; 
   }
+
+  footer {
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+main.main-content {
+    flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+}

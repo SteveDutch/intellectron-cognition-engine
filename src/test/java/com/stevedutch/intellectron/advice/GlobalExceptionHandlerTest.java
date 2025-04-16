@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 
 import com.stevedutch.intellectron.exception.EmptyZettelException;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
@@ -74,14 +76,14 @@ class GlobalExceptionHandlerTest {
         // Arrange
         String errorMessage = "Entity not found";
         EntityNotFoundException exception = new EntityNotFoundException(errorMessage);
+        Model model = new ExtendedModelMap();
 
         // Act
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleEntityNotFoundException(exception);
+        String viewName = exceptionHandler.handleEntityNotFoundException(exception, model);
 
         // Assert
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(errorMessage, response.getBody().get("message"));
+        assertEquals("error", viewName);
+        assertEquals(errorMessage, model.getAttribute("message"));
     }
 
     @Test

@@ -4,13 +4,26 @@
     --page-background: #f3e5ab;
 } 
 
-html, body {
-   	height: 100vh;
+/* Remove fixed height, set min-height and flex display for body */
+html {
+    /* height: 100vh; Removed */
+}
+
+body {
+   	/* height: 100vh; Removed */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Light mode background */
 body:not(.theme-dark) {
     background-color: var(--page-background);
+}
+
+/* Make the main content area grow */
+main.main-content {
+    flex-grow: 1;
 }
 
 textarea {
