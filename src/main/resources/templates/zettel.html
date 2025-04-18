@@ -53,7 +53,8 @@
 						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
 							<input type="text" th:id="${'authorFirstName' + status.index}"
 								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
-								th:value="${author.authorFirstName}" /><br />
+								th:value="${author.authorFirstName}"
+								required /><br />
 						</div>
 					</div>
 
@@ -62,7 +63,8 @@
 						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
 							<input type="text" th:id="${'authorFamilyName' + status.index}"
 								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
-								th:value="${author.authorFamilyName}" /><br />
+								th:value="${author.authorFamilyName}"
+								required /><br />
 						</div>
 					</div>
 					<hr />
@@ -125,30 +127,29 @@
 			<hr />
 			<div class="columns">
 				<div class="column is-6">
-				<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred /
-					Signatur, auf die verwiesen werden soll:</label><br />
-				<div id="signatureContainer">
-					<div th:each="reference, status : ${references}">
-						<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-							th:id="'signature' + ${status.index}" th:name="'references'"
-							th:value="${reference.targetZettel}" />
-						<button class="button is-small is-warning" type="button"
-							onclick="this.parentNode.remove()">del</button>
+					<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred /
+						Signatur, auf die verwiesen werden soll:</label><br />
+					<div id="signatureContainer">
+						<div th:each="reference, status : ${references}">
+							<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
+								th:id="'signature' + ${status.index}" th:name="'references'"
+								th:value="${reference.targetZettel}" />
+							<button class="button is-small is-warning" type="button"
+								onclick="this.parentNode.remove()">del</button>
+						</div>
+						<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
+						<button class="button is-small is-warning" id="addReferenceButton" type="button">Add
+							Reference</button>
 					</div>
-					<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-					<button class="button is-small is-warning" id="addReferenceButton" type="button">Add
-						Reference</button>
 				</div>
 			</div>
-			<div id="changedcontainer" class="column is-6">
-				zettel was last changed: <span name="changed" th:field="${zettel.changed}" th:text="${zettel.changed}"></span>
-
+			<div class="columns">
+				<div id="changedcontainer" class="column is-6">
+					zettel was last changed: <span th:text="${#temporals.format(zettel.changed, 'yyyy-MM-dd  HH:mm')}"></span>
+				</div>
 			</div>
+
 			<hr />
-			</div>
-		</div>
-
-
 			<div class="columns">
 				<!--  Submit / Change Zettel -->
 				<div class="column is-half">
@@ -159,7 +160,7 @@
 					<button class="button is-medium is-danger is-dark is-rounded" id="openDeleteModal"
 						type="button">delete</button>
 				</div>
-				 </div>
+			</div>
 		</form>
 	</main> <!-- Close the <main> tag -->
 
