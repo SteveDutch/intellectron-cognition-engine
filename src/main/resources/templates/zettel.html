@@ -30,7 +30,8 @@
 			</div>
 		</section>
 		<br>
-		<form action="/input" method="post" th:object="${ZettelDtoRecord}">
+		<!-- not used, or just used id JS is deactivated:-->
+		<form th:action="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" method="post" th:object="${ZettelDtoRecord}">
 			<div class="columns">
 
 				<div class="column is-2">

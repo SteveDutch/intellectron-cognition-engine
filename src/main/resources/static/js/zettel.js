@@ -133,12 +133,12 @@ function prepareZettel() {
     zettel.author = author;
     // XXX 0 is hardcoded, should be dynamic ... but since there is only one author, it's ok & necessary
     // I'm using 1:1 instead of coded many:many for simplicity reasons
-    author.authorFirstName = document.getElementById("authorFirstName0").value;
+    author.authorFirstName = document.getElementById("authorFirstName0").value.trim();
     if (author.authorFirstName === "") {
         alert(" author's first name is missing");
         return false;
     }
-    author.authorFamilyName = document.getElementById("authorFamilyName0").value;
+    author.authorFamilyName = document.getElementById("authorFamilyName0").value.trim();
     if (author.authorFamilyName === "") {
         alert("  author's family name is missing");
         return false;
@@ -183,7 +183,7 @@ function zettelToJava() {
           //   mode: "no-cors", --> not necessary, since we are using the same origin
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(zettel, author, 4),
+        body: JSON.stringify(zettel, undefined, 4),
     }).then(response => {
         if (!response.ok) {
             return response.text().then(text => {

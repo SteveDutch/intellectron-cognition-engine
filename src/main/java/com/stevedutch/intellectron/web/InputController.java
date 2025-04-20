@@ -71,7 +71,7 @@ public class InputController {
 
 	@PostMapping("/input")
 	public String postNewZettel(@RequestBody String json) throws JsonMappingException, JsonProcessingException {
-		System.out.println("JSON = \n " + json);
+		System.out.println("im Endpoint /input/postNewZettel; JSON = \n " + json);
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
