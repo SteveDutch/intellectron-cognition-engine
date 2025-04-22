@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.NaturalId;
 
 @Entity // NOTE Class name = Author, DB Table name = authors
 @Table(name = "authors")
@@ -22,9 +23,11 @@ public class Author {
 	@Column(name = "author_id")
 	private Long authorId;
 
-	@Column(name = "first_name", length = 105)
+	@NaturalId(mutable = true)
+	@Column(name = "first_name", length = 105, nullable = false)
 	private String authorFirstName;
-	@Column(name = "family_name", length = 105)
+	@NaturalId(mutable = true)
+	@Column(name = "family_name", length = 105, nullable = false)
 	private String authorFamilyName;
 
 	@ManyToMany(mappedBy = "associatedAuthors")

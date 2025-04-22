@@ -25,6 +25,7 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TextManipulationService;
+import com.stevedutch.intellectron.service.ValidationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
@@ -38,6 +39,8 @@ public class InputController {
 	private SearchService searchService;
 	@Autowired
 	private TextManipulationService textManipulationService;
+	@Autowired
+	private ValidationService validationService;
 
 	String unknownFamily = "Unbekannt";
 	String unknownName = "Ignotus";
@@ -76,15 +79,9 @@ public class InputController {
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
 
-		// check if names are empty TODO:right place? NO zu authorService
-		if (zettelDto.author().getAuthorFamilyName() == null || zettelDto.author().getAuthorFamilyName() == ""
-				|| zettelDto.author().getAuthorFamilyName().trim().isBlank()) {
-			zettelDto.author().setAuthorFamilyName(unknownFamily);
-		}
-		if (zettelDto.author().getAuthorFirstName() == null || zettelDto.author().getAuthorFirstName() == ""
-				|| zettelDto.author().getAuthorFirstName().trim().isBlank()) {
-			zettelDto.author().setAuthorFirstName(unknownName);
-		}
+		
+		validationService.ensureAuthorNames(zettelDto.author());
+
 		System.out.println("\n ZettelDtoRecord =  \n" + zettelDto + "\n");
 		ZettelDtoRecord newZettel = zettelService.createZettel(zettelDto);
 		Long zettelId = newZettel.zettel().getZettelId();

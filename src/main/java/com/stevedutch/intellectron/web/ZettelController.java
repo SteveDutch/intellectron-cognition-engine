@@ -22,7 +22,9 @@ import com.stevedutch.intellectron.service.ReferenceService;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
+import com.stevedutch.intellectron.service.ValidationService;
 import com.stevedutch.intellectron.service.ZettelService;
+import com.stevedutch.intellectron.domain.Author;
 
 @Controller
 public class ZettelController {
@@ -42,45 +44,48 @@ public class ZettelController {
 	private ReferenceService refService;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private ValidationService validationService;
+	
+		@GetMapping("/zettel/{zettelId}")
+		public String showZettel(ModelMap model, @PathVariable Long zettelId) {
+	
+			Zettel zettel = searchService.findZettelById(zettelId);
+	
+	//		String formattedText = zettel.getTekst().getText();
+	//		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
+			model.put("zettel", zettel);
+			model.put("note", zettel.getNote());
+			model.put("tekst", zettel.getTekst());
+			model.put("author", zettel.getTekst().getAssociatedAuthors());
+			model.put("tags", zettel.getTags());
+			model.put("references", zettel.getReferences());
+			return "/zettel";
+		}
+	
+		@PostMapping("/zettel/{zettelId}")
+		public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json)
+				throws JsonMappingException, JsonProcessingException {
+	
+			LOG.info("\n im Controller updateOneZettel, JSON = " + json);
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.registerModule(new JavaTimeModule());
+			ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
+	
+			LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n "
+					+ changes);
+	
+			Author validatedAuthor = validationService.ensureAuthorNames(changes.author());
+	
+			zettelService.updateOnlyZettel(zettelId, changes);
+			noteService.updateNote(zettelId, changes.note());
+			textService.updateTekst(zettelId, changes.tekst());
+			tagService.updateTags(zettelId, changes.tags());
+			authorService.saveAuthorWithText(validatedAuthor, changes.tekst());
+			refService.updateReferences(zettelId, changes.references());
 
-	@GetMapping("/zettel/{zettelId}")
-	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
-
-		Zettel zettel = searchService.findZettelById(zettelId);
-
-		String formattedText = zettel.getTekst().getText();
-//		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
-		model.put("zettel", zettel);
-		model.put("note", zettel.getNote());
-		model.put("tekst", zettel.getTekst());
-		model.put("author", zettel.getTekst().getAssociatedAuthors());
-		model.put("tags", zettel.getTags());
-		model.put("references", zettel.getReferences());
-		return "/zettel";
-	}
-
-	@PostMapping("/zettel/{zettelId}")
-	public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json)
-			throws JsonMappingException, JsonProcessingException {
-
-		LOG.info("\n im Controller updateOneZettel, JSON = " + json);
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new JavaTimeModule());
-		ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
-
-		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n "
-				+ changes);
-		zettelService.updateOnlyZettel(zettelId, changes);// XXX all die Mühe umsonst ... war doch notwendig ,
-															// fürnTitel/Topic
-		noteService.updateNote(zettelId, changes.note());
-		textService.updateTekst(zettelId, changes.tekst());
-		tagService.updateTags(zettelId, changes.tags());
-		authorService.saveAuthorWithText(changes.author(), changes.tekst());
-		refService.updateReferences(zettelId, changes.references());
-
-//		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
-		return "redirect:/zettel/{zettelId}";
-	}
+			return "redirect:/zettel/{zettelId}";
+		}
 
 	@PostMapping("/zettel/{zettelId}/delete")
 	public String deleteOneZettel(@PathVariable Long zettelId) {

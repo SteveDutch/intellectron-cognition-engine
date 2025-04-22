@@ -22,9 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
@@ -38,6 +36,7 @@ import com.stevedutch.intellectron.service.ReferenceService;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
+import com.stevedutch.intellectron.service.ValidationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,6 +59,8 @@ class ZettelControllerTest {
     private ReferenceService refService;
     @Mock
     private SearchService searchService;
+    @Mock
+    private ValidationService valService;
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
