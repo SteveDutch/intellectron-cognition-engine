@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -25,6 +26,10 @@ import com.stevedutch.intellectron.service.TextService;
 import com.stevedutch.intellectron.service.ValidationService;
 import com.stevedutch.intellectron.service.ZettelService;
 import com.stevedutch.intellectron.domain.Author;
+import com.stevedutch.intellectron.domain.Tekst;
+
+import java.util.Map;
+import com.stevedutch.intellectron.service.feedback.TextSavingFeedbackHolder;
 
 @Controller
 public class ZettelController {
@@ -46,6 +51,8 @@ public class ZettelController {
 	private SearchService searchService;
 	@Autowired
 	private ValidationService validationService;
+	@Autowired
+	private TextSavingFeedbackHolder feedbackHolder;
 	
 		@GetMapping("/zettel/{zettelId}")
 		public String showZettel(ModelMap model, @PathVariable Long zettelId) {
@@ -64,7 +71,7 @@ public class ZettelController {
 		}
 	
 		@PostMapping("/zettel/{zettelId}")
-		public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json)
+		public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json, RedirectAttributes redirectAttributes) 
 				throws JsonMappingException, JsonProcessingException {
 	
 			LOG.info("\n im Controller updateOneZettel, JSON = " + json);
@@ -77,14 +84,63 @@ public class ZettelController {
 	
 			Author validatedAuthor = validationService.ensureAuthorNames(changes.author());
 	
-			zettelService.updateOnlyZettel(zettelId, changes);
-			noteService.updateNote(zettelId, changes.note());
-			textService.updateTekst(zettelId, changes.tekst());
-			tagService.updateTags(zettelId, changes.tags());
-			authorService.saveAuthorWithText(validatedAuthor, changes.tekst());
-			refService.updateReferences(zettelId, changes.references());
+			Tekst resultingTekst = null;
+			String textMessage = "";
 
-			return "redirect:/zettel/{zettelId}";
+			try {
+				zettelService.updateOnlyZettel(zettelId, changes);
+				noteService.updateNote(zettelId, changes.note());
+				
+				resultingTekst = textService.updateTekst(zettelId, changes.tekst());
+				
+				tagService.updateTags(zettelId, changes.tags());
+				
+				if (resultingTekst != null) {
+					authorService.saveAuthorWithText(validatedAuthor, resultingTekst); 
+				} else {
+					 LOG.warn("Skipping author association for Zettel {} because text processing returned null.", zettelId);
+				}
+				
+				refService.updateReferences(zettelId, changes.references());
+
+			} catch (IllegalArgumentException e) {
+				LOG.warn("Failed to update text for Zettel {}: {}", zettelId, e.getMessage());
+				// Feedback holder should have been set by TextService
+			} catch (Exception e) {
+				LOG.error("Unexpected error updating Zettel {}", zettelId, e);
+				feedbackHolder.setMessage("An unexpected error occurred during the update.");
+			}
+
+			// --- Retrieve feedback message from holder ---
+			textMessage = feedbackHolder.getMessage();
+			LOG.info("Retrieved feedback message from holder: '{}'", textMessage);
+
+			// --- Construct final message ---
+			String finalMessage = "Zettel updated successfully.";
+			String messageType = "INFO"; 
+
+			if (textMessage != null && !textMessage.isBlank()) { 
+				 finalMessage += " " + textMessage;
+				 if (textMessage.contains("similar")) {
+					 messageType = "SIMILAR_MATCH";
+				 } else if (textMessage.contains("identical")) {
+					 messageType = "EXACT_MATCH";
+				 } else if (textMessage.contains("new entry")) {
+					 messageType = "NEW_ENTRY";
+				 } else if (textMessage.contains("Error") || textMessage.contains("No text")) {
+					 messageType = "ERROR";
+				 }
+			} else {
+				 finalMessage += " (Text status unknown).";
+				 messageType = "UNKNOWN";
+			}
+
+			LOG.info("Adding flash attribute 'updateMessage': {}", finalMessage);
+			LOG.info("Adding flash attribute 'updateMessageType': {}", messageType);
+			redirectAttributes.addFlashAttribute("updateMessage", finalMessage); 
+			redirectAttributes.addFlashAttribute("updateMessageType", messageType); 
+
+			return "redirect:/zettel/" + zettelId; 
 		}
 
 	@PostMapping("/zettel/{zettelId}/delete")

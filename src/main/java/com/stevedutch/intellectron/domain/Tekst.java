@@ -13,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
@@ -21,7 +22,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity // NOTE Class name = Tekst, DB Table name = texts
-@Table(name = "texts")
+@Table(name = "texts", indexes = {
+    @Index(name = "idx_text_hash", columnList = "text_hash")
+})
 public class Tekst {
 
 	@Id
@@ -41,6 +44,9 @@ public class Tekst {
 	
 	@Column(name = "source", length = 700)
 	private String source;
+
+	@Column(name = "text_hash", length = 64, unique = true)
+	private String hash;
 
 	@OneToMany(mappedBy = "tekst", cascade = CascadeType.ALL)
 	private List<Zettel> zettels;
@@ -102,6 +108,14 @@ public class Tekst {
 		this.source = source;
 	}
 
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
 	public List<Zettel> getZettels() {
 		// um auch einen Zettel hinzufügen zu können, wenn nichts vorhanden, bzw. == NULL
 		if (zettels == null) {
@@ -136,14 +150,14 @@ public class Tekst {
 	@Override
 	public String toString() {
 
-		return "\n Tekst \n [textId=" + textId + ", text = " + text + "\n , title = " + title + ", \n textDate=  " + textDate + ", source=" + source
+		return "\n Tekst \n [textId=" + textId + ", hash=" + hash + ", text = " + (text != null ? text.substring(0, Math.min(text.length(), 100)) + "..." : "null") + "\n , title = " + title + ", \n textDate=  " + textDate + ", source=" + source
 				 + ", \n associatedAuthors = " + associatedAuthors + " ZETTELS, wieviele: " + Optional.ofNullable(zettels).map(list -> list
 						.size());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(associatedAuthors, source, text, textDate, textId, title, zettels);
+		return Objects.hash(textId, text);
 	}
 
 	@Override
@@ -155,10 +169,10 @@ public class Tekst {
 		if (getClass() != obj.getClass())
 			return false;
 		Tekst other = (Tekst) obj;
-		return Objects.equals(associatedAuthors, other.associatedAuthors) && Objects.equals(source, other.source)
-				&& Objects.equals(text, other.text) && Objects.equals(textDate, other.textDate)
-				&& Objects.equals(textId, other.textId) && Objects.equals(title, other.title)
-				&& Objects.equals(zettels, other.zettels);
+		if (textId != null && other.textId != null) {
+			return Objects.equals(textId, other.textId);
+		}
+		return Objects.equals(text, other.text);
 	}
 
 

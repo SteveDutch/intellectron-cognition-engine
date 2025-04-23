@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.TextRepository;
+import com.stevedutch.intellectron.service.feedback.TextSavingFeedbackHolder;
 
 @ExtendWith(MockitoExtension.class)
 public class TextServiceTest {
@@ -32,7 +34,9 @@ public class TextServiceTest {
 	@Mock
 	private SearchService searchService;
 	@Mock
-	private TextManipulationService textManipulationService;
+	private TextFingerprintService textFingerprintService;
+	@Mock
+	private TextSavingFeedbackHolder feedbackHolder;
 
 	@InjectMocks
 	private TextService textService;
@@ -52,31 +56,41 @@ public class TextServiceTest {
 	@Test
 	public void testSaveTextNew() {
 		// Arrange
-		when(textRepo.findByText(anyString())).thenReturn(null);
+		String newTextContent = "testText";
+		tekst.setText(newTextContent);
 		when(textRepo.save(any(Tekst.class))).thenReturn(tekst);
+		when(textFingerprintService.findExactOrSimilarText(newTextContent)).thenReturn(Optional.empty());
 
 		// Act
 		Tekst savedTekst = textService.saveText(tekst);
 
 		// Assert
 		assertEquals(tekst, savedTekst);
+		verify(textFingerprintService).findExactOrSimilarText(newTextContent);
+		verify(feedbackHolder).setMessage("Text saved as new entry.");
 		verify(textRepo, times(1)).save(tekst);
 	}
 
 	@Test
 	public void testSaveTextExisting() {
 		// Arrange
+		String existingTextContent = "testText";
+		tekst.setText(existingTextContent);
 		tekst.setTextId(123L);
-		when(textRepo.findByText(anyString())).thenReturn(tekst);
-		when(textRepo.save(tekst)).thenReturn(tekst);
+		Tekst existingTextFromDb = new Tekst(existingTextContent);
+		existingTextFromDb.setTextId(123L);
+		when(textFingerprintService.findExactOrSimilarText(existingTextContent)).thenReturn(Optional.of(existingTextFromDb));
+		when(textRepo.save(existingTextFromDb)).thenReturn(existingTextFromDb);
 
 		// Act
 		Tekst savedTekst = textService.saveText(tekst);
 
 		// Assert
-		assertEquals(tekst, savedTekst);
-		assertEquals(tekst.getTextId(), savedTekst.getTextId());
-
+		assertEquals(existingTextFromDb, savedTekst);
+		assertEquals(123L, savedTekst.getTextId());
+		verify(textFingerprintService).findExactOrSimilarText(existingTextContent);
+		verify(feedbackHolder).setMessage("Text saved as existing entry.");
+		verify(textRepo, times(1)).save(existingTextFromDb);
 	}
 
 	@Test

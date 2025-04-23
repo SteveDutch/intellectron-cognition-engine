@@ -29,6 +29,17 @@
 					</p>
 			</div>
 		</section>
+		
+		<!-- Display update message if present -->
+        <div th:if="${updateMessage}" class="container is-fluid mt-4"> <!-- Added container for spacing -->
+            <div class="notification"
+                 th:classappend="${updateMessageType == 'ERROR'} ? 'is-danger' : (${updateMessageType == 'SIMILAR_MATCH'} ? 'is-warning' : 'is-info')"
+                 role="alert">
+                <button class="delete"></button> <!-- Optional: Add Bulma delete button to dismiss -->
+                <span th:text="${updateMessage}">Placeholder for update message.</span>
+            </div>
+        </div>
+        
 		<br>
 		<!-- not used, or just used id JS is deactivated:-->
 		<form th:action="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" method="post" th:object="${ZettelDtoRecord}">
@@ -188,6 +199,19 @@
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>
+    
+    <!-- Simple script to make notification deletable -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            const $notification = $delete.parentNode;
+        
+            $delete.addEventListener('click', () => {
+              $notification.parentNode.removeChild($notification);
+            });
+          });
+        });
+    </script>
 </body>
 
 </html>

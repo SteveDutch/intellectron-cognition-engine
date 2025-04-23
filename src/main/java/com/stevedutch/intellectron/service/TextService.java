@@ -1,16 +1,19 @@
 package com.stevedutch.intellectron.service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.repository.TextRepository;
+import com.stevedutch.intellectron.service.feedback.TextSavingFeedbackHolder;
 
 @Service
 public class TextService {
@@ -20,15 +23,31 @@ public class TextService {
 	private TextRepository textRepo;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private TextFingerprintService textFingerprintService;
+	@Autowired
+	private TextSavingFeedbackHolder feedbackHolder;
 
+	@Transactional
 	public Tekst saveText(Tekst tekst) {
-		Tekst existingText = textRepo.findByText(tekst.getText());
-		if (existingText != null) {
-			tekst.setTextId(existingText.getTextId());
+		if (tekst == null || tekst.getText() == null || tekst.getText().isBlank()) {
+			String message = "No text provided.";
+			feedbackHolder.setMessage(message);
+			throw new IllegalArgumentException(message);
 		}
 		checkTextDate(tekst);
 		tekst.setText(tekst.getText().strip());
-		return textRepo.save(tekst);
+		Optional<Tekst> existingOpt = textFingerprintService.findExactOrSimilarText(tekst.getText());
+		
+		if (existingOpt.isPresent()) {
+			feedbackHolder.setMessage("Text saved as existing entry.");
+			return textRepo.save(existingOpt.get());
+		} else {
+			String newMessage = "Text saved as new entry.";
+			feedbackHolder.setMessage(newMessage);
+			LOG.info("Feedback Set: {}", newMessage);
+			return textRepo.save(tekst);
+		}
 	}
 
 	public Tekst saveTextWithAuthor(Tekst tekst, Author author) {
@@ -145,9 +164,5 @@ public class TextService {
 	public Long countAllText() {
 		return textRepo.count();
 	}
-
-
-
-
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -109,18 +110,18 @@ public class SearchService {
 	 */
 	public List<Author> findAuthorByNameWithTruncatedTexts(String name, int maxLength) {
 		validateSearchString(name);
-		String[] nameParts = name.split("\\s+");
+		String[] nameParts = name.split("\s+");
 		String lastName = nameParts[nameParts.length - 1];
 		LOG.info("\n Now searching for author family name: " + lastName);
 		List<Author> result = findAuthorByLastNameLike(lastName);
 		if (result.isEmpty()) {
-            throw new SearchTermNotFoundException("No Author found with name: " + lastName);
+			throw new SearchTermNotFoundException("No Author found with name: " + lastName);
 		}
 		result.forEach(author -> {
 			author.getTexts().forEach(text -> {
 				if (text.getText().length() > maxLength) {
-                    text.setText(text.getText().substring(0, maxLength) + " . . . ");
-                }
+					text.setText(text.getText().substring(0, maxLength) + " . . . ");
+				}
 			});
 		});
 		return result;
@@ -167,9 +168,9 @@ public class SearchService {
 		validateSearchString(textFragment);
 		List<Tekst> result = textRepo.findTruncatedTekstByTextFragment(textFragment,  maxLength);
 		if (result.isEmpty()) {
-            throw new SearchTermNotFoundException("No Tekst found with text: " + textFragment);
+			throw new SearchTermNotFoundException("No Tekst found with text: " + textFragment);
 		}
-            return result;
+			return result;
 	}
 	/**
 	 * searches for a Tekst by the Iand truncates it to the given length
@@ -179,11 +180,11 @@ public class SearchService {
 	 * @throws SearchTermNotFoundException if no tekst is found with the given id
 	 */
 	public Tekst findTruncatedTekstById(Long textId, int maxLength) {
-		Tekst resultTekst = textRepo.findTruncatedTextbyId(textId, maxLength);
-		if (resultTekst == null) {
-			throw new SearchTermNotFoundException("No Tekst found with id: " + textId);
-		}
-		return resultTekst;
+		Optional<Tekst> resultTekst = textRepo.findTruncatedTextbyId(textId, maxLength);
+		
+		// Use orElseThrow to get the value or throw the exception if the Optional is empty
+		return resultTekst.orElseThrow(() -> 
+			new SearchTermNotFoundException("No Tekst found with id: " + textId));
 	}
 
 	// XXX brauche ich irgendwann eine genaue Tagsuche?
