@@ -311,5 +311,18 @@ public class SearchService {
 //		return refRepo.findAll();
 //	}
 
+	public List<Zettel> findRelatedZettels(Long zettelId) {
+		// Find direct references
+		List<Zettel> directLinks = refRepo.findDirectLinks(zettelId);
+		
+		// Find zettels with similar tags
+		List<Zettel> similarTagged = zettelRepo.findBySharedTags(zettelId);
+		
+		// Find zettels with similar topics
+		List<Zettel> similarTopics = zettelRepo.findSimilarTopics(zettelId);
+		
+		// Combine and sort by relevance
+		return combineAndSortByRelevance(directLinks, similarTagged, similarTopics);
+	}
 
 }

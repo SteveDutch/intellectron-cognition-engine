@@ -11,6 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Entity // Class name = Reference, DB Table name = references
 @Table(name = "pointer")
@@ -19,14 +22,27 @@ public class Reference {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	@Column(name = "reference_id")
-	private Long referenceId;
+	private Long id;
 	
-	@Column(name = "origin_zettel")
-	private Long originZettel;	
+	@ManyToOne
+	private Zettel sourceZettel;
 	
-	@Column(name = "target_zettel")
-	private Long targetZettel;
+	@ManyToOne
+	private Zettel targetZettel;
 	
+	@Enumerated(EnumType.STRING)
+	private ReferenceType type;
+	
+	private String connectionNote; // Brief explanation of why these notes are connected
+	
+	public String getConnectionNote() {
+		return connectionNote;
+	}
+
+	public void setConnectionNote(String connectionNote) {
+		this.connectionNote = connectionNote;
+	}
+
 	@ManyToMany(mappedBy = "references")
 	private Set<Zettel> zettels = new HashSet<>();
 	
@@ -34,34 +50,39 @@ public class Reference {
 		
 	}
 	
-	public Reference(String targetSignature) {
-		this.targetZettel = Long.parseLong(targetSignature);
+	public Reference(String sourceSignature, String targetSignature) {
+		this.sourceZettel = new Zettel();
+		this.sourceZettel.setZettelId(Long.parseLong(sourceSignature));
+		this.targetZettel = new Zettel();
+		this.targetZettel.setZettelId(Long.parseLong(targetSignature));
 	}
 
 	// Getter & Setter
 	
 	public Long getReferenceId() {
-		return referenceId;
+		return id;
 	}
 
 	public void setReferenceId(Long referenceId) {
-		this.referenceId = referenceId;
+		this.id = referenceId;
 	}
 
 	public Long getOriginZettel() {
-		return originZettel;
+		return sourceZettel.getZettelId();
 	}
 
 	public void setOriginZettel(Long originZettel) {
-		this.originZettel = originZettel;
+		this.sourceZettel = new Zettel();
+		this.sourceZettel.setZettelId(originZettel);
 	}
 
 	public Long getTargetZettel() {
-		return targetZettel;
+		return targetZettel.getZettelId();
 	}
 
 	public void setTargetZettel(Long targetZettel) {
-		this.targetZettel = targetZettel;
+		this.targetZettel = new Zettel();
+		this.targetZettel.setZettelId(targetZettel);
 	}
 
 	public Set<Zettel> getZettels() {
@@ -87,22 +108,23 @@ public class Reference {
             return false;
 
 		Reference other = (Reference) obj;
-        return referenceId != null &&
-        		referenceId.equals(other.getReferenceId());
+        return id != null &&
+        		id.equals(other.getReferenceId());
 	}
 
 	@Override
 	public String toString() {
-		return "Reference [referenceId=" + referenceId + ", originZettel=" + originZettel + ", targetZettel="
-				+ targetZettel + " ,  Anzahl der Zettel =\n " + Optional.of(zettels.stream().count()) + " \n"
+		return "Reference [referenceId=" + id + ", originZettel=" + getOriginZettel() + ", targetZettel="
+				+ getTargetZettel() + " ,  Anzahl der Zettel =\n " + Optional.of(zettels.stream().count()) + " \n"
 						+  "]";
 	}
 
 	public Long getReferenceId(Reference reference) {
-		this.referenceId = reference.getReferenceId();
-		return referenceId;
+		this.id = reference.getReferenceId();
+		return id;
 	}
 	
 	
 
 }
+
