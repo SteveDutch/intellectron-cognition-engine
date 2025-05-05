@@ -56,14 +56,14 @@ class HomeControllerTest {
 		
 		String result = sut.showHomePage(model);
 		
-		assertThat(result).isEqualTo("/welcome");
+		assertThat(result).isEqualTo("/index");
 	}
 	
 	@Test
 	void testShowAlsoHomePage() {
 		String result = sut.redirectToHomePage();
 		
-		assertThat(result).isEqualTo("/welcome");
+		assertThat(result).isEqualTo("/index");
 	}
 
 }

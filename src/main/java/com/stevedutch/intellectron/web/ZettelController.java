@@ -92,7 +92,7 @@ public class ZettelController {
 		LOG.info("\n im deleteZettel = " + zettelId);
 		zettelService.deleteOneZettelbyId(zettelId);
 
-		return "redirect:/welcome";
+		return "redirect:/index";
 	}
 
 }
