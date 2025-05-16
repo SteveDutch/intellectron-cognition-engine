@@ -3,8 +3,6 @@ package com.stevedutch.intellectron.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,8 +28,6 @@ import com.stevedutch.intellectron.service.ZettelService;
 
 @Controller
 public class InputController {
-
-	private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
 	@Autowired
 	private ZettelService zettelService;
@@ -82,7 +78,7 @@ public class InputController {
 		
 		validationService.ensureAuthorNames(zettelDto.author());
 
-		System.out.println("\n ZettelDtoRecord =  \n" + zettelDto + "\n");
+		System.out.println("\n ZettelDtoRecord in PstMapping, vor createZettel =  \n" + zettelDto + "\n");
 		ZettelDtoRecord newZettel = zettelService.createZettel(zettelDto);
 		Long zettelId = newZettel.zettel().getZettelId();
 

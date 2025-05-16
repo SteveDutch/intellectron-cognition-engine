@@ -35,7 +35,8 @@
 
 /* Hero sections */
 .theme-dark .hero.is-info,
-.theme-dark .hero.is-small.is-primary {
+.theme-dark .hero.is-small.is-primary,
+.theme-dark .hero.is-danger {
   background-color: #000000;
   /* Replace box-shadow with borders for consistent lines */
   /* box-shadow: 0 2px 10px var(--shadow-color); */

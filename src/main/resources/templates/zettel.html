@@ -17,7 +17,7 @@
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	
 	<!-- Wrap main content sections in a <main> tag -->
 	<main class="main-content"> 
@@ -184,7 +184,7 @@
         </div>
     </div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>

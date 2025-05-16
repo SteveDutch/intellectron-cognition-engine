@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="/css/bulma.css" />
     <link rel="stylesheet" href="/css/error.css" />
     <link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
+    <th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
     <script src="/js/dark-mode.js" defer></script>
 </head>
 <body>
-    <nav th:replace="fragments/common :: navbar"></nav>
+    <nav th:replace="~{fragments/common :: navbar}"></nav>
     
     <div class="error-container">
         <div class="error-content">
@@ -26,7 +27,7 @@
             </div>
         </div>
     </div>
-    <footer th:replace="fragments/common :: footer"></footer>
+    <footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>

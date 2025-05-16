@@ -17,7 +17,7 @@
 </head>
 
 <body class="text-view-page">
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 
 	<section class="hero is-info welcome is-small">
 		<div class="hero-body">
@@ -54,7 +54,7 @@
 		</div>
 	</div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>

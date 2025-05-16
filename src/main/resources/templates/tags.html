@@ -45,12 +45,12 @@
 	defer
 ></script>
 <script type="text/javascript" src="/js/dark-mode.js" defer></script>
-<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
+<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
 
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<div class="main-container">
 		<section class="hero is-small is-primary">
 			<div class="hero-body">
@@ -100,12 +100,12 @@
 
 			<th:block th:unless="${zettels == null || zettels.isEmpty()}">
 				<!-- The table fragment is ONLY included/processed when zettels is not empty -->
-				<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+				<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
 			</th:block>
 
 		</div>
 
-		<footer th:replace="fragments/common :: footer"></footer>
+		<footer th:replace="~{fragments/common :: footer}"></footer>
 
 		<!-- navbar burger -->
 		<script type="text/javascript" src="/js/bulma.js"></script>

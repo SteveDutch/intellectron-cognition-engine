@@ -15,11 +15,11 @@
 	<script src="/js/common.js" defer></script>
 	<script src="/js/dark-mode.js" defer></script>
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
-	<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
 			<p class="title is-1 has-text-centered">Feed your intellectron</p>
@@ -144,7 +144,7 @@
 			<p class="title  has-text-centered ">last 10 zettels</p>
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
 
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
@@ -152,9 +152,9 @@
 
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>

@@ -27,7 +27,7 @@
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
 
@@ -109,7 +109,7 @@
      end of MODALS
     ===============  -->
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 		
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"   ></script>

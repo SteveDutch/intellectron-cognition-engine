@@ -18,7 +18,7 @@
 
 <body>
 
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero  is-small is-info">
 		<div class="hero-body">
 			 
@@ -333,7 +333,7 @@
 				</div>
 			</div>
 		</div>
-		<footer th:replace="fragments/common :: footer"></footer>
+		<footer th:replace="~{fragments/common :: footer}"></footer>
 		<script async type="text/javascript" src="../js/bulma.js"></script>
 </body>
 

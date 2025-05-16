@@ -3,7 +3,6 @@ package com.stevedutch.intellectron.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -18,7 +17,6 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
-import com.stevedutch.intellectron.repository.ReferenceRepository;
 import com.stevedutch.intellectron.repository.TagRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
@@ -38,8 +36,6 @@ public class SearchService {
 	// XXX check this: repo-Zugriff außerhalb der betreffenden Entity-Serviceklasse?
 	@Autowired
 	private AuthorRepository authorRepo;
-	@Autowired
-	private ReferenceRepository refRepo;
 	@Autowired
 	private TagRepository tagRepo;
 

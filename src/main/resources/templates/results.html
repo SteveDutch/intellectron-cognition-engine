@@ -60,9 +60,8 @@
 
 </head>
 
-
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
 			
@@ -252,8 +251,7 @@
 	<!-- 	<script src="/js/wild.js"></script> -->
 	<!-- from bulma doc as well -->
 
-	<footer th:replace="fragments/common :: footer"></footer>
-
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>
 </body>
