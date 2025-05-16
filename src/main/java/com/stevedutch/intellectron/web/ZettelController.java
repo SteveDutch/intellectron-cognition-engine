@@ -84,6 +84,8 @@ public class ZettelController {
 			authorService.saveAuthorWithText(validatedAuthor, changes.tekst());
 			refService.updateReferences(zettelId, changes.references());
 
+			LOG.info(" --> zettelController.updateOneZettel, nach den updatesl = \n " + searchService.findZettelById(zettelId));
+			
 			return "redirect:/zettel/{zettelId}";
 		}
 

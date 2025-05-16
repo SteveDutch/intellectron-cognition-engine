@@ -23,6 +23,8 @@ public class TagService {
 	private TagRepository tagRepo;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private ZettelService zettelService;
 
 	public Tag saveTag(Tag tag) {
 
@@ -97,11 +99,11 @@ public class TagService {
 		for (Tag tag : OriginalTagsCopy) {
 			if (!newTags.contains(tag)) {
 				zettel.getTags().remove(tag);
-//                zettelService.saveZettel(zettel); XXX ist unnötig, wenn mir auch nicht klar ist, warum.
+             
 
 			}
 		}
-
+  		zettelService.saveZettel(zettel); 
 		LOG.info("\n --- Tags gespeichert mit am Ende von updateTags : ");
 		newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}
