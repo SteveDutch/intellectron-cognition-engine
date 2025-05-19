@@ -16,6 +16,10 @@ import com.stevedutch.intellectron.repository.TextRepository;
 public class TextService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TextService.class);
+
+	private static final String DUMMY_TITLE = "notext";
+	private static final String DUMMY_TEXT_CONTENT = "placeholder for no text";
+	private static final String DUMMY_SOURCE = "someone's brain / system generated";
 	@Autowired
 	private TextRepository textRepo;
 	@Autowired
@@ -123,18 +127,50 @@ public class TextService {
 	}
 
 	/**
-	 * checks if the text is already in the database, if yes, it returns it, if not,
-	 * it returns the given one
+	 * Checks if a text exists in the database and handles empty text cases.
 	 * 
-	 * @param tekst
-	 * @return tekst (the given one or from db)
+	 * If the input text is null or blank:
+	 * - Returns an existing dummy text if found
+	 * - Creates and returns a new dummy text if none exists
+	 * 
+	 * If the input text is not blank:
+	 * - Returns an existing text if found in database
+	 * - Returns the prepared (stripped) input text if it's new
+	 * 
+	 * @param tekst The text to check, can be null or contain blank text
+	 * @return Tekst The existing text from database, the prepared input text, or a dummy text
 	 */
 	public Tekst checkForExistingTekst(Tekst tekst) {
-		Tekst existingText = textRepo.findByText(tekst.getText());
-		if (existingText != null) {
-			return existingText;
+		if (tekst == null || tekst.getText() == null || tekst.getText().isBlank()) {
+			// Input is blank, try to find the specific dummy Tekst
+			Tekst specificDummy = textRepo.findByTitleAndText(DUMMY_TITLE, DUMMY_TEXT_CONTENT);
+
+			if (specificDummy != null) {
+				return specificDummy; // Found our specific dummy
+			} else {
+				// Specific dummy Tekst not found, create and save it
+				Tekst newDummy = new Tekst(DUMMY_TEXT_CONTENT);
+				newDummy.setTitle(DUMMY_TITLE);
+				newDummy.setSource(DUMMY_SOURCE);
+				checkTextDate(newDummy); // Ensures date is set (e.g., LocalDate.EPOCH)
+				return textRepo.save(newDummy);
+			}
+		} else {
+			// Input is not blank
+			String strippedText = tekst.getText().strip();
+			Tekst existingText = textRepo.findByText(strippedText); // Find by actual content
+			if (existingText != null) {
+				return existingText;
+			} else {
+				// Tekst is new and not blank. Prepare it.
+				tekst.setText(strippedText);
+				checkTextDate(tekst); // Ensure date is set
+				// This tekst (if new and non-blank) will be saved by a subsequent call 
+				// in the service chain, e.g., through ZettelService calling saveTextWithAuthor or similar.
+				// So, we return the modified, unsaved Tekst object here if it's a new, non-blank one.
+				return tekst;
+			}
 		}
-		return tekst;
 	}
 	
 	/**

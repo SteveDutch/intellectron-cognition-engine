@@ -14,6 +14,15 @@ public interface TextRepository extends JpaRepository<Tekst, Long>{
 	
 	public Tekst findByText(String text);
 	
+	/**
+	 * Finds a Tekst entity by its exact title and text content.
+	 *
+	 * @param title The title of the Tekst.
+	 * @param text The text content of the Tekst.
+	 * @return The Tekst entity if found, otherwise null.
+	 */
+	public Tekst findByTitleAndText(String title, String text);
+	
 	// Native query used for performance and simplicity during refactoring
 	// XXX: Consider introducing DTO in future iterations if needed
 	@Query(value = "SELECT text_id, SUBSTRING(tekst, 1, :maxLength) as tekst, title, tekstdato, source " +
