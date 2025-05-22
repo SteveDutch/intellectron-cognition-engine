@@ -40,9 +40,7 @@ public class TextService {
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
-		checkTextDate(tekst);
-		tekst.setText(tekst.getText().strip());
-		tekst = textRepo.save(tekst);
+		tekst = saveText(tekst);
 		return tekst;
 	}
 
@@ -52,9 +50,7 @@ public class TextService {
 			actualTekst = new Tekst(tekst.getText());
 		}
 		tekst.getZettels().add(zettel);
-		checkTextDate(tekst);
-		tekst.setText(tekst.getText().strip());
-		return textRepo.save(tekst);
+		return saveText(tekst);
 
 	}
 
@@ -112,10 +108,10 @@ public class TextService {
 		}
 		updatedTekst.setTitle(tekst.getTitle());
 		updatedTekst.setTextDate(tekst.getTextDate());
-		checkTextDate(updatedTekst);
+		
 		updatedTekst.setSource(tekst.getSource());
-		tekst.setText(tekst.getText().strip());
-		textRepo.save(updatedTekst);
+		
+		saveText(updatedTekst);
 		
 		// saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
 		saveTextwithZettel(updatedTekst, zettel);
@@ -152,8 +148,7 @@ public class TextService {
 				Tekst newDummy = new Tekst(DUMMY_TEXT_CONTENT);
 				newDummy.setTitle(DUMMY_TITLE);
 				newDummy.setSource(DUMMY_SOURCE);
-				checkTextDate(newDummy); // Ensures date is set (e.g., LocalDate.EPOCH)
-				return textRepo.save(newDummy);
+				return saveText(newDummy);
 			}
 		} else {
 			// Input is not blank

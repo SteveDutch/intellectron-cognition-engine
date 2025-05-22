@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
@@ -226,13 +227,14 @@ class ZettelServiceTest {
 				+ " topic is way too long, it exceeds the maximum length of 255"
 				+ " characters.is topic is way too long, it exceeds the maximum "
 				+ "length of 255 characters.";
+	    Object maxLength = ReflectionTestUtils.getField(ZettelService.class, "TOPIC_MAX_LENGTH");
 		ZettelService zettelService = new ZettelService(); // Instantiate the service class
 
 		try {
 			zettelService.checkTopicLength(tooLongTopic);
 			fail("Expected TopicTooLongException to be thrown.");
 		} catch (TopicTooLongException e) {
-			assertEquals("this zettel's topic is too long", e.getMessage());
+			assertEquals("this zettel's topic is too long. Maximum allowed length is " + maxLength, e.getMessage());
 		}
 
 	}

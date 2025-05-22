@@ -18,7 +18,7 @@ function prepareZettel() {
 	zettel.note = document.getElementById("notiz").value;
 	zettel.tekst = document.getElementById("tekst").value;
 	// an array for tags:
-	let inputs = document.getElementsByName("tagInput");
+	let inputs = document.getElementsByName("tags");
 	let values = Array.from(inputs).map((input) => input.value);
 	zettel.tags = values;
 	let author = { authorFirstName: "", authorFamilyName: "" };

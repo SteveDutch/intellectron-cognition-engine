@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
@@ -23,6 +23,7 @@ import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
+@Transactional
 public class ZettelService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
@@ -57,7 +58,11 @@ public class ZettelService {
 	@Autowired
 	private SearchService searchService;
 
-	private static final int MAX_LENGTH = 255;
+	@Lazy
+	@Autowired
+	private ValidationService valService;
+
+	private static final int TOPIC_MAX_LENGTH = 255;
 
 	// vXXX vielleicht ein bisschen groß, diese Funktion
 	/**
@@ -70,14 +75,9 @@ public class ZettelService {
 	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 
-		noteService.noteEmptyOrBlankCheck(zettelDto.note());
+		validateZettelHasContent(zettelDto);
 
-		topicEmptyOrBlankCheck(zettelDto.zettel());
-
-		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
-		if (newZettel == null) {
-			newZettel = new Zettel();
-		}
+		Zettel newZettel = findByNoteOrCreateEmptyZettel(zettelDto);
 
 		// connect to Note
 		Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
@@ -96,7 +96,7 @@ public class ZettelService {
 		newTekst = textService.connectTextwithZettel(newTekst, newZettel);
 		// Author
 		Author newAuthor = authorService.connectAuthorWithText(zettelDto.author(), newTekst);
-
+		// marry author & text
 		textService.connectTextWithAuthor(newTekst, newAuthor);
 
 		// reference
@@ -110,6 +110,16 @@ public class ZettelService {
 
 		return zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 
+	}
+
+	/**
+	 * Validates the ZettelDtoRecord.
+	 *
+	 * @param zettelDto The DTO to validate.
+	 */
+	private void validateZettelHasContent(ZettelDtoRecord zettelDto) {
+		noteService.noteEmptyOrBlankCheck(zettelDto.note());
+		topicEmptyOrBlankCheck(zettelDto.zettel());
 	}
 
 	/**
@@ -131,8 +141,8 @@ public class ZettelService {
 	 * @param topic
 	 */
 	public void checkTopicLength(String topic) {
-		if (topic.length() > MAX_LENGTH) {
-			throw new TopicTooLongException("this zettel's topic is too long");
+		if (topic.length() > TOPIC_MAX_LENGTH) {
+			throw new TopicTooLongException("this zettel's topic is too long. Maximum allowed length is " + TOPIC_MAX_LENGTH);
 		}
 	}
 
@@ -237,4 +247,19 @@ public class ZettelService {
 	public Long countAllZettel() {
 		return zettelRepo.count();
 	}
+
+	/**
+	 * Finds an existing Zettel by note text or creates a new one.
+	 *
+	 * @param zettelDto The DTO containing the note text.
+	 * @return An existing Zettel or a new Zettel instance.
+	 */
+	private Zettel findByNoteOrCreateEmptyZettel(ZettelDtoRecord zettelDto) {
+		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
+		if (newZettel == null) {
+			newZettel = new Zettel();
+		}
+		return newZettel;
+	}
+
 }
