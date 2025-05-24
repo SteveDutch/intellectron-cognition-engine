@@ -41,10 +41,7 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!--	XXX from Trevors Video	OH SHIT hours wasted because of above :( -->
-		<!--~~(No version provided)~~>-->
-		
-
+ 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

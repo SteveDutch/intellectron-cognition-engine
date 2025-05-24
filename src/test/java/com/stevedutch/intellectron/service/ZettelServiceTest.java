@@ -57,8 +57,6 @@ class ZettelServiceTest {
 	
 	    private ZettelDtoRecord zettelDto;
 
-	private int maxTopicLength = 255;
-
 	@BeforeEach
 	void setUp() {
 		existingNote = new Note("Existing Note");
@@ -69,14 +67,6 @@ class ZettelServiceTest {
 		existingZettel.setTekst(existingTekst);
 		existingZettel.getReferences().add(existingReference);
 		
-		ZettelDtoRecord sutZettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
-
-
-//		when(searchService.findOneZettelByNote(anyString())).thenReturn(existingZettel);
-//		when(noteService.connectNotewithZettel(any(Note.class), any(Zettel.class)))
-//				.thenAnswer(invocation -> invocation.getArgument(0));
-//		when(textService.checkForExistingTekst(any(Tekst.class))).thenReturn(existingTekst);
 	}
 
 	@Test
