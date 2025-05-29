@@ -41,26 +41,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> SearchTermNotFoundException(SearchTermNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
-    	// XXX for gistorical & maybe learning reasons
-//    @ExceptionHandler(EmptyZettelException.class)
-//    public ResponseEntity<String> handleEmptyZettelException(EmptyZettelException ex) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-//    }
-//    
-//    @ExceptionHandler(EmptyZettelException.class)
-//    public ModelAndView handleEmptyZettelException(EmptyZettelException ex) {
-//        ModelAndView modelAndView = new ModelAndView("400");
-//        modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-//        modelAndView.addObject("message", ex.getMessage());
-//        System.out.println("Exception message: " + ex.getMessage());
-//        return modelAndView;
-//    }
-    
-//    @ExceptionHandler(EmptyZettelException.class)
-//    public String handleEmptyZettelException(EmptyZettelException ex, RedirectAttributes redirectAttributes) {
-//        redirectAttributes.addFlashAttribute("message", ex.getMessage());
-//        return "redirect:/400";
-//    }
     
     /**
      * Handles exceptions when an empty Zettel is submitted.

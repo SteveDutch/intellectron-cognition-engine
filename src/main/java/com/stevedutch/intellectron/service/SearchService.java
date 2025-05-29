@@ -33,7 +33,6 @@ public class SearchService {
 	private ZettelRepository zettelRepo;
 	@Autowired
 	private TextRepository textRepo;
-	// XXX check this: repo-Zugriff außerhalb der betreffenden Entity-Serviceklasse?
 	@Autowired
 	private AuthorRepository authorRepo;
 	@Autowired
@@ -220,8 +219,6 @@ public class SearchService {
 		return zettelRepo.findLast10Zettel();
 	}
 	
-	//TODO rename tenRandom & Zettel & and not woking, 
-	//stuck in loop when there are less than 10 Zettel
 	/**
 	 *finds x random Zettel
 	 *
@@ -300,12 +297,5 @@ public class SearchService {
 		return tagRepo.findById(tagId)
 				.orElseThrow(() -> new TagNotFoundException("Tag not found with id " + tagId));
 	}
-
-
-	// XXX is this method ever used? NOPE
-//	public List<Reference> findAll() {
-//		return refRepo.findAll();
-//	}
-
 
 }

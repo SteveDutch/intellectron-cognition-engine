@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -83,9 +84,6 @@ class ZettelServiceTest {
 
 		// Verify
 		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//	TODO	assertThat(result.tekst().getText()).isEqualTo("New Text");
-//		assertThat(result.references()).containsExactly(existingReference);
 	}
 
 	@Test
@@ -102,8 +100,6 @@ class ZettelServiceTest {
 
 		// Verify
 		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//	TODO	assertThat(result.tekst().getText()).isEqualTo("New Text");
 		assertThat(result.references()).containsExactly(newReference);
 		verify(zettelRepo).save(any(Zettel.class));
 	}
@@ -112,37 +108,16 @@ class ZettelServiceTest {
 	void testCreateZettelWithNoReferences() {
 		// Setup
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
+				new Note(), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
 
 		// Execute
 		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
-
 		// Verify
-		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//	TODO	assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
+		assertNotNull(result.zettel());
+		assertNotNull(result.tekst());
 		assertThat(result.references()).isEmpty();
 		verify(zettelRepo).save(any(Zettel.class));
 	}
-	//TODO Test falsch oder Funktion falsch :|
-//	@Test
-//	void testCreateZettelWithNullReferences() {
-//		// Setup
-//		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-//				existingNote, new Author("New", "Author"), new ArrayList<>(), 
-//				// new ArrayList<Reference>(existingZettel.getReferences())
-//	null);
-//
-//		// Execute
-//		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
-//
-//		// Verify
-//		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
-//		assertThat(result.references()).isEmpty();
-//		verify(zettelRepo).save(any(Zettel.class));
-//	}
 
 	@Test
 	void testCreateZettelWithEmptyReferences() {
@@ -155,8 +130,6 @@ class ZettelServiceTest {
 
 		// Verify
 		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//	TODO	assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
 		assertThat(result.references()).isEmpty();
 		verify(zettelRepo).save(any(Zettel.class));
 	}

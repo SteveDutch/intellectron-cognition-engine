@@ -2,18 +2,11 @@
 <html class="has-navbar-fixed-top" lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Zettel, shown by your intellectron</title>
+	<th:block th:insert="~{fragments/common :: head('Zettel, shown by your intellectron')}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
-
-	<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
 	<link rel="stylesheet" type="text/css" href="/css/zettel.css" />
-	<link rel="stylesheet" type="text/css" href="/css/dark-mode.css" />
-	<link rel="icon" type="image/x-icon" href="/favicon.ico">
 	<script src="../js/zettel.js" defer></script>
 	<script src="../js/common.js" defer></script>
-	<script src="/js/dark-mode.js" defer></script>
 </head>
 
 <body>
