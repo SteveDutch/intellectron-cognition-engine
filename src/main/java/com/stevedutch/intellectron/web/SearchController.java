@@ -1,8 +1,10 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,6 +186,47 @@ public class SearchController {
 		model.addAttribute("selectedTag", selectedTag);
 		model.addAttribute("zettels", zettels);
 		return "/tags";
+	}
+
+	@GetMapping("/api/search/zettel")
+	@ResponseBody
+	public List<Map<String, Object>> searchZettelsApi(@RequestParam("query") String query) {
+		LOG.info("API search for query: {}", query);
+		
+		// Only search if query has at least 3 characters
+		if (query.length() < 3) {
+			return new ArrayList<>();
+		}
+		
+		List<Zettel> zettels = new ArrayList<>();
+		
+		try {
+			// Search by topic fragment first
+			zettels = searchService.findZettelByTopicFragment(query);
+		} catch (Exception e) {
+			LOG.debug("No zettels found by topic fragment: {}", query);
+			// If no results by topic, try searching by note content
+			try {
+				zettels = searchService.findZettelByNoteFragment(query);
+			} catch (Exception ex) {
+				LOG.debug("No zettels found by note fragment: {}", query);
+			}
+		}
+		
+		// Limit results to prevent overwhelming the UI
+		return zettels.stream()
+			.limit(10)
+			.map(zettel -> {
+				Map<String, Object> result = new HashMap<>();
+				result.put("zettelId", zettel.getZettelId());
+				result.put("topic", zettel.getTopic());
+				result.put("humanFriendlyIdentifier", zettel.getHumanFriendlyIdentifier());
+				if (zettel.getNote() != null) {
+					result.put("noteText", zettel.getNote().getNoteText());
+				}
+				return result;
+			})
+			.collect(Collectors.toList());
 	}
 	
 }

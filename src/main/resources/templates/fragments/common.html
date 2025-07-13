@@ -35,13 +35,43 @@
 </head>
 <!-- END TABLE SORTING RESOURCES -->
 
+<!-- START INSTANT REFERENCE SEARCH RESOURCES - made by genAI -->
+<head th:fragment="instant-ref-search-resources">
+    <link rel="stylesheet" type="text/css" href="/css/instant-ref-search.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/instant-ref-search.js" defer></script>
+</head>
+<!-- END INSTANT REFERENCE SEARCH RESOURCES - made by genAI -->
+
+<!-- START INSTANT REFERENCE SEARCH TEMPLATE - // mustache search result modalmade by genAI -->
+<script th:fragment="instant-ref-search-template" id="zettel-search-template" type="text/template">
+{{#zettels}}
+<div class="dropdown-item is-clickable" data-zettel-id="{{zettelId}}" data-zettel-topic="{{topic}}">
+    <div class="content">
+        <p class="has-text-weight-bold">{{topic}}</p>
+        <p class="is-size-7 has-text-grey">ID: {{zettelId}} | {{humanFriendlyIdentifier}}</p>
+        {{#noteText}}
+        <p class="is-size-7">{{noteTextTruncated}}</p>
+        {{/noteText}}
+    </div>
+</div>
+{{/zettels}}
+{{^zettels}}
+<div class="dropdown-item">No Zettels found</div>
+{{/zettels}}
+{{#error}}
+<div class="dropdown-item has-text-danger">{{error}}</div>
+{{/error}}
+</script>
+<!-- END INSTANT REFERENCE SEARCH TEMPLATE - made by genAI -->
+
 <!-- START SHOW ZETTELS IN TABLE-->
  
 	<div th:fragment="zettel-table(zettels)">
 		<table class="table is-fullwidth is-bordered is-striped has-background-grey-lighter thick-black-border sortable-table">
 			<thead>
 				<tr>
-					<th>Signature</th>
+					<th>Identifier</th>
 					<th>Topic</th>
 					<th>Note</th>
 					<th>Text Title</th>
@@ -56,7 +86,7 @@
 				</tr>
 				<tr th:each="zettel : ${zettels}">
 					<td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"
-							rel="noopener noreferrer"><span class="showLast" th:text="${zettel.signature}"> signature
+							rel="noopener noreferrer"><span class="showLast" th:text="${zettel.getHumanFriendlyIdentifier()}"> identifier
 							</span></a></td>
 					<td><span  th:text="${zettel.topic}"> topic </span></td>
 					<td><span  th:if="${zettel.note!= null}"
@@ -81,8 +111,29 @@
 							No tags
 						</span>
 					</td>
-					<td><span th:each="reference : ${zettel.references}"
-							th:text="${reference.targetZettel} + ' // ' "></span></td>
+					<td>
+						<span th:if="${zettel.references != null && !zettel.references.isEmpty()}">
+							<span th:each="reference : ${zettel.references}">
+								<div th:switch="${reference.type.name()}">
+									<span th:case="'SUPPORTS'" class="tag is-small is-success" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="'CONTRADICTS'" class="tag is-small is-danger" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="'FOLLOWS_FROM'" class="tag is-small is-info" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="'BRANCHES_FROM'" class="tag is-small is-warning" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="'RELATES_TO'" class="tag is-small is-primary" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="*" class="tag is-small is-light" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+								</div>
+								<span th:if="${reference.connectionNote != null && !reference.connectionNote.isEmpty()}"
+									  class="is-size-7 has-text-grey"
+									  th:text="' (' + ${reference.connectionNote} + ')'">
+								</span>
+								<br/>
+							</span>
+						</span>
+						<span th:if="${zettel.references == null || zettel.references.isEmpty()}"
+							  class="has-text-grey is-italic">
+							No references
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

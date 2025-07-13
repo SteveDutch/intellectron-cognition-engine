@@ -43,6 +43,14 @@ public class Reference {
 		this.connectionNote = connectionNote;
 	}
 
+	public ReferenceType getType() {
+		return type;
+	}
+
+	public void setType(ReferenceType type) {
+		this.type = type;
+	}
+
 	@ManyToMany(mappedBy = "references")
 	private Set<Zettel> zettels = new HashSet<>();
 	
@@ -68,7 +76,7 @@ public class Reference {
 	}
 
 	public Long getOriginZettel() {
-		return sourceZettel.getZettelId();
+		return sourceZettel != null ? sourceZettel.getZettelId() : null;
 	}
 
 	public void setOriginZettel(Long originZettel) {
@@ -76,13 +84,30 @@ public class Reference {
 		this.sourceZettel.setZettelId(originZettel);
 	}
 
-	public Long getTargetZettel() {
-		return targetZettel.getZettelId();
+	public Zettel getSourceZettel() {
+		return sourceZettel;
 	}
 
-	public void setTargetZettel(Long targetZettel) {
+	public void setSourceZettel(Zettel sourceZettel) {
+		this.sourceZettel = sourceZettel;
+	}
+
+	public Zettel getTargetZettel() {
+		return targetZettel;
+	}
+
+	public void setTargetZettel(Zettel targetZettel) {
+		this.targetZettel = targetZettel;
+	}
+
+	// Legacy methods for backward compatibility
+	public Long getTargetZettelId() {
+		return targetZettel != null ? targetZettel.getZettelId() : null;
+	}
+
+	public void setTargetZettelId(Long targetZettelId) {
 		this.targetZettel = new Zettel();
-		this.targetZettel.setZettelId(targetZettel);
+		this.targetZettel.setZettelId(targetZettelId);
 	}
 
 	public Set<Zettel> getZettels() {

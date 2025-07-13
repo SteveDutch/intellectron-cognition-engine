@@ -105,6 +105,11 @@ public class ZettelService {
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 
+		// Save references first
+		for (Reference ref : newRefs) {
+			refService.saveReferenceWithZettel(ref, newZettel);
+		}
+
 		saveZettel(newZettel);
 		authorService.saveAuthor(newAuthor);
 
@@ -155,16 +160,30 @@ public class ZettelService {
 		zettel.setAdded(LocalDateTime.now());
 		zettel.setChanged(LocalDateTime.now());
 		zettel.getReferences().addAll(zettelDto.references());
-		// TODO BUG 00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
-		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmddMMyyyy");
-		zettel.setSignature(Long.parseLong(zettel.getAdded().format(formatter)));
+		// Note: Signature field has been removed - using dynamic human-friendly identifier instead of a number system
+		// and ZettelId is equivalent to Signature
 		return zettel;
 	}
 
 	public void setRelationsRefsWithZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
-		newRefs.forEach(reference -> reference.setOriginZettel(newZettel.getSignature()));
-		newRefs.forEach(reference -> reference.getZettels().add(newZettel));
+		for (Reference reference : newRefs) {
+			// Set the source zettel
+			reference.setSourceZettel(newZettel);
+			
+			// Get the target zettel by ID
+			if (reference.getTargetZettelId() != null) {
+				try {
+					Zettel targetZettel = searchService.findZettelById(reference.getTargetZettelId());
+					reference.setTargetZettel(targetZettel);
+				} catch (Exception e) {
+					LOG.error("Target zettel not found with ID: " + reference.getTargetZettelId(), e);
+					continue; // Skip this reference if target zettel doesn't exist
+				}
+			}
+			
+			// Add the reference to the zettel
+			newZettel.getReferences().add(reference);
+		}
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {

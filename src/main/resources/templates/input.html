@@ -7,15 +7,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>feed your intellectron</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+ 
 	<link rel="stylesheet" href="/css/bulma.css">
 	<link rel="stylesheet" href="/css/input.css">
 	<link rel="stylesheet" href="/css/dark-mode.css">
-	<script src="../js/input.js" defer></script>
+	<script src="/js/input.js" defer></script>
+	<script src="/js/enter-zettel.js" defer></script>
 	<script src="/js/common.js" defer></script>
 	<script src="/js/dark-mode.js" defer></script>
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
+	<th:block th:replace="fragments/common :: instant-ref-search-resources"></th:block>
+	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
 </head>
 
 <body>
@@ -114,27 +117,104 @@
 		</div>
 
 		<hr />
-		<div class="field">
-			<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred / 
-				Signatur, auf die verwiesen werden soll:</label>
-			<div id="signatureContainer">
-				<div th:each="reference, status : ${references}">
-					<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-						th:id="'signature' + ${status.index}" th:name="'references'" th:value="${reference.targetZettel}" />
-					<button class="button is-small is-warning" type="button" onclick="this.parentNode.remove()">rydde ut
-						referanse</button>
-				</div>
-				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button class="button is-small is-warning" id="addReferenceButton" type="button">Add Reference</button>
-			</div>
-			<hr />
-
-			<div class="container">
-				<div class="columns is-centered">
-					<div class="column ">
-						<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
+		<div class="columns">
+		<div class="column is-12">
+			<label class="label has-text-weight-bold">Connected Zettels / Verknüpfte Zettel:</label>
+			
+			<!-- Container for all reference forms (existing and new) -->
+			<div id="referencesContainer" class="columns is-multiline">
+				
+				<!-- Loop to render existing references as pre-filled forms -->
+				<div th:each="ref : ${zettel.references}" class="column is-4 reference-group">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Existing Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<!-- The name attribute is critical for form submission -->
+								<select name="referenceType">
+									<!-- Loop through all possible enum values to create the options -->
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"
+											th:selected="${typeOpt == ref.type}">
+									</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="field">
+							<label class="label">Target Zettel:</label>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<!-- Pre-fill the value AND the data-zettel-id attribute -->
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   th:value="${ref.targetZettel.getHumanFriendlyIdentifier()}"
+										   th:attr="data-zettel-id=${ref.targetZettel.zettelId}" 
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<!-- Pre-fill the connection note -->
+							<input type="text" class="input" name="connectionNote"
+								   th:value="${ref.connectionNote}" 
+								   placeholder="Why are these notes connected?" />
+						</div>
 					</div>
 				</div>
+
+				<!-- The template for a brand new reference form. It will be cloned by JS. -->
+				<div class="column is-4 reference-group is-hidden" id="reference-template">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Add New Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<select name="referenceType">
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Target Zettel:</label>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   placeholder="Start typing to search..."
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<input type="text" class="input" name="connectionNote" placeholder="Why are these notes connected?" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Button to add a new reference form -->
+			<button class="button is-primary" type="button" id="add-reference-btn">Add Another Reference</button>
+		</div>
+	</div>
+			<div class="columns">
+			<div class="column ">
+				<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
 			</div>
 		</div>
 	</form>
@@ -158,6 +238,9 @@
 
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>
+	
+	<!-- Instant Reference Search Template - made by genAI -->
+	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
 </body>
 
 </html>

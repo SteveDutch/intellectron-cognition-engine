@@ -34,47 +34,6 @@ if (searchTerm) {
 			console.log("Element with ID 'searchedVia' not found. Probably no result page shown");
 		}
 
-document.getElementById('addTagButton')?.addEventListener('click', function () {
-    let tagsContainer = document.getElementById('tagsContainer');
-    let newDiv = document.createElement('div');
-    let newInput = document.createElement('input');
-    newInput.type = 'text';
-    newInput.name = 'tags'; // Name attribute to bind the input to an ArrayList
-    let newRemoveButton = document.createElement('button');
-	newRemoveButton.classList.add('button', 'is-small', 'is-warning');
-    newRemoveButton.type = 'button';
-    newRemoveButton.textContent = 'del';
-    newRemoveButton.onclick = function () {
-        this.parentNode.remove();
-    }
-    tagsContainer.appendChild(newDiv);
-    newDiv.appendChild(newInput);
-    newDiv.appendChild(newRemoveButton);
-});
-
-
-document.getElementById('addReferenceButton')?.addEventListener('click', function () { 
-    let signatureContainer = document.getElementById('signatureContainer');
-    let newDiv = document.createElement('div');
-    let newReferenceInput = document.createElement('input');
-    newReferenceInput.type = 'number';
-    newReferenceInput.min = '100000000000';
-    newReferenceInput.max = '999999999999';
-    newReferenceInput.pattern = '[0-9]{12}';
-    newReferenceInput.setAttribute('required', 'required');
-    newReferenceInput.name = 'references'; // Name attribute to bind the input to an ArrayList
-    let newRemoveRefButton = document.createElement('button');
-    newRemoveRefButton.type = 'button';
-	newRemoveRefButton.classList.add('button', 'is-small', 'is-warning');
-    newRemoveRefButton.textContent = 'del';
-    newRemoveRefButton.onclick = function () {
-        this.parentNode.remove();
-    }
-    signatureContainer.appendChild(newDiv);
-    newDiv.appendChild(newReferenceInput);
-    newDiv.appendChild(newRemoveRefButton);
-});
-
 
 async function loadTruncatedText(textId) {
     const modal = document.querySelector('#modal-example');

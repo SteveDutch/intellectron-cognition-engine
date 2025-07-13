@@ -33,35 +33,50 @@ public class ReferenceService {
 	public void updateReferences(Long zettelId, ArrayList<Reference> references) {
 
 		LOG.info("Start of updateReferences ; ---> " + references);
+		
+		// Get the source zettel
+		Zettel sourceZettel = searchService.findZettelById(zettelId);
+		
+		// Clear existing references for this zettel
+		sourceZettel.getReferences().clear();
+		
 		for (Reference reference : references) {
-			reference.setOriginZettel(searchService.findZettelById(zettelId).getSignature());
-			// for debugging
-			refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel());
-			LOG.info("FOUND " + refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(),
-					reference.getTargetZettel()));
-			// klappt das jetzt schon?
-			if (refRepo.findByOriginZettelAndTargetZettel(reference.getOriginZettel(),
-					reference.getTargetZettel()) != null) {
-				LOG.info("Loop-Start --> " + reference);
-				reference.setReferenceId(refRepo
-						.findByOriginZettelAndTargetZettel(reference.getOriginZettel(), reference.getTargetZettel())
-						.getReferenceId());
-				LOG.info(" --> im Loop, neues ID?" + reference);
-			} else {
-//				reference.setTargetZettel(zettelId);
-				LOG.info("else/nicht in DB vorm save --> " + reference);
-				refRepo.save(reference);
-				LOG.info("else/nicht in DB nachm save --> " + reference);
-
+			// Set the source zettel
+			reference.setSourceZettel(sourceZettel);
+			
+			// Get the target zettel by ID
+			if (reference.getTargetZettelId() != null) {
+				try {
+					Zettel targetZettel = searchService.findZettelById(reference.getTargetZettelId());
+					reference.setTargetZettel(targetZettel);
+				} catch (Exception e) {
+					LOG.error("Target zettel not found with ID: " + reference.getTargetZettelId(), e);
+					continue; // Skip this reference if target zettel doesn't exist
+				}
 			}
-			// fürs deleten muss ich wohl erst den Zettel finden
-			Zettel zettel = searchService.findZettelById(zettelId);
-			zettel.setReferences(references.stream().collect(Collectors.toSet()));
-			LOG.info("updateReferences ; am ende, hat zettel refs ---> " + zettel.getReferences());
-			zettelService.saveZettel(zettel);
-
+			
+			// Check if this reference already exists
+			Reference existingReference = refRepo.findBySourceZettel_ZettelIdAndTargetZettel_ZettelId(
+				sourceZettel.getZettelId(), reference.getTargetZettelId());
+			
+			if (existingReference != null) {
+				// Update existing reference
+				existingReference.setType(reference.getType());
+				existingReference.setConnectionNote(reference.getConnectionNote());
+				refRepo.save(existingReference);
+				sourceZettel.getReferences().add(existingReference);
+				LOG.info("Updated existing reference: " + existingReference);
+			} else {
+				// Save new reference
+				Reference savedReference = refRepo.save(reference);
+				sourceZettel.getReferences().add(savedReference);
+				LOG.info("Saved new reference: " + savedReference);
+			}
 		}
-
+		
+		// Save the updated zettel
+		zettelService.saveZettel(sourceZettel);
+		LOG.info("updateReferences completed. Zettel has " + sourceZettel.getReferences().size() + " references");
 	}
 
 }

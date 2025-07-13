@@ -312,17 +312,15 @@ public class SearchService {
 //	}
 
 	public List<Zettel> findRelatedZettels(Long zettelId) {
-		// Find direct references
-		List<Zettel> directLinks = refRepo.findDirectLinks(zettelId);
+		// TODO: Implement advanced relationship finding
+		// For now, return empty list until repositories are extended
+		return new ArrayList<>();
 		
-		// Find zettels with similar tags
-		List<Zettel> similarTagged = zettelRepo.findBySharedTags(zettelId);
-		
-		// Find zettels with similar topics
-		List<Zettel> similarTopics = zettelRepo.findSimilarTopics(zettelId);
-		
-		// Combine and sort by relevance
-		return combineAndSortByRelevance(directLinks, similarTagged, similarTopics);
+		// Future implementation:
+		// List<Zettel> directLinks = refRepo.findDirectLinks(zettelId);
+		// List<Zettel> similarTagged = zettelRepo.findBySharedTags(zettelId);
+		// List<Zettel> similarTopics = zettelRepo.findSimilarTopics(zettelId);
+		// return combineAndSortByRelevance(directLinks, similarTagged, similarTopics);
 	}
 
 }
