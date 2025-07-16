@@ -21,6 +21,7 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TextManipulationService;
 
@@ -221,6 +222,8 @@ public class SearchController {
 				result.put("zettelId", zettel.getZettelId());
 				result.put("topic", zettel.getTopic());
 				result.put("humanFriendlyIdentifier", zettel.getHumanFriendlyIdentifier());
+				result.put("added", zettel.getAdded().toLocalDate().toString()); 
+				result.put("changed", zettel.getChanged().toLocalDate().toString());
 				if (zettel.getNote() != null) {
 					result.put("noteText", zettel.getNote().getNoteText());
 				}

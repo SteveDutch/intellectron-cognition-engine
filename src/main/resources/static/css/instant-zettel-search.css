@@ -26,4 +26,20 @@
 /* Focus state for search input - made by genAI */
 .instant-ref-search-input:focus {
     box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+}
+
+/* Ensure dropdown is visible when active */
+.instant-ref-search-dropdown.is-active .dropdown-menu {
+    display: block !important;
+}
+
+.instant-ref-search-dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
 } 

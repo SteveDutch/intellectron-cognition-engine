@@ -11,14 +11,18 @@
 	<link rel="stylesheet" href="/css/bulma.css">
 	<link rel="stylesheet" href="/css/input.css">
 	<link rel="stylesheet" href="/css/dark-mode.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+	<!-- Script/CSS loading -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
+	<script src="/js/instant-zettel-search.js" defer></script>
+	
 	<script src="/js/input.js" defer></script>
-	<script src="/js/enter-zettel.js" defer></script>
 	<script src="/js/common.js" defer></script>
 	<script src="/js/dark-mode.js" defer></script>
-	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	
 	<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
-	<th:block th:replace="fragments/common :: instant-ref-search-resources"></th:block>
-	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
 </head>
 
 <body>
@@ -172,7 +176,7 @@
 				</div>
 
 				<!-- The template for a brand new reference form. It will be cloned by JS. -->
-				<div class="column is-4 reference-group is-hidden" id="reference-template">
+				<div class="column is-4 reference-group is-hidden" id="reference-template-to-clone">
 					<div class="box">
 						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
 						<h6 class="subtitle is-6">Add New Reference:</h6>
@@ -234,13 +238,15 @@
 	</section>
 	<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
 
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>
 	
-	<!-- Instant Reference Search Template - made by genAI -->
-	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
+	<!-- The search template must be in the body to be found by the script -->
+
+	<!-- <th:block th:replace="fragments/common :: instant-zettel-search-template"></th:block> -->
+	<footer th:replace="fragments/common :: footer"></footer>
+
 </body>
 
 </html>

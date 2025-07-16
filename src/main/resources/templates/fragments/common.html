@@ -35,35 +35,7 @@
 </head>
 <!-- END TABLE SORTING RESOURCES -->
 
-<!-- START INSTANT REFERENCE SEARCH RESOURCES - made by genAI -->
-<head th:fragment="instant-ref-search-resources">
-    <link rel="stylesheet" type="text/css" href="/css/instant-ref-search.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/instant-ref-search.js" defer></script>
-</head>
-<!-- END INSTANT REFERENCE SEARCH RESOURCES - made by genAI -->
 
-<!-- START INSTANT REFERENCE SEARCH TEMPLATE - // mustache search result modalmade by genAI -->
-<script th:fragment="instant-ref-search-template" id="zettel-search-template" type="text/template">
-{{#zettels}}
-<div class="dropdown-item is-clickable" data-zettel-id="{{zettelId}}" data-zettel-topic="{{topic}}">
-    <div class="content">
-        <p class="has-text-weight-bold">{{topic}}</p>
-        <p class="is-size-7 has-text-grey">ID: {{zettelId}} | {{humanFriendlyIdentifier}}</p>
-        {{#noteText}}
-        <p class="is-size-7">{{noteTextTruncated}}</p>
-        {{/noteText}}
-    </div>
-</div>
-{{/zettels}}
-{{^zettels}}
-<div class="dropdown-item">No Zettels found</div>
-{{/zettels}}
-{{#error}}
-<div class="dropdown-item has-text-danger">{{error}}</div>
-{{/error}}
-</script>
-<!-- END INSTANT REFERENCE SEARCH TEMPLATE - made by genAI -->
 
 <!-- START SHOW ZETTELS IN TABLE-->
  

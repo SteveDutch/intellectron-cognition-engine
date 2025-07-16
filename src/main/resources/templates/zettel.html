@@ -11,13 +11,15 @@
 	<link rel="stylesheet" type="text/css" href="/css/zettel.css" />
 	<link rel="stylesheet" type="text/css" href="/css/dark-mode.css" />
 	<link rel="icon" type="image/x-icon" href="/favicon.ico">
-	<script src="/js/enter-zettel.js" defer></script>
-	<script src="/js/zettel.js" defer></script>
+
+	<!-- Script/CSS loading -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
+	<script src="/js/instant-zettel-search.js" defer></script>
 	
+	<script src="/js/zettel.js" defer></script>
 	<script src="/js/common.js" defer></script>
 	<script src="/js/dark-mode.js" defer></script>
-	<th:block th:replace="fragments/common :: instant-ref-search-resources"></th:block>
-	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
 </head>
 
 <body>
@@ -157,7 +159,7 @@
 									</div>
 								</div>
 								
-								<div class="field">
+								<div th:if="${ref.targetZettel != null}"  class="field">
 									<label class="label">Target Zettel:</label>
 									<div class="dropdown instant-ref-search-dropdown">
 										<div class="dropdown-trigger">
@@ -185,7 +187,7 @@
 						</div>
 
 						<!-- The template for a brand new reference form. It will be cloned by JS. -->
-						<div class="column is-4 reference-group is-hidden" id="reference-template">
+						<div class="column is-4 reference-group is-hidden" id="reference-template-to-clone">
 							<div class="box">
 								<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
 								<h6 class="subtitle is-6">Add New Reference:</h6>
@@ -269,9 +271,6 @@
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>
-	
-	<!-- Instant Reference Search Template - made by genAI -->
-	<th:block th:replace="fragments/common :: instant-ref-search-template"></th:block>
 </body>
 
 </html>
