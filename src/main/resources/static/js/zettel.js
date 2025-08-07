@@ -35,12 +35,19 @@ function captureCurrentFormData() {
          data.tekstTextDate = timestampElement ? timestampElement.textContent : null;
     }
 
-    // References - This logic will be handled by prepareZettel during submission
+    // References - Include all reference data for proper change detection
     data.references = Array.from(document.querySelectorAll('.reference-group:not(#reference-template)'))
         .map(group => {
             const searchInput = group.querySelector('input[name="zettelSearchInput"]');
+            const typeSelect = group.querySelector('select[name="referenceType"]');
+            const noteInput = group.querySelector('input[name="connectionNote"]');
             const targetZettelId = searchInput.dataset.zettelId;
-            return targetZettelId ? `ref-${targetZettelId}` : null;
+            
+            return targetZettelId ? {
+                targetZettelId: targetZettelId,
+                type: typeSelect ? typeSelect.value : null,
+                connectionNote: noteInput ? noteInput.value : null
+            } : null;
         })
         .filter(Boolean); // Keep it simple for change detection
 
