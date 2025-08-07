@@ -21,6 +21,13 @@ class InstantZettelSearch {
             this.searchTimeout = setTimeout(() => {
                 this.performSearch(e.target.value);
             }, 300);
+
+            // Hide the link when user starts typing again
+            const linkContainer = this.input.closest('.reference-group').querySelector('.view-zettel-link-container');
+            if (linkContainer) {
+                linkContainer.style.display = 'none';
+                linkContainer.innerHTML = '';
+            }
         });
         
         // Focus event - only search if there are 3+ characters AND user is actively typing
@@ -77,6 +84,32 @@ class InstantZettelSearch {
         } catch (error) {
             console.error('Search error:', error);
             await this.displayError('Netzwerkfehler im PullDown');
+        }
+    }
+    
+    updateZettelLink(zettelId) {
+        const referenceGroup = this.input.closest('.reference-group');
+        if (!referenceGroup) return;
+
+        const linkContainer = referenceGroup.querySelector('.view-zettel-link-container');
+        if (!linkContainer) return;
+
+        if (zettelId) {
+            const link = document.createElement('a');
+            link.href = `/zettel/${zettelId}`;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.className = 'button is-link is-small';
+            link.innerHTML = `
+                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+                <span>View Zettel ${zettelId}</span>
+            `;
+            linkContainer.innerHTML = ''; // Clear previous link
+            linkContainer.appendChild(link);
+            linkContainer.style.display = 'block';
+        } else {
+            linkContainer.innerHTML = '';
+            linkContainer.style.display = 'none';
         }
     }
     
@@ -141,6 +174,7 @@ class InstantZettelSearch {
         this.input.value = `${zettel.topic} (ID: ${zettel.zettelId})`;
         this.input.dataset.zettelId = zettel.zettelId;
         this.hideResults();
+        this.updateZettelLink(zettel.zettelId);
         
         // Trigger custom event for other components
         this.input.dispatchEvent(new CustomEvent('zettelSelected', {
@@ -238,6 +272,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (result && result.length > 0) {
                             const zettel = result[0];
                             input.value = `${zettel.topic} (ID: ${zettel.zettelId})`;
+
+                            // Find the corresponding link container and update it
+                            const referenceGroup = input.closest('.reference-group');
+                            const linkContainer = referenceGroup.querySelector('.view-zettel-link-container');
+                            if (linkContainer) {
+                                const link = document.createElement('a');
+                                link.href = `/zettel/${zettel.zettelId}`;
+                                link.target = '_blank';
+                                link.rel = 'noopener noreferrer';
+                                link.className = 'button is-link is-small';
+                                link.innerHTML = `
+                                    <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+                                    <span>View Zettel ${zettel.zettelId}</span>
+                                `;
+                                linkContainer.innerHTML = '';
+                                linkContainer.appendChild(link);
+                                linkContainer.style.display = 'block';
+                            }
+
                         } else {
                             input.value = `Zettel ${zettelId} (not found)`;
                         }

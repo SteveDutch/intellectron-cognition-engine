@@ -161,6 +161,10 @@
 								
 								<div th:if="${ref.targetZettelId != null}"  class="field">
 									<label class="label">Target Zettel:</label>
+									<!-- Add link to target zettel -->
+									<div class="field mb-2 view-zettel-link-container" style="display: none;">
+										<!-- This link will be populated by JavaScript -->
+									</div>
 									<div class="dropdown instant-ref-search-dropdown">
 										<div class="dropdown-trigger">
 											<!-- Pre-fill with target zettel ID and load details via JavaScript -->
@@ -203,6 +207,9 @@
 								</div>
 								<div class="field">
 									<label class="label">Target Zettel:</label>
+									<div class="field mb-2 view-zettel-link-container" style="display: none;">
+										<!-- This link will be populated by JavaScript -->
+									</div>
 									<div class="dropdown instant-ref-search-dropdown">
 										<div class="dropdown-trigger">
 											<input type="text" class="input instant-ref-search-input"
