@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
+import com.stevedutch.intellectron.domain.ReferenceType;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
@@ -62,12 +63,12 @@ class ZettelServiceTest {
 	void setUp() {
 		existingNote = new Note("Existing Note");
 		existingTekst = new Tekst("Existing Text");
-		existingReference = new Reference("1234567890");
+		existingReference = new Reference(1L, 2L, ReferenceType.RELATES_TO, "test reference");
 		existingZettel = new Zettel("Existing Zettel");
 		existingZettel.setNote(existingNote);
 		existingZettel.setTekst(existingTekst);
 		existingZettel.getReferences().add(existingReference);
-		
+
 		ZettelDtoRecord sutZettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
 				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
 
@@ -100,7 +101,7 @@ class ZettelServiceTest {
 	@Test
 	void testCreateZettelWithNewReference() {
 		// Setup
-		Reference newReference = new Reference("0987654321");
+		Reference newReference = new Reference(1L, 2L, ReferenceType.RELATES_TO, "test reference");
 		ArrayList<Reference> references = new ArrayList<Reference>();
 		references.add(newReference);
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
@@ -283,16 +284,6 @@ class ZettelServiceTest {
         assertThat(result.getTekst()).isEqualTo(existingTekst);
     }
 
-    @Test
-    void testSetupZettelSetsSignature() {
-    	ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
-
-        Zettel result = zettelService.setupZettel(existingZettel, zettelDto, existingNote, existingTekst);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmddMMyyyy");
-        long expectedSignature = Long.parseLong(result.getAdded().format(formatter));
-        assertThat(result.getSignature()).isEqualTo(expectedSignature);
-    }
 
     @Test
     void testSetupZettelThrowsExceptionForLongTopic() {

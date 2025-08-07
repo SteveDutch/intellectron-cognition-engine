@@ -2,13 +2,13 @@ package com.stevedutch.intellectron.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 
 import jakarta.persistence.CascadeType;
@@ -46,8 +46,6 @@ public class Zettel {
 	
 	@Column(name = "changed")
 	private LocalDateTime changed;
-	
-
 	
 	@ManyToMany(fetch = FetchType.LAZY, 
 			cascade = {
@@ -233,6 +231,7 @@ public class Zettel {
 	 * @return a readable identifier for the Zettel
 	 */
 	@Transient
+	@JsonIgnore
 	public String getHumanFriendlyIdentifier() {
 		String formattedDate = added != null ? added.toLocalDate().toString() : "undated";
 		String safeTopic = topic != null ? topic : "untitled";

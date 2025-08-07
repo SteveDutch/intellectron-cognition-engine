@@ -99,17 +99,16 @@ public class ZettelService {
 
 		textService.connectTextWithAuthor(newTekst, newAuthor);
 
-		// reference
+		// Save zettel first to get an ID (needed for references)
+		newZettel = saveZettel(newZettel);
+		
+		// reference - now that we have an ID, we can set the references
 		ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
 		setRelationsRefsWithZettel(newZettel, newRefs);
 
 		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 
-		// Save references first
-		for (Reference ref : newRefs) {
-			refService.saveReferenceWithZettel(ref, newZettel);
-		}
-
+		// Save zettel again with references
 		saveZettel(newZettel);
 		authorService.saveAuthor(newAuthor);
 
@@ -159,7 +158,8 @@ public class ZettelService {
 		zettel.setTekst(newTekst);
 		zettel.setAdded(LocalDateTime.now());
 		zettel.setChanged(LocalDateTime.now());
-		zettel.getReferences().addAll(zettelDto.references());
+		// References will be added later after zettel has an ID
+		// zettel.getReferences().addAll(zettelDto.references());
 		// Note: Signature field has been removed - using dynamic human-friendly identifier instead of a number system
 		// and ZettelId is equivalent to Signature
 		return zettel;

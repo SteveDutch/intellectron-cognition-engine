@@ -219,6 +219,38 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial search initialization on page load
     initializeSearch(document);
+    
+    // Load existing reference details on page load
+    loadExistingReferenceDetails();
+    
+    // Function to load details for existing references
+    async function loadExistingReferenceDetails() {
+        const existingRefInputs = document.querySelectorAll('.instant-ref-search-input[data-zettel-id]');
+        
+        for (const input of existingRefInputs) {
+            const zettelId = input.dataset.zettelId;
+            if (zettelId && input.value.startsWith('Loading Zettel')) {
+                try {
+                    // Fetch zettel details by ID
+                    const response = await fetch(`/api/search/zettel?query=id:${zettelId}`);
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result && result.length > 0) {
+                            const zettel = result[0];
+                            input.value = `${zettel.topic} (ID: ${zettel.zettelId})`;
+                        } else {
+                            input.value = `Zettel ${zettelId} (not found)`;
+                        }
+                    } else {
+                        input.value = `Zettel ${zettelId} (error loading)`;
+                    }
+                } catch (error) {
+                    console.error('Error loading zettel details:', error);
+                    input.value = `Zettel ${zettelId} (error loading)`;
+                }
+            }
+        }
+    }
 
     // Setup for deleting references
     const setupDeleteButtons = (context) => {

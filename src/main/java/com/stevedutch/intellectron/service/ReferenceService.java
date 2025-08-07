@@ -25,8 +25,7 @@ public class ReferenceService {
 	@Autowired
 	private SearchService searchService;
 
-	public Reference saveReferenceWithZettel(Reference reference, Zettel zettel) {
-		reference.getZettels().add(zettel);
+	public Reference saveReference(Reference reference) {
 		return refRepo.save(reference);
 	}
 
@@ -42,21 +41,25 @@ public class ReferenceService {
 		
 		for (Reference reference : references) {
 			// Set the source zettel
-			reference.setSourceZettel(sourceZettel);
+			reference.setSourceZettelId(sourceZettel.getZettelId());
+			
+			// Skip references with null target zettel ID
+			if (reference.getTargetZettelId() == null) {
+				LOG.warn("Skipping reference with null target zettel ID");
+				continue;
+			}
 			
 			// Get the target zettel by ID
-			if (reference.getTargetZettelId() != null) {
-				try {
-					Zettel targetZettel = searchService.findZettelById(reference.getTargetZettelId());
-					reference.setTargetZettel(targetZettel);
-				} catch (Exception e) {
-					LOG.error("Target zettel not found with ID: " + reference.getTargetZettelId(), e);
-					continue; // Skip this reference if target zettel doesn't exist
-				}
+			try {
+				Long targetZettelId = searchService.findZettelById(reference.getTargetZettelId()).getZettelId();
+				reference.setTargetZettelId(targetZettelId);
+			} catch (Exception e) {
+				LOG.error("Target zettel not found with ID: " + reference.getTargetZettelId(), e);
+				continue; // Skip this reference if target zettel doesn't exist
 			}
 			
 			// Check if this reference already exists
-			Reference existingReference = refRepo.findBySourceZettel_ZettelIdAndTargetZettel_ZettelId(
+			Reference existingReference = refRepo.findBySourceZettelIdAndTargetZettelId(
 				sourceZettel.getZettelId(), reference.getTargetZettelId());
 			
 			if (existingReference != null) {

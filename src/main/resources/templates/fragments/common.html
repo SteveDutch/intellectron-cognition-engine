@@ -87,12 +87,12 @@
 						<span th:if="${zettel.references != null && !zettel.references.isEmpty()}">
 							<span th:each="reference : ${zettel.references}">
 								<div th:switch="${reference.type.name()}">
-									<span th:case="'SUPPORTS'" class="tag is-small is-success" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
-									<span th:case="'CONTRADICTS'" class="tag is-small is-danger" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
-									<span th:case="'FOLLOWS_FROM'" class="tag is-small is-info" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
-									<span th:case="'BRANCHES_FROM'" class="tag is-small is-warning" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
-									<span th:case="'RELATES_TO'" class="tag is-small is-primary" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
-									<span th:case="*" class="tag is-small is-light" th:text="${reference.type.name()} + ': ' + ${reference.targetZettel.getHumanFriendlyIdentifier()}"></span>
+									<span th:case="'SUPPORTS'" class="tag is-small is-success" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									<span th:case="'CONTRADICTS'" class="tag is-small is-danger" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									<span th:case="'FOLLOWS_FROM'" class="tag is-small is-info" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									<span th:case="'BRANCHES_FROM'" class="tag is-small is-warning" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									<span th:case="'RELATES_TO'" class="tag is-small is-primary" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									<span th:case="*" class="tag is-small is-light" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
 								</div>
 								<span th:if="${reference.connectionNote != null && !reference.connectionNote.isEmpty()}"
 									  class="is-size-7 has-text-grey"

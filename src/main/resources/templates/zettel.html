@@ -23,7 +23,7 @@
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	
 	<!-- Wrap main content sections in a <main> tag -->
 	<main class="main-content"> 
@@ -159,15 +159,15 @@
 									</div>
 								</div>
 								
-								<div th:if="${ref.targetZettel != null}"  class="field">
+								<div th:if="${ref.targetZettelId != null}"  class="field">
 									<label class="label">Target Zettel:</label>
 									<div class="dropdown instant-ref-search-dropdown">
 										<div class="dropdown-trigger">
-											<!-- Pre-fill the value AND the data-zettel-id attribute -->
+											<!-- Pre-fill with target zettel ID and load details via JavaScript -->
 											<input type="text" class="input instant-ref-search-input"
 												   name="zettelSearchInput"
-												   th:value="${ref.targetZettel.getHumanFriendlyIdentifier()}"
-												   th:attr="data-zettel-id=${ref.targetZettel.zettelId}" 
+												   th:value="${'Loading Zettel ' + ref.targetZettelId + '...'}"
+												   th:attr="data-zettel-id=${ref.targetZettelId}" 
 												   autocomplete="off" />
 										</div>
 										<div class="dropdown-menu" role="menu">
@@ -267,7 +267,7 @@
         </div>
     </div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>
