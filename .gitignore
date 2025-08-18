@@ -76,3 +76,5 @@ qodana.yaml
 .qodo
 src/main/resources/templates/zettel.html
 .specstory/
+.cursor/rules/dev-ops.mdc
+.cursor/rules/ma-java-spring-rule.mdc

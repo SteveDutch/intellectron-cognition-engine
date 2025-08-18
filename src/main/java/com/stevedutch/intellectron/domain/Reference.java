@@ -1,6 +1,7 @@
 package com.stevedutch.intellectron.domain;
 
 import java.util.Objects;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,9 +11,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity // Class name = Reference, DB Table name = pointer
 @Table(name = "pointer")
+@SQLDelete(sql = "UPDATE pointer SET deleted = true, deleted_at = now() WHERE reference_id = ?")
+@SQLRestriction("deleted = false")
 public class Reference {
 	
 	@Id
@@ -30,6 +35,12 @@ public class Reference {
 	private ReferenceType type;
 	
 	private String connectionNote; // Brief explanation of why these notes are connected
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 	
 	// Constructors
 	public Reference() {
@@ -106,6 +117,22 @@ public class Reference {
 	public void setConnectionNote(String connectionNote) {
 		this.connectionNote = connectionNote;
 	}
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 
 	// Convenience methods for backward compatibility
 	

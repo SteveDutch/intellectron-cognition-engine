@@ -1,6 +1,9 @@
 package com.stevedutch.intellectron.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -36,20 +39,40 @@ public class ReferenceService {
 		// Get the source zettel
 		Zettel sourceZettel = searchService.findZettelById(zettelId);
 		
-		// Clear existing references for this zettel
+        // Load existing references for this source (active only due to @Where)
+        List<Reference> existing = refRepo.findAllBySourceZettelId(sourceZettel.getZettelId());
+        Map<Long, Reference> existingByTarget = new HashMap<>();
+        for (Reference r : existing) {
+            existingByTarget.put(r.getTargetZettelId(), r);
+        }
+
+        // Build desired map by target ID
+        Map<Long, Reference> desiredByTarget = new HashMap<>();
+        for (Reference reference : references) {
+            if (reference.getTargetZettelId() == null) {
+                LOG.warn("Skipping reference with null target zettel ID");
+                continue;
+            }
+            desiredByTarget.put(reference.getTargetZettelId(), reference);
+        }
+
+        // Soft-delete removed references
+        for (Reference oldRef : existing) {
+            if (!desiredByTarget.containsKey(oldRef.getTargetZettelId())) {
+                LOG.info("Soft-deleting removed reference: {}", oldRef);
+                refRepo.delete(oldRef); // triggers @SQLDelete (soft)
+            }
+        }
+
+        // Clear current associations in-memory to re-add desired ones
 		sourceZettel.getReferences().clear();
 		
+        // Upsert desired references
 		for (Reference reference : references) {
 			// Set the source zettel
 			reference.setSourceZettelId(sourceZettel.getZettelId());
 			
-			// Skip references with null target zettel ID
-			if (reference.getTargetZettelId() == null) {
-				LOG.warn("Skipping reference with null target zettel ID");
-				continue;
-			}
-			
-			// Get the target zettel by ID
+            // Validate target exists
 			try {
 				Long targetZettelId = searchService.findZettelById(reference.getTargetZettelId()).getZettelId();
 				reference.setTargetZettelId(targetZettelId);
@@ -81,5 +104,9 @@ public class ReferenceService {
 		zettelService.saveZettel(sourceZettel);
 		LOG.info("updateReferences completed. Zettel has " + sourceZettel.getReferences().size() + " references");
 	}
+
+    public int purgeSoftDeletedReferencesOlderThanDays(int days) {
+        return refRepo.purgeSoftDeletedOlderThanDays(days);
+    }
 
 }
