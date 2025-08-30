@@ -16,7 +16,7 @@ public class ReferenceController {
         this.refService = refService;
     }
 
-    // TODO:  for now, just a method to manually purge old references.
+    // XXX:  for now, just a method to manually purge old references.
   // TODO: add UI-Button to trigger this method (delete orphans, show dustbin) or a cron job
     @PostMapping("/references/purge")
     public String purgeOldReferences(@RequestParam(defaultValue = "90") int days) {
@@ -24,3 +24,4 @@ public class ReferenceController {
         return "Purged " + deletedCount + " old references";
     }
 }
+    

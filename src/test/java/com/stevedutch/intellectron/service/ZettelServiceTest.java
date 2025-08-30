@@ -82,7 +82,8 @@ class ZettelServiceTest {
 	@Test
 	void testCreateZettelWithExistingReference() {
 		// Setup
-		Reference testReference = new Reference();
+		Reference testReference = new Reference(1L, 2L, null, null);
+		testReference.setSourceZettelId(1L);
 		ArrayList<Reference> references = new ArrayList<Reference>();
 		references.add(testReference);
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
@@ -90,9 +91,10 @@ class ZettelServiceTest {
 
 		// Execute
 		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
+		Zettel testZettel = result.zettel();
 
 		// Verify
-		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
+		assertThat(testZettel.getTopic()).isEqualTo("New Zettel");
 //		assertThat(result.note().getNoteText()).isEqualTo("New Note");
 //	TODO	assertThat(result.tekst().getText()).isEqualTo("New Text");
 //		assertThat(result.references()).containsExactly(existingReference);
