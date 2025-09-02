@@ -34,80 +34,99 @@ public class ReferenceService {
 	}
 
 	@Transactional
-	public void updateReferences(Long zettelId, ArrayList<Reference> references) {
+	public void updateReferences(Long zettelId, ArrayList<Reference> desiredReferences) {
+		LOG.info("Start of updateReferences for Zettel ID: {}", zettelId);
 
-		LOG.info("Start of updateReferences ; ---> " + references);
-
-		// Get the source zettel
 		Zettel sourceZettel = searchService.findZettelById(zettelId);
 
-		// Load existing references for this source (active only due to @SQLRestriction)
-		List<Reference> existing = refRepo.findAllBySourceZettelId(sourceZettel.getZettelId());
-		Map<Long, Reference> existingByTarget = new HashMap<>();
-		for (Reference r : existing) {
-			existingByTarget.put(r.getTargetZettelId(), r);
-		}
+		// Create a map of desired references for quick lookups.
+		Map<Long, Reference> desiredByTarget = getDesiredReferencesMap(desiredReferences);
+		
+		// Step 1: Find and soft-delete references that are no longer desired.
+		softDeleteRemovedReferences(sourceZettel, desiredByTarget);
 
-		// Build desired map by target ID
-		Map<Long, Reference> desiredByTarget = new HashMap<>();
-		for (Reference reference : references) {
-			if (reference.getTargetZettelId() == null) {
-				LOG.warn("Skipping reference with null target zettel ID");
-				continue;
-			}
-			desiredByTarget.put(reference.getTargetZettelId(), reference);
-		}
+		// Step 2: Create new references or update existing ones.
+		upsertDesiredReferences(sourceZettel, desiredReferences);
+		
+		// Step 3: Save the parent Zettel to persist relationship changes.
+		zettelService.saveZettel(sourceZettel);
+		LOG.info("updateReferences completed. Zettel has {} references", sourceZettel.getReferences().size());
+	}
 
-		// 1. Soft-delete removed references AND remove them from the zettel's
-		// collection
-		// We use an ArrayList to avoid ConcurrentModificationException while iterating
-		// and removing
+	/**
+	 * Iterates through the Zettel's current references and soft-deletes any that are not in the
+	 * desired set.
+	 */
+	private void softDeleteRemovedReferences(Zettel sourceZettel, Map<Long, Reference> desiredByTarget) {
+		// We use a new ArrayList to avoid a ConcurrentModificationException while iterating and removing.
 		for (Reference oldRef : new ArrayList<>(sourceZettel.getReferences())) {
 			if (!desiredByTarget.containsKey(oldRef.getTargetZettelId())) {
 				LOG.info("Soft-deleting removed reference: {}", oldRef);
-				sourceZettel.removeReference(oldRef); // Remove from the relationship
-				refRepo.delete(oldRef); // Explicitly trigger the @SQLDelete
+				sourceZettel.removeReference(oldRef); // Removes from the relationship (zettel_references table)
+				refRepo.delete(oldRef);               // Triggers the @SQLDelete on the Reference (pointer table)
 			}
 		}
+	}
 
-		// 2. Upsert desired references
-		for (Reference desiredRef : references) {
-			// Set the source zettel ID
+	/**
+	 * Iterates through the desired references, updating existing ones or creating new ones.
+	 */
+	private void upsertDesiredReferences(Zettel sourceZettel, ArrayList<Reference> desiredReferences) {
+		// Get a map of the currently existing (non-soft-deleted) references for comparison.
+		Map<Long, Reference> existingByTarget = sourceZettel.getReferences().stream()
+				.collect(Collectors.toMap(Reference::getTargetZettelId, ref -> ref));
+		
+		for (Reference desiredRef : desiredReferences) {
+			// Ensure the reference is linked to the correct source Zettel.
 			desiredRef.setSourceZettelId(sourceZettel.getZettelId());
 
-			// Validate target exists
-			try {
-				Zettel targetZettel = searchService.findZettelById(desiredRef.getTargetZettelId());
-				desiredRef.setTargetZettelId(targetZettel.getZettelId());
-			} catch (Exception e) {
-				LOG.error("Target zettel not found with ID: " + desiredRef.getTargetZettelId(), e);
-				continue; // Skip this reference if target zettel doesn't exist
+			// Validate that the target Zettel exists before proceeding.
+			if (!targetZettelExists(desiredRef.getTargetZettelId())) {
+				continue;
 			}
 
-			// Check if this reference already exists (ignoring soft-deleted ones)
 			Reference existingRef = existingByTarget.get(desiredRef.getTargetZettelId());
 
 			if (existingRef != null) {
-				// Update existing reference
+				// This reference already exists, so we update its properties.
 				existingRef.setType(desiredRef.getType());
 				existingRef.setConnectionNote(desiredRef.getConnectionNote());
-				// No need to re-add to sourceZettel.getReferences(), it's already there.
 				refRepo.save(existingRef);
-				LOG.info("Updated existing reference: " + existingRef);
+				LOG.info("Updated existing reference: {}", existingRef);
 			} else {
 				// This is a new reference.
-				// We don't check for soft-deleted ones to restore them for now,
-				// as that adds more complexity. We create a new one.
+				// For now, we create a new one instead of trying to restore a soft-deleted one.
 				Reference savedReference = refRepo.save(desiredRef);
-				sourceZettel.addReference(savedReference); // Add the new one to the relationship
-				LOG.info("Saved new reference: " + savedReference);
+				sourceZettel.addReference(savedReference); // Add the new reference to the relationship.
+				LOG.info("Saved new reference: {}", savedReference);
 			}
 		}
+	}
 
-		// 3. Save the updated zettel (this will synchronize the zettel_references
-		// table)
-		zettelService.saveZettel(sourceZettel);
-		LOG.info("updateReferences completed. Zettel has " + sourceZettel.getReferences().size() + " references");
+	/**
+	 * Creates a Map from a list of references with the target Zettel ID as the key.
+	 */
+	private Map<Long, Reference> getDesiredReferencesMap(ArrayList<Reference> references) {
+		return references.stream()
+			.filter(ref -> ref.getTargetZettelId() != null)
+			.collect(Collectors.toMap(Reference::getTargetZettelId, ref -> ref, (ref1, ref2) -> ref1)); // In case of duplicates, keep the first one
+	}
+
+	/**
+	 * Checks if a Zettel with the given ID exists.
+	 */
+	private boolean targetZettelExists(Long targetId) {
+		if (targetId == null) {
+			LOG.warn("Skipping reference with null target zettel ID");
+			return false;
+		}
+		try {
+			searchService.findZettelById(targetId);
+			return true;
+		} catch (Exception e) {
+			LOG.error("Target zettel not found with ID: {}", targetId, e);
+			return false;
+		}
 	}
 
 	public int purgeSoftDeletedReferencesOlderThanDays(int days) {
