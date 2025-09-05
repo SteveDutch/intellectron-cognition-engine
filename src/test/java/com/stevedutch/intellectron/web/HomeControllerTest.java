@@ -37,21 +37,12 @@ class HomeControllerTest {
     private SearchService searchService;
     @Mock
     private TextManipulationService textManipulationService;
-	
     @Mock
-    private ModelMap model;
-
-//    @BeforeEach
-//    void setUp() {
-//        // Initialisierung, falls benötigt
-////    	 MockitoAnnotations.openMocks(this);
-//    	   ZettelService zettelService = mock(ZettelService.class);
-//    }
-    
+    private Model model;
+	
 	@Test
 	void testShowHomePageJustCode() {
 		Model model = mock(Model.class);
-//		HomeController sut = new HomeController();
 		when(zettelService.countAllZettel()).thenReturn(1L);
 		
 		String result = sut.showHomePage(model);

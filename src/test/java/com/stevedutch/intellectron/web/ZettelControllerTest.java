@@ -95,7 +95,7 @@ class ZettelControllerTest {
 
     @Test
     void testUpdateOneZettel() throws Exception {
-        // Setup"test"
+        // Arrange
     	ArrayList<Tag> tags = new ArrayList<Tag>();
     	tags.add(new Tag("test"));
     	ArrayList<Reference> references = new ArrayList<Reference>();
@@ -107,7 +107,7 @@ class ZettelControllerTest {
         ZettelDtoRecord changes = new ZettelDtoRecord(zettel, tekst, note, author,tags, references); // Initialize with necessary properties"
         String json = objectMapper.writeValueAsString(changes);
 
-        // Execute
+        // Act & Assert
         mockMvc.perform(post("/zettel/1").content(json).contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().is3xxRedirection())
               .andExpect(redirectedUrl("/zettel/1"));

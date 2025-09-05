@@ -2,12 +2,14 @@ package com.stevedutch.intellectron.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +57,7 @@ class ZettelServiceTest {
 	private Tekst existingTekst;
 	private Reference existingReference;
 	
-	    private ZettelDtoRecord zettelDto;
+	private ZettelDtoRecord zettelDto;
 
 	private int maxTopicLength = 255;
 
@@ -71,106 +73,121 @@ class ZettelServiceTest {
 
 		ZettelDtoRecord sutZettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
 				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
-
-
-//		when(searchService.findOneZettelByNote(anyString())).thenReturn(existingZettel);
-//		when(noteService.connectNotewithZettel(any(Note.class), any(Zettel.class)))
-//				.thenAnswer(invocation -> invocation.getArgument(0));
-//		when(textService.checkForExistingTekst(any(Tekst.class))).thenReturn(existingTekst);
 	}
 
 	@Test
+	void testCreateZettelWithValidData() {
+	    // Arrange
+	    ZettelDtoRecord zettelDto = new ZettelDtoRecord(
+	        new Zettel("Valid Topic"), 
+	        new Tekst("Valid Text"),
+	        new Note("no note"), 
+	        new Author("First", "Last"), 
+	        new ArrayList<>(), 
+	        new ArrayList<>()
+	    );
+	    
+	    // Mock the repository save behavior
+	    when(zettelRepo.save(any(Zettel.class))).thenAnswer(invocation -> {
+	        Zettel z = invocation.getArgument(0);
+	        z.setZettelId(1L);
+	        return z;
+	    });
+	    
+	    // Mock the service dependencies to return expected objects
+	    Note mockNote = new Note("no note");
+	    when(noteService.connectNotewithZettel(any(Note.class), any(Zettel.class)))
+	        .thenReturn(mockNote);
+	    
+	    Tekst mockTekst = new Tekst("Valid Text");
+	    when(textService.checkForExistingTekst(any(Tekst.class)))
+	        .thenReturn(mockTekst);
+	    when(textService.connectTextwithZettel(any(Tekst.class), any(Zettel.class)))
+	        .thenReturn(mockTekst);
+	    
+	    Author mockAuthor = new Author("First", "Last");
+	    when(authorService.connectAuthorWithText(any(Author.class), any(Tekst.class)))
+	        .thenReturn(mockAuthor);
+	    
+	    when(tagService.connectTagsWithZettel(any(ArrayList.class), any(Zettel.class)))
+	        .thenReturn(new ArrayList<>());
+	    
+	    when(searchService.findOneZettelByNote(any(String.class)))
+	        .thenReturn(null); // Simulate new zettel creation
+	    
+	    // Act
+	    ZettelDtoRecord result = zettelService.createZettel(zettelDto);
+	    
+	    // Assert
+	    assertNotNull(result);
+	    assertEquals("Valid Topic", result.zettel().getTopic());
+	    assertEquals("no note", result.note().getNoteText()); 
+	    assertEquals("Valid Text", result.tekst().getText());
+	    verify(zettelRepo, times(2)).save(any(Zettel.class));
+	}
+	
+	@Test
 	void testCreateZettelWithExistingReference() {
-		// Setup
+		// Arrange
 		Reference testReference = new Reference(1L, 2L, null, null);
 		testReference.setSourceZettelId(1L);
 		ArrayList<Reference> references = new ArrayList<Reference>();
 		references.add(testReference);
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
 				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), references);
+		when(zettelRepo.save(any(Zettel.class))).thenAnswer(invocation -> {
+            Zettel z = invocation.getArgument(0);
+            z.setZettelId(1L); // Mock the ID being set by the repository
+            return z;
+        });
 
-		// Execute
+		// Act
 		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
 		Zettel testZettel = result.zettel();
 
-		// Verify
+		// Assert
 		assertThat(testZettel.getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//	TODO	assertThat(result.tekst().getText()).isEqualTo("New Text");
-//		assertThat(result.references()).containsExactly(existingReference);
 	}
 
 	@Test
 	void testCreateZettelWithNewReference() {
-		// Setup
+		// Arrange
 		Reference newReference = new Reference(1L, 2L, ReferenceType.RELATES_TO, "test reference");
 		ArrayList<Reference> references = new ArrayList<Reference>();
 		references.add(newReference);
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
 				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), references);
 
-		// Execute
+		when(zettelRepo.save(any(Zettel.class))).thenAnswer(invocation -> {
+			Zettel zettel = invocation.getArgument(0);
+			zettel.setZettelId(007L); // Assign a dummy ID
+			return zettel;
+		});
+
+		// Act
 		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
 
-		// Verify
+		// Assert
 		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//	TODO	assertThat(result.tekst().getText()).isEqualTo("New Text");
 		assertThat(result.references()).containsExactly(newReference);
-		verify(zettelRepo).save(any(Zettel.class));
+		verify(zettelRepo, times(2)).save(any(Zettel.class));
 	}
 
-	@Test
-	void testCreateZettelWithNoReferences() {
-		// Setup
-		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
-
-		// Execute
-		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
-
-		// Verify
-		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//	TODO	assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
-		assertThat(result.references()).isEmpty();
-		verify(zettelRepo).save(any(Zettel.class));
-	}
-	//TODO Test falsch oder Funktion falsch :|
-//	@Test
-//	void testCreateZettelWithNullReferences() {
-//		// Setup
-//		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
-//				existingNote, new Author("New", "Author"), new ArrayList<>(), 
-//				// new ArrayList<Reference>(existingZettel.getReferences())
-//	null);
-//
-//		// Execute
-//		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
-//
-//		// Verify
-//		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//		assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
-//		assertThat(result.references()).isEmpty();
-//		verify(zettelRepo).save(any(Zettel.class));
-//	}
 
 	@Test
 	void testCreateZettelWithEmptyReferences() {
-		// Setup
+		// Arrange
 		ZettelDtoRecord zettelDto = new ZettelDtoRecord(new Zettel("New Zettel"), new Tekst("New Text"),
 				new Note("New Note"), new Author("New", "Author"), new ArrayList<>(), new ArrayList<>());
+        when(zettelRepo.save(any(Zettel.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-		// Execute
+		// Act
 		ZettelDtoRecord result = zettelService.createZettel(zettelDto);
 
-		// Verify
+		// Assert
 		assertThat(result.zettel().getTopic()).isEqualTo("New Zettel");
-//	TODO	assertThat(result.note().getNoteText()).isEqualTo("New Note");
-//		assertThat(result.tekst().getText()).isEqualTo("New Text");
 		assertThat(result.references()).isEmpty();
-		verify(zettelRepo).save(any(Zettel.class));
+		verify(zettelRepo, times(2)).save(any(Zettel.class));
 	}
 
 	@Test
@@ -218,8 +235,6 @@ class ZettelServiceTest {
 			zettelService.topicEmptyOrBlankCheck(zettel);
 		});
 	}
-
-	
 
 	@Test
 	public void checkTopicLength_TopicTooLong_ThrowsTopicTooLongException() {
@@ -286,7 +301,6 @@ class ZettelServiceTest {
         assertThat(result.getTekst()).isEqualTo(existingTekst);
     }
 
-
     @Test
     void testSetupZettelThrowsExceptionForLongTopic() {
         String longTopic = "a".repeat(256);
@@ -295,7 +309,6 @@ class ZettelServiceTest {
             zettelService.setupZettel(existingZettel, zettelDto, existingNote, existingTekst);
         });
     }
-    
     
 
 }

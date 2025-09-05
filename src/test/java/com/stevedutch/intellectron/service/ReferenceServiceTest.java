@@ -112,8 +112,6 @@ class ReferenceServiceTest {
         when(searchService.findZettelById(zettelId)).thenReturn(sourceZettel);
         when(searchService.findZettelById(2L)).thenReturn(targetZettel2);
         when(searchService.findZettelById(3L)).thenReturn(targetZettel3);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(1L, 2L)).thenReturn(null);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(1L, 3L)).thenReturn(null);
         when(refRepo.save(any(Reference.class))).thenAnswer(invocation -> {
             Reference ref = invocation.getArgument(0);
             ref.setId(System.currentTimeMillis()); // Simulate ID generation
@@ -155,16 +153,18 @@ class ReferenceServiceTest {
         existingReference.setType(ReferenceType.RELATES_TO);
         existingReference.setConnectionNote("Old connection");
 
+        // Add the existing reference to the sourceZettel's references collection
+        sourceZettel.getReferences().add(existingReference);
+
         when(searchService.findZettelById(zettelId)).thenReturn(sourceZettel);
         when(searchService.findZettelById(2L)).thenReturn(targetZettel);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(1L, 2L)).thenReturn(existingReference);
-        when(refRepo.save(existingReference)).thenReturn(existingReference);
+        when(refRepo.save(any(Reference.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         referenceService.updateReferences(zettelId, references);
 
         // Assert
-        verify(refRepo, times(1)).save(existingReference);
+        verify(refRepo, times(1)).save(any(Reference.class));
         verify(zettelService, times(1)).saveZettel(sourceZettel);
         
         assertEquals(ReferenceType.SUPPORTS, existingReference.getType());
@@ -277,12 +277,13 @@ class ReferenceServiceTest {
         existingReference.setSourceZettelId(1L);
         existingReference.setTargetZettelId(3L);
         existingReference.setType(ReferenceType.RELATES_TO);
+        
+        // Add the existing reference to the sourceZettel's references collection
+        sourceZettel.getReferences().add(existingReference);
 
         when(searchService.findZettelById(zettelId)).thenReturn(sourceZettel);
         when(searchService.findZettelById(2L)).thenReturn(targetZettel);
         when(searchService.findZettelById(3L)).thenReturn(targetZettel3);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(1L, 2L)).thenReturn(null);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(1L, 3L)).thenReturn(existingReference);
         when(refRepo.save(any(Reference.class))).thenAnswer(invocation -> {
             Reference ref = invocation.getArgument(0);
             if (ref.getId() == null) {
@@ -319,7 +320,6 @@ class ReferenceServiceTest {
 
         when(searchService.findZettelById(zettelId)).thenReturn(customSourceZettel);
         when(searchService.findZettelById(2L)).thenReturn(targetZettel);
-        when(refRepo.findBySourceZettelIdAndTargetZettelId(5L, 2L)).thenReturn(null);
         when(refRepo.save(any(Reference.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
