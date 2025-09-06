@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cssFile = '';
     
     // Determine which page-specific CSS to load
-/*     if (currentPath === '/' || currentPath.includes('welcome')) {
+/*     if (currentPath === '/' || currentPath.includes('index')) {
       cssFile = '/css/dark-mode-welcome.css';
     } else if (currentPath.includes('input')) {
       cssFile = '/css/dark-mode-input.css';
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add glow effect to elements in dark mode based on current page
     const currentPath = window.location.pathname;
     
-    if (currentPath === '/' || currentPath.includes('welcome')) {
+    if (currentPath === '/' || currentPath.includes('index')) {
       enhanceWelcomePage();
     }
   }

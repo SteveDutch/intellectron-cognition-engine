@@ -126,7 +126,7 @@ public class TextServiceTest {
 		// Assert
 		verify(searchService).findZettelById(zettelId);
 		verify(searchService).findByText(tekst.getText());
-
+		assertEquals("Sample text", result.getText());
 		// Additional assertions can be added based on the expected behavior of the
 		// method
 	}

@@ -16,6 +16,10 @@ import com.stevedutch.intellectron.repository.TextRepository;
 public class TextService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TextService.class);
+
+	private static final String DUMMY_TITLE = "notext";
+	private static final String DUMMY_TEXT_CONTENT = "placeholder for no text";
+	private static final String DUMMY_SOURCE = "someone's brain / system generated";
 	@Autowired
 	private TextRepository textRepo;
 	@Autowired
@@ -36,9 +40,7 @@ public class TextService {
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
-		checkTextDate(tekst);
-		tekst.setText(tekst.getText().strip());
-		tekst = textRepo.save(tekst);
+		tekst = saveText(tekst);
 		return tekst;
 	}
 
@@ -48,9 +50,7 @@ public class TextService {
 			actualTekst = new Tekst(tekst.getText());
 		}
 		tekst.getZettels().add(zettel);
-		checkTextDate(tekst);
-		tekst.setText(tekst.getText().strip());
-		return textRepo.save(tekst);
+		return saveText(tekst);
 
 	}
 
@@ -108,11 +108,11 @@ public class TextService {
 		}
 		updatedTekst.setTitle(tekst.getTitle());
 		updatedTekst.setTextDate(tekst.getTextDate());
-		checkTextDate(updatedTekst);
+
 		updatedTekst.setSource(tekst.getSource());
-		tekst.setText(tekst.getText().strip());
-		textRepo.save(updatedTekst);
-		
+
+		saveText(updatedTekst);
+
 		// saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
 		saveTextwithZettel(updatedTekst, zettel);
 		zettel.setTekst(updatedTekst);
@@ -123,31 +123,58 @@ public class TextService {
 	}
 
 	/**
-	 * checks if the text is already in the database, if yes, it returns it, if not,
-	 * it returns the given one
+	 * Checks if a text exists in the database and handles empty text cases.
 	 * 
-	 * @param tekst
-	 * @return tekst (the given one or from db)
+	 * If the input text is null or blank: - Returns an existing dummy text if found
+	 * - Creates and returns a new dummy text if none exists
+	 * 
+	 * If the input text is not blank: - Returns an existing text if found in
+	 * database - Returns the prepared (stripped) input text if it's new
+	 * 
+	 * @param tekst The text to check, can be null or contain blank text
+	 * @return Tekst The existing text from database, the prepared input text, or a
+	 *         dummy text
 	 */
 	public Tekst checkForExistingTekst(Tekst tekst) {
-		Tekst existingText = textRepo.findByText(tekst.getText());
+		if (tekst == null || tekst.getText() == null || tekst.getText().isBlank()) {
+			// Input is blank, try to find the specific dummy Tekst
+			Tekst specificDummy = textRepo.findByTitleAndText(DUMMY_TITLE, DUMMY_TEXT_CONTENT);
+
+			if (specificDummy != null) {
+				return specificDummy; // Found our specific dummy
+			}
+			// Specific dummy Tekst not found, create and save it
+			Tekst newDummy = new Tekst(DUMMY_TEXT_CONTENT);
+			newDummy.setTitle(DUMMY_TITLE);
+			newDummy.setSource(DUMMY_SOURCE);
+			return saveText(newDummy);
+
+		}
+		// Input is not blank
+		String strippedText = tekst.getText().strip();
+		Tekst existingText = textRepo.findByText(strippedText); // Find by actual content
 		if (existingText != null) {
 			return existingText;
 		}
+		// Tekst is new and not blank. Prepare it.
+		tekst.setText(strippedText);
+		checkTextDate(tekst); // Ensure date is set
+		// This tekst (if new and non-blank) will be saved by a subsequent call
+		// in the service chain, e.g., through ZettelService calling saveTextWithAuthor
+		// or similar.
+		// So, we return the modified, unsaved Tekst object here if it's a new,
+		// non-blank one.
 		return tekst;
+
 	}
-	
+
 	/**
 	 * returns the number of all text in the database
 	 * 
-	 * @return   number of all texts
+	 * @return number of all texts
 	 */
 	public Long countAllText() {
 		return textRepo.count();
 	}
-
-
-
-
 
 }

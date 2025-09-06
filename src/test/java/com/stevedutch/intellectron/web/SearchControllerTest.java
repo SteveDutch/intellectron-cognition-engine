@@ -3,11 +3,17 @@ package com.stevedutch.intellectron.web;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,18 +29,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
 
+import com.stevedutch.intellectron.advice.GlobalExceptionHandler;
 import com.stevedutch.intellectron.domain.Author;
-import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.ZettelService;
-import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
-import com.stevedutch.intellectron.advice.GlobalExceptionHandler;
-import com.stevedutch.intellectron.exception.TagNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class SearchControllerTest {
@@ -148,9 +153,6 @@ class SearchControllerTest {
         String noteFragment = "NoteFragment";
         List<Zettel> expectedZettels = new ArrayList<>();
         expectedZettels.add(new Zettel("TestTopic"));
-        Note note = new Note();  
-        
-        
         when(searchService.findZettelByNoteFragment(noteFragment)).thenReturn(expectedZettels);
 
         // Act

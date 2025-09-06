@@ -73,13 +73,13 @@ public class HomeController {
 		model.addAttribute("fiveRandomTags", fiveRandomTags);
 		model.addAttribute("fiveRandomAuthors", fiveRandomAuthors);
 
-		return "/welcome";
+		return "/index";
 	}
 
 	// TODO vermutlich nicht regelkonform (check: Ja) & abfangen von Typos
 	@GetMapping("/welcome")
 	public String redirectToHomePage() {
-		return "/welcome";
+		return "/index";
 	}
 
 }

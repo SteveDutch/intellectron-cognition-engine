@@ -3,9 +3,8 @@
 <html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>feed your intellectron</title>
+	<link rel="stylesheet" href="/css/input.css">
+	<th:block th:insert="~{fragments/common :: head('feed your intellectron')}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
  
 	<link rel="stylesheet" href="/css/bulma.css">
@@ -26,7 +25,7 @@
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
 			<p class="title is-1 has-text-centered">Feed your intellectron</p>
@@ -36,13 +35,7 @@
 
 	<br />
 	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
-		<!-- XXX ggffür 2 in 1 (input & zettel) 		<div> -->
-		<!--             <p th:text="|ID: ${zettel.zettelId}|"></p> -->
 
-		<!-- 			<p th:if="${zettel.zettelId == null}">new Zettel</p> -->
-		<!-- 			<p th:if="${zettel.zettelId != null}" -->
-		<!-- 				th:text="|ID: ${zettel.zettelId}|"></p> -->
-		<!-- 		</div> -->
 		<div class="columns">
 
 			<div class="column is-2">
@@ -236,7 +229,7 @@
 			<p class="title  has-text-centered ">last 10 zettels</p>
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
 
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
@@ -244,7 +237,7 @@
 
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
 
 
 	<!-- navbar burger -->

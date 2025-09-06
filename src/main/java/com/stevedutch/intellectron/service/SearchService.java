@@ -3,7 +3,6 @@ package com.stevedutch.intellectron.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -18,7 +17,6 @@ import com.stevedutch.intellectron.domain.Zettel;
 import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
 import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.repository.AuthorRepository;
-import com.stevedutch.intellectron.repository.ReferenceRepository;
 import com.stevedutch.intellectron.repository.TagRepository;
 import com.stevedutch.intellectron.repository.TextRepository;
 import com.stevedutch.intellectron.repository.ZettelRepository;
@@ -35,11 +33,8 @@ public class SearchService {
 	private ZettelRepository zettelRepo;
 	@Autowired
 	private TextRepository textRepo;
-	// XXX check this: repo-Zugriff außerhalb der betreffenden Entity-Serviceklasse?
 	@Autowired
 	private AuthorRepository authorRepo;
-	@Autowired
-	private ReferenceRepository refRepo;
 	@Autowired
 	private TagRepository tagRepo;
 
@@ -224,8 +219,6 @@ public class SearchService {
 		return zettelRepo.findLast10Zettel();
 	}
 	
-	//TODO rename tenRandom & Zettel & and not woking, 
-	//stuck in loop when there are less than 10 Zettel
 	/**
 	 *finds x random Zettel
 	 *
@@ -311,16 +304,5 @@ public class SearchService {
 //		return refRepo.findAll();
 //	}
 
-	public List<Zettel> findRelatedZettels(Long zettelId) {
-		// TODO: Implement advanced relationship finding
-		// For now, return empty list until repositories are extended
-		return new ArrayList<>();
-		
-		// Future implementation:
-		// List<Zettel> directLinks = refRepo.findDirectLinks(zettelId);
-		// List<Zettel> similarTagged = zettelRepo.findBySharedTags(zettelId);
-		// List<Zettel> similarTopics = zettelRepo.findSimilarTopics(zettelId);
-		// return combineAndSortByRelevance(directLinks, similarTagged, similarTopics);
-	}
 
 }

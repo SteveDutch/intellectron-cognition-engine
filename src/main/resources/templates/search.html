@@ -3,21 +3,14 @@
 <html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Fabulous Intellectron Search Page</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-	<link rel="stylesheet" href="/css/bulma.css" />
 	<link rel="stylesheet" href="/css/search.css" />
-	<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
+	<th:block th:insert="~{fragments/common :: head('Fabulous Intellectron Search Page')}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<script src="/js/search.js" defer></script>
-	<script src="/js/dark-mode.js" defer></script>
-	<link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
@@ -191,7 +184,7 @@
 			<p class="title  has-text-centered ">last 10 zettels</p>
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
 	
 	<section class="hero is-small is-danger">
 		<div class="hero-body">
@@ -199,9 +192,9 @@
 
 		</div>
 	</section>
-	<div th:replace="fragments/common :: zettel-table(zettels=${randomZettels})"></div>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>

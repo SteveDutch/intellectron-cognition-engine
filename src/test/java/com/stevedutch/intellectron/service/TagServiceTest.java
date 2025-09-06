@@ -31,6 +31,9 @@ public class TagServiceTest {
 
     @Mock
     private SearchService searchService;
+    
+    @Mock
+    private ZettelService zettelService;
 
     @InjectMocks
     private TagService tagService;

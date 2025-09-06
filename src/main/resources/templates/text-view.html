@@ -1,23 +1,13 @@
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 <head>
-	<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<title>the fabulous text view page</title>
-<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-<link rel="stylesheet" type="text/css" href="/css/text-view.css" />
-<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
-<!-- <link rel="stylesheet" type="text/css" href="/css/welcome.css"> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<script type="text/javascript" src="/js/dark-mode.js" defer></script>
-
+	<th:block th:insert="~{fragments/common :: head('the fabulous text view page')}"></th:block>
+	<link rel="stylesheet" type="text/css" href="/css/text-view.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body class="text-view-page">
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 
 	<section class="hero is-info welcome is-small">
 		<div class="hero-body">
@@ -54,7 +44,7 @@
 		</div>
 	</div>
 
-	<footer th:replace="fragments/common :: footer"></footer>
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script src="/js/bulma.js"></script>

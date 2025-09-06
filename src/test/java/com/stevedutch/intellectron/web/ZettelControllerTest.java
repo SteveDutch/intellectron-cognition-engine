@@ -118,6 +118,6 @@ class ZettelControllerTest {
         // Execute
         mockMvc.perform(post("/zettel/1/delete"))
               .andExpect(status().is3xxRedirection())
-              .andExpect(redirectedUrl("/welcome"));
+              .andExpect(redirectedUrl("/index"));
     }
 }

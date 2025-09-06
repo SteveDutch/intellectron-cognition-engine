@@ -56,7 +56,7 @@ class IntellectronApplicationTests {
 		Model model = new ExtendedModelMap();
 		String viewName = homeController.showHomePage(model);
 		
-		assertThat(viewName).isEqualTo("/welcome");
+		assertThat(viewName).isEqualTo("/index");
 		assertThat(model.containsAttribute("zettelNumber")).isTrue();
 		assertThat(model.containsAttribute("textsNumber")).isTrue();
 		assertThat(model.containsAttribute("tagsNumber")).isTrue();

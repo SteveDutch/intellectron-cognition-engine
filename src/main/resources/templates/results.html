@@ -6,63 +6,22 @@
 >
 
 <head>
-<meta charset="utf-8">
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1"
->
-<link
-	rel="shortcut icon"
-	href="/favicon.ico"
-	type="image/x-icon"
->
-<link
-	rel="icon"
-	type="image/x-icon"
-	href="/favicon.ico"
->
-<title>the fabulous search results page</title>
-
+	<th:block th:insert="~{fragments/common :: head('the fabulous search results page')}"></th:block>
 <!-- Font Awesome -->
-<link
-	rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	crossorigin="anonymous"
->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
-
-<!-- Bulma CSS -->
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/bulma.css"
->
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
 <!-- Custom CSS -->
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/common.css"
->
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/results.css"
->
-<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"
-></script>
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/results.css">
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"
+		></script>
 	<script src="/js/results.js" defer></script>
 	<script src="/js/common.js" defer></script>
-	<script src="/js/dark-mode.js" defer></script>
-
-
 </head>
 
-
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<section class="hero is-info is-small">
 		<div class="hero-body">
 			
@@ -252,8 +211,7 @@
 	<!-- 	<script src="/js/wild.js"></script> -->
 	<!-- from bulma doc as well -->
 
-	<footer th:replace="fragments/common :: footer"></footer>
-
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>
 </body>

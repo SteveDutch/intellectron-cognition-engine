@@ -6,51 +6,15 @@
 >
 
 <head>
-<title>tag List, found by intellectron</title>
-<meta charset="UTF-8" />
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1.0"
-/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<link
-	rel="preload"
-	href="/css/bulma.css"
-	as="style"
->
-<link
-	rel="preload"
-	href="/css/tags.css"
-	as="style"
->
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/bulma.css"
-/>
-<link
-	rel="stylesheet"
-	type="text/css"
-	href="/css/tags.css"
-/>
-<link rel="stylesheet" type="text/css" href="/css/dark-mode.css">
-<link
-	rel="icon"
-	type="image/x-icon"
-	href="/favicon.ico"
->
-<script
-	src="/js/common.js"
-	defer
-></script>
-<script type="text/javascript" src="/js/dark-mode.js" defer></script>
-<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
-
+	<link rel="stylesheet" type="text/css" href="/css/tags.css"/>
+	<th:block th:insert="~{fragments/common :: head('tag List, found by intellectron')}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<script src="/js/common.js" defer></script>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
 </head>
 
 <body>
-	<nav th:replace="fragments/common :: navbar"></nav>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 	<div class="main-container">
 		<section class="hero is-small is-primary">
 			<div class="hero-body">
@@ -100,12 +64,12 @@
 
 			<th:block th:unless="${zettels == null || zettels.isEmpty()}">
 				<!-- The table fragment is ONLY included/processed when zettels is not empty -->
-				<div th:replace="fragments/common :: zettel-table(zettels=${zettels})"></div>
+				<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
 			</th:block>
 
 		</div>
 
-		<footer th:replace="fragments/common :: footer"></footer>
+		<footer th:replace="~{fragments/common :: footer}"></footer>
 
 		<!-- navbar burger -->
 		<script type="text/javascript" src="/js/bulma.js"></script>

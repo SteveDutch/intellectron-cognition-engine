@@ -1,7 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<body>
 
-<!-- START NAV -->
+    <!-- START HEAD -->
+    <head th:fragment="head(pageTitle)">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${pageTitle}"></title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        
+        <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+        <link rel="stylesheet" href="/css/dark-mode.css">
+
+        <!-- Dark Mode JS -->
+        <script src="/js/dark-mode.js" defer></script>
+
+        <!-- Add any other truly common head elements here if needed -->
+    </head>
+<!-- END HEAD -->
+ 
+<!-- START NAVBAR -->
 <nav th:fragment="navbar" class="navbar has-background-primary-00 is-fixed-top">
 	<div class="container ">
 		<div class="navbar-brand">
@@ -119,6 +137,7 @@
 	<footer th:fragment="footer" class="hero-foot">
 		<div class="container">
 			<div class="content has-text-centered">
+				<br>
 				<p>
 					<strong>Made with Bulma</strong> thanks to <a href="https://jgthms.com" target='_blank'
 						rel='noopener noreferrer'>Jeremy Thomas & team</a>
@@ -126,4 +145,5 @@
 			</div>
 		</div>
 	</footer>
+</body>
 </html>
