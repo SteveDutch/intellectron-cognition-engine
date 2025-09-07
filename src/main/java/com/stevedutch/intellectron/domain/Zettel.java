@@ -2,12 +2,13 @@ package com.stevedutch.intellectron.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 
 import jakarta.persistence.CascadeType;
@@ -23,6 +24,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity // Class name = Zettel, DB Table name = zettel
 @Table(name = "zettel")
@@ -44,9 +46,6 @@ public class Zettel {
 	
 	@Column(name = "changed")
 	private LocalDateTime changed;
-	
-	@Column(name = "signature")
-	private Long signature;
 	
 	@ManyToMany(fetch = FetchType.LAZY, 
 			cascade = {
@@ -83,7 +82,7 @@ public class Zettel {
 		this.note = zettelDto.zettel().getNote();
 		this.added = zettelDto.zettel().getAdded();
 		this.changed = zettelDto.zettel().getChanged();
-		this.signature = zettelDto.zettel().getSignature();
+
 		this.references = zettelDto.zettel().getReferences();
 		this.tags = zettelDto.zettel().getTags();
 		this.tekst = zettelDto.zettel().getTekst();
@@ -132,13 +131,7 @@ public class Zettel {
 		this.changed = changed;
 	}
 
-	public Long getSignature() {
-		return signature;
-	}
 
-	public void setSignature(Long signature) {
-		this.signature = signature;
-	}
 
 	public Set<Reference> getReferences() {
 		return references;
@@ -149,7 +142,50 @@ public class Zettel {
 	}
 	
 	public void addReference(Reference reference) {
-        this.references = new HashSet<>(Arrays.asList(reference));
+        if (this.references == null) {
+            this.references = new HashSet<>();
+        }
+        this.references.add(reference);
+    }
+
+    /**
+     * Adds a typed reference to another Zettel with optional connection note.
+     * 
+     * @param target The Zettel to link to
+     * @param type The type of connection
+     * @param note Optional explanation of the connection
+     * @throws IllegalArgumentException if target is null or equals this Zettel
+     */
+    public void addReference(Zettel target, ReferenceType type, String note) {
+        Objects.requireNonNull(target, "Target Zettel cannot be null");
+        
+        if (this.equals(target)) {
+            throw new IllegalArgumentException("Cannot create self-reference");
+        }
+        
+        ReferenceType safeType = (type != null) ? type : ReferenceType.RELATES_TO;
+        
+        Reference ref = new Reference();
+        ref.setSourceZettel(this);
+        ref.setTargetZettel(target);
+        ref.setType(safeType);
+        ref.setConnectionNote(note);
+        
+        if (this.references == null) {
+            this.references = new HashSet<>();
+        }
+        this.references.add(ref);
+    }
+
+    /**
+     * Removes a reference to another Zettel.
+     * 
+     * @param reference The reference to remove
+     */
+    public void removeReference(Reference reference) {
+        if (this.references != null) {
+            this.references.remove(reference);
+        }
     }
 
 	public List<Tag> getTags() {
@@ -161,7 +197,21 @@ public class Zettel {
 	}
 	
     public void addTag(Tag tag) {
-    	this.tags = new ArrayList<>(Arrays.asList(tag));
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        this.tags.add(tag);
+    }
+
+    /**
+     * Removes a tag from this Zettel.
+     * 
+     * @param tag The tag to remove
+     */
+    public void removeTag(Tag tag) {
+        if (this.tags != null) {
+            this.tags.remove(tag);
+        }
     }
 
 
@@ -172,6 +222,20 @@ public class Zettel {
 	
 	public void setTekst(Tekst tekst) {
 		this.tekst = tekst;
+	}
+
+	/**
+	 * Generates a human-friendly identifier dynamically at runtime.
+	 * Combines topic and creation date for readability.
+	 *
+	 * @return a readable identifier for the Zettel
+	 */
+	@Transient
+	@JsonIgnore
+	public String getHumanFriendlyIdentifier() {
+		String formattedDate = added != null ? added.toLocalDate().toString() : "undated";
+		String safeTopic = topic != null ? topic : "untitled";
+		return safeTopic + " (" + formattedDate + ")";
 	}
 	
     @Override
@@ -195,7 +259,7 @@ public class Zettel {
 	@Override
 	public String toString() {
 		return "\n Zettel \n [zettelId =" + zettelId + ", topic=" + topic + " Note : "+ Optional.ofNullable(note).map(Note::getNoteText).orElse("No note available, it's NULL") + " added=" + added
-				+ ", changed=" + changed + ", signature=" + signature
+				+ ", changed=" + changed
 				+ ",  Anzahl der tags=" + Optional.ofNullable(tags).map(list -> list .size()) .orElse(0)
 				+ ", \n tekst=" + tekst 
 				+ " , \n  References: " + Optional.ofNullable(references).map(list -> list.toString()).orElse("keine Verweise") + "]\n \n ";

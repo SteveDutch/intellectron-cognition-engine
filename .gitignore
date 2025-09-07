@@ -75,3 +75,5 @@ systemctl
 qodana.yaml
 .qodo
 .cursorindexingignore
+.cursor/rules/dev-ops.mdc
+.cursor/rules/ma-java-spring-rule.mdc

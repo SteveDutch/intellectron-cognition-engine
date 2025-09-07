@@ -1,8 +1,10 @@
 package com.stevedutch.intellectron.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TextManipulationService;
 
@@ -184,6 +187,61 @@ public class SearchController {
 		model.addAttribute("selectedTag", selectedTag);
 		model.addAttribute("zettels", zettels);
 		return "/tags";
+	}
+	
+	// API endpoint for searching Zettels: instant search by topic, note, or id
+	@GetMapping("/api/search/zettel")
+	@ResponseBody
+	public List<Map<String, Object>> searchZettelsApi(@RequestParam("query") String query) {
+		LOG.info("API search for query: {}", query);
+		
+		// Only search if query has at least 3 characters
+		if (query.length() < 3) {
+			return new ArrayList<>();
+		}
+		
+		List<Zettel> zettels = new ArrayList<>();
+		
+		// Check if query is a search by ID (format: "id:123")
+		if (query.startsWith("id:")) {
+			try {
+				Long zettelId = Long.parseLong(query.substring(3));
+				Zettel zettel = searchService.findZettelById(zettelId);
+				zettels.add(zettel);
+			} catch (Exception e) {
+				LOG.debug("No zettel found by ID: {}", query);
+			}
+		} else {
+			try {
+				// Search by topic fragment first
+				zettels = searchService.findZettelByTopicFragment(query);
+			} catch (Exception e) {
+				LOG.debug("No zettels found by topic fragment: {}", query);
+				// If no results by topic, try searching by note content
+				try {
+					zettels = searchService.findZettelByNoteFragment(query);
+				} catch (Exception ex) {
+					LOG.debug("No zettels found by note fragment: {}", query);
+				}
+			}
+		}
+		
+		// Limit results to prevent overwhelming the UI
+		return zettels.stream()
+			.limit(10)
+			.map(zettel -> {
+				Map<String, Object> result = new HashMap<>();
+				result.put("zettelId", zettel.getZettelId());
+				result.put("topic", zettel.getTopic());
+				result.put("humanFriendlyIdentifier", zettel.getHumanFriendlyIdentifier());
+				result.put("added", zettel.getAdded().toLocalDate().toString()); 
+				result.put("changed", zettel.getChanged().toLocalDate().toString());
+				if (zettel.getNote() != null) {
+					result.put("noteText", zettel.getNote().getNoteText());
+				}
+				return result;
+			})
+			.collect(Collectors.toList());
 	}
 	
 }

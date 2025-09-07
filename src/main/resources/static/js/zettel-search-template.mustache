@@ -1,0 +1,18 @@
+{{#zettels}}
+<div class="dropdown-item is-clickable" data-zettel-id="{{zettelId}}" data-zettel-topic="{{topic}}" data-zettel-added="{{added}}" data-zettel-changed="{{changed}}" >
+    <div class="content">
+        <p class="has-text-weight-bold">{{topic}}</p>
+        {{#noteText}}
+        <p class="is-has-text-weight-normal">{{noteTextTruncated}}</p>
+        {{/noteText}}        
+        <p class="is-size-7 has-text-success-light">ID: {{zettelId}} | added {{added}} | changed {{changed}}</p>
+
+    </div>
+</div>
+{{/zettels}}
+{{^zettels}}
+<div class="dropdown-item">No Zettels found</div>
+{{/zettels}}
+{{#error}}
+<div class="dropdown-item has-text-danger">{{error}}</div>
+{{/error}} 

@@ -1,5 +1,6 @@
 package com.stevedutch.intellectron.service;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -92,6 +93,19 @@ class SearchServiceTest {
 		assertThrows(SearchTermNotFoundException.class, () -> {
 			searchService.findZettelByNoteFragment("");
 		});
+	}
+
+	@Test
+	void testSearchWithInvalidInput_ShouldThrowException() {
+		// Test verschiedene ungültige Eingaben
+		assertAll(
+			() -> assertThrows(SearchTermNotFoundException.class, 
+				() -> searchService.findZettelByNoteFragment(null)),
+			() -> assertThrows(SearchTermNotFoundException.class, 
+				() -> searchService.findZettelByNoteFragment("")),
+			() -> assertThrows(SearchTermNotFoundException.class, 
+				() -> searchService.findZettelByNoteFragment("   "))
+		);
 	}
 
 	@Test

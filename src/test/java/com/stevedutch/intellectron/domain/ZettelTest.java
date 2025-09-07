@@ -62,7 +62,6 @@ class ZettelTest {
 		baseZettel.setNote(note);
 		baseZettel.setAdded(now);
 		baseZettel.setChanged(now);
-		baseZettel.setSignature(25L);
 		baseZettel.setReferences(references);
 		baseZettel.setTags(tags);
 		baseZettel.setTekst(tekst);
@@ -78,7 +77,6 @@ class ZettelTest {
 		assertEquals(baseZettel.getNote(), sut.getNote());
 		assertEquals(baseZettel.getAdded(), sut.getAdded());
 		assertEquals(baseZettel.getChanged(), sut.getChanged());
-		assertEquals(baseZettel.getSignature(), sut.getSignature());
 		assertEquals(baseZettel.getReferences(), sut.getReferences());
 		assertEquals(baseZettel.getTags(), sut.getTags());
 		assertEquals(baseZettel.getTekst(), sut.getTekst());
@@ -114,12 +112,6 @@ class ZettelTest {
 		LocalDateTime now = LocalDateTime.now();
 		zettel.setChanged(now);
 		assertEquals(now, zettel.getChanged());
-	}
-
-	@Test
-	void testSetAndGetSignature() {
-		zettel.setSignature(123L);
-		assertEquals(123L, zettel.getSignature());
 	}
 
 	@Test
@@ -186,7 +178,7 @@ class ZettelTest {
 		zettel.setZettelId(1L);
 		zettel.setTopic("Test Topic");
 		zettel.setAdded(LocalDateTime.of(2024, 7, 25, 17, 57));
-		String expectedString = "\n Zettel \n [zettelId =1, topic=Test Topic Note : No note available, it's NULL added=2024-07-25T17:57, changed=null, signature=null,  Anzahl der tags=0, \n tekst=null , \n  References: []]\n \n ";
+		String expectedString = "\n Zettel \n [zettelId =1, topic=Test Topic Note : No note available, it's NULL added=2024-07-25T17:57, changed=null,  Anzahl der tags=0, \n tekst=null , \n  References: []]\n \n ";
 		assertEquals(expectedString, zettel.toString());
 	}
 }

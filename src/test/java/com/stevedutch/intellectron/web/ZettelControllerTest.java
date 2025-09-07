@@ -26,6 +26,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
+import com.stevedutch.intellectron.domain.ReferenceType;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
@@ -79,8 +80,7 @@ class ZettelControllerTest {
     	ArrayList<Tag> tags = new ArrayList<Tag>();
     	tags.add(new Tag("test"));
     	ArrayList<Reference> references = new ArrayList<Reference>();
-    	references.add(new Reference("1234567890"));
-    	Zettel zettel = new Zettel("test"); 
+    	references.add(new Reference(1L, 2L, ReferenceType.RELATES_TO, "test connection"));    	Zettel zettel = new Zettel("test"); 
     	Tekst tekst = new Tekst("test");
     	zettel.setTekst(tekst);
     	tekst.setText("test text");
@@ -95,12 +95,11 @@ class ZettelControllerTest {
 
     @Test
     void testUpdateOneZettel() throws Exception {
-        // Setup"test"
+        // Arrange
     	ArrayList<Tag> tags = new ArrayList<Tag>();
     	tags.add(new Tag("test"));
     	ArrayList<Reference> references = new ArrayList<Reference>();
-    	references.add(new Reference("1234567890"));
-    	Zettel zettel = new Zettel("test"); 
+    	references.add(new Reference(1L, 2L, ReferenceType.RELATES_TO, "test connection"));    	Zettel zettel = new Zettel("test"); 
     	Tekst tekst = new Tekst("test");
     	Note note = new Note("test");
     	Author author = new Author("test", "family");
@@ -108,7 +107,7 @@ class ZettelControllerTest {
         ZettelDtoRecord changes = new ZettelDtoRecord(zettel, tekst, note, author,tags, references); // Initialize with necessary properties"
         String json = objectMapper.writeValueAsString(changes);
 
-        // Execute
+        // Act & Assert
         mockMvc.perform(post("/zettel/1").content(json).contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().is3xxRedirection())
               .andExpect(redirectedUrl("/zettel/1"));

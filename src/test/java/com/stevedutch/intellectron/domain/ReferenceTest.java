@@ -9,7 +9,7 @@ class ReferenceTest {
 	@Test
 	void test() {
 		Reference sut = new Reference();
-		sut.setOriginZettel(202401231921L);
+		sut.setSourceZettelId(007L);
 		 
 		assertInstanceOf(Reference.class, sut);
 

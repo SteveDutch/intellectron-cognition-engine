@@ -6,9 +6,22 @@
 	<link rel="stylesheet" href="/css/input.css">
 	<th:block th:insert="~{fragments/common :: head('feed your intellectron')}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-	<script src="../js/input.js" defer></script>
+ 
+	<link rel="stylesheet" href="/css/bulma.css">
+	<link rel="stylesheet" href="/css/input.css">
+	<link rel="stylesheet" href="/css/dark-mode.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+	<!-- Script/CSS loading -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
+	<script src="/js/instant-zettel-search.js" defer></script>
+	
+	<script src="/js/input.js" defer></script>
 	<script src="/js/common.js" defer></script>
-	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+	<script src="/js/dark-mode.js" defer></script>
+	
+	<th:block th:replace="fragments/common :: table-sort-resources"></th:block>
 </head>
 
 <body>
@@ -101,27 +114,112 @@
 		</div>
 
 		<hr />
-		<div class="field">
-			<label class="label has-text-weight-bold" for="Signatur">Signature to which should be referred / 
-				Signatur, auf die verwiesen werden soll:</label>
-			<div id="signatureContainer">
-				<div th:each="reference, status : ${references}">
-					<input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-						th:id="'signature' + ${status.index}" th:name="'references'" th:value="${reference.targetZettel}" />
-					<button class="button is-small is-warning" type="button" onclick="this.parentNode.remove()">rydde ut
-						referanse</button>
-				</div>
-				<!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-				<button class="button is-small is-warning" id="addReferenceButton" type="button">Add Reference</button>
-			</div>
-			<hr />
-
-			<div class="container">
-				<div class="columns is-centered">
-					<div class="column ">
-						<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
+		<div class="columns">
+		<div class="column is-12">
+			<label class="label has-text-weight-bold">Connected Zettels / Verknüpfte Zettel:</label>
+			
+			<!-- Container for all reference forms (existing and new) -->
+			<div id="referencesContainer" class="columns is-multiline">
+				
+				<!-- Loop to render existing references as pre-filled forms -->
+				<div th:each="ref : ${zettel.references}" class="column is-4 reference-group">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Existing Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<!-- The name attribute is critical for form submission -->
+								<select name="referenceType">
+									<!-- Loop through all possible enum values to create the options -->
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"
+											th:selected="${typeOpt == ref.type}">
+									</option>
+								</select>
+							</div>
+						</div>
+						
+						<div th:if="${ref.targetZettelId != null}"  class="field">
+							<label class="label">Target Zettel:</label>
+							<!-- Add link to target zettel -->
+							<div class="field mb-2 view-zettel-link-container" style="display: none;">
+								<!-- This link will be populated by JavaScript -->
+							</div>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<!-- Pre-fill with target zettel ID and load details via JavaScript -->
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   th:value="${'Loading Zettel ' + ref.targetZettelId + '...'}"
+										   th:attr="data-zettel-id=${ref.targetZettelId}" 
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<!-- Pre-fill the connection note -->
+							<input type="text" class="input" name="connectionNote"
+								   th:value="${ref.connectionNote}" 
+								   placeholder="Why are these notes connected?" />
+						</div>
 					</div>
 				</div>
+
+				<!-- The template for a brand new reference form. It will be cloned by JS. -->
+				<div class="column is-4 reference-group is-hidden" id="reference-template-to-clone">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Add New Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<select name="referenceType">
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Target Zettel:</label>
+							<!-- Add link to target zettel -->
+							<div class="field mb-2 view-zettel-link-container" style="display: none;">
+								<!-- This link will be populated by JavaScript -->
+							</div>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   placeholder="Start typing to search..."
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<input type="text" class="input" name="connectionNote" placeholder="Why are these notes connected?" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Button to add a new reference form -->
+			<button class="button is-primary" type="button" id="add-reference-btn">Add Reference</button>
+		</div>
+	</div>
+			<div class="columns">
+			<div class="column ">
+				<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
 			</div>
 		</div>
 	</form>
@@ -141,10 +239,15 @@
 	</section>
 	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
 
-	<footer th:replace="~{fragments/common :: footer}"></footer>
 
 	<!-- navbar burger -->
 	<script type="text/javascript" src="/js/bulma.js"></script>
+	
+	<!-- The search template must be in the body to be found by the script -->
+
+	<!-- <th:block th:replace="fragments/common :: instant-zettel-search-template"></th:block> -->
+	<footer th:replace="fragments/common :: footer"></footer>
+
 </body>
 
 </html>

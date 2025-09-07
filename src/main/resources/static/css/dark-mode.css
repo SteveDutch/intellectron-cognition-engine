@@ -125,6 +125,15 @@ body {
     color: #e4e4e4;
     opacity: 0.9;
 }
+/*to overwrite chrome's default autofill color*/
+.theme-dark input:-webkit-autofill,
+.theme-dark input:-webkit-autofill:hover,
+.theme-dark input:-webkit-autofill:focus,
+.theme-dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--card-background) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    transition: background-color 5000000s ease-in-out 0s;
+}
 
 .theme-dark label {
     color: var(--text-color);

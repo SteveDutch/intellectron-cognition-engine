@@ -13,6 +13,16 @@ textarea {
 	width: 90%;
 }
 
+/*to overwrite chrome's default autofill color*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--page-background) inset !important;
+    -webkit-text-fill-color: #4a4a4a !important; /* Dark grey for light mode text */
+    transition: background-color 5000000s ease-in-out 0s;
+}
+
 .thick-black-border {
   border: 2px solid black;
 }

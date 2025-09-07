@@ -12,6 +12,8 @@ submitBtn.addEventListener("click", function (event) {
 	prepareZettel();
 });
 
+// The reference and tag functionality has been moved to enter-zettel.js
+
 function prepareZettel() {
 	console.log("juhu, funct. prepareZettel wurde aufgerufen");
 	zettel.zettel = document.getElementById("title").value;
@@ -33,10 +35,28 @@ function prepareZettel() {
 	tekst.textDate = document.getElementById("timestamp").value;
 	tekst.source = document.getElementById("source").value;
 
-	// an array for references:
-	let referenceInputs = document.getElementsByName("referenceInput");
-	let referenceValues = Array.from(referenceInputs).map((input) => input.value);
-	zettel.references = referenceValues;
+	// Collect references from all reference-group divs
+    const collectedReferences = [];
+    const referenceGroups = document.querySelectorAll('.reference-group');
+    
+    referenceGroups.forEach(group => {
+        const searchInput = group.querySelector('input[name="zettelSearchInput"]');
+        const targetZettelId = searchInput.dataset.zettelId;
+
+        // Only include the reference if a Zettel has been selected
+        if (targetZettelId) {
+            const typeInput = group.querySelector('select[name="referenceType"]');
+            const noteInput = group.querySelector('input[name="connectionNote"]');
+            
+            collectedReferences.push({
+                type: typeInput.value,
+                targetZettelId: parseInt(targetZettelId),
+                connectionNote: noteInput.value || null
+            });
+        }
+    });
+
+	zettel.references = collectedReferences;
 
 	console.log("als JSON:  " + JSON.stringify(zettel));
 

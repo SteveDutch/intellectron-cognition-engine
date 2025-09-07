@@ -53,13 +53,15 @@
 </head>
 <!-- END TABLE SORTING RESOURCES -->
 
+
+
 <!-- START SHOW ZETTELS IN TABLE-->
  
 	<div th:fragment="zettel-table(zettels)">
 		<table class="table is-fullwidth is-bordered is-striped has-background-grey-lighter thick-black-border sortable-table">
 			<thead>
 				<tr>
-					<th>Signature</th>
+					<th>Identifier</th>
 					<th>Topic</th>
 					<th>Note</th>
 					<th>Text Title</th>
@@ -74,7 +76,7 @@
 				</tr>
 				<tr th:each="zettel : ${zettels}">
 					<td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"
-							rel="noopener noreferrer"><span class="showLast" th:text="${zettel.signature}"> signature
+							rel="noopener noreferrer"><span class="showLast" th:text="${zettel.getHumanFriendlyIdentifier()}"> identifier
 							</span></a></td>
 					<td><span  th:text="${zettel.topic}"> topic </span></td>
 					<td><span  th:if="${zettel.note!= null}"
@@ -99,8 +101,32 @@
 							No tags
 						</span>
 					</td>
-					<td><span th:each="reference : ${zettel.references}"
-							th:text="${reference.targetZettel} + ' // ' "></span></td>
+					<td>
+						<span th:if="${zettel.references != null && !zettel.references.isEmpty()}">
+							<span th:each="reference : ${zettel.references}">
+								<a th:href="@{/zettel/{zettelId}(zettelId=${reference.targetZettelId})}"
+								   target="_blank" rel="noopener noreferrer">
+									<span th:switch="${reference.type.name()}">
+										<span th:case="'SUPPORTS'" class="tag is-small is-success" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+										<span th:case="'CONTRADICTS'" class="tag is-small is-danger" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+										<span th:case="'FOLLOWS_FROM'" class="tag is-small is-info" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+										<span th:case="'BRANCHES_FROM'" class="tag is-small is-warning" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+										<span th:case="'RELATES_TO'" class="tag is-small is-primary" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+										<span th:case="*" class="tag is-small is-light" style="font-size: 0.7rem;" th:text="${reference.type.name()} + ': Zettel ' + ${reference.targetZettelId}"></span>
+									</span>
+								</a>
+								<span th:if="${reference.connectionNote != null && !reference.connectionNote.isEmpty()}"
+									  class="is-size-7 has-text-grey connection-note"
+									  th:text="' (' + ${#strings.abbreviate(reference.connectionNote, 60)} + ')'">
+								</span>
+								<br/>
+							</span>
+						</span>
+						<span th:if="${zettel.references == null || zettel.references.isEmpty()}"
+							  class="has-text-grey is-italic">
+							No references
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

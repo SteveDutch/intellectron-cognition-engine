@@ -1,7 +1,6 @@
 let submitBtn = document.getElementById("submit");
 let zettel = {};
-let note = {};
-let author = {};
+
 //save modal
 const saveModal = document.getElementById("saveModal");
 const saveModalMessage = document.getElementById("saveModalMessage");
@@ -12,72 +11,78 @@ let zettelId = parseInt(document.getElementById("zettelId").textContent);
 // Object to store initial form data
 let initialFormData = {};
 
+// The reference and tag functionality has been moved to enter-zettel.js
+
 // --- Function to capture current form data ---
 function captureCurrentFormData() {
     let data = {};
     data.topic = document.getElementById("title").value;
-    data.note = document.getElementById("notiz").value; // Direct string
+    data.note = document.getElementById("notiz").value; 
 
-    // Tags as array of strings
     data.tags = Array.from(document.getElementsByName("tags")).map(input => input.value);
-
-    // Author
-    // Assumption: Only one author with index 0
+    
     data.authorFirstName = document.getElementById("authorFirstName0") ? document.getElementById("authorFirstName0").value : '';
     data.authorFamilyName = document.getElementById("authorFamilyName0") ? document.getElementById("authorFamilyName0").value : '';
 
-    // Tekst
     data.tekstTitle = document.getElementById("texttitle").value;
     data.tekstText = document.getElementById("tekst").value;
     data.tekstSource = document.getElementById("source").value;
-    // Date: Use current input value, fallback to displayed text only if necessary
     const textDateInput = document.getElementById("textDate").value;
     if (textDateInput !== "") {
         data.tekstTextDate = textDateInput;
     } else {
          const timestampElement = document.getElementById("timestamp");
-         data.tekstTextDate = timestampElement ? timestampElement.textContent : null; // Or ''
+         data.tekstTextDate = timestampElement ? timestampElement.textContent : null;
     }
 
-    // References as array of strings
-    data.references = Array.from(document.getElementsByName("references")).map(input => input.value);
+    // References - Include all reference data for proper change detection
+    data.references = Array.from(document.querySelectorAll('.reference-group:not(#reference-template)'))
+        .map(group => {
+            const searchInput = group.querySelector('input[name="zettelSearchInput"]');
+            const typeSelect = group.querySelector('select[name="referenceType"]');
+            const noteInput = group.querySelector('input[name="connectionNote"]');
+            const targetZettelId = searchInput.dataset.zettelId;
+            
+            return targetZettelId ? {
+                targetZettelId: targetZettelId,
+                type: typeSelect ? typeSelect.value : null,
+                connectionNote: noteInput ? noteInput.value : null
+            } : null;
+        })
+        .filter(Boolean); // Keep it simple for change detection
 
     return data;
 }
 
-// --- Function to compare two objects (simplified) ---
-// Compares if simple values or array contents have changed
+// --- Function to detect changes ---
 function detectChanges(initialData, currentData) {
-    // Compare simple string values (trimmed)
-    if (initialData.topic.trim() !== currentData.topic.trim()) return true;
-    if (initialData.note.trim() !== currentData.note.trim()) return true;
-    if (initialData.authorFirstName.trim() !== currentData.authorFirstName.trim()) return true;
-    if (initialData.authorFamilyName.trim() !== currentData.authorFamilyName.trim()) return true;
-    if (initialData.tekstTitle.trim() !== currentData.tekstTitle.trim()) return true;
-    if (initialData.tekstText.trim() !== currentData.tekstText.trim()) return true;
-    if (initialData.tekstSource.trim() !== currentData.tekstSource.trim()) return true;
-
-    // Compare date (simple string comparison here)
-    if (initialData.tekstTextDate !== currentData.tekstTextDate) return true;
-
-    // Compare arrays (length and content, ignoring order)
-    const tagsChanged = initialData.tags.length !== currentData.tags.length ||
-                       JSON.stringify([...initialData.tags].sort()) !== JSON.stringify([...currentData.tags].sort());
-    if (tagsChanged) return true;
-
-    const refsChanged = initialData.references.length !== currentData.references.length ||
-                       JSON.stringify([...initialData.references].sort()) !== JSON.stringify([...currentData.references].sort());
-    if (refsChanged) return true;
-
-    // If no differences found so far
-    return false;
+    return JSON.stringify(initialData) !== JSON.stringify(currentData);
 }
 
-// --- EventListener to store initial data after load ---
-document.addEventListener('DOMContentLoaded', () => {
+// --- Capture initial form data when page loads ---
+document.addEventListener('DOMContentLoaded', function() {
     initialFormData = captureCurrentFormData();
-    console.log("Initial form data captured:", initialFormData);
+    // The 'addReferenceButton' listener is now in enter-zettel.js
+    
+    // Listen for zettel selection from instant search - made by genAI
+    const searchInput = document.getElementById("zettelSearchInput");
+    if (searchInput) {
+        searchInput.addEventListener('zettelSelected', function(event) {
+            console.log('Zettel selected:', event.detail.zettel);
+        });
+    }
 });
+
+// Close modal functionality
+if (saveModalClose) {
+    saveModalClose.addEventListener('click', function() {
+        saveModal.style.display = 'none';
+    });
+}
+
+// All reference-handling functions (addReference, displayReference, etc.) are removed from here.
+
+// The getReferenceTypeClass function has been moved to enter-zettel.js
 
 submitBtn.addEventListener("click", function (event) {
     // suppress HTML sending form
@@ -123,16 +128,12 @@ function prepareZettel() {
     console.log("juhu, funct. prepareZettel wurde aufgerufen");
     zettel.zettel = document.getElementById("title").value;
     zettel.note = document.getElementById("notiz").value;
-    zettel.tekst = document.getElementById("tekst").value;
-    // an array for tags:
     let inputs = document.getElementsByName("tags");
     let values = Array.from(inputs).map((input) => input.value);
     zettel.tags = values;
 
     let author = { authorFirstName: "", authorFamilyName: "" };
     zettel.author = author;
-    // XXX 0 is hardcoded, should be dynamic ... but since there is only one author, it's ok & necessary
-    // I'm using 1:1 instead of coded many:many for simplicity reasons
     author.authorFirstName = document.getElementById("authorFirstName0").value.trim();
     if (author.authorFirstName === "") {
         alert(" author's first name is missing");
@@ -156,18 +157,33 @@ function prepareZettel() {
     }
     tekst.source = document.getElementById("source").value;
 
-    // an array for references:
-    let referenceInputs = document.getElementsByName("references");
-    let referenceValues = Array.from(referenceInputs).map((input) => input.value);
-    zettel.references = referenceValues;
+    // Collect references from all visible reference-group divs
+    const collectedReferences = [];
+    const referenceGroups = document.querySelectorAll('.reference-group:not(#reference-template)');
 
-    // get ID of the zettel to be updated
-    // zettel.zettelId = parseInt(document.getElementById("zettelId").textContent);
+    referenceGroups.forEach(group => {
+        const searchInput = group.querySelector('input[name="zettelSearchInput"]');
+        // The data-zettel-id attribute holds the selected Zettel's ID
+        const targetZettelId = searchInput.dataset.zettelId; 
 
+        if (targetZettelId) {
+            const typeInput = group.querySelector('select[name="referenceType"]');
+            const noteInput = group.querySelector('input[name="connectionNote"]');
+            
+            collectedReferences.push({
+                type: typeInput.value,
+                targetZettelId: parseInt(targetZettelId, 10),
+                connectionNote: noteInput.value || null
+            });
+        }
+        // If no zettelId is selected, we simply skip this group.
+    });
+
+    zettel.references = collectedReferences;
+    
     console.log("zettelId: " + zettelId);
-
-    console.log("als JSON:  " + JSON.stringify(zettel));
-
+    console.log("zettel object: " + JSON.stringify(zettel));
+    
     return true;
 }
 

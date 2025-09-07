@@ -298,4 +298,11 @@ public class SearchService {
 				.orElseThrow(() -> new TagNotFoundException("Tag not found with id " + tagId));
 	}
 
+
+	// XXX is this method ever used? NOPE
+//	public List<Reference> findAll() {
+//		return refRepo.findAll();
+//	}
+
+
 }
