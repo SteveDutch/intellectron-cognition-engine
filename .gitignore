@@ -74,3 +74,4 @@ mvnw.cmd
 systemctl
 qodana.yaml
 .qodo
+.cursorindexingignore
