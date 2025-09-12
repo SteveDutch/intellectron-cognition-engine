@@ -62,4 +62,51 @@
     box-shadow: 0 4px 8px rgba(62, 142, 208, 0.3);
 }
 
-  
+/* fix chrome's overwriting of default styles */
+body:not(.theme-dark) input.input,
+body:not(.theme-dark) textarea.textarea,
+body:not(.theme-dark) .card,
+body:not(.theme-dark) .table {
+    background-color: #ffffff;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .card-header-title {
+    background-color: #e0d49a;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(even) {
+    background-color: lightgrey;
+        color: #4a4a4a; /* Ensure card header text is dark */
+    /* Bulma's $grey-lighter */
+}
+body:not(.theme-dark) .table td,
+body:not(.theme-dark) .table th {
+    color: #363636; /* Ensure table cell text is dark */
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(odd) {
+    background-color: #grey; /* Maintain striped effect */
+}
+
+/* The .level-right class uses flexbox, which needs align-items for vertical centering. */
+.card-table .table td.level-right {
+    align-items: center;
+}
+
+/* Vertically align content in the card tables */
+.card-table .table td {
+    vertical-align: middle;
+}
+
+/* Center the 'Look' button and remove the border underneath its cell */
+.card-table .table td.level-right {
+    align-items: center;
+    border-bottom: 0;
+}
+
+/* Force the card to clip its internal content to its own rounded corners */
+.card {
+    overflow: hidden;
+}
