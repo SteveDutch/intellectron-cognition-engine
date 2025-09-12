@@ -23,7 +23,7 @@ public interface ZettelRepository extends JpaRepository<Zettel, Long> {
 	@Query("SELECT zettel FROM Zettel zettel LEFT JOIN FETCH zettel.tags ORDER BY added DESC LIMIT 10")
 	public List<Zettel> findLast10Zettel();
 
-	@Query("SELECT zettel FROM Zettel zettel WHERE zettel.id = (SELECT FLOOR(MAX(zettel.id) * RAND()) FROM Zettel zettel) ORDER BY zettel.id LIMIT 1")
+	@Query(value = "SELECT * FROM zettel ORDER BY RAND() LIMIT 1", nativeQuery = true)
 	public Zettel findOneRandomZettel();
 
 	public List<Zettel> findZettelByTags(Tag searchTag);

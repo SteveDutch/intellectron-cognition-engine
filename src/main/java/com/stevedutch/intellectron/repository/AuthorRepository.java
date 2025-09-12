@@ -20,7 +20,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 	
 	public Author findByAuthorFirstNameAndAuthorFamilyName(String name1, String name2);
 	
-	@Query("SELECT author FROM Author author WHERE author.authorId = (SELECT FLOOR(MAX(author.authorId) * RAND()) FROM Author author) ORDER BY author.authorId LIMIT 1")
+	@Query(value = "SELECT * FROM authors ORDER BY RAND() LIMIT 1", nativeQuery = true)
 	public Author findOneRandomAuthor();
 	
 	

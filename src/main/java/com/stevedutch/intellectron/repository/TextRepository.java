@@ -44,7 +44,7 @@ public interface TextRepository extends JpaRepository<Tekst, Long>{
 	
 	
 	
-	@Query("SELECT tekst FROM Tekst tekst WHERE tekst.id = (SELECT FLOOR(MAX(tekst.id) * RAND()) FROM Tekst tekst) ORDER BY tekst.id LIMIT 1")
+	@Query(value = "SELECT * FROM texts ORDER BY RAND() LIMIT 1", nativeQuery = true)
 	public Tekst findOneRandomTekst();
 
 

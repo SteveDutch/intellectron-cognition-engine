@@ -21,7 +21,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 	// XXX falls ich mal eine genaue Tagsuche brauche
 	public Optional<Tag> findByTagText(String name);
 
-	@Query("SELECT tag FROM Tag tag WHERE tag.id = (SELECT FLOOR(MAX(tag.id) * RAND()) FROM Tag tag) ORDER BY tag.id LIMIT 1")
+	@Query(value = "SELECT * FROM tags ORDER BY RAND() LIMIT 1", nativeQuery = true)
 	public Tag findOneRandomTag();
 
 }

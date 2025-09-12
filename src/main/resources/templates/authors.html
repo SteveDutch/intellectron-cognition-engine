@@ -111,7 +111,7 @@
 											</a>
 											<br/>
 											<!-- Signatur in kleinerer, grauer Schrift anzeigen (nicht verlinkt) -->
-											<small class="placeholder-text" th:text="${zettel.signature}">Signatur</small>
+											<small class="placeholder-text" th:text="${zettel.getHumanFriendlyIdentifier()}">Signatur</small>
 										</div>
 									</div>
 									<!-- Fallback, wenn keine Zettel vorhanden sind -->
