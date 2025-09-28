@@ -2,12 +2,11 @@
 <html class="has-navbar-fixed-top" lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<th:block th:insert="~{fragments/common :: head('Zettel, shown by your intellectron')}"></th:block>
+	<th:block th:replace="~{fragments/common :: head('Zettel, shown by your intellectron')}"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="/css/zettel.css" />
-	<link rel="stylesheet" type="text/css" href="/css/dark-mode.css" />
-	<link rel="icon" type="image/x-icon" href="/favicon.ico">
-
+	
 	<!-- Script/CSS loading -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
@@ -15,7 +14,6 @@
 	
 	<script src="/js/zettel.js" defer></script>
 	<script src="/js/common.js" defer></script>
-	<script src="/js/dark-mode.js" defer></script>
 </head>
 
 <body>
@@ -149,7 +147,7 @@
 											<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
 													th:value="${typeOpt}"
 													th:text="${typeOpt.name()}"
-													th:selected="${typeOpt == ref.type}">
+													th:selected="${typeOpt == type}">
 											</option>
 										</select>
 									</div>

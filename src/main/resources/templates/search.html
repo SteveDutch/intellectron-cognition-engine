@@ -3,8 +3,9 @@
 <html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+	<th:block th:replace="~{fragments/common :: head('Fabulous Intellectron Search Page')}"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
 	<link rel="stylesheet" href="/css/search.css" />
-	<th:block th:insert="~{fragments/common :: head('Fabulous Intellectron Search Page')}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<script src="/js/search.js" defer></script>
 </head>
@@ -26,25 +27,25 @@
 
 			<!--         TopicSuche -->
 			<form th:action="@{/search/topic/}" method="get">
-				<input type="text" name="topicFragment" placeholder="Topic eingeben">
-				<button class="button is-small is-warning" type="submit">Suchen</button>
+				<input type="text" name="topicFragment" placeholder="enter topic (fragment)">
+				<button class="button is-small is-warning" type="submit">Search</button>
 			</form>
 			<!-- NoteSuche -->
 			<form th:action="@{/search/note/}" method="get">
 				<input type="text" name="noteFragment" placeholder="enter note (fragment)">
-				<button class="button is-small is-warning" type="submit">Suchen</button>
+				<button class="button is-small is-warning" type="submit">Search</button>
 			</form>
 			<!-- TextSuche -->
 			<form th:action="@{/search/text/}" method="get">
 				<input type="text" name="textFragment" placeholder="enter text (fragment)">
-				<button class="button is-small is-warning" type="submit">search Zettel via text (fragment)</button>
+				<button class="button is-small is-warning" type="submit">Search Zettel via text (fragment)</button>
 			</form>
 		</div>
 		<!--         Tagsuche -->
 		<h2 class="title is-2 has-text-black search-headline">Search a Tag</h2>
 		<form th:action="@{/search/tag/}" method="get">
-			<input type="text" name="tagFragment" placeholder="Tag eingeben">
-			<button class="button is-small is-warning" type="submit">Suchen</button>
+			<input type="text" name="tagFragment" placeholder="enter tag">
+			<button class="button is-small is-warning" type="submit">Search</button>
 		</form>
 		<h2 class="title is-2 has-text-black search-headline">Search an Author</h2>
 		<div>
@@ -57,8 +58,8 @@
 		<h2 class="title is-2 has-text-black search-headline">Search a Text</h2>
 		<div>
 			<form th:action="@{/search/text4tekst/}" method="get">
-				<input type="text" name="textFragment" placeholder="enter text (fragment)">
-				<button class="button is-small is-warning" type="submit">Suchen</button>
+				<input type="text" name="textFragment" placeholder="enter text (title is excluded)">
+				<button class="button is-small is-warning" type="submit">Search</button>
 			</form>
 
 		</div>
@@ -81,8 +82,8 @@
 				<div class="card events-card">
 					<header class="card-header">
 						<p class="card-header-title">Last 10 Zettel</p>
-						<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
-									class="fa fa-angle-down" aria-hidden="true"></i>
+<!-- 						<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
+									class="fa fa-angle-down" aria-hidden="true"></i> -->
 							</span>
 						</a>
 					</header>
@@ -115,8 +116,8 @@
 						<div class="card">
 							<header class="card-header">
 								<p class="card-header-title">10 random Zettel </p>
-								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
-											class="fa fa-angle-down" aria-hidden="true"></i>
+<!-- 								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
+											class="fa fa-angle-down" aria-hidden="true"></i> -->
 									</span>
 								</a>
 							</header>
@@ -165,9 +166,7 @@
 		</div>
 	</div>
 
-	<!-- 			<section class="show-detail"> -->
-	<!-- 			<h2 class="title is-2 has-text-black" > inspiration in more detail</h2> -->
-	<!-- 					show last 10 zettels -->
+		<!-- 					show last 10 zettels in table -->
 	<section class="info-tiles">
 		<div class="tile is-ancestor has-text-centered">
 			<div class="tile is-parent">

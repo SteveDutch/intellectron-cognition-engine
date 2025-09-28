@@ -3,21 +3,28 @@
 <body>
 
     <!-- START HEAD -->
-    <head th:fragment="head(pageTitle)">
+    <th:block th:fragment="head(pageTitle)">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title th:text="${pageTitle}"></title>
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         
-        <link rel="stylesheet" type="text/css" href="/css/bulma.css" />
-        <link rel="stylesheet" href="/css/dark-mode.css">
-
+		<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
+		<link rel="stylesheet" href="/css/dark-mode.css">
+		<link rel="stylesheet" href="/css/theme-overrides.css">
         <!-- Dark Mode JS -->
         <script src="/js/dark-mode.js" defer></script>
 
         <!-- Add any other truly common head elements here if needed -->
-    </head>
+	</th:block>
 <!-- END HEAD -->
+
+ <!-- START TABLE SORTING RESOURCES -->
+<th:block th:fragment="table-sort-resources">
+    <link rel="stylesheet" type="text/css" href="/css/table-sort.css">
+    <script type="text/javascript" src="/js/table-sort.js" defer></script>
+</th:block>
+<!-- END TABLE SORTING RESOURCES -->
  
 <!-- START NAVBAR -->
 <nav th:fragment="navbar" class="navbar has-background-primary-00 is-fixed-top">
@@ -45,15 +52,6 @@
 	</div>
 </nav>
 <!-- END NAV -->
-
-<!-- START TABLE SORTING RESOURCES -->
-<head th:fragment="table-sort-resources">
-    <link rel="stylesheet" type="text/css" href="/css/table-sort.css">
-    <script type="text/javascript" src="/js/table-sort.js" defer></script>
-</head>
-<!-- END TABLE SORTING RESOURCES -->
-
-
 
 <!-- START SHOW ZETTELS IN TABLE-->
  
@@ -116,7 +114,7 @@
 									</span>
 								</a>
 								<span th:if="${reference.connectionNote != null && !reference.connectionNote.isEmpty()}"
-									  class="is-size-7 has-text-grey connection-note"
+								class="has-text-grey is-italic"
 									  th:text="' (' + ${#strings.abbreviate(reference.connectionNote, 60)} + ')'">
 								</span>
 								<br/>

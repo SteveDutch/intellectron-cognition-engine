@@ -1,0 +1,56 @@
+
+/* Keep native controls light by default */
+:root {
+    color-scheme: light;
+  }
+  
+  /* Use dark native controls only when dark theme is active */
+  body.theme-dark {
+    color-scheme: dark;
+  }
+  
+  /* Prevent Chrome auto-darkening in light mode, globally */
+  /* fix chrome's overwriting of default styles */
+body:not(.theme-dark) input.input,
+body:not(.theme-dark) textarea.textarea,
+body:not(.theme-dark) .card,
+body:not(.theme-dark) .box,
+body:not(.theme-dark) .table {
+    background-color: #ffffff;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .card-header-title {
+    background-color: #e0d49a;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(even) {
+    background-color: lightgrey;
+        color: #4a4a4a; /* Ensure card header text is dark */
+    /* Bulma's $grey-lighter */
+}
+
+body:not(.theme-dark) .table td,
+body:not(.theme-dark) .table th {
+    color: #363636; /* Ensure table cell text is dark */
+}
+
+body:not(.theme-dark) .label {
+    color: #363636; /* Bulma's default strong text color */
+}
+
+body:not(.theme-dark) .info-tiles .title,
+body:not(.theme-dark) .info-tiles .subtitle {
+    color: #4a4a4a; /* Bulma's default text color */
+}
+
+/* Additional fix for Chrome light mode text color in cards */
+body:not(.theme-dark) .card .content p,
+body:not(.theme-dark) .card .content .subtitle {
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .card .content .title {
+    color: #363636;
+}

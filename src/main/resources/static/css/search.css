@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 body {
-    background-color: lightgrey;
     height: 100vh;
     min-height: 100vh;
     display: flex;
@@ -55,4 +54,54 @@ main.main-content {
     width: 100%;
     box-sizing: border-box;
     overflow-x: auto;
+}
+
+.card {
+    border-radius: 18px;
+    overflow: hidden; /* Force the card to clip its internal content to its own rounded corners */
+
+}
+
+/* The .level-right class uses flexbox, which needs align-items for vertical centering. */
+.card-table .table td.level-right {
+    align-items: center;
+}
+
+/* Vertically align content in the card tables */
+.card-table .table td {
+    vertical-align: middle;
+}
+
+/* Center the 'Look' button and remove the border underneath its cell */
+.card-table .table td.level-right {
+    align-items: center;
+    border-bottom: 0;
+}
+
+ /* keep Chrome from auto-darkening on this page (when not in dark mode) */
+body:not(.theme-dark) input.input,
+body:not(.theme-dark) textarea.textarea,
+body:not(.theme-dark) .card,
+body:not(.theme-dark) .table {
+    background-color: #ffffff;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .card-header-title {
+    background-color: #e0d49a;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(even) {
+    background-color: lightgrey;
+        color: #4a4a4a; /* Ensure card header text is dark */
+    /* Bulma's $grey-lighter */
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+body:not(.theme-dark) .table td,
+body:not(.theme-dark) .table th {
+    color: #363636;
 }

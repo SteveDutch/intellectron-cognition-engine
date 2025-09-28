@@ -87,7 +87,7 @@ body:not(.theme-dark) .table th {
 }
 
 body:not(.theme-dark) .table.is-striped tbody tr:nth-child(odd) {
-    background-color: #grey; /* Maintain striped effect */
+    background-color: #ffffff; /* Maintain striped effect */
 }
 
 /* The .level-right class uses flexbox, which needs align-items for vertical centering. */

@@ -4,10 +4,9 @@
 	lang="en"
 	xmlns:th="http://www.thymeleaf.org"
 >
-
 <head>
 	<link rel="stylesheet" type="text/css" href="/css/tags.css"/>
-	<th:block th:insert="~{fragments/common :: head('tag List, found by intellectron')}"></th:block>
+	<th:block th:replace="~{fragments/common :: head('tag List, found by intellectron')}"></th:block>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 	<script src="/js/common.js" defer></script>
 	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>

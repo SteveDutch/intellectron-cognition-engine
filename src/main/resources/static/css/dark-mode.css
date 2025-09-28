@@ -33,6 +33,10 @@
   transition: all 0.3s ease;
 }
 
+.theme-dark html {
+  background-color: var(--background-color);
+}
+
 /* Hero sections */
 .theme-dark .hero.is-info,
 .theme-dark .hero.is-small.is-primary,
@@ -364,20 +368,8 @@ body {
     background-color: black;
 }
 
-/* Fix for column and container white space */
-.theme-dark .columns {
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-}
-
-.theme-dark .column {
-    background-color: #000000;
-    padding: 0.75rem;
-}
-
-.theme-dark .card-table,
-.theme-dark .content,
-.theme-dark .card {
-    background-color: #000000;
+/* Make connection notes and 'No references' text readable in dark mode */
+.theme-dark .connection-note,
+.theme-dark .is-italic {
+  color: #aaaaaa; 
 }
