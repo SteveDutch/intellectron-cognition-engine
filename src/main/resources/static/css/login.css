@@ -1,0 +1,43 @@
+.hero.is-light {
+    background-color: var(--background-color);
+}
+
+.theme-dark .box.login-container {
+    background-color: var(--card-background);
+}
+
+.theme-dark .box.login-container .title,
+.theme-dark .box.login-container .subtitle {
+    color: var(--text-color);
+}
+
+.hero-body {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.login-container {
+    max-width: 400px;
+    width: 100%;
+}
+.google-btn {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+.google-btn:hover {
+    background-color: #357ae8;
+    color: white; /* Ensure text color remains white on hover */
+}
+.google-btn .icon {
+    margin-right: 10px;
+}

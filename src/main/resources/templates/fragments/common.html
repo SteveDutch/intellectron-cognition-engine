@@ -44,11 +44,24 @@
 
 		</div>
 		<!-- Add this in your header/navbar section -->
-<button class="button is-small" id="darkModeToggle" aria-label="Dark mode toggle">
-  <span class="icon">
-    <i class="fas fa-moon"></i>
-  </span>
-</button>
+		<div class="navbar-end">
+			<div class="navbar-item">
+				<button class="button is-small" id="darkModeToggle" aria-label="Dark mode toggle">
+					<span class="icon">
+						<i class="fas fa-moon"></i>
+					</span>
+				</button>
+			</div>
+			<div class="navbar-item">
+				<form th:action="@{/logout}" method="post">
+					<button type="submit" class="button is-small" id="logoutButton" aria-label="Logout" title="log out">
+						<span class="icon">
+							<img src="/images/logout.png" alt="Logout">
+						</span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</div>
 </nav>
 <!-- END NAV -->
