@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" class="has-navbar-fixed-top">
 <head>
     <th:block th:replace="~{fragments/common :: head('Logout Successful')}"></th:block>
     <link rel="stylesheet" href="/css/logout.css">
@@ -9,17 +9,19 @@
 
     <nav th:replace="~{fragments/common :: navbar}"></nav>
 
-    <section class="section">
-        <div class="container logout-container">
-            <div class="box">
-                <h1 class="title">You have been logged out successfully.</h1>
-                <p class="subtitle">You will be redirected to the homepage in 6 seconds.</p>
-                <a href="/" class="button is-primary">Go to Homepage Now</a>
+    <section class="hero is-fullheight-with-navbar">
+        <div class="hero-body">
+            <div class="container logout-container">
+                <div class="box">
+                    <h1 class="title">You have been logged out successfully.</h1>
+                    <p class="subtitle">You will be redirected to the homepage in 6 seconds.</p>
+                    <a href="/" class="button is-primary">Go to Homepage Now</a>
+                </div>
             </div>
         </div>
     </section>
 
     <footer th:replace="~{fragments/common :: footer}"></footer>
-
+    <script async type="text/javascript" src="../js/bulma.js"></script>
 </body>
 </html>

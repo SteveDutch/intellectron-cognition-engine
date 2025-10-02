@@ -1,7 +1,12 @@
 /* Logout success page styling */
 .logout-container {
-    margin-top: 100px;
     text-align: center;
+}
+
+.hero-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Light mode styling - ensure good contrast */

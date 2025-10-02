@@ -327,6 +327,17 @@ body {
 }
 
 /* Dark Mode Toggle Button */
+#darkModeToggle {
+    background-color: transparent;
+    border: none;
+    color: hsl(48, 100%, 67%); /* Bulma's 'warning' color to match the brand text */
+}
+
+#darkModeToggle:hover, #darkModeToggle:focus {
+    background-color: transparent !important;
+    color: hsl(48, 100%, 67%) !important;
+}
+
 .theme-dark #darkModeToggle {
     background-color: var(--card-background);
     color: var(--accent-color);
@@ -372,4 +383,22 @@ body {
 .theme-dark .connection-note,
 .theme-dark .is-italic {
   color: #aaaaaa; 
+}
+
+/* Custom styles for the logout button */
+#logoutButton {
+    background-color: transparent;
+    border: none;
+}
+
+.theme-dark #logoutButton {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    box-shadow: none;
+}
+
+.theme-dark #logoutButton:hover {
+    background-color: transparent;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px var(--shadow-color); /* Add a subtle glow on hover */
 }

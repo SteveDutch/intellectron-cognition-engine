@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,13 +17,18 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 // Erlaube den Zugriff auf die Startseite ("/") und statische Ressourcen
-                .requestMatchers("/", "/index", "/welcome", "/login", "/css/**", "/js/**", "/images/**").permitAll() 
+                .requestMatchers("/", "/index", "/welcome", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
                 // Jede andere Anfrage (anyRequest) muss authentifiziert sein
-                .anyRequest().authenticated() 
+                .anyRequest().authenticated()
             )
             // CSRF nur für API-Endpunkte deaktivieren, nicht für Formulare
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers("/zettel/**", "/input/**") // Nur für AJAX-API-Endpunkte
+            )
+            // Konfiguriere Form-basierten Login
+            .formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
             )
             // Konfiguriere OAuth2 Login
             .oauth2Login(oauth2 -> oauth2
@@ -34,5 +41,10 @@ public class WebSecurityConfig {
             );
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
