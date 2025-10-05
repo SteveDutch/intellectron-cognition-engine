@@ -1,0 +1,29 @@
+/* Logout success page styling */
+.logout-container {
+    text-align: center;
+}
+
+.hero-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Light mode styling - ensure good contrast */
+.logout-container .title {
+    color: #363636; /* Darker text for better readability in light mode */
+}
+
+.logout-container .subtitle {
+    color: #4a4a4a; /* Slightly lighter but still readable */
+}
+
+/* Dark mode styling */
+.theme-dark .logout-container .box {
+    background-color: var(--card-background);
+}
+
+.theme-dark .logout-container .title,
+.theme-dark .logout-container .subtitle {
+    color: var(--text-color);
+}

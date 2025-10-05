@@ -7,7 +7,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title th:text="${pageTitle}"></title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        
+        <!-- Favicon Declarations -->
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<!-- <link rel="icon" type="image/x-icon" href="/favicon.ico">		 -->
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         
 		<link rel="stylesheet" type="text/css" href="/css/bulma.css" />
 		<link rel="stylesheet" href="/css/dark-mode.css">
@@ -37,18 +46,40 @@
 		</div>
 		<div id="navMenu" class="navbar-menu">
 			<div class="navbar-start">
-				<a class="navbar-item has-text-warning" href="/"> Dashboard </a> <a class="navbar-item has-text-warning"
-					href="/search"> Search </a> <a class="navbar-item has-text-warning" href="/input"> New Zettel </a>
-
+				<a class="navbar-item has-text-warning" href="/"> Dashboard </a> 
+				<a class="navbar-item has-text-warning" href="/search"> Search </a> 
+				<a class="navbar-item has-text-warning" href="/input"> New Zettel </a>
 			</div>
-
 		</div>
 		<!-- Add this in your header/navbar section -->
-<button class="button is-small" id="darkModeToggle" aria-label="Dark mode toggle">
-  <span class="icon">
-    <i class="fas fa-moon"></i>
-  </span>
-</button>
+		<div class="navbar-end">
+			<!-- User info display -->
+			<div class="navbar-item" th:if="${isAuthenticated}">
+				<span class="has-text-warning">
+					<span class="icon">
+						<i class="fas fa-user"></i>
+					</span>
+					<span th:text="${currentUser}">User</span>
+				</span>
+			</div>
+			
+			<div class="navbar-item">
+				<button class="button is-small" id="darkModeToggle" aria-label="Dark mode toggle">
+					<span class="icon">
+						<i class="fas fa-moon"></i>
+					</span>
+				</button>
+			</div>
+			<div class="navbar-item">
+				<form th:action="@{/logout}" method="post">
+					<button type="submit" class="button is-small" id="logoutButton" aria-label="Logout" title="log out">
+						<span class="icon">
+							<img src="/images/logout.png" alt="Logout">
+						</span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</div>
 </nav>
 <!-- END NAV -->

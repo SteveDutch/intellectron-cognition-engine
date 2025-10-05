@@ -188,7 +188,7 @@ function prepareZettel() {
 }
 
 function zettelToJava() {
-    fetch(`http://127.0.0.1:8080/zettel/${zettelId}`, {
+    fetch(`${window.location.origin}/zettel/${zettelId}`, {
         method: "POST",
         headers: {
             "Access-Control-Allow-Origin": "http://127.0.0.1:8080",

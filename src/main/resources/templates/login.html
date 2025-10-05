@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+    <th:block th:insert="~{fragments/common :: head('the fine intellectron login page')}"></th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+
+<body>
+
+    <nav th:replace="~{fragments/common :: navbar}"></nav>
+    
+    <section class="hero is-fullheight-with-navbar is-light">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-4">
+                        <div class="box login-container has-text-centered">
+                            <h1 class="title">Login</h1>
+                            <p class="subtitle">Please sign in to continue</p>
+                            
+                            <p class="is-size-7 has-text-centered">Login with username and password</p>
+
+                            <!-- Login Form -->
+                            <form th:action="@{/login}" method="post" class="box">
+                                <!-- Fehlermeldung, falls der Login fehlschlägt -->
+                                <div th:if="${param.error}" class="notification is-danger is-light">
+                                    Invalid username or password.
+                                </div>
+                                <!-- Erfolgsmeldung nach dem Logout -->
+                                <div th:if="${param.logout}" class="notification is-success is-light">
+                                    You have been logged out.
+                                </div>
+
+                                <div class="field">
+                                    <label for="username" class="label">Username or Email</label>
+                                    <div class="control has-icons-left">
+                                        <input type="text" id="username" name="username" class="input" placeholder="e.g. user" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label for="password" class="label">Password</label>
+                                    <div class="control has-icons-left">
+                                        <input type="password" id="password" name="password" class="input" placeholder="*******" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <button type="submit" class="button is-success is-fullwidth">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- End Login Form -->
+
+                            <p class="has-text-centered mt-3">
+                                Don't have an account? <a th:href="@{/register}">Register here</a>.
+                            </p>
+
+                            <div class="divider">OR</div>
+
+                            <p class="is-size-7 has-text-centered">Login with a social provider</p>
+                            <div class="buttons is-centered">
+                                <a class="button google-btn" href="/oauth2/authorization/google">
+                                    <span class="icon">
+                                        <i class="fab fa-google"></i>
+                                    </span>
+                                    <span>Sign in with Google</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments/common :: footer}"></footer>
+    <script async type="text/javascript" src="../js/bulma.js"></script>
+</body>
+
+</html>
