@@ -53,17 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     let cssFile = '';
     
-    // Determine which page-specific CSS to load
-/*     if (currentPath === '/' || currentPath.includes('index')) {
-      cssFile = '/css/dark-mode-welcome.css';
-    } else if (currentPath.includes('input')) {
-      cssFile = '/css/dark-mode-input.css';
-    } else if (currentPath.includes('zettel')) {
-      cssFile = '/css/dark-mode-zettel.css';
-    } else if (currentPath.includes('search')) {
-      cssFile = '/css/dark-mode-search.css';
-    } */
-    
     // Only load if we have a specific file to load
     if (cssFile) {
       // Check if already loaded

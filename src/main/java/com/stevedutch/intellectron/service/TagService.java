@@ -32,14 +32,12 @@ public class TagService {
 			Optional<Tag> existingTag = tagRepo.findByTagText(tag.getTagText());
 			if (existingTag.isPresent()) {
 				return existingTag.get();
-				// orElseGet(tagRepo.save(new Tag(tag.getTagText()))); // Verwenden Sie das
-				// existierende Tag / return just existingTag
-				// laut phind
+
 			}
 
 		}
 		tag.setTagText(tag.getTagText().strip());
-		return tagRepo.save(tag); // Speichern Sie das neue Tag
+		return tagRepo.save(tag);
 
 	}
 
@@ -66,11 +64,10 @@ public class TagService {
 				+ tag.getId() + " Anzahl Zettel: " + tag.getZettels().size()));
 		newTags.forEach(tag -> LOG.info("\n HIER alle tags gespeichert   !!!   nämlich:  " + tag.getId()
 				+ " Anzahl Zettel: " + tag.getZettels().size()));
-//			zettel.getTags().addAll(newTags);
 		zettel.setTags(newTags);
 		zettel.setChanged(LocalDateTime.now());
-//			newTags.forEach(tag -> LOG.info("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
-//			    + "\n zettels: " + tag.getZettels().size()));	
+		newTags.forEach(tag -> LOG.debug("\n ---> nach saveZettel in saveTagsmitZettel: Tag: "  + tag.getId() +" Anzahl Zettel: " + tag.getTagText() 
+			    + "\n zettels: " + tag.getZettels().size()));	
 		return newTags;
 	}
 
@@ -79,15 +76,15 @@ public class TagService {
 		tags.forEach(tag -> LOG.info(" \n --> updated Tags  wie vom frontend erhalten= \n ID = " + tag.getId()
 				+ "\n text = " + tag.getTagText()));
 		Zettel zettel = searchService.findZettelById(zettelId);
-		// XXX tags vom front end kommen nur mit tagText, daher anhand dessen den Tag
+		// NOTE tags vom front end kommen nur mit tagText, daher anhand dessen den Tag
 		// finden, oder -falls nicht existent -
 		// als neues Tag mit dem gegebenen Text einrichten --> Vermeiden von Doubletten
 		// in der Datenbank & Objekt
 		ArrayList<Tag> newTags = tags.stream()
 				.map(tag -> tagRepo.findByTagText(tag.getTagText()).orElseGet(() -> saveTag(new Tag(tag.getTagText()))))
 				.collect(Collectors.toCollection(ArrayList::new));
-//		newTags.forEach(tag -> System.out.println("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
-		// in DB vorhandene, aber zum Zettel neu hinzugefügte Tags mit Zettel verknüpfen
+		newTags.forEach(tag -> LOG.debug("\n HIER sollten alle tags EINE id HABEN ä" + tag.getId() + tag.getTagText()));
+       // in DB vorhandene, aber zum Zettel neu hinzugefügte Tags mit Zettel verknüpfen
 		for (Tag tag : newTags) {
 			if (!zettel.getTags().contains(tag)) {
 				zettel.getTags().add(tag);
@@ -99,11 +96,10 @@ public class TagService {
 		for (Tag tag : OriginalTagsCopy) {
 			if (!newTags.contains(tag)) {
 				zettel.getTags().remove(tag);
-             
 
 			}
 		}
-  		zettelService.saveZettel(zettel); 
+		zettelService.saveZettel(zettel);
 		LOG.info("\n --- Tags gespeichert mit am Ende von updateTags : ");
 		newTags.forEach(tag -> LOG.info(" \n ---> new Tags  = ID = " + tag.getId() + " Text =  " + tag.getTagText()));
 	}

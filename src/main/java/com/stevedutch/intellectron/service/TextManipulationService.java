@@ -7,29 +7,28 @@ import org.springframework.stereotype.Service;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
 
-// TODO rename functions
 @Service
 public class TextManipulationService {
 
-	
-	public String brToNewLine (String text) {
+	public String brToNewLine(String text) {
 		StringBuilder sb = new StringBuilder(text);
-	    if (text == null) {
-	        return null;
-	    } 	
+		if (text == null) {
+			return null;
+		}
 		int index = sb.indexOf("<br>");
 
-	        while (index != -1) {
-	            sb.replace(index, index + 4, "\n");
-	            index = sb.indexOf("<br>", index + 1);
-	        }
-	        text = sb.toString();
-	        return text;
-		
+		while (index != -1) {
+			sb.replace(index, index + 4, "\n");
+			index = sb.indexOf("<br>", index + 1);
+		}
+		text = sb.toString();
+		return text;
+
 	}
-	
+
 	/**
-	 *reduces the string of title & text of all elements of a list of tekst to the chosen number of characters
+	 * reduces the string of title & text of all elements of a list of tekst to the
+	 * chosen number of characters
 	 *
 	 * @param texts
 	 * @param titleCharacterLimit
@@ -41,8 +40,8 @@ public class TextManipulationService {
 	}
 
 	/**
-	 * reduces the string size of zettel.Tekst.text, zettel.note, zettel.topic of  all elements of a list of zettel to the same chosen number
-	 * of characters
+	 * reduces the string size of zettel.Tekst.text, zettel.note, zettel.topic of
+	 * all elements of a list of zettel to the same chosen number of characters
 	 * 
 	 * @param zettels            - List of zettel objects
 	 * @param numberOfCharacters - number of reduced characters
@@ -58,8 +57,8 @@ public class TextManipulationService {
 	 * reduces the size of each Tekst.text element of a list of Zettel to chosen
 	 * number of characters
 	 * 
-	 * @param zettels  List of zettel objects
-	 * @param reducedLength  an int for the number of reduced characters
+	 * @param zettels       List of zettel objects
+	 * @param reducedLength an int for the number of reduced characters
 	 * 
 	 */
 	public void reduceTekstStringListElements(List<Zettel> zettels, int reducedLength) {

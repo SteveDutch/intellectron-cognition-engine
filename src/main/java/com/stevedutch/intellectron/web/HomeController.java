@@ -67,7 +67,6 @@ public class HomeController {
 		model.addAttribute("tagsNumber", numberOfTags);
 		model.addAttribute("authorsNumber", numberOfAuthors);
 		model.addAttribute("zettels", zettels);
-//		model.addAttribute("randomZettels", randomZettels);
 		model.addAttribute("fourRandomZettels", fourRandomZettels);
 		model.addAttribute("fourRandomTexts", fourRandomTexts);
 		model.addAttribute("fiveRandomTags", fiveRandomTags);
@@ -76,10 +75,9 @@ public class HomeController {
 		return "/index";
 	}
 
-	// TODO vermutlich nicht regelkonform (check: Ja) & abfangen von Typos
 	@GetMapping("/welcome")
 	public String redirectToHomePage() {
-		return "/index";
+		return "redirect:/index";
 	}
 
 	@GetMapping("/login")
