@@ -33,7 +33,6 @@ public class Tag {
 	}
 
 	public Tag() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -56,8 +55,8 @@ public class Tag {
 		return zettels;
 	}
 
-	public void setZettels(List<Zettel> zettel) {
-		this.zettels = zettel;
+	public void setZettels(List<Zettel> zettels) {
+		this.zettels = zettels;
 	}
 
 	@Override

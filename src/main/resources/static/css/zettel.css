@@ -1,6 +1,36 @@
-body {
-    background-color: lightgrey;
+/* Moderne Best Practice mit CSS Custom Properties */
+:root {
+   	/* --bulma-primary-h: 128deg; */
+    --page-background: #f3e5ab;
+} 
+
+/* Remove fixed height, set min-height and flex display for body */
+html {
+    /* height: 100vh; Removed */
 }
+
+body {
+   	/* height: 100vh; Removed */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Light mode background */
+body:not(.theme-dark) {
+    background-color: var(--page-background);
+}
+
+/* Make the main content area grow */
+main.main-content {
+    flex-grow: 1;
+}
+
+textarea {
+    resize: vertical; /* erlaubt nur vertikales Resizing */
+	width: 90%;
+}
+
 
 /* The Modal (background) */
 #deleteModal {
@@ -37,3 +67,11 @@ body {
     margin-right: 10px;
     /* Fügt etwas Abstand zwischen den Buttons hinzu */
 }
+
+ .modal-container {
+    max-width: 800px;  /* increased from 300px */
+    min-width: 300px;  /* ensures it doesn't get too small */
+    margin: 20% auto;
+}
+
+ 

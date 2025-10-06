@@ -1,80 +1,161 @@
 package com.stevedutch.intellectron.domain;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Objects;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-@Entity // Class name = Reference, DB Table name = references
+@Entity // Class name = Reference, DB Table name = pointer
 @Table(name = "pointer")
+@SQLDelete(sql = "UPDATE pointer SET deleted = true, deleted_at = now() WHERE reference_id = ?")
+@SQLRestriction("deleted = false")
 public class Reference {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	@Column(name = "reference_id")
-	private Long referenceId;
+	private Long id;
 	
-	@Column(name = "origin_zettel")
-	private Long originZettel;	
+	@Column(name = "source_zettel_id", nullable = false)
+	private Long sourceZettelId;
 	
-	@Column(name = "target_zettel")
-	private Long targetZettel;
+	@Column(name = "target_zettel_id", nullable = false)
+	private Long targetZettelId;
 	
-	@ManyToMany(mappedBy = "references")
-	private Set<Zettel> zettels = new HashSet<>();
+	@Enumerated(EnumType.STRING)
+	private ReferenceType type;
 	
+	private String connectionNote; // Brief explanation of why these notes are connected
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+	
+	// Constructors
 	public Reference() {
-		
 	}
 	
-	public Reference(String targetSignature) {
-		this.targetZettel = Long.parseLong(targetSignature);
+	/**
+	 * Creates a reference between two existing Zettel entities.
+	 * Use this constructor when you have fully loaded Zettel objects.
+	 */
+	public Reference(Zettel sourceZettel, Zettel targetZettel, ReferenceType type) {
+		this.sourceZettelId = sourceZettel.getZettelId();
+		this.targetZettelId = targetZettel.getZettelId();
+		this.type = type;
+	}
+	
+	public Reference(Long sourceZettelId, Long targetZettelId, ReferenceType type, String connectionNote) {
+		super();
+		this.sourceZettelId = sourceZettelId;
+		this.targetZettelId = targetZettelId;
+		this.type = type;
+		this.connectionNote = connectionNote;
 	}
 
-	// Getter & Setter
+	// Getters and Setters
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public void setSourceZettelId(Long sourceZettelId) {
+		this.sourceZettelId = sourceZettelId;
+	}
+
+	public Long getSourceZettelId() {
+		return sourceZettelId;
+	}
+	
+	public void setSourceZettel(Zettel sourceZettel) {
+		this.sourceZettelId = sourceZettel.getZettelId();
+	}
+	/**
+	 * Gets the target Zettel ID.
+	 * @return target Zettel ID
+	 */
+	public Long getTargetZettelId() {
+		return targetZettelId;
+	}
+	
+	public void setTargetZettelId(Long targetZettelId) {
+		this.targetZettelId = targetZettelId;
+	}
+	
+
+	public void setTargetZettel(Zettel targetZettel) {
+		this.targetZettelId = targetZettel.getZettelId();
+	}
+
+	public ReferenceType getType() {
+		return type;
+	}
+
+	public void setType(ReferenceType type) {
+		this.type = type;
+	}
+
+	public String getConnectionNote() {
+		return connectionNote;
+	}
+
+	public void setConnectionNote(String connectionNote) {
+		this.connectionNote = connectionNote;
+	}
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+	// Convenience methods for backward compatibility
+	
+	/**
+	 * @deprecated Use getId() instead for consistency
+	 */
+	@Deprecated
 	public Long getReferenceId() {
-		return referenceId;
+		return id;
 	}
 
+	/**
+	 * @deprecated Use setId() instead for consistency
+	 */
+	@Deprecated
 	public void setReferenceId(Long referenceId) {
-		this.referenceId = referenceId;
+		this.id = referenceId;
 	}
 
-	public Long getOriginZettel() {
-		return originZettel;
-	}
-
-	public void setOriginZettel(Long originZettel) {
-		this.originZettel = originZettel;
-	}
-
-	public Long getTargetZettel() {
-		return targetZettel;
-	}
-
-	public void setTargetZettel(Long targetZettel) {
-		this.targetZettel = targetZettel;
-	}
-
-	public Set<Zettel> getZettels() {
-		return zettels;
-	}
-
-	public void setZettels(Set<Zettel> zettels) {
-		this.zettels = zettels;
-	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -82,28 +163,21 @@ public class Reference {
 		if (this == obj)
 			return true;
 		
-
-        if (!(obj instanceof Reference))
-            return false;
+		if (!(obj instanceof Reference))
+			return false;
 
 		Reference other = (Reference) obj;
-        return referenceId != null &&
-        		referenceId.equals(other.getReferenceId());
+		return id != null && id.equals(other.getId());
 	}
 
 	@Override
 	public String toString() {
-		return "Reference [referenceId=" + referenceId + ", originZettel=" + originZettel + ", targetZettel="
-				+ targetZettel + " ,  Anzahl der Zettel =\n " + Optional.of(zettels.stream().count()) + " \n"
-						+  "]";
+		return String.format("Reference [id=%d, source=%s, target=%s, type=%s, note='%s']", 
+			id, 
+			getSourceZettelId(), 
+			getTargetZettelId(), 
+			type,
+			connectionNote);
 	}
-
-	public Long getReferenceId(Reference reference) {
-		this.referenceId = reference.getReferenceId();
-		// TODO Auto-generated method stub
-		return referenceId;
-	}
-	
-	
-
 }
+

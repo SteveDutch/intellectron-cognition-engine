@@ -1,142 +1,277 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>your intellectron shows</title>
-    <link rel="stylesheet" href="../css/zettel.css" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <!-- Falls du eine separate CSS-Datei hast -->
-    <script type="text/javascript" src="../js/zettel.js" defer></script>
+	<th:block th:replace="~{fragments/common :: head('Zettel, shown by your intellectron')}"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/css/zettel.css" />
+	
+	<!-- Script/CSS loading -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
+	<script src="/js/instant-zettel-search.js" defer></script>
+	
+	<script src="/js/zettel.js" defer></script>
+	<script src="/js/common.js" defer></script>
 </head>
 
 <body>
-    <div id="zettel">
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+	
+	<!-- Wrap main content sections in a <main> tag -->
+	<main class="main-content"> 
+		<section class="hero is-small is-primary">
+			<div class="hero-body">
+				<p class="title has-text-centered">your intellectron shows</p>
+				<p class="subtitle has-text-centered">
+					Zettel no <span id="zettelId" th:text="|${zettel.zettelId}|"></span>
+					</p>
+			</div>
+		</section>
+		<br>
+		<!-- not used, or just used id JS is deactivated:-->
+		<form th:action="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" method="post" th:object="${ZettelDtoRecord}">
+			<div class="columns">
 
-<form action="/input" method="post" th:object="${ZettelDtoRecord}">
-    <div>
-         
-        <p >Des Zettels ID:   <span id="zettelId" th:text="|${zettel.zettelId}|"></span></p>
-    </div>
-    <div>
-        <label for="title">Title/Topic: </label>
-        <textarea id="title" name="title" th:field="${zettel.topic}" rows="3" cols="23"
-            autocomplete="on"></textarea><br />
-        <!-- <input type="text" /> -->
-    </div>
-    <hr />
-    <div>
-        <label for="note">Notiz / note /thought:</label>
-        <textarea id="notiz" name="article" th:field="${note.noteText}" rows="5" cols="33"
-            autocomplete="on"></textarea><br />
-        <!-- <input type="text"  /><br /> -->
-    </div>
-    <hr />
-    <div>
-        <label for="title">Title of text: </label>
-        <input type="text" id="texttitle" name="title" th:field="${tekst.title}"  /><br />
-    </div>
-    <div>
-        <label for="tekst">Text:</label>
-        <textarea id="tekst" name="tekst" th:field="${tekst.text}" rows="5" cols="33"
-            autocomplete="on"></textarea><br />
-        <!-- <input id="tekst" th:field="${tekst.text}" /> -->
-    </div>
-    <hr />
+				<div class="column is-2">
+					<div class="field">
+						<label class="label has-text-weight-bold" for="tags">Tags:</label>
+						<div id="tagsContainer" class="tags">
+							<div th:each="tag, status : ${tags}">
+								<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
+									th:value="${tag.tagText}" />
+								<button class="button is-small is-warning" type="button"
+									onclick="this.parentNode.remove()">del</button>
+							</div>
 
-    <!--       MEINE FUNKTIONIERENDE LÖSUNG FÜR EIN TAG -->
-    <!--          <label for="tag">Tag: </label><br />
-            <input type="text" id="tag" name="tag"  th:field="${tag.tagText}" /><br />
-        </div> -->
+						</div>
+						<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
+					</div>
+					<hr />
+					<div class="field">
+						<label class="label has-text-weight-bold" for="authorFirstName">Author first name</label>
+						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+							<input type="text" th:id="${'authorFirstName' + status.index}"
+								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
+								th:value="${author.authorFirstName}"
+								required /><br />
+						</div>
+					</div>
 
-    <div>
-        <label for="tags">Tags: </label><br />
-        <div id="tagsContainer">
-            // Tags will be added here
-            <div th:each="tag, status : ${tags}">
-                <input type="text" th:id="'tag' + ${status.index}" th:name="'tags'" th:value="${tag.tagText}" />
-                <button type="button" onclick="this.parentNode.remove()">rydde ut Tag</button>
-            </div>
+					<div class="field">
+						<label class="label has-text-weight-bold" for="authorFamilyName">Author family name</label>
+						<div th:each="author, status : ${zettel.tekst.associatedAuthors}">
+							<input type="text" th:id="${'authorFamilyName' + status.index}"
+								th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
+								th:value="${author.authorFamilyName}"
+								required /><br />
+						</div>
+					</div>
+					<hr />
+					<div class="field">
+						<label class="label has-text-weight-bold" for="timestamp">Date of text:</label>
+						<div>
+							<span id="timestamp" name="timestamp"
+								th:text="|${tekst.textDate}|"></span>
+							<span>change date:</span><input id="textDate" type="date" name="textDate"
+								th:field="${tekst.textDate}" /><br /> <br />
+						</div>
+					</div>
+					<div class="field">
+						<label class="label has-text-weight-bold" for="source">Source:</label>
+						<div>
+							<input type="text" id="source" name="source"
+								th:field="${tekst.source}" /><br />
+						</div>
+					</div>
+				</div>
 
-        </div>
-        <button id="addTagButton" type="button">Add Tag</button>
-    </div>
-    <hr />
+				<div class="column is-5">
+					<div class="field">
+						<label class="label" for="title">Topic:</label>
+						<div class="control">
+							<textarea class="textarea is-link" placeholder="Topic" id="title" name="title" 
+								th:field="${zettel.topic}" rows="3" autocomplete="on"></textarea>
+						</div>
+					</div>
+					
+					<div class="field">
+						<label class="label" for="note">Note:</label>
+						<div class="control">
+							<textarea class="textarea" id="notiz" name="article" 
+								th:field="${note.noteText}" rows="10" autocomplete="on"></textarea>
+						</div>
+					</div>
+				</div>
 
-    <div id="authorFirstName">
-        <label for="authorFirstName">Author first name</label><br />
-        <div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-        <input type="text" th:id="${'authorFirstName' + status.index}"
-            th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFirstName'}"
-            th:value="${author.authorFirstName}" /><br />
-            </div>
-    </div>
+				<div class="column is-5">
+					<div class="field">
+						<label class="label" for="texttitle">Title:</label>
+						<div class="control">
+							<textarea class="textarea" id="texttitle" name="title" 
+								th:field="${tekst.title}" rows="3" autocomplete="on"></textarea>
+						</div>
+					</div>
+					
+					<div class="field">
+						<label class="label" for="tekst">Text:</label>
+						<div class="control">
+							<textarea class="textarea" id="tekst" name="tekst" 
+								th:text="${tekst.text}" rows="10" autocomplete="on"></textarea>
+						</div>
+					</div>
+				</div>
 
-    <hr />
-<!--     <div>
-        <label for="author">Author family name</label><br />
-        <div th:each="zettel.tekst.associatedAuthors, status : ${zettel.tekst.associatedAuthors}"></div>
-        <input type="text" th:id="'authorFamilyName' " th:name="'zettel.tekst.associatedAuthors.authorFamilyName[' +  ']'"
-            th:value="${zettel.tekst.associatedAuthors}" /><br />
-    </div> -->
+			</div>
 
-<div id ="authorFamilyName">
-    <label for="author">Author family name</label><br />
-    <div th:each="author, status : ${zettel.tekst.associatedAuthors}">
-        <input type="text" th:id="${'authorFamilyName' + status.index}"
-            th:name="${'zettel.tekst.associatedAuthors[' + status.index + '].authorFamilyName'}"
-            th:value="${author.authorFamilyName}" /><br />
-    </div>
+			<hr />
+			<div class="columns">
+				<div class="column is-12">
+					<label class="label has-text-weight-bold">Connected Zettels / Verknüpfte Zettel:</label>
+					
+					<!-- Container for all reference forms (existing and new) -->
+					<div id="referencesContainer" class="columns is-multiline">
+						
+						<!-- Loop to render existing references as pre-filled forms -->
+						<div th:each="ref : ${zettel.references}" class="column is-4 reference-group">
+							<div class="box">
+								<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+								<h6 class="subtitle is-6">Existing Reference:</h6>
+								<div class="field">
+									<label class="label">Reference Type:</label>
+									<div class="select">
+										<!-- The name attribute is critical for form submission -->
+										<select name="referenceType">
+											<!-- Loop through all possible enum values to create the options -->
+											<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+													th:value="${typeOpt}"
+													th:text="${typeOpt.name()}"
+													th:selected="${typeOpt == type}">
+											</option>
+										</select>
+									</div>
+								</div>
+								
+								<div th:if="${ref.targetZettelId != null}"  class="field">
+									<label class="label">Target Zettel:</label>
+									<!-- Add link to target zettel -->
+									<div class="field mb-2 view-zettel-link-container" style="display: none;">
+										<!-- This link will be populated by JavaScript -->
+									</div>
+									<div class="dropdown instant-ref-search-dropdown">
+										<div class="dropdown-trigger">
+											<!-- Pre-fill with target zettel ID and load details via JavaScript -->
+											<input type="text" class="input instant-ref-search-input"
+												   name="zettelSearchInput"
+												   th:value="${'Loading Zettel ' + ref.targetZettelId + '...'}"
+												   th:attr="data-zettel-id=${ref.targetZettelId}" 
+												   autocomplete="off" />
+										</div>
+										<div class="dropdown-menu" role="menu">
+											<div class="dropdown-content"></div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="field">
+									<label class="label">Connection Note (optional):</label>
+									<!-- Pre-fill the connection note -->
+									<input type="text" class="input" name="connectionNote"
+										   th:value="${ref.connectionNote}" 
+										   placeholder="Why are these notes connected?" />
+								</div>
+							</div>
+						</div>
+
+						<!-- The template for a brand new reference form. It will be cloned by JS. -->
+						<div class="column is-4 reference-group is-hidden" id="reference-template-to-clone">
+							<div class="box">
+								<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+								<h6 class="subtitle is-6">Add New Reference:</h6>
+								<div class="field">
+									<label class="label">Reference Type:</label>
+									<div class="select">
+										<select name="referenceType">
+											<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+													th:value="${typeOpt}"
+													th:text="${typeOpt.name()}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="field">
+									<label class="label">Target Zettel:</label>
+									<div class="field mb-2 view-zettel-link-container" style="display: none;">
+										<!-- This link will be populated by JavaScript -->
+									</div>
+									<div class="dropdown instant-ref-search-dropdown">
+										<div class="dropdown-trigger">
+											<input type="text" class="input instant-ref-search-input"
+												   name="zettelSearchInput"
+												   placeholder="Start typing to search..."
+												   autocomplete="off" />
+										</div>
+										<div class="dropdown-menu" role="menu">
+											<div class="dropdown-content"></div>
+										</div>
+									</div>
+								</div>
+								<div class="field">
+									<label class="label">Connection Note (optional):</label>
+									<input type="text" class="input" name="connectionNote" placeholder="Why are these notes connected?" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Button to add a new reference form -->
+					<button class="button is-primary" type="button" id="addReferenceButton">Add Reference</button>
+				</div>
+			</div>
+			<div class="columns">
+				<div id="changedcontainer" class="column is-6">
+					zettel was last changed: <span th:text="${#temporals.format(zettel.changed, 'yyyy-MM-dd  HH:mm')}"></span>
+				</div>
+			</div>
+
+			<hr />
+			<div class="columns">
+				<!--  Submit / Change Zettel -->
+				<div class="column is-half">
+					<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit Changes" />
+				</div>
+				<!--   Delete Zettel -->
+				<div class="column is-6">
+					<button class="button is-medium is-danger is-dark is-rounded" id="openDeleteModal"
+						type="button">delete</button>
+				</div>
+			</div>
+		</form>
+	</main> <!-- Close the <main> tag -->
+
+	
+
+	<div id="deleteModal" class="modal">
+		<div class="modal-content box is-small has-text-centered modal-container">
+			<p>Are you sure you want to delete this Zettel?</p>
+			<button id="cancel" class="button is-dark mt-3" type="button">Cancel</button>
+			<form th:action="@{/zettel/{zettelId}/delete(zettelId=${zettel.zettelId})}" method="post">
+				<button id="delete" class="button is-danger mt-3" type="submit">Delete Zettel</button>
+			</form>
+		</div>
 	</div>
-
-    <hr />
-    <label for="timestamp">date of text:</label><br />
-    <span th:text="|${tekst.textDate}|"></span><br />
-    <span>change date:</span><br />
-    <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
-    <hr />
-
-    <div>
-        <label for="source">Source:</label><br />
-        <input type="text" id="source" name="source" th:field="${tekst.source}" /><br />
-    </div>
-    <hr />
-    <div>
-        <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden
-            soll:</label><br />
-        <div id="signatureContainer">
-            // Signature will be added here
-            <div th:each="reference, status : ${references}">
-                <input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-                    th:id="'signature' + ${status.index}" th:name="'references'"
-                    th:value="${reference.targetZettel}" />
-                    <button type="button" onclick="this.parentNode.remove()">rydde ut referanse</button>
-            </div>
-            <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-            <button id="addReferenceButton" type="button">Add Reference</button>
-        </div>
-        <hr />
-    <!--  Submit / Change Zettel -->   
-        <input type="submit" id="submit" value="Submit" />
-    </div>
-</form>
-
-  <!--   Delete Zettel -->
-    <div><button id="openDeleteModal" type="button">delete</button></div>
-
-    <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <p>Are you sure you want to delete this Zettel?</p>
-            <button id="cancel" type="button">Cancel</button>
-            <form th:action="@{/zettel/{zettelId}/delete(zettelId=${zettel.zettelId})}" method="post">
-                <!-- <input type="hidden" th:value="${zettel.zettelId}" /> -->
-                <button id="delete" type="submit">Delete Zettel</button>
-            </form>
+	
+    <div id="saveModal" class="modal">
+        <div class="modal-content box is-small has-text-centered modal-container">
+            <p id="saveModalMessage"></p>
+            <button id="saveModalClose" class="button is-dark mt-3" type="button">Close</button>
         </div>
     </div>
 
+	<footer th:replace="~{fragments/common :: footer}"></footer>
 
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"></script>
 </body>
 
 </html>

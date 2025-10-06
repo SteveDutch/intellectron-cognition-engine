@@ -66,11 +66,15 @@ build/
 
 ### mein ###
 # see https://www.w3schools.com/git/git_ignore.asp for patterns
-application.properties
-src/main/resources/application.properties
 bin
 mvnw
 mvnw.cmd
 .mvn
 *.bak
 systemctl
+qodana.yaml
+.qodo
+.cursorindexingignore
+.cursor/rules/dev-ops.mdc
+.cursor/rules/ma-java-spring-rule.mdc
+.specstory/history/2025-03-12_18-55Z-enhancing-results-page-card-structure.md

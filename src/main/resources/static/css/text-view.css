@@ -1,0 +1,26 @@
+html {
+    min-height: 100vh;
+  }
+
+/* Styles specifically for the text-view page layout */
+body.text-view-page {
+    display: flex;          /* Enable flexbox layout */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100vh;      /* Ensure body takes at least full viewport height */
+}
+
+body.text-view-page .container.is-fluid {
+    flex: 1 0 auto; /* Allow the main content container to grow */
+}
+
+body.text-view-page .footer {
+    margin-top: auto;          /* Push the footer to the bottom */
+    padding: 0;                /* Remove padding specifically for this page's footer */
+    background-color: inherit; /* Make footer background match the body background */
+}
+
+.line-break {
+    white-space: break-spaces;
+}
+
+ 

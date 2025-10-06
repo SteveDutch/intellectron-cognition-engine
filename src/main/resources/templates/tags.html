@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html
+	class="has-navbar-fixed-top"
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+	<link rel="stylesheet" type="text/css" href="/css/tags.css"/>
+	<th:block th:replace="~{fragments/common :: head('tag List, found by intellectron')}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<script src="/js/common.js" defer></script>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+</head>
+
+<body>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+	<div class="main-container">
+		<section class="hero is-small is-primary">
+			<div class="hero-body">
+				<!-- Conditionally display Hero Title -->
+				<th:block th:if="${selectedTag == null}">
+					<p class="title is-1 has-text-centered">your intellectron shows
+						your tag list</p>
+					<p class="subtitle has-text-centered">
+						search term: <span id="searchTerm"></span>
+					</p>
+				</th:block>
+				<th:block th:unless="${selectedTag == null}">
+					<p class="title is-1 has-text-centered">
+						Details for Tag: <span th:text="${selectedTag.tagText}"></span>
+					</p>
+					<!-- No subtitle needed when showing a specific tag's details -->
+				</th:block>
+			</div>
+		</section>
+
+		<!-- Tag Cloud Section: Only show if no specific tag is selected -->
+		<th:block th:if="${selectedTag == null}">
+			<div class="section">
+				<h2 class="title is-4">Found Tags</h2>
+				<div class="tags are-medium">
+					<span th:each="tag : ${wantedTags}"
+						  class="tag is-success is-clickable"
+						  th:onclick="'window.location.href=\'' + @{/search/tag/{tagId}(tagId=${tag.id})} + '\''">
+						<span th:text="${tag.tagText}"></span>
+						<span class="tag is-warning is-light ml-2"
+							  th:text="${#lists.size(tag.zettels)}"></span>
+					</span>
+				</div>
+			</div>
+		</th:block>
+
+		<!-- Zettel Results Section: Only show if a specific tag IS selected -->
+		<div class="section" th:if="${selectedTag != null}">
+			<h2 class="title is-4">
+				Zettels tagged with: <span class="tag is-primary" th:text="${selectedTag.tagText}"></span>
+			</h2>
+
+			<!-- Use th:block for clean conditional logic -->
+			<th:block th:if="${zettels == null || zettels.isEmpty()}">
+				<p class="has-text-centered is-size-5">No zettels connected to this tag.</p>
+			</th:block>
+
+			<th:block th:unless="${zettels == null || zettels.isEmpty()}">
+				<!-- The table fragment is ONLY included/processed when zettels is not empty -->
+				<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
+			</th:block>
+
+		</div>
+
+		<footer th:replace="~{fragments/common :: footer}"></footer>
+
+		<!-- navbar burger -->
+		<script type="text/javascript" src="/js/bulma.js"></script>
+	</div>
+
+</body>
+
+</html>

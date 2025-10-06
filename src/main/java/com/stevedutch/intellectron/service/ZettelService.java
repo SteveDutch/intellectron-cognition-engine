@@ -3,7 +3,6 @@ package com.stevedutch.intellectron.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
@@ -11,24 +10,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.stevedutch.intellectron.domain.Author;
 import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Reference;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.EmptyZettelException;
+import com.stevedutch.intellectron.exception.TopicTooLongException;
 import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.repository.ZettelRepository;
 
 @Service
+@Transactional
 public class ZettelService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelService.class);
 
 	@Autowired
 	private ZettelRepository zettelRepo;
-
+	
 	@Lazy
 	@Autowired
 	private TagService tagService;
@@ -50,105 +52,161 @@ public class ZettelService {
 
 	@Lazy
 	@Autowired
-	private ReferenceService refService; 
-	
+	private ReferenceService refService;
+
 	@Lazy
-    @Autowired
-    private SearchService searchService;
+	@Autowired
+	private SearchService searchService;
+
+	@Lazy
+	@Autowired
+	private ValidationService valService;
+
+	private static final int TOPIC_MAX_LENGTH = 255;
 
 	// vXXX vielleicht ein bisschen groß, diese Funktion
 	/**
-	 * takes a DTOrecord. First it checks (via zettel.topic & Note) 
-	 * if an Zettel is already existing, if not it creates a new zettel. Afterwards it connects everything 
-	 * and saves the zettel in the db afterwards.
-	 *  
+	 * takes a DTOrecord. First it checks (via zettel.topic & Note) if an Zettel is
+	 * already existing, if not it creates a new zettel. Afterwards it connects
+	 * everything and saves the zettel in the db afterwards.
+	 * 
 	 * @param zettelDto
 	 * @return zettel Dto
 	 */
 	public ZettelDtoRecord createZettel(ZettelDtoRecord zettelDto) {
 
-		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
-		if (newZettel == null) {
-			newZettel = new Zettel();
-			
-		}
-			// connect to Note
-			Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
+		validateZettelHasContent(zettelDto);
+
+		Zettel newZettel = findByNoteOrCreateEmptyZettel(zettelDto);
+
+		// connect to Note
+		Note newNote = noteService.connectNotewithZettel(zettelDto.note(), newZettel);
+
+		// check, if tekst is already existing
+		Tekst newTekst = textService.checkForExistingTekst(zettelDto.tekst());
+
+		// Zettel
+		newZettel = setupZettel(newZettel, zettelDto, newNote, newTekst);
+		LOG.info("\n hat Tekst hier schon eine ID? (nach setUpZettel) \n" + newZettel);
+
+		ArrayList<Tag> newTags = tagService.connectTagsWithZettel(zettelDto.tags(), newZettel);
+		LOG.info("\n ZettelService.createZettel,  just savedTagswithZettel LOGLOGLOG1st {}", newZettel);
+
+		// Tekst
+		newTekst = textService.connectTextwithZettel(newTekst, newZettel);
+		// Author
+		Author newAuthor = authorService.connectAuthorWithText(zettelDto.author(), newTekst);
+		// marry author & text
+		textService.connectTextWithAuthor(newTekst, newAuthor);
+
+		// Save zettel first to get an ID (needed for references)
+		newZettel = saveZettel(newZettel);
 		
-			// check, if tekst is already existing 
-			Tekst newTekst = textService.checkForExistingTekst(zettelDto.tekst());
-			
-			// Zettel
-			newZettel = setupZettel(newZettel, zettelDto, newNote, newTekst);
-				LOG.info("\n hat Tekst hier schon eine ID? (nach setUpZettel) \n" + newZettel);
-				
-			ArrayList<Tag> newTags = tagService.connectTagsWithZettel(zettelDto.tags(), newZettel);
-			LOG.info("\n ZettelService.createZettel,  just savedTagswithZettel LOGLOGLOG1st {}", newZettel);
+		// reference - now that we have an ID, we can set the references
+		ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
+		setRelationsRefsWithZettel(newZettel, newRefs);
 
-			// Tekst
-			newTekst = textService.connectTextwithZettel(newTekst, newZettel);
-			// Author
-			Author newAuthor = authorService.connectAuthorWithText(zettelDto.author(), newTekst);
-			
-			textService.connectTextWithAuthor(newTekst, newAuthor);
+		LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
 
-			// reference
-			ArrayList<Reference> newRefs = new ArrayList<Reference>(zettelDto.references());
-			setRelationsRefsWithZettel(newZettel, newRefs);
+		// Save zettel again with references
+		saveZettel(newZettel);
+		authorService.saveAuthor(newAuthor);
 
-			LOG.info(" \n --> ist in reference auch das target gespeichert? show referencE: \n" + newRefs);
-			
-					 
-			zettelRepo.save(newZettel);
-			authorService.saveAuthor(newAuthor);
-				
-			
+		return zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
 
-			return zettelDto = new ZettelDtoRecord(newZettel, newTekst, newNote, newAuthor, newTags, newRefs);
-
-		} 	 
-	
+	}
 
 	/**
-	 * Takes a zettel object, a recordDTO & a note object.
-	 * then it sets up the zettel object with the DTO-elements.
+	 * Validates the ZettelDtoRecord.
+	 *
+	 * @param zettelDto The DTO to validate.
+	 */
+	private void validateZettelHasContent(ZettelDtoRecord zettelDto) {
+		noteService.noteEmptyOrBlankCheck(zettelDto.note());
+		topicEmptyOrBlankCheck(zettelDto.zettel());
+	}
+
+	/**
+	 * checks if topic is empty or blank. If true, it throws an exception
+	 * 
+	 * @param zettelDto
+	 */
+	public void topicEmptyOrBlankCheck(Zettel zettel) {
+		if ( zettel.getTopic() == null|| zettel.getTopic().isBlank()
+				|| zettel.getTopic().isEmpty()) {
+			throw new EmptyZettelException("this zettel's topic is empty");
+		}
+	}
+
+	/**
+	 * Checks if topic is longer than 255 characters. If true, it throws an
+	 * exception
+	 * 
+	 * @param topic
+	 */
+	public void checkTopicLength(String topic) {
+		if (topic.length() > TOPIC_MAX_LENGTH) {
+			throw new TopicTooLongException("this zettel's topic is too long. Maximum allowed length is " + TOPIC_MAX_LENGTH);
+		}
+	}
+
+	/**
+	 * Takes a zettel object, a recordDTO & a note object. then it sets up the
+	 * zettel object with the DTO-elements.
+	 * 
 	 * @param zettelDto
 	 * @param newNote
-	 * @param newTekst 
+	 * @param newTekst
 	 * @return zettel object
 	 */
 	public Zettel setupZettel(Zettel zettel, ZettelDtoRecord zettelDto, Note newNote, Tekst newTekst) {
-		
+
+		checkTopicLength(zettelDto.zettel().getTopic());
 		zettel.setTopic(zettelDto.zettel().getTopic());
 		zettel.setTags(zettelDto.tags());
 		zettel.setNote(newNote);
 		zettel.setTekst(newTekst);
 		zettel.setAdded(LocalDateTime.now());
 		zettel.setChanged(LocalDateTime.now());
-		zettel.getReferences().addAll(zettelDto.references());
-		// TODO BUG 00:01 wird zu 1 -> added colon, (HH:mm ...) -> NumberFormatException
-		// ggf. mit if-Klausel & length & vorne mit 0 auffüllen
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmddMMyyyy");
-		zettel.setSignature(Long.parseLong(zettel.getAdded().format(formatter)));
+		// References will be added later after zettel has an ID
+		// zettel.getReferences().addAll(zettelDto.references());
+		// Note: Signature field has been removed - using dynamic human-friendly identifier instead of a number system
+		// and ZettelId is equivalent to Signature
 		return zettel;
 	}
 
 	public void setRelationsRefsWithZettel(Zettel newZettel, ArrayList<Reference> newRefs) {
-		newRefs.forEach(reference -> reference.setOriginZettel(newZettel.getSignature()));
-		newRefs.forEach(reference -> reference.getZettels().add(newZettel));
+		for (Reference reference : newRefs) {
+			// Set the source zettel
+			reference.setSourceZettel(newZettel);
+			
+			// Get the target zettel by ID
+			if (reference.getTargetZettelId() != null) {
+				try {
+					Zettel targetZettel = searchService.findZettelById(reference.getTargetZettelId());
+					reference.setTargetZettel(targetZettel);
+				} catch (Exception e) {
+					LOG.error("Target zettel not found with ID: " + reference.getTargetZettelId(), e);
+					continue; // Skip this reference if target zettel doesn't exist
+				}
+			}
+			
+			// Add the reference to the zettel
+			newZettel.getReferences().add(reference);
+		}
 	}
 
 	public Zettel updateOneZettelbyId(Long zettelId, ZettelDtoRecord zettelDto) {
 
+		topicEmptyOrBlankCheck(zettelDto.zettel());
+
+		checkTopicLength(zettelDto.zettel().getTopic());
 		Zettel updatedZettel = zettelRepo.findById(zettelId)
 				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
 		LOG.info("\n ZettelService.updateOneZettelbyId, Zettel & DTO vorm Bearbeiten \n" + "--->" + updatedZettel + "\n"
 				+ "--->" + zettelDto);
-//		
 		// save Note
 		Note newNote = noteService.saveNotewithZettel(zettelDto.note(), updatedZettel);
-		// Zettel führt zu neuem Zettel
-//		updatedZettel = setupZettel(zettelDto, newNote);
 
 		ArrayList<Tag> newTags = zettelDto.tags();
 
@@ -158,7 +216,7 @@ public class ZettelService {
 		LOG.info("\n \n ZettelService.updateOneZettelbyId,  just savedwithZettel LOGLOGLOG1st {}", updatedZettel);
 
 		// Tekst
-		
+
 		Tekst newTekst = textService.updateTekst(zettelId, zettelDto.tekst());
 		textService.connectTextwithZettel(zettelDto.tekst(), updatedZettel);
 		// Author
@@ -176,65 +234,51 @@ public class ZettelService {
 
 	}
 
-	public List<Zettel> findAll() {
-		return zettelRepo.findAllZettelWithTopic();
-	}
+	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
+		topicEmptyOrBlankCheck(changes.zettel());
+		checkTopicLength(changes.zettel().getTopic());
+		Zettel updatedZettel = zettelRepo.findById(zettelId)
+				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
+		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
+		updatedZettel.setTopic(changes.zettel().getTopic());
+		updatedZettel = saveZettel(updatedZettel);
+		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
 
-	public List<Zettel> findLast10Zettel() {
-		return zettelRepo.findLast10Zettel();
-	}
-
-	public Zettel findZettelById(Long zettelid) {
-		return zettelRepo.findById(zettelid).orElse(new Zettel());
-	}
-
-	public List<Zettel> find10RandomZettel() {
-		List<Zettel> tenRandom = new ArrayList<>();
-		while (tenRandom.size() < 10) {
-			Zettel randomZettel = zettelRepo.findOneRandomZettel();
-			if (randomZettel != null) {
-				tenRandom.add(randomZettel);
-			}
-		}
-		return tenRandom;
 	}
 
 	public void deleteOneZettelbyId(Long zettelId) {
 		zettelRepo.deleteById(zettelId);
 	}
 
-	public void updateOnlyZettel(Long zettelId, ZettelDtoRecord changes) {
-
-		Zettel updatedZettel = zettelRepo.findById(zettelId)
-				.orElseThrow(() -> new NoSuchElementException("Zettel nicht gefunden"));
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel vorm Bearbeiten \n" + "--->" + updatedZettel + "\n");
-		updatedZettel.setTopic(changes.zettel().getTopic());
-//		updatedZettel.setSignature(changes.zettel().getSignature());
-		updatedZettel = saveZettel(updatedZettel);
-		LOG.info("\n --> ZettelService.updateOnlyZettel, Zettel nachm Bearbeiten \n" + "--->" + updatedZettel + "\n");
-
-	}
 	/**
-	 * Saves the zettel and sets its attribute changed to LocalDateTime.now()
+	 * Saves the zettel and sets its attribute changed to LocalDateTime.now() and
+	 * strips the topic of leading and trailing whitespaces
+	 * 
 	 * @param zettel
 	 * @return zettel with set change date
 	 */
 	public Zettel saveZettel(Zettel zettel) {
 		zettel.setChanged(LocalDateTime.now());
+		zettel.setTopic(zettel.getTopic().strip());
 		return zettelRepo.save(zettel);
 	}
 
-	public List<Zettel> findZettelByTag(String tagText) {
-			Tag searchTag = tagService.findTagByText(tagText);
-			return zettelRepo.findZettelByTags(searchTag);
+	public Long countAllZettel() {
+		return zettelRepo.count();
 	}
+
 	/**
-	 * searches for Zettel by the given fragment of the topic
-	 * @param topicFragment the fragment of the topic
-	 * @return List of Zettel could include null!
+	 * Finds an existing Zettel by note text or creates a new one.
+	 *
+	 * @param zettelDto The DTO containing the note text.
+	 * @return An existing Zettel or a new Zettel instance.
 	 */
-	public List<Zettel> findZettelByTopicFragment(String topicFragment) {
-		List<Zettel> result = zettelRepo.findZettelByTopicFragment(topicFragment);
-		return result;
+	private Zettel findByNoteOrCreateEmptyZettel(ZettelDtoRecord zettelDto) {
+		Zettel newZettel = searchService.findOneZettelByNote(zettelDto.note().getNoteText());
+		if (newZettel == null) {
+			newZettel = new Zettel();
+		}
+		return newZettel;
 	}
+
 }

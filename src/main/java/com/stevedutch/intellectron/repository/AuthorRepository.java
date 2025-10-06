@@ -20,6 +20,9 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 	
 	public Author findByAuthorFirstNameAndAuthorFamilyName(String name1, String name2);
 	
+	@Query(value = "SELECT * FROM authors ORDER BY RAND() LIMIT 1", nativeQuery = true)
+	public Author findOneRandomAuthor();
+	
 	
 	
 

@@ -1,6 +1,5 @@
 package com.stevedutch.intellectron.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -13,90 +12,83 @@ import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.repository.AuthorRepository;
 
 @Service
-public class AuthorService {
-	
+public class AuthorService  {
+
 	private static final Logger LOG = LoggerFactory.getLogger(AuthorService.class);
 
-    @Autowired
-    private AuthorRepository authorRepo;
-    @Autowired
-    private TextService textService;
+	@Autowired
+	private AuthorRepository authorRepo;
+	@Autowired
+	private TextService textService;
+	@Autowired
+	private SearchService searchService;
 
-    /**
-     * saves the author to the database
-     * after checking if Author with that names is in the database.
-     * If in db existing, the author will just be returned
-     * @param author
-     * @return saved author if not found in db,
-     * otherwise the given author will just be returned
-     */
-    public Author saveAuthorIfUnknown(Author author) {
-    	
-        if (authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), author.getAuthorFamilyName()) == null) {
-                author.setAuthorFirstName(author.getAuthorFirstName());
-                author.setAuthorFamilyName(author.getAuthorFamilyName());
-                return authorRepo.save(author);
-            } 
 
-        return author;
 
-    }
-    
-    public Author saveAuthorWithText(Author author, Tekst tekst) {
-    	LOG.info(author.toString());
-    	tekst = textService.findByText(tekst.getText());
-    	Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), author.getAuthorFamilyName());
-    	if (givenAuthor == null) {
-    		Optional.ofNullable(author)
-    	    .ifPresentOrElse(this::saveAuthorIfUnknown, () -> new Author("Ignotus", "Unbekannt"));
-    		author.getTexts().add(tekst);
-    		textService.saveTextWithAuthor(tekst, author);
-    		return authorRepo.save(author);
-    		}
-    	givenAuthor.getTexts().add(tekst);
-    	textService.saveTextWithAuthor(tekst, givenAuthor);
-        return authorRepo.save(givenAuthor);
-    }
-    
-    
-    // TODO check, ob obige funktion noch genutzt wird ode hierrei sollte oder ...
-    /**
-     * connects given author with given tekst. If
-     * @param author
-     * @param tekst
-     * @return author - connected to tekst
-     */
-    public Author connectAuthorWithText(Author author, Tekst tekst) {
-    	LOG.info(author.toString());
-//    	tekst = textService.findByText(tekst.getText());
-    	Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(), 
-    			author.getAuthorFamilyName());
-    	if (givenAuthor == null) {
-    		givenAuthor = author;
-
-    		}
-    	givenAuthor.getTexts().add(tekst);
-    	tekst.setOneAssociatedAuthors(givenAuthor);
-        return givenAuthor;
-    }
-    
-	public void updateAuthor(Long zettelId, Author author) {
-		// TODO Auto-generated method stub
-		
+	public Author saveAuthorWithText(Author author, Tekst tekst) {
+		LOG.info(author.toString());
+		tekst = searchService.findByText(tekst.getText());
+		Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(),
+				author.getAuthorFamilyName());
+		if (givenAuthor == null) {
+			Optional.ofNullable(author).ifPresentOrElse(this::saveAuthor,
+					() -> new Author("Ignotus", "Unbekannt"));
+			author.getTexts().add(tekst);
+			textService.saveTextWithAuthor(tekst, author);
+			return saveAuthor(author);
+		}
+		givenAuthor.getTexts().add(tekst);
+		textService.saveTextWithAuthor(tekst, givenAuthor);
+		return saveAuthor(givenAuthor);
 	}
-	
+
+	/**
+	 * saves the author to the database after checking if Author with that names is not already
+	 * in the database. Also strips the author's name
+	 * 
+	 * @param author
+	 * @return saved author if not found in db, otherwise the given author will just
+	 *         be returned
+	 */
 	public Author saveAuthor(Author author) {
-		return authorRepo.save(author);
+		
+		Author existingAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(
+		        author.getAuthorFirstName(),
+		        author.getAuthorFamilyName()
+		    );
+		if (existingAuthor == null) {
+            author.setAuthorFirstName(author.getAuthorFirstName().strip());
+            author.setAuthorFamilyName(author.getAuthorFamilyName().strip());
+            return authorRepo.save(author);
+        }
+		return existingAuthor;
 	}
+
+
 	
 	/**
-	 * searches for authors with last name similar to the given name
-	 * @param lastName
-	 * @return List<Author>
+	 * connects given author with given tekst. If
+	 * 
+	 * @param author
+	 * @param tekst
+	 * @return author - connected to tekst
 	 */
-	public List<Author> findAuthorByLastNameLike(String lastName) {
-		List<Author> result = authorRepo.findByAuthorFamilyNameLike(lastName);
-		return result;
+	public Author connectAuthorWithText(Author author, Tekst tekst) {
+		LOG.info(author.toString());
+//    	tekst = textService.findByText(tekst.getText());
+		Author givenAuthor = authorRepo.findByAuthorFirstNameAndAuthorFamilyName(author.getAuthorFirstName(),
+				author.getAuthorFamilyName());
+		if (givenAuthor == null) {
+			givenAuthor = author;
+
+		}
+		givenAuthor.getTexts().add(tekst);
+		tekst.setOneAssociatedAuthors(givenAuthor);
+		return givenAuthor;
+	}
+
+	public Long countAuthors() {
+		return authorRepo.count();
 	}
 
 }

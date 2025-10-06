@@ -1,87 +1,201 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/search.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Let your intellectron find</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="css/search.css" />
-        <link rel="stylesheet" th:href="@{/css/search.css}">
-        <script type="text/javascript" src="/js/search.js" defer></script>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+	<th:block th:replace="~{fragments/common :: head('Fabulous Intellectron Search Page')}"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+	<link rel="stylesheet" href="/css/search.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<script src="/js/search.js" defer></script>
 </head>
 
 <body>
-    <h1>The Fabulous Search Page</h1>
-    <h2>Search a Zettel</h2>
-    <div>
-<!--         Tagsuche -->
-        <form th:action="@{/search/tag/{tagText}(tagText=${tagText})}" method="get">
-            <input type="text" name="tagText" placeholder="Tag eingeben"  >
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
 
-                <form th:action="@{/search/tag/}" method="get">
-                    <input type="text" name="tagText" placeholder="Tag eingeben">
-                    <button type="submit">Suchen mit thymeleaf accordng to you.com</button>
-                </form>
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title is-1 has-text-centered">The Fabulous Intellectron
+				Search Page</p>
+			<p class="subtitle has-text-centered">it's the Zettel that counts</p>
+		</div>
+	</section>
 
-        <!--         TopicSuche -->
-        <form th:action="@{/search/topic/}" method="get">
-            <input type="text" name="topicFragment" placeholder="Topic eingeben"  >
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-<!-- NoteSuche -->
-        <form th:action="@{/search/note/}" method="get">
-            <input type="text" name="noteFragment" placeholder="enter note (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-<!-- TextSuche -->
-        <form th:action="@{/search/text/}" method="get">
-            <input type="text" name="textFragment" placeholder="enter text (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
-    </div>
+	<section class="search">
+		<h2 class="title is-2 has-text-black search-headline">Search a Zettel</h2>
+		<div>
 
-    <hr />
-    <h2>Search an Author</h2>
-    <div>
-        <form th:action="@{/search/author/}" method="get">
-            <label for="author">Author:</label>
-            <input type="text" name="lastName" placeholder="enter Author's name" />
-            <button type="submit">Search</button><br />
-        </form>
-    </div>
-    <hr />
-    <h2>Search a Text</h2>
-    <div>
-        <form th:action="@{/search/text4tekst/}" method="get">
-            <input type="text" name="textFragment" placeholder="enter text (fragment)">
-            <button type="submit">Suchen mit thymeleaf</button>
-        </form>
+			<!--         TopicSuche -->
+			<form th:action="@{/search/topic/}" method="get">
+				<input type="text" name="topicFragment" placeholder="enter topic (fragment)">
+				<button class="button is-small is-warning" type="submit">Search</button>
+			</form>
+			<!-- NoteSuche -->
+			<form th:action="@{/search/note/}" method="get">
+				<input type="text" name="noteFragment" placeholder="enter note (fragment)">
+				<button class="button is-small is-warning" type="submit">Search</button>
+			</form>
+			<!-- TextSuche -->
+			<form th:action="@{/search/text/}" method="get">
+				<input type="text" name="textFragment" placeholder="enter text (fragment)">
+				<button class="button is-small is-warning" type="submit">Search Zettel via text (fragment)</button>
+			</form>
+		</div>
+		<!--         Tagsuche -->
+		<h2 class="title is-2 has-text-black search-headline">Search a Tag</h2>
+		<form th:action="@{/search/tag/}" method="get">
+			<input type="text" name="tagFragment" placeholder="enter tag">
+			<button class="button is-small is-warning" type="submit">Search</button>
+		</form>
+		<h2 class="title is-2 has-text-black search-headline">Search an Author</h2>
+		<div>
+			<form th:action="@{/search/author/}" method="get">
+				<input type="text" name="lastName" placeholder="enter Author's family name" />
+				<button class="button is-small is-warning" type="submit">Search</button>
+				<br />
+			</form>
+		</div>
+		<h2 class="title is-2 has-text-black search-headline">Search a Text</h2>
+		<div>
+			<form th:action="@{/search/text4tekst/}" method="get">
+				<input type="text" name="textFragment" placeholder="enter text (title is excluded)">
+				<button class="button is-small is-warning" type="submit">Search</button>
+			</form>
 
-    </div>
-    <hr />
+		</div>
+	</section>
 
-                <div th:if="${tag}">
-                    <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
-                
-                    <div th:if="${#lists.isEmpty(zettels)}">
-                        <p>No zettels found for this tag.</p>
-                    </div>
-                
-                    <div th:unless="${#lists.isEmpty(zettels)}">
-                        <h3>Zettels:</h3>
-                        <ul>
-                            <li th:each="zettel : ${zettels}">
-                                <!-- Display zettel details here -->
-                                <span th:text="${zettel.topic}"></span>
-                                <!-- Add more zettel fields as needed -->
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </body>
+	<section class="info-tiles">
+		<div class="tile is-ancestor has-text-centered">
+			<div class="tile is-parent">
+				<article class="tile is-child box">
+					<p class="title">let your zettel inspire you:</p>
+				</article>
+			</div>
+		</div>
+	</section>
 
+	<section class="show-last">
+	 
+		<div class="columns">
+			<div class="column is-6">
+				<div class="card events-card">
+					<header class="card-header">
+						<p class="card-header-title">Last 10 Zettel</p>
+<!-- 						<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
+									class="fa fa-angle-down" aria-hidden="true"></i> -->
+							</span>
+						</a>
+					</header>
+					<div class="card-table">
+						<div class="content">
+							<table class="table is-fullwidth is-striped">
+								<tbody>
+
+									<tr th:each="zettel : ${zettels}">
+										<td width="5%"><i class="fa fa-bell-o"></i></td>
+										<td
+											th:text="${zettel.topic} + ' ( . . .)  : ' + ${zettel.note.noteText} + ' (. . .)'">
+											Anzeige vom Topic & erste Wörter der Notiz</td>
+										<td class="level-right"><a class="button is-small is-primary"
+												th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+												target="_blank">Look</a></td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="column is-6">
+				<div class="columns is-multiline">
+					<div class="column is-12">
+						<div class="card">
+							<header class="card-header">
+								<p class="card-header-title">10 random Zettel </p>
+<!-- 								<a href="#" class="card-header-icon" aria-label="more options"> <span class="icon"> <i
+											class="fa fa-angle-down" aria-hidden="true"></i> -->
+									</span>
+								</a>
+							</header>
+							<div class="card-table">
+								<div class="content">
+									<table class="table is-fullwidth is-striped">
+										<tbody>
+											<tr th:each="zettel : ${randomZettels}">
+												<td width="5%"><i class="fa fa-bell-o"></i></td>
+												<td
+													th:text="${zettel.topic} + ' ( . . .)  : ' + ${zettel.note.noteText} + ' (. . .)'">
+													Anzeige vom Topic & erste Wörter der Notiz</td>
+												<td class="level-right"><a class="button is-small is-primary"
+														th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+														target="_blank">Look</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+	</section>
+
+	<div th:if="${tag}">
+		<h2>
+			Search Results for Tag: <span th:text="${tag.tagText}"></span>
+		</h2>
+
+		<div th:if="${#lists.isEmpty(zettels)}">
+			<p>No zettels found for this tag.</p>
+		</div>
+
+		<div th:unless="${#lists.isEmpty(zettels)}">
+			<h3>Zettels:</h3>
+			<ul>
+				<li th:each="zettel : ${zettels}">
+					<!-- Display zettel details here --> <span th:text="${zettel.topic}"></span>
+					<!-- Add more zettel fields as needed -->
+				</li>
+			</ul>
+		</div>
+	</div>
+
+		<!-- 					show last 10 zettels in table -->
+	<section class="info-tiles">
+		<div class="tile is-ancestor has-text-centered">
+			<div class="tile is-parent">
+				<article class="tile is-child box">
+					<p class="title">let your zettel inspire you in more detail:</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="hero is-small is-warning">
+		<div class="hero-body">
+			<p class="title  has-text-centered ">last 10 zettels</p>
+		</div>
+	</section>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
+	
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title has-text-centered">10 random zettels</p>
+
+		</div>
+	</section>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
+
+	<footer th:replace="~{fragments/common :: footer}"></footer>
+
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"></script>
+</body>
 </html>

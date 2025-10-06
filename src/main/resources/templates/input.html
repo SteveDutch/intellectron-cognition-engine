@@ -1,149 +1,241 @@
 <!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/input.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-</html>
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>feed your intellectron</title>
-    <link rel="stylesheet" href="css/input.css" />
-    <script type="text/javascript" src="../js/input.js" defer></script>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link rel="stylesheet" href="/css/input.css">
+	<th:block th:replace="~{fragments/common :: head('feed your intellectron')}"></th:block>
+	<th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Script/CSS loading -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="/css/instant-zettel-search.css">
+	<script src="/js/instant-zettel-search.js" defer></script>
+	
+	<script src="/js/input.js" defer></script>
+	<script src="/js/common.js" defer></script>
 </head>
 
 <body>
-    <form action="/input" method="post" th:object="${ZettelDtoRecord}">
-            <div>
-            <p th:text="|ID: ${zettel.zettelId}|"></p>
-        </div>
-        <div>
-            <label for="title">Title/Topic: </label>
-            <textarea id="title" name="title" th:field="${zettel.topic}" rows="3" cols="23" autocomplete="on"></textarea><br />
-            <!-- <input type="text" /> -->
-        </div>
-        <hr />
-        <div>
-            <label for="note">Notiz / note /thought:</label>
-            <textarea id="notiz" name="article" th:field="${note.noteText}" rows="5" cols="33" autocomplete="on"></textarea><br />
-            <!-- <input type="text"  /><br /> -->
-        </div>
-        <hr />
-        <div>
-            <label for="title">Title of text: </label>
-            <input type="text" id="texttitle" name="title" th:field="${tekst.title}" /><br />
-        </div>
-        <div>
-            <label for="tekst">Text:</label>
-            <textarea id="tekst" name="tekst" th:field="${tekst.text}" rows="5" cols="33" autocomplete="on"></textarea><br />
-            <!-- <input id="tekst" th:field="${tekst.text}" /> -->
-        </div>
-        <hr />
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title is-1 has-text-centered">Feed your intellectron</p>
+			<p class="subtitle has-text-centered">with a new Zettel</p>
+		</div>
+	</section>
+
+	<br />
+	<form action="/input" method="post" th:object="${ZettelDtoRecord}">
+
+		<div class="columns">
+
+			<div class="column is-2">
+				<div class="field">
+					<label class="label has-text-weight-bold" for="tags">Tags:</label>
+					<div id="tagsContainer" class="tags">
+						<div th:each="tag, status : ${tags}">
+							<input type="text" th:id="'tag' + ${status.index}" th:name="'tags'"
+								th:value="${tag.tagText}" />
+							<button class="button is-small is-warning" type="button"
+								onclick="this.parentNode.remove()">del</button>
+						</div>
+					</div>
+					<button class="button is-small is-warning" id="addTagButton" type="button">Add Tag</button>
+				</div>
+				<hr />
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="authorFirstName">Author first name</label>
+					<input type="text" id="authorFirstName" th:field="${author.authorFirstName}" />
+				</div>
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="authorFamilyName">Author family name</label>
+					<input type="text" id="authorFamilyName" th:field="${author.authorFamilyName}" />
+				</div>
+				<div class="field">
+					<label class="label has-text-weight-bold" for="timestamp">Date of text:</label>
+					<input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" />
+				</div>
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="source">Source:</label>
+					<input type="text" id="source" name="source" th:field="${tekst.source}" />
+				</div>
+
+			</div>
 
 
-        <div>
-            <label for="tags">Tags: </label><br />
-            <div id="tagsContainer">
-                // Tags will be added here
-                <div th:each="tag, status : ${tags}">
-                    <input type="text" th:id="'tag' + ${status.index}" th:name="'tags[' + ${status.index} + ']'"
-                        th:value="${tag.tagText}" />
-                </div>
 
-            </div>
-            <button id="addTagButton" type="button">Add Tag</button>
-        </div>
+			<div class="column is-5">
+				<div class="field">
+					<label class="label has-text-weight-bold" for="title">Topic:</label>
+					<div class="control">
+						<textarea class="textarea is-link" placeholder="Topic" id="title" name="title" 
+							th:field="${zettel.topic}" rows="3" autocomplete="on"></textarea>
+					</div>
+				</div>
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="notiz">Note:</label>
+					<div class="control">
+						<textarea class="textarea" id="notiz" name="article" 
+							th:field="${note.noteText}" rows="10" autocomplete="on"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="column is-5">
+				<div class="field">
+					<label class="label has-text-weight-bold" for="texttitle">Title:</label>
+					<div class="control">
+						<textarea class="textarea" id="texttitle" name="title" 
+							th:field="${tekst.title}" rows="3" autocomplete="on"></textarea>
+					</div>
+				</div>
+
+				<div class="field">
+					<label class="label has-text-weight-bold" for="tekst">Text:</label>
+					<div class="control">
+						<textarea class="textarea" id="tekst" th:field="${tekst.text}" 
+							rows="10" autocomplete="on"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+		<div class="columns">
+		<div class="column is-12">
+			<label class="label has-text-weight-bold">Connected Zettels / Verknüpfte Zettel:</label>
+			
+			<!-- Container for all reference forms (existing and new) -->
+			<div id="referencesContainer" class="columns is-multiline">
+				
+				<!-- Loop to render existing references as pre-filled forms -->
+				<div th:each="ref : ${zettel.references}" class="column is-4 reference-group">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Existing Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<!-- The name attribute is critical for form submission -->
+								<select name="referenceType">
+									<!-- Loop through all possible enum values to create the options -->
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"
+											th:selected="${typeOpt == ref.type}">
+									</option>
+								</select>
+							</div>
+						</div>
+						
+						<div th:if="${ref.targetZettelId != null}"  class="field">
+							<label class="label">Target Zettel:</label>
+							<!-- Add link to target zettel -->
+							<div class="field mb-2 view-zettel-link-container" style="display: none;">
+								<!-- This link will be populated by JavaScript -->
+							</div>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<!-- Pre-fill with target zettel ID and load details via JavaScript -->
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   th:value="${'Loading Zettel ' + ref.targetZettelId + '...'}"
+										   th:attr="data-zettel-id=${ref.targetZettelId}" 
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<!-- Pre-fill the connection note -->
+							<input type="text" class="input" name="connectionNote"
+								   th:value="${ref.connectionNote}" 
+								   placeholder="Why are these notes connected?" />
+						</div>
+					</div>
+				</div>
+
+				<!-- The template for a brand new reference form. It will be cloned by JS. -->
+				<div class="column is-4 reference-group is-hidden" id="reference-template-to-clone">
+					<div class="box">
+						<button type="button" class="button is-danger is-small is-pulled-right delete-reference-btn">Remove</button>
+						<h6 class="subtitle is-6">Add New Reference:</h6>
+						<div class="field">
+							<label class="label">Reference Type:</label>
+							<div class="select">
+								<select name="referenceType">
+									<option th:each="typeOpt : ${T(com.stevedutch.intellectron.domain.ReferenceType).values()}"
+											th:value="${typeOpt}"
+											th:text="${typeOpt.name()}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Target Zettel:</label>
+							<!-- Add link to target zettel -->
+							<div class="field mb-2 view-zettel-link-container" style="display: none;">
+								<!-- This link will be populated by JavaScript -->
+							</div>
+							<div class="dropdown instant-ref-search-dropdown">
+								<div class="dropdown-trigger">
+									<input type="text" class="input instant-ref-search-input"
+										   name="zettelSearchInput"
+										   placeholder="Start typing to search..."
+										   autocomplete="off" />
+								</div>
+								<div class="dropdown-menu" role="menu">
+									<div class="dropdown-content"></div>
+								</div>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Connection Note (optional):</label>
+							<input type="text" class="input" name="connectionNote" placeholder="Why are these notes connected?" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Button to add a new reference form -->
+			<button class="button is-primary" type="button" id="add-reference-btn">Add Reference</button>
+		</div>
+	</div>
+			<div class="columns">
+			<div class="column ">
+				<input class="button is-dark is-medium is-rounded" type="submit" id="submit" value="Submit" />
+			</div>
+		</div>
+	</form>
+
+	<section class="hero is-small is-warning">
+		<div class="hero-body">
+			<p class="title  has-text-centered ">last 10 zettels</p>
+		</div>
+	</section>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${zettels})}"></div>
+
+	<section class="hero is-small is-danger">
+		<div class="hero-body">
+			<p class="title has-text-centered">10 random zettels</p>
+
+		</div>
+	</section>
+	<div th:replace="~{fragments/common :: zettel-table(zettels=${randomZettels})}"></div>
 
 
-        </div>
-        <hr />
-        <div>
-            <label for="author">Author first name</label><br />
-            <input type="text" id="authorFirstName" th:field="${author.authorFirstName}" /><br />
-        </div>
-        <hr />
-        <div>
-            <label for="author">Author family name</label><br />
-            <input type="text" id="authorFamilyName" th:field="${author.authorFamilyName}" /><br />
-        </div>
-        <hr />
-        <label for="timestamp">date of text:</label><br />
-        <input type="date" id="timestamp" name="timestamp" th:field="${tekst.textDate}" /><br />
-
-        <hr />
-
-        <div>
-            <label for="source">Source:</label><br />
-            <input type="text" id="source" name="source" th:field="${tekst.source}" /><br />
-        </div>
-        <hr />
-        <div>
-            <label for="Signatur">signature to which should be referred / Signatur, auf die verwiesen werden
-                soll:</label><br />
-            <div id="signatureContainer">
-                // Signature will be added here
-                <div th:each="reference, status : ${references}">
-                    <input type="number" min="100000000000" max="999999999999" pattern="[0-9]{12}" required
-                        th:id="'signature' + ${status.index}" th:name="'references[' + ${status.index} + ']'"
-                        th:value="${reference.targetZettel}" />
-                </div>
-                <!--             <input type="text" id="signature" name="signature" th:field="${reference.targetZettel}" /><br /> -->
-                <button id="addReferenceButton" type="button">Add Reference</button>
-            </div>
-            <hr />
-            <input type="submit" id="submit" value="Submit" />
-    </form>
-    <div> <!-- show last 10 zettels -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Signature</th>
-                    <th>Topic</th>
-                    <th>Tags</th>
-                    <th>References</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${zettels.empty}">
-                    <td colspan="2"> No Zettel Available </td>
-                </tr>
-                <tr th:each="zettel : ${zettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
-                    <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
-                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
-                    <td><span th:each="reference : ${zettel.references}"
-                            th:text="${reference.targetZettel} + ' // ' "></span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div> <!-- show 10 random zettels -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Signature</th>
-                    <th>Topic</th>
-                    <th>Tags</th>
-                    <th>References</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${randomZettels.empty}">
-                    <td colspan="2"> No Zettel Available </td>
-                </tr>
-                <tr th:each="zettel : ${randomZettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank">
-                        <span class="showRandom" th:text="${zettel.signature}"> signature </span></a></td>
-                    <td><span class="showRandom" th:text="${zettel.topic}"> topic </span></td>
-                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> topic </span></td>
-                    <td><span th:each="reference : ${zettel.references}"
-                            th:text="${reference.targetZettel} + ' // ' "></span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<!-- navbar burger -->
+	<script type="text/javascript" src="/js/bulma.js"></script>
+	
+	<footer th:replace="fragments/common :: footer"></footer>
 
 </body>
 

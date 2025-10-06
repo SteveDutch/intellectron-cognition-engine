@@ -1,0 +1,112 @@
+	:root{
+    ::placeholder {
+      color: rgb(55, 73, 23);
+  }
+}
+
+/* Explizites Styling für Buttons im Light Mode */
+.button.is-primary {
+    background-color: #3273dc; /* Bulma default primary color */
+    color: white;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.button.is-primary:hover {
+    background-color: #2366d1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(50, 115, 220, 0.3);
+}
+
+.button.has-background-primary-light {
+    background-color: #ebf5ff;
+    color: #1a56b3;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.button.has-background-primary-light:hover {
+    background-color: #d8e8fd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(50, 115, 220, 0.2);
+}
+
+.button.is-warning {
+    background-color: #ffdd57;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.button.is-warning:hover {
+    background-color: #ffd83d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 221, 87, 0.4);
+}
+
+/* Expliziter Stil für is-info Buttons im Light Mode */
+.button.is-info {
+    background-color: #d1fff8; /* Bulma standard info color */
+    color: black;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.button.is-info:hover {
+    background-color: #3082c5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(62, 142, 208, 0.3);
+}
+
+/* fix chrome's overwriting of default styles */
+body:not(.theme-dark) input.input,
+body:not(.theme-dark) textarea.textarea,
+body:not(.theme-dark) .card,
+body:not(.theme-dark) .table {
+    background-color: #ffffff;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .card-header-title {
+    background-color: #e0d49a;
+    color: #4a4a4a;
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(even) {
+    background-color: lightgrey;
+        color: #4a4a4a; /* Ensure card header text is dark */
+    /* Bulma's $grey-lighter */
+}
+body:not(.theme-dark) .table td,
+body:not(.theme-dark) .table th {
+    color: #363636; /* Ensure table cell text is dark */
+}
+
+body:not(.theme-dark) .table.is-striped tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Maintain striped effect */
+}
+
+/* The .level-right class uses flexbox, which needs align-items for vertical centering. */
+.card-table .table td.level-right {
+    align-items: center;
+}
+
+/* Vertically align content in the card tables */
+.card-table .table td {
+    vertical-align: middle;
+}
+
+/* Center the 'Look' button and remove the border underneath its cell */
+.card-table .table td.level-right {
+    align-items: center;
+    border-bottom: 0;
+}
+
+/* Force the card to clip its internal content to its own rounded corners */
+.card {
+    overflow: hidden;
+}

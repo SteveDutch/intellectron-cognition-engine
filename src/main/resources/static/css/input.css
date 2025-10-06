@@ -1,10 +1,34 @@
-body {
-    background-color: lightgrey;
+/* Moderne Best Practice mit CSS Custom Properties */
+:root {
+   	/* --bulma-primary-h: 128deg; */
+    --page-background: #f3e5ab;
+} 
+
+html, body {
+    background-color: var(--page-background);
 }
 
-.showLast {
-    display: block;
-    border: 1px solid #68e10b;
-    padding: 1px;
-    margin: 1px;
+textarea {
+    resize: vertical; /* erlaubt nur vertikales Resizing */
+	width: 90%;
 }
+
+/*to overwrite chrome's default autofill color*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px var(--page-background) inset !important;
+    -webkit-text-fill-color: #4a4a4a !important; /* Dark grey for light mode text */
+    transition: background-color 5000000s ease-in-out 0s;
+}
+
+.thick-black-border {
+  border: 2px solid black;
+}
+
+.thick-black-border th,
+.thick-black-border td {
+  border: 22px solid black;
+}
+ 

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+	<th:block th:insert="~{fragments/common :: head('welcome to intellectron')}"></th:block>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/css/welcome.css">
+</head>
+
+<body>
+
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+	<section class="hero  is-small is-info">
+		<div class="hero-body">
+			 
+				<p class="title is-1 has-text-centered">Hei, Scholar.</p>
+				<p class="subtitle has-text-centered">
+					Time to enlarge knowledge. Carpe diem. <a href="input">Take a
+						note</a>
+				</p>
+			 
+		</div>
+	</section>
+	<div class="container">
+		<div class="columns">
+			<div class="column is-3 ">
+				<!-- Start Seitenmenuleiste -->
+				<aside class="menu is-hidden-mobile">
+					<!-- 					<p class="menu-label">OVERVIEW</p>
+					<ul class="menu-list">
+						<li><a class="is-aactive">Dashboard</a></li>
+						<li><a>Customers</a></li>
+                        <li><a>Other</a></li>
+					</ul> -->
+					<p class="menu-label is-size-6">SEARCH</p>
+					<ul class="menu-list">
+						<li>
+							<p>Zettel</p>
+							<ul>
+								<li>
+									<form th:action="@{/search/topic/}" method="get" class="field has-addons">
+										<div class="control is-expanded">
+											<input class="input" type="text" name="topicFragment"
+												placeholder="enter topic (fragment)">
+										</div>
+										<div class="control">
+											<button class="button is-info"
+												type="submit">go</button>
+										</div>
+									</form>
+								</li>
+								<li>
+									<form th:action="@{/search/note/}" method="get" class="field has-addons">
+										<div class="control is-expanded">
+											<input class="input" type="text" name="noteFragment"
+												placeholder="enter note (fragment)">
+										</div>
+										<div class="control">
+											<button class="button is-info"
+												type="submit">go</button>
+										</div>
+									</form>
+								</li>
+								<li>
+									<form th:action="@{/search/text/}" method="get" class="field has-addons">
+										<div class="control is-expanded">
+											<input class="input" type="text" name="textFragment"
+												placeholder="enter text (fragment)">
+										</div>
+										<div class="control">
+											<button class="button is-info"
+												type="submit">go</button>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</li>
+						<p>Tags</p>
+
+						<li>
+							<ul>
+								<form th:action="@{/search/tag/}" method="get" class="field has-addons">
+
+									<div class="control is-expanded">
+
+										<input class="input" type="text" name="tagFragment"
+											placeholder="enter tag (fragment)">
+									</div>
+									<div class="control">
+										<button class="button is-info" type="submit">go</button>
+
+										<br />
+									</div>
+								</form>
+							</ul>
+						</li>
+						<li>
+							<p>Authors</p>
+							<ul>
+
+								<form th:action="@{/search/author/}" method="get" class="field has-addons">
+									<div class="control is-expanded">
+										<!-- 									<label for="author">Author:</label>  -->
+										<input class="input" type="text" name="lastName"
+											placeholder="author's surname (fragment)">
+									</div>
+									<div class="control">
+										<button class="button is-info" type="submit">go</button>
+										<br />
+									</div>
+								</form>
+							</ul>
+						</li>
+						<li>
+							<p>Texts</p>
+							<ul>
+								<form th:action="@{/search/text4tekst/}" method="get" class="field has-addons">
+									<div class="control is expanded">
+										<input class="input" type="text" name="textFragment"
+											placeholder="enter text (fragment)">
+									</div>
+									<div class="control">
+										<button class="button is-info" type="submit">go</button>
+										<br />
+									</div>
+								</form>
+							</ul>
+						</li>
+
+					</ul>
+
+
+				</aside>
+				<!-- End Seitenmenuleiste -->
+			</div>
+
+
+
+			<div class="column is-9">
+
+
+				<section class="info-tiles">
+					<div class="tile is-ancestor has-text-centered">
+						<div class="tile is-parent">
+							<article class="tile is-child box">
+								<p class="title" th:text="${zettelNumber}">439k</p>
+								<p class="subtitle">
+									Zettel <br> </p>
+							</article>
+						</div>
+						<div class="tile is-parent">
+							<article class="tile is-child box">
+								<p class="title" th:text="${textsNumber}">59k</p>
+								<p class="subtitle">
+									Texts<br>  
+								</p>
+							</article>
+						</div>
+						<div class="tile is-parent">
+							<article class="tile is-child box">
+								<p class="title" th:text="${tagsNumber}">3.4k</p>
+								<p class="subtitle">
+									Tags<br>  
+								</p>
+							</article>
+						</div>
+						<div class="tile is-parent">
+							<article class="tile is-child box">
+								<p class="title" th:text="${authorsNumber}">19</p>
+								<p class="subtitle">
+									Authors<br>  
+								</p>
+							</article>
+						</div>
+					</div>
+				</section>
+				<!-- last 10 zettels and so -->
+				<div class="columns">
+					<div class="column is-6">
+						<div class="card events-card card mt-4">
+							<header class="card-header">
+								<p class="card-header-title">Last 10 Zettel</p>
+							</header>
+							<div class="card-table">
+								<div class="content">
+									<table class="table is-fullwidth is-striped">
+										<tbody>
+
+											<tr th:each="zettel : ${zettels}">
+												<td width="5%">
+													<span class="icon">
+														<!-- Ihre eigene Icon-Variante -->
+														<img th:src="@{/images/arrow.png}" class="is-small"
+															aria-hidden="true" />
+													</span>
+												</td>
+												<td th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">
+													Anzeige vom Topic & erste Wörter der Notiz</td>
+												<td class="level-right"><a class="button is-small is-primary"
+														th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+														target="_blank">Look</a></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 							<footer class="card-footer">
+								<a href="#" class="card-footer-item">View All</a>
+							</footer> -->
+						</div>
+						
+						<div class="card mt-4">
+							<header class="card-header">
+								<p class="card-header-title">5 random tags</p>
+							</header>
+							<div class="card-content">
+								<div class="tags">
+									<tr th:each="tag : ${fiveRandomTags}">
+										<td></td>
+										<a th:href="@{/search/tag/(tagFragment=${tag.tagText})}">
+											<span th:text="${tag.tagText}"
+												class="tag is-medium is-warning is-hoverable">Anzeige
+												vom Topic & erste Wörter der Notiz</span>
+										</a>
+										<td class="level-right"><a></a></td>
+									</tr>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+					<div class="column is-6">
+						<div class="columns is-multiline">
+							<div class="column is-12">
+								<div class="card mt-4">
+									<header class="card-header">
+										<p class="card-header-title">4 random Zettel </p>
+									</header>
+									<div class="card-table">
+										<div class="content">
+											<table class="table is-fullwidth is-striped">
+												<tbody>
+													<tr th:each="zettel : ${fourRandomZettels}">
+														<td width="5%">
+															<span class="icon">
+																<!-- Ihre eigene Icon-Variante -->
+																<img th:src="@{/images/arrow.png}" class="is-small"
+																	aria-hidden="true" />
+															</span>
+														</td>
+														<td
+															th:text="${zettel.topic} + ' : ' + ${zettel.note.noteText} + '...'">
+															Anzeige vom Topic & erste Wörter der Notiz</td>
+														<td class="level-right"><a class="button is-small is-primary"
+																th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}"
+																target="_blank">Look</a></td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div class="card mt-4">
+									<header class="card-header">
+										<p class="card-header-title">5 random texts</p>
+									</header>
+									<div class="card-table">
+										<div class="content">
+											<table class="table is-fullwidth is-striped">
+												<tbody>
+													<tr th:each="text : ${fourRandomTexts}">
+														<td width="5%">
+															<span class="icon">
+																<!-- Ihre eigene Icon-Variante -->
+																<img th:src="@{/images/arrow.png}" class="is-small"
+																	aria-hidden="true" />
+															</span>
+														</td>
+														<td th:text="${text.title} + ' : ' + ${text.text} + '...'">
+															Anzeige vom Topic & erste Wörter der Notiz</td>
+														<td class="level-right"><a
+																class="button is-small is-primary"
+																th:href="@{/search/text/{textId}(textId=${text.textId})}"
+																target="_blank">Look</a></td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div class="card mt-4">
+									<header class="card-header">
+										<p class="card-header-title">5 random authors</p>
+									</header>
+									<div class="card-content">
+										<div class="tags">
+											<tr th:each="author : ${fiveRandomAuthors}">
+												<td></td>
+												<a th:href="@{/search/author/(lastName=${author.authorFamilyName})}">
+													<span th:text="${author.authorFirstName} + ' ' + ${author.authorFamilyName}"
+														class="tag is-medium is-danger">Anzeige vom Topic & erste Wörter der Notiz</span>
+												</a>
+												<td class="level-right"></td>
+											</tr>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer th:replace="~{fragments/common :: footer}"></footer>
+		<script async type="text/javascript" src="../js/bulma.js"></script>
+</body>
+
+</html>

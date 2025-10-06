@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+	<th:block th:insert="~{fragments/common :: head('the fabulous text view page')}"></th:block>
+	<link rel="stylesheet" type="text/css" href="/css/text-view.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="text-view-page">
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+
+	<section class="hero is-info welcome is-small">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title has-text-centered" th:text="${tekst.title}">Hei,
+					Scholar.</h1>
+				<p class="subtitle has-text-centered is-size-6">full text view</p>
+				<h2 class="subtitle has-text-centered">
+					Time to enlarge knowledge. Carpe diem. <a href="/input"
+						target="_blank" rel="noopener noreferrer">Take a note</a>
+				</h2>
+			</div>
+		</div>
+	</section>
+
+	<div class="container is-fluid">
+		<div class="section">
+			<div class="columns is-centered">
+				<div class="column is-8">
+					<div class="content">
+						<p class="title is-1 line-break" th:text="${tekst.title}">title</p> 
+
+						<div class="subtitle is-4 has-text-right" th:each="author : ${tekst.associatedAuthors}" >
+							<p th:text="${author.authorFirstName} +' ' +  ${author.authorFamilyName}">author.authorFirstName">author</p>
+ 						</div>
+                       
+						
+						<p class="is-size-5 has-text-justified line-break" th:text="${tekst.text}">
+                            text
+                        </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="~{fragments/common :: footer}"></footer>
+
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"></script>
+</body>
+</html>

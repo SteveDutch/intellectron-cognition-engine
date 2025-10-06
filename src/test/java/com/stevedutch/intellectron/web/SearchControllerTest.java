@@ -3,14 +3,20 @@ package com.stevedutch.intellectron.web;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,22 +24,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
 
+import com.stevedutch.intellectron.advice.GlobalExceptionHandler;
 import com.stevedutch.intellectron.domain.Author;
-import com.stevedutch.intellectron.domain.Note;
 import com.stevedutch.intellectron.domain.Tag;
 import com.stevedutch.intellectron.domain.Tekst;
 import com.stevedutch.intellectron.domain.Zettel;
+import com.stevedutch.intellectron.exception.SearchTermNotFoundException;
+import com.stevedutch.intellectron.exception.TagNotFoundException;
 import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
+import com.stevedutch.intellectron.service.TextManipulationService;
 import com.stevedutch.intellectron.service.ZettelService;
 
 @ExtendWith(MockitoExtension.class)
-public class SearchControllerTest {
-
+class SearchControllerTest {
+	
     @InjectMocks
     private SearchController searchController;
     
@@ -45,62 +55,77 @@ public class SearchControllerTest {
     
     @Mock
     private ZettelService zettelService;
-
+    
+    @Mock
+    private TextManipulationService textManipulationService;
+    
     @Mock
     private ModelMap model;
 
+    private MockMvc mockMvc;
+
     @BeforeEach
     void setUp() {
-        // Initialisierung, falls benötigt
-    	 MockitoAnnotations.openMocks(this);
-    	   ZettelService zettelService = mock(ZettelService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(searchController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test
-    public void testShowSearchPage() {
-        String result = searchController.showSearchPage();
-
+    void testShowSearchPage() {
+        String result = searchController.showSearchPage(model);
         assertThat(result).isEqualTo("/search");
-        
     }
 
-    // The 'searchByTag' method logs the tagText parameter and retrieves a list of zettels associated with the tagText parameter. The method then adds the wantedTag and zettels to the model and returns the string "/results".
     @Test
-    public void test_search_by_tag() {
+    void testSearchZettelByTagFragment_ValidTagFragment_TagsFound() {
         // Arrange
- 
-        String tagText = "exampleTag";
-        ModelMap model = new ModelMap();
-        
-        // Mock behavior
-        Tag tag = new Tag();
-        tag.setTagText(tagText);
-        when(tagService.findTagByText(tagText)).thenReturn(tag);
-    
+        String tagFragment = "test";
+        List<Tag> expectedTags = Arrays.asList(new Tag("test"), new Tag("test2"));
+        when(searchService.findTagByTagFragment(tagFragment)).thenReturn(expectedTags);
+
         // Act
-        String result = searchController.searchByTag(tagText, model);
-    
+        String viewName = searchController.searchZettelByTagFragment(tagFragment, model);
+
         // Assert
-        assertEquals("/results", result);
-        assertEquals(tag, model.get("tag"));
-        assertNotNull(model.get("zettels"));
+        assertEquals("/tags", viewName);
+        verify(searchService).findTagByTagFragment(tagFragment);
+        verify(model).addAttribute("wantedTags", expectedTags);
     }
     
     @Test
-    public void testSearchTextByTextFragment() {
+    void testSearchTextByTextFragment() {
+        // Arrange
         String textFragment = "test";
         List<Tekst> expectedTexts = new ArrayList<>();
         Tekst tekst = new Tekst(); 
         expectedTexts.add(tekst);
 
-        when(searchService.findTekstByTextFragment(anyString())).thenReturn(expectedTexts);
+        when(searchService.findTruncatedTekstByTextFragment(anyString(), eq(555))).thenReturn(expectedTexts);
 
+        // Act
         String viewName = searchController.searchTextByTextFragment(textFragment, model);
 
-        assertThat(viewName).isEqualTo("/results");
-        verify(searchService).findTekstByTextFragment(textFragment);
+        // Assert
+        assertThat(viewName).isEqualTo("/texts");
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment, 555);
         verify(model, times(1)).addAttribute(eq("textFragment"), eq(textFragment));
         verify(model, times(1)).addAttribute(eq("texts"), eq(expectedTexts));
+    }
+    
+    @Test
+    void testSearchTextByTextFragment_NoTextsFound() throws Exception {
+        // Arrange
+        String textFragment = "nonexistent";
+        when(searchService.findTruncatedTekstByTextFragment(anyString(), eq(555)))
+                .thenThrow(new SearchTermNotFoundException("No Tekst found with text: " + textFragment));
+
+        // Act & Assert
+        mockMvc.perform(get("/search/text4tekst/")
+                .param("textFragment", textFragment))
+                .andExpect(status().isNotFound());
+
+        verify(searchService).findTruncatedTekstByTextFragment(textFragment, 555);
     }
     
     @Test
@@ -111,7 +136,7 @@ public class SearchControllerTest {
         Zettel zettel = new Zettel();  
         expectedZettels.add(zettel);
         
-        when(zettelService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
+        when(searchService.findZettelByTopicFragment(topicFragment)).thenReturn(expectedZettels);
 
         // Act
         String viewName = searchController.searchBytopicFragment(topicFragment, model);
@@ -128,9 +153,6 @@ public class SearchControllerTest {
         String noteFragment = "NoteFragment";
         List<Zettel> expectedZettels = new ArrayList<>();
         expectedZettels.add(new Zettel("TestTopic"));
-        Note note = new Note();  
-        
-        
         when(searchService.findZettelByNoteFragment(noteFragment)).thenReturn(expectedZettels);
 
         // Act
@@ -164,54 +186,176 @@ public class SearchControllerTest {
     }
     
     @Test
-    void testSearchTextByTextFragment_TextsFound() {
-        // Arrange
-        String textFragment = "example";
-        List<Tekst> expectedTexts = new ArrayList<>();
-        expectedTexts.add(new Tekst("Example text"));
-
-        when(searchService.findTekstByTextFragment(anyString())).thenReturn(expectedTexts);
-
-        // Act
-        String viewName = searchController.searchTextByTextFragment(textFragment, model);
-
-        // Assert
-        assertEquals("/results", viewName);
-        verify(searchService).findTekstByTextFragment(textFragment);
-        verify(model, times(1)).addAttribute("textFragment", textFragment);
-        verify(model, times(1)).addAttribute("texts", expectedTexts);
-    }
-    
-    @Test
-    public void testSearchAuthor_AuthorsFound() {
+    void testSearchAuthor_AuthorsFound() {
         // Arrange
         String lastName = "Smith";
         List<Author> expectedAuthors = new ArrayList<>();
         expectedAuthors.add(new Author("John", "Smith"));
-        when(searchService.findAuthorByName(lastName)).thenReturn(expectedAuthors);
+        when(searchService.findAuthorByNameWithTruncatedTexts(lastName, 555)).thenReturn(expectedAuthors);
 
         // Act
         String viewName = searchController.searchAuthor(lastName, model);
 
         // Assert
         assertEquals("/authors", viewName);
-        verify(searchService).findAuthorByName(lastName);
+        verify(searchService).findAuthorByNameWithTruncatedTexts(lastName, 555);
         verify(model, times(1)).addAttribute("authors", expectedAuthors);
     }
     
     @Test
-    public void testSearchAuthor_NoAuthorsFound() {
+    void testSearchAuthor_NoAuthorsFound() throws Exception {
         // Arrange
         String lastName = "NonExistent";
-        when(searchService.findAuthorByName(lastName)).thenReturn(null);
+        when(searchService.findAuthorByNameWithTruncatedTexts(lastName, 555))
+                .thenThrow(new SearchTermNotFoundException("No Author found with name: " + lastName));
+
+        // Act & Assert
+        mockMvc.perform(get("/search/author/")
+                .param("lastName", lastName))
+                .andExpect(status().isNotFound());
+
+        verify(searchService).findAuthorByNameWithTruncatedTexts(lastName, 555);
+        verify(model, never()).addAttribute(anyString(), any());
+    }
+
+    @Test
+    void searchZettelByTagFragment_WhenTagsFound_ShouldReturnTagsView() throws Exception {
+        // Arrange
+        String tagFragment = "test";
+        Tag tag1 = new Tag("test1");
+        Tag tag2 = new Tag("test2");
+        List<Tag> expectedTags = Arrays.asList(tag1, tag2);
+        
+        when(searchService.findTagByTagFragment(tagFragment)).thenReturn(expectedTags);
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/")
+                .param("tagFragment", tagFragment))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/tags"))
+                .andExpect(model().attributeExists("wantedTags"))
+                .andExpect(model().attributeExists("tagFragment"));
+
+        verify(searchService).findTagByTagFragment(tagFragment);
+    }
+
+    @Test
+    void searchZettelByTagFragment_WhenNoTagsFound_ShouldHandleException() throws Exception {
+        // Arrange
+        String tagFragment = "nonexistent";
+        when(searchService.findTagByTagFragment(tagFragment))
+                .thenThrow(new SearchTermNotFoundException("No tags found with fragment: " + tagFragment));
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/")
+                .param("tagFragment", tagFragment))
+                .andExpect(status().isNotFound());
+
+        verify(searchService).findTagByTagFragment(tagFragment);
+    }
+
+    @Test
+    void searchZettelByTagFragment_WhenEmptyTagFragment_ShouldReturnOkWithTagsView() throws Exception {
+        // Arrange
+        String tagFragment = "";
+        // Mock the service call for an empty fragment to return an empty list
+        when(searchService.findTagByTagFragment(tagFragment)).thenReturn(Arrays.asList());
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/")
+                .param("tagFragment", tagFragment))
+                .andExpect(status().isOk()) // Expect 200 OK instead of 404
+                .andExpect(view().name("/tags"))
+                .andExpect(model().attributeExists("wantedTags"))
+                .andExpect(model().attribute("wantedTags", Arrays.asList()))
+                .andExpect(model().attribute("tagFragment", tagFragment));
+        
+        // Verify the service was called
+        verify(searchService).findTagByTagFragment(tagFragment);
+    }
+
+    @Test
+    void searchZettelByTagFragment_ShouldPopulateModel() {
+        // Arrange
+        String tagFragment = "test";
+        Tag tag1 = new Tag("test1");
+        Tag tag2 = new Tag("test2");
+        List<Tag> expectedTags = Arrays.asList(tag1, tag2);
+        ModelMap model = new ModelMap();
+        
+        when(searchService.findTagByTagFragment(tagFragment)).thenReturn(expectedTags);
 
         // Act
-        String viewName = searchController.searchAuthor(lastName, model);
+        String viewName = searchController.searchZettelByTagFragment(tagFragment, model);
 
         // Assert
-        assertEquals("/authors", viewName);
-        verify(searchService).findAuthorByName(lastName);
-        verify(model, times(1)).addAttribute("authors", null);
+        assertEquals("/tags", viewName);
+        assertEquals(expectedTags, model.get("wantedTags"));
+        assertEquals(tagFragment, model.get("tagFragment"));
+        verify(searchService).findTagByTagFragment(tagFragment);
+    }
+
+    @Test
+    void showTagDetails_WhenTagExists_ShouldReturnTagsViewWithDetails() throws Exception {
+        // Arrange
+        Long tagId = 1L;
+        Tag selectedTag = new Tag("Test Tag");
+        selectedTag.setId(tagId);
+        List<Zettel> associatedZettels = Arrays.asList(new Zettel("Zettel 1"), new Zettel("Zettel 2"));
+
+        when(searchService.findTagById(tagId)).thenReturn(selectedTag);
+        when(searchService.findZettelByTag(selectedTag.getTagText())).thenReturn(associatedZettels);
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/{tagId}", tagId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/tags"))
+                .andExpect(model().attributeExists("selectedTag"))
+                .andExpect(model().attribute("selectedTag", selectedTag))
+                .andExpect(model().attributeExists("zettels"))
+                .andExpect(model().attribute("zettels", associatedZettels));
+
+        verify(searchService).findTagById(tagId);
+        verify(searchService).findZettelByTag(selectedTag.getTagText());
+    }
+
+    @Test
+    void showTagDetails_WhenTagNotFound_ShouldReturnNotFound() throws Exception {
+        // Arrange
+        Long tagId = 99L;
+        when(searchService.findTagById(tagId))
+                .thenThrow(new TagNotFoundException("Tag not found with id " + tagId));
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/{tagId}", tagId))
+                .andExpect(status().isNotFound());
+
+        verify(searchService).findTagById(tagId);
+        verify(searchService, never()).findZettelByTag(anyString());
+    }
+
+    @Test
+    void showTagDetails_WhenTagExistsButNoZettels_ShouldReturnTagsViewWithEmptyZettelList() throws Exception {
+        // Arrange
+        Long tagId = 2L;
+        Tag selectedTag = new Tag("Another Tag");
+        selectedTag.setId(tagId);
+        List<Zettel> emptyZettelList = Arrays.asList();
+
+        when(searchService.findTagById(tagId)).thenReturn(selectedTag);
+        when(searchService.findZettelByTag(selectedTag.getTagText())).thenReturn(emptyZettelList);
+
+        // Act & Assert
+        mockMvc.perform(get("/search/tag/{tagId}", tagId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/tags"))
+                .andExpect(model().attributeExists("selectedTag"))
+                .andExpect(model().attribute("selectedTag", selectedTag))
+                .andExpect(model().attributeExists("zettels"))
+                .andExpect(model().attribute("zettels", emptyZettelList));
+
+        verify(searchService).findTagById(tagId);
+        verify(searchService).findZettelByTag(selectedTag.getTagText());
     }
 }
 

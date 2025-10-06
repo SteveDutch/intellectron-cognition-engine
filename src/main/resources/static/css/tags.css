@@ -1,0 +1,53 @@
+body {
+    background-color: lightgrey;
+    min-height: 100vh;
+}
+
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container > footer {
+    margin-top: auto;
+}
+
+/* Forest green tag styling with correct count positioning */
+.tags .tag.is-success {
+    display: flex;
+    align-items: center;
+    padding-right: 0; /* Remove right padding for flush count positioning */
+}
+
+/* Position the zettel count at the right side */
+.tags .tag.is-success .tag.is-warning {
+    margin-left: 0.5rem;
+    margin-right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    position: relative;
+    right: -1px; /* Pull slightly right for perfect alignment */
+    
+    /* Style for light mode */
+    background-color: #2cff33;
+    color: #090801; 
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+/* For dark mode compatibility */
+.theme-dark .tags .tag.is-success .tag.is-warning {
+    background-color: #000000;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+/* Ensure the tag text has proper spacing */
+.tags .tag.is-success > span:first-child {
+    margin-right: 0.5rem;
+}
+
+
+	
+ 

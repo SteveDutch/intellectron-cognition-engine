@@ -1,7 +1,5 @@
 package com.stevedutch.intellectron.web;
 
-import java.time.LocalDateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +19,16 @@ import com.stevedutch.intellectron.record.ZettelDtoRecord;
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.NoteService;
 import com.stevedutch.intellectron.service.ReferenceService;
+import com.stevedutch.intellectron.service.SearchService;
 import com.stevedutch.intellectron.service.TagService;
 import com.stevedutch.intellectron.service.TextService;
+import com.stevedutch.intellectron.service.ValidationService;
 import com.stevedutch.intellectron.service.ZettelService;
+import com.stevedutch.intellectron.domain.Author;
 
 @Controller
 public class ZettelController {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ZettelController.class);
 	@Autowired
 	private ZettelService zettelService;
@@ -36,55 +37,64 @@ public class ZettelController {
 	@Autowired
 	private TextService textService;
 	@Autowired
-    private TagService tagService;
+	private TagService tagService;
 	@Autowired
-    private AuthorService	authorService;
+	private AuthorService authorService;
 	@Autowired
 	private ReferenceService refService;
+	@Autowired
+	private SearchService searchService;
+	@Autowired
+	private ValidationService validationService;
 	
-	@GetMapping("/zettel/{zettelId}")
-	public String showZettel(ModelMap model, @PathVariable Long zettelId) {
+		@GetMapping("/zettel/{zettelId}")
+		public String showZettel(ModelMap model, @PathVariable Long zettelId) {
+	
+			Zettel zettel = searchService.findZettelById(zettelId);
+	
+	//		String formattedText = zettel.getTekst().getText();
+	//		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
+			model.put("zettel", zettel);
+			model.put("note", zettel.getNote());
+			model.put("tekst", zettel.getTekst());
+			model.put("author", zettel.getTekst().getAssociatedAuthors());
+			model.put("tags", zettel.getTags());
+			model.put("references", zettel.getReferences());
+			return "/zettel";
+		}
+	
+		@PostMapping("/zettel/{zettelId}")
+		public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json)
+				throws JsonMappingException, JsonProcessingException {
+	
+			LOG.info("\n im Controller updateOneZettel, JSON = " + json);
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.registerModule(new JavaTimeModule());
+			ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
+	
+			LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n "
+					+ changes);
+	
+			Author validatedAuthor = validationService.ensureAuthorNames(changes.author());
+	
+			zettelService.updateOnlyZettel(zettelId, changes);
+			noteService.updateNote(zettelId, changes.note());
+			textService.updateTekst(zettelId, changes.tekst());
+			tagService.updateTags(zettelId, changes.tags());
+			authorService.saveAuthorWithText(validatedAuthor, changes.tekst());
+			refService.updateReferences(zettelId, changes.references());
 
-		Zettel zettel = zettelService.findZettelById(zettelId);
-		String formattedText = zettel.getTekst().getText();
-		zettel.getTekst().setText(formattedText.replace("\n", "<br>"));
-        model.put("zettel", zettel);
-        model.put("note", zettel.getNote());
-        model.put("tekst", zettel.getTekst());
-        model.put("author", zettel.getTekst().getAssociatedAuthors());
-        model.put("tags", zettel.getTags());
-        model.put("references", zettel.getReferences());
-        return "/zettel";
-    }
-	
-	@PostMapping("/zettel/{zettelId}")
-    public String updateOneZettel(@PathVariable Long zettelId, @RequestBody String json) throws JsonMappingException, JsonProcessingException {
-		
-		LOG.info("\n im Controller updateOneZettel, JSON = " + json);
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new JavaTimeModule());
-		ZettelDtoRecord changes = objectMapper.readValue(json, ZettelDtoRecord.class);
-		
-		LOG.info(" --> zettelController.updateOneZettel, nach json to zettelDTO, vorm saven: --> zettelDto = \n " + changes);
-//		zettelService.updateOnlyZettel(zettelId, changes); XXX all die Mühe umsonst ... 
-		changes.zettel().setChanged(LocalDateTime.now());
-		noteService.updateNote(zettelId, changes.note());
-		textService.updateTekst(zettelId, changes.tekst());
-		tagService.updateTags(zettelId, changes.tags());
-		authorService.saveAuthorWithText(changes.author(), changes.tekst());
-		refService.updateReferences(zettelId, changes.references());
+			LOG.info(" --> zettelController.updateOneZettel, nach den updatesl = \n " + searchService.findZettelById(zettelId));
+			
+			return "redirect:/zettel/{zettelId}";
+		}
 
-//		LOG.info(" ---> zettelController.updateOneZettel, nachm saven: --> zettelDto = \n  " + changes);
-		return "redirect:/zettel/";
-	}
-	
 	@PostMapping("/zettel/{zettelId}/delete")
 	public String deleteOneZettel(@PathVariable Long zettelId) {
 		LOG.info("\n im deleteZettel = " + zettelId);
 		zettelService.deleteOneZettelbyId(zettelId);
-		
-		return "redirect:/welcome";
+
+		return "redirect:/index";
 	}
-	
 
 }

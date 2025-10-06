@@ -1,106 +1,214 @@
-<!-- FILEPATH: /home/jeg/git/intellectron-cognition-engine/src/main/resources/templates/results.html -->
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+	class="has-navbar-fixed-top"
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
-    <title>Your intellectron found</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/search.css" />
-    <script type="text/javascript" src="/js/search.js" defer></script>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<th:block th:replace="~{fragments/common :: head('the fabulous search results page')}"></th:block>
+<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/results.css">
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js" crossorigin="anonymous"
+		></script>
+	<script src="/js/results.js" defer></script>
+	<script src="/js/common.js" defer></script>
 </head>
 
 <body>
-    <h1>Search Results</h1>
+	<nav th:replace="~{fragments/common :: navbar}"></nav>
+	<section class="hero is-info is-small">
+		<div class="hero-body">
+			
+				<p class="title is-1 has-text-centered">Zettel results</p>
+				<p class="subtitle has-text-centered">
+					found via search term: <span id="searchTerm"></span>, searched in:
+				<span id="searchedVia"></span></p>
+			
+		</div>
+	</section>
+	<div class="box cta">
+		<p class="has-text-centered">
+			<span class="tag is-primary">FOUND</span> <span th:text="${#lists.size(zettels)}"></span>  Zettels:
+		</p>
+	</div>
+	<section class="container">
+		<!-- Zettel -->
+		<div
+			th:if="${zettels}"
+			class="columns is-multiline"
+		>
+			<div
+				class="column is-one-third"
+				th:each="zettel, iterStat : ${zettels}"
+			>
+				<div class="card is-shady">
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img
+							th:with="imageNumber=${(iterStat.index + #dates.createNow().getTime()) *23 % 4 + 1}"
+							th:src="@{'/images/cards/' + ${imageNumber} + '.jpg'}"
+								alt="Placeholder image"
+							>
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="content">
+							<!-- Topic Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Topic:</span>
+								<h4 th:text="${zettel.topic}">Platzhalter für zettel.topic</h4>
+							</div>
+
+							<!-- Note Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Note:</span>
+								<p class="note-reducer" th:text="${zettel.note.noteText}">Platzhalter für zettel.note.noteText</p>
+							</div>
+
+							<!-- Text Title Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Title:</span>
+								<h5 th:text="${zettel.tekst.title}">Platzhalter für zettel.tekst.title</h5>
+							</div>
+
+							<!-- Text Content Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Text:</span>
+								<p class="text-reducer" th:text="${zettel.tekst.text}">Platzhalter für zettel.tekst.</p>
+							</div>
+							
+							<div class="button-group mt-auto">
+								<button class="button is-black is-small js-modal-trigger"
+									data-target="modal-example"
+									th:data-zettel-id="${zettel.zettelId}">preview Text</button>
+								<button class="button is-black is-small">
+									<a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank" rel="noopener noreferrer">Open Zettel</a>
+								</button>
+								<button class="button is-black is-small">
+									<a th:href="@{/search/text/{textId}(textId=${zettel.tekst.textId})}" target="_blank" rel="noopener noreferrer">open text</a>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tekst -->
+		<div
+			th:if="${texts}"
+			class="columns is-multiline"
+		>
+			<div
+				class="column is-one-third"
+				th:each="text : ${texts}"
+			>
+				<div class="card is-shady">
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img
+							src="https://res.cloudinary.com/crakerss/image/upload/c_scale,q_auto:eco,w_1440/v1502988509/background_conifer/MS.jpg"
+							alt="Placeholder image"
+						>
+						</figure>
+					</div>
+					<div class="card-content">
+						<div class="content">
+							<!-- Title Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Title:</span>
+								<h4 th:text="${text.title}">Platzhalter für text.title</h4>
+							</div>
+
+							<!-- Text Content Section -->
+							<div class="content-section">
+								<span class="icon is-small">
+									<img th:src="@{/images/arrow.png}" class="is-small" aria-hidden="true" />
+								</span>
+								<span class="section-label">Text:</span>
+								<h5 th:text="${text.text}">Platzhalter für text.text</h5>
+							</div>
+
+							<button
+								class="button is-black js-modal-trigger"
+								data-target="modal-example"
+							>
+								Open Text
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
-<!-- Tag results -->
-    <div th:if="${tag}">
-        <h2>Search Results for Tag: <span th:text="${tag.tagText}"></span></h2>
-    </div>
-    <div th:if="${#lists.isEmpty(zettels)}">
-        <p>No zettels found for this tag.</p>
-    </div>
-<!-- Zettel results -->
-    <div th:unless="${#lists.isEmpty(zettels)}">
-        <h3>Zettels:</h3>
-        <ul>
-            <li th:each="zettel : ${zettels}">
-                <!-- Display zettel details here -->
-                <span th:text="${zettel.topic}"></span>
+	<!--  
+	===============
+     MODALS
+    ===============  -->
+	<!-- modal: the main container -->
+	<div
+		id="modal-example"
+		class="modal"
+	>
+		<!-- modal-background: a transparent overlay that can act as a click target to close the modal -->
+		<div class="modal-background"></div>
+		<!-- modal-content: a horizontally and vertically centered container, 
+    with a maximum width of 640px, in which you can include any content -->
+		<div class="modal-content">
+			<!-- This is where the rendered Mustache template will be inserted -->
+		</div>
+		<button
+			class="modal-close is-large"
+			aria-label="close"
+		></button>
+	</div>
 
-                <!-- Add more zettel fields as needed -->
-            </li>
-        </ul>
-    </div>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Signature</th>
-                    <th>Topic</th>
-                    <th>Tags</th>
-                    <th>References</th>
-                    <th>Note</th>
-                    <th>Text</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${#lists.isEmpty(zettels) || #strings.isEmpty(zettels)}">
-                    <td colspan="2"> No Zettel Available </td>
-                </tr>
-                <tr th:each="zettel : ${zettels}">
-                    <td><a th:href="@{/zettel/{zettelId}(zettelId=${zettel.zettelId})}" target="_blank"><span
-                                class="showLast" th:text="${zettel.signature}"> signature </span></a></td>
-                    <td><span class="showLast" th:text="${zettel.topic}"> topic </span></td>
-                    <td><span th:each="tag : ${zettel.tags}" th:text="${tag.tagText} + ' // ' "> Tag </span></td>
-                    <td><span th:each="reference : ${zettel.references}"
-                            th:text="${reference.targetZettel} + ' // ' "></span></td>
-                    <td><span th:text="${zettel.note.noteText}">//</span></td>
-                    <td><span th:text="${zettel.tekst.text}"></span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<!-- Mustache template -->
+	<script
+		id="modal-template"
+		type="text/template"
+	>
+  <div class="box">
+    <h2 class="title">{{zettel.topic}}</h2>
+    <p class="modal-text">{{modalContent}}</p>
+    {{#hasImage}}
+    <p class="modal-text">{{tekst}}</p>
+    <figure class="image">
+      <img src="{{imageUrl}}" alt="{{imageAlt}}">
+    </figure>
+    {{/hasImage}}
+  </div>
+</script>
+	<!--  ===============
+     end of MODALS
+    ===============  -->
 
-    <!-- Textsucheergebnis -->
-    <table>
-        <p class="tablehead">Search Results, found texts for given textfragment: </p>
-        <thead>
-            <tr>
-                <th>Titel</th>
-                <th>Text</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr th:if="${#lists.isEmpty(texts) || #strings.isEmpty(texts)}">
-                <td colspan="2"> No Zettel Available </td>
-            </tr>
-            <tr th:each="text : ${texts}">
-                <td><span th:text="${text.title}"></span></td>
-                <td><span th:text="${text.text}"></span></td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
-    <div th:if="${tekst}">
-
-    </div>
-    <div th:if="${#lists.isEmpty(texts)}">
-        <p>No zettels found for this tag.</p>
-    </div>
-
-
-
-
-
-
-
+	<footer th:replace="~{fragments/common :: footer}"></footer>
+	<!-- navbar burger -->
+	<script type="text/javascript" src="/js/bulma.js"></script>
 </body>
 
 </html>

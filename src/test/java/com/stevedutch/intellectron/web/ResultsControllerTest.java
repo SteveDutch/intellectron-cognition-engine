@@ -7,23 +7,17 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ModelMap;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class ResultsControllerTest {
 	
 	@Mock
 	private ModelMap model;
-
-	@BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
 
 	@Test
 	void testShowSearchResults() {
@@ -36,7 +30,4 @@ class ResultsControllerTest {
         // Verify interactions with the mock ModelMap
         verify(model, times(1)).addAttribute(anyString());
 	}
-
-			
-
 }

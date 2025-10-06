@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:insert="~{fragments/common :: head('Error - Page Not Found')}"></th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="/css/error.css" />
+    <th:block th:replace="~{fragments/common :: table-sort-resources}"></th:block>
+</head>
+<body>
+    <nav th:replace="~{fragments/common :: navbar}"></nav>
+    
+    <div class="error-container">
+        <div class="error-content">
+            <div class="oops">Oops!</div>
+            <h1>404</h1>
+            <h2>Page Not Found</h2>
+            <p class="is-size-5" th:text="${message}">Error message will appear here</p>
+            <div class="actions">
+                <a href="/" class="button is-primary">Return Home</a>
+                <button onclick="history.back()" class="button is-secondary">Go Back</button>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{fragments/common :: footer}"></footer>
+
+	<!-- navbar burger -->
+	<script src="/js/bulma.js"></script>
+</body>
+</html> 
