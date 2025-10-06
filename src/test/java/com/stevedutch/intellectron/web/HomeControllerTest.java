@@ -54,7 +54,7 @@ class HomeControllerTest {
 	void testShowAlsoHomePage() {
 		String result = sut.redirectToHomePage();
 		
-		assertThat(result).isEqualTo("/index");
+		assertThat(result).isEqualTo("redirect:/index");
 	}
 
 }

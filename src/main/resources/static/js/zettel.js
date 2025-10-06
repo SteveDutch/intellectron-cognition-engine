@@ -11,8 +11,6 @@ let zettelId = parseInt(document.getElementById("zettelId").textContent);
 // Object to store initial form data
 let initialFormData = {};
 
-// The reference and tag functionality has been moved to enter-zettel.js
-
 // --- Function to capture current form data ---
 function captureCurrentFormData() {
     let data = {};
@@ -62,8 +60,7 @@ function detectChanges(initialData, currentData) {
 // --- Capture initial form data when page loads ---
 document.addEventListener('DOMContentLoaded', function() {
     initialFormData = captureCurrentFormData();
-    // The 'addReferenceButton' listener is now in enter-zettel.js
-    
+
     // Listen for zettel selection from instant search - made by genAI
     const searchInput = document.getElementById("zettelSearchInput");
     if (searchInput) {
@@ -79,10 +76,6 @@ if (saveModalClose) {
         saveModal.style.display = 'none';
     });
 }
-
-// All reference-handling functions (addReference, displayReference, etc.) are removed from here.
-
-// The getReferenceTypeClass function has been moved to enter-zettel.js
 
 submitBtn.addEventListener("click", function (event) {
     // suppress HTML sending form
@@ -231,7 +224,7 @@ function zettelToJava() {
 }
 
 
-   //get the modal for delteting the zettel
+   //get the modal for deleting the zettel
 const modal = document.getElementById("deleteModal");
 //open modal
 const openDeleteModalButton = document.getElementById('openDeleteModal');

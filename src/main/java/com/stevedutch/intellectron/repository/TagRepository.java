@@ -12,13 +12,12 @@ import com.stevedutch.intellectron.domain.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-	
+
 	public Optional<Tag> findById(Long id);
-	
+
 	@Query("SELECT tag FROM Tag tag WHERE tag.tagText LIKE %:searchTerm%")
-    public List<Tag> findByTagFragment(@Param("searchTerm") String tagFragment);
-	
-	// XXX falls ich mal eine genaue Tagsuche brauche
+	public List<Tag> findByTagFragment(@Param("searchTerm") String tagFragment);
+
 	public Optional<Tag> findByTagText(String name);
 
 	@Query(value = "SELECT * FROM tags ORDER BY RAND() LIMIT 1", nativeQuery = true)

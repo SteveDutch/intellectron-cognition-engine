@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.addEventListener('click', () => {
       const modalId = trigger.getAttribute('data-target');
       const zettelId = trigger.getAttribute('data-zettel-id');
-      // const modal = document.getElementById(modalId);
       console.log('Zettel ID:', zettelId);
 
       if (zettelId) {
@@ -71,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.querySelector('.js-modal-trigger').addEventListener('click', function () {
   var modalTemplate = document.getElementById('modal-template').innerHTML;
-  // var modalContent = Mustache.render(modalTemplate, data);
   fetch('/modal-content/' + zettelId)
     .then(response => response.json())
     .then(data => {

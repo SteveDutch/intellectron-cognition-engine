@@ -50,15 +50,13 @@ public class InputController {
 		model.put("tag", new Tag());
 		model.put("tags", new ArrayList<Tag>());
 		model.put("reference", new Reference());
-		// falls ich mal die Verweise anzeigen will ... :)
-//		List<Reference> references = refService.findAll();
-//		model.put("references", references);
+
 		List<Zettel> zettels = searchService.findLast10Zettel();
 		List<Zettel> randomZettels = searchService.findRandomZettel(10);
-		// TODO rename
+
 		textManipulationService.reduceTekstStringListElements(zettels, 42);
 		textManipulationService.reduceTekstStringListElements(randomZettels, 42);
-		// TODO rename
+
 		textManipulationService.reduceNoteStringListElements(zettels, 42);
 		textManipulationService.reduceNoteStringListElements(randomZettels, 42);
 
@@ -75,7 +73,6 @@ public class InputController {
 		objectMapper.registerModule(new JavaTimeModule());
 		ZettelDtoRecord zettelDto = objectMapper.readValue(json, ZettelDtoRecord.class);
 
-		
 		validationService.ensureAuthorNames(zettelDto.author());
 
 		System.out.println("\n ZettelDtoRecord in PstMapping, vor createZettel =  \n" + zettelDto + "\n");
@@ -85,6 +82,5 @@ public class InputController {
 		return "redirect:/zettel/" + zettelId;
 
 	}
-
 
 }

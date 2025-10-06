@@ -36,7 +36,7 @@ public class TextService {
 	}
 
 	public Tekst saveTextWithAuthor(Tekst tekst, Author author) {
-		// XXX wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
+		// NOTE wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
@@ -85,7 +85,7 @@ public class TextService {
 	}
 
 	public Tekst connectTextWithAuthor(Tekst tekst, Author author) {
-		// XXX wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
+		// NOTE wäre korrekt, wenn ich weitere Autoren hinzufügen wollte
 		// for now I'm mocking that just one Author is valid
 		// tekst.getAssociatedAuthors().add(author); Daher aber;
 		tekst.setOneAssociatedAuthors(author);
@@ -96,8 +96,7 @@ public class TextService {
 	public Tekst updateTekst(Long zettelId, Tekst tekst) {
 
 		Zettel zettel = searchService.findZettelById(zettelId);
-//		Tekst oldTekst = zettelService.findZettelById(zettelId).getTekst();
-		// XXX Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst
+		// NOTE Tekst vom front end kommt nur mit Text, daher anhand dessen den Tekst
 		// finden, oder -falls nicht existent -
 		// oder als neues Text mit dem gegebenen Text einricfhten --> Vermeiden von
 		// Doubletten in der Datenbank & Objekt
@@ -113,7 +112,6 @@ public class TextService {
 
 		saveText(updatedTekst);
 
-		// saveTextwithZettel(updatedTekst, searchService.findZettelById(zettelId));
 		saveTextwithZettel(updatedTekst, zettel);
 		zettel.setTekst(updatedTekst);
 		LOG.info("\n -->TekstService.updateTekst, Tekst nachm Bearbeiten \n" + "--->" + updatedTekst + "\n"
@@ -169,7 +167,7 @@ public class TextService {
 	}
 
 	/**
-	 * returns the number of all text in the database
+	 * returns the number of all texts in the database
 	 * 
 	 * @return number of all texts
 	 */

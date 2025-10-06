@@ -108,9 +108,7 @@ function handleError(error) {
         const message = data.message;
         console.error('Error:', message);
         // Display the message on the page
-        // For example, you could set the text content of an element with id 'errorMessage' to the message
-       // document.alarm('errorMessage').textContent = message;
-	   alert(message);
+       alert(message);
     }).catch(err => {
         console.error('Error parsing error response:', err);
     });
