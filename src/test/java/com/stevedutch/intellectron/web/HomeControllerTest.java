@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 
 import com.stevedutch.intellectron.service.AuthorService;
 import com.stevedutch.intellectron.service.SearchService;
